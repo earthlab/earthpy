@@ -12,7 +12,7 @@ plt.style.use('ggplot')
 DATA_URLS = {
     'week_02': [('https://ndownloader.figshare.com/files/7010681', 'boulder-precip.csv', 'file'),
                 ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file'),
-                ('https://ndownloader.figshare.com/files/7426738', 'hw', 'zip')],
+                ('https://ndownloader.figshare.com/files/7426738', '.', 'zip')],
     'week_03': ('https://ndownloader.figshare.com/files/7446715', '.', 'zip'),
     'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'week_07': ('https://ndownloader.figshare.com/files/7677208', '.', 'zip'),
