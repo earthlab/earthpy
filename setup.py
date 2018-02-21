@@ -7,7 +7,7 @@ DISTNAME = 'earthlab'
 DESCRIPTION = 'Functions for the earthlab course'
 MAINTAINER = 'Chris Holdgraf'
 MAINTAINER_EMAIL = 'choldgraf@berkeley.edu'
-VERSION = '0.0.0-git'
+VERSION = '0.0.1-git'
 
 
 def configuration(parent_package='', top_path=None):
