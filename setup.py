@@ -3,7 +3,7 @@ import setuptools
 from numpy.distutils.core import setup
 
 
-DISTNAME = 'earthlab'
+DISTNAME = 'earthlabpy'
 DESCRIPTION = 'Functions for the earthlab course'
 MAINTAINER = 'Chris Holdgraf'
 MAINTAINER_EMAIL = 'choldgraf@berkeley.edu'
