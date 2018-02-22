@@ -2,4 +2,4 @@
 
 A package built to support python teaching
 
-`pip install git+https://github.com/earthlab/earthlabpy.git`
+`pip install --upgrade git+https://github.com/earthlab/earthlabpy.git`
