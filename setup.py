@@ -31,7 +31,7 @@ if __name__ == "__main__":
           description=DESCRIPTION,
           version=VERSION,
           install_requires=['tqdm', 'pandas', 'numpy', 'geopandas',
-                            'matplotlib', 'rasterio'],
+                            'matplotlib', 'rasterio', 'download'],
           zip_safe=False,  # the package can run out of an .egg file
           classifiers=[
               'Intended Audience :: Developers',
@@ -41,4 +41,5 @@ if __name__ == "__main__":
               'Operating System :: Microsoft :: Windows',
               'Operating System :: POSIX',
               'Operating System :: Unix',
-              'Operating System :: MacOS'])
+              'Operating System :: MacOS'],
+           package_data={DISTNAME: ["data/*.json"]},)
