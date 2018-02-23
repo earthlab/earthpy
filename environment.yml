@@ -39,5 +39,4 @@ dependencies:
       - sklearn
       - tqdm
       - kiwisolver
-      - --no-deps
       - git+https://github.com/geopandas/geopandas.git
