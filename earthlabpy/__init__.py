@@ -5,6 +5,7 @@ from download import download
 import json
 import os.path as op
 from . import utils
+from . import spatial
 
 data = EarthlabData()
 

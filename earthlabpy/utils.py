@@ -50,7 +50,7 @@ def crop_image(path, geoms, path_out=None):
     with rio.open(path_out, "w", **out_meta) as dest:
         dest.write(out_image)
 
-# to be deprecated potentially 
+# to be deprecated potentially
 def stack_old(band_paths, out_path, return_raster=True):
     """Stack a set of bands into a single file.
 

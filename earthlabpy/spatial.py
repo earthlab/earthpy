@@ -4,6 +4,27 @@ import rasterio as rio
 import numpy as np
 from shapely.geometry import Polygon, mapping
 
+
+# calculate normalized difference between two arrays
+# both arrays must be of the same size
+def normalized_diff(b1, b2):
+    """Take two numpy arrays and calculate the normalized difference
+    Math will be calculated (b2-b1) / (b2+b1).
+
+    Parameters
+    ----------
+    b1, b2 : arrays with the same shape
+        Math will be calculated (b2-b1) / (b2+b1).
+    """
+    if not (b1.shape == b2.shape):
+        raise ValueError("Both arrays should be of the same dimensions")
+
+    n_diff = (b2 - b1) / (b2 + b1)
+    #ndvi[np.isnan(ndvi)] = 0
+    n_diff = np.ma.masked_invalid(n_diff)
+    return (n_diff)
+
+
 # EL function
 # we probably want to include a no data value here if provided ...
 def stack_raster_tifs(band_paths, dest):
