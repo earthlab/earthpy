@@ -1,3 +1,75 @@
+import contextlib
+import os
+import rasterio as rio
+import numpy as np
+from shapely.geometry import Polygon, mapping
+
+# EL function
+# we probably want to include a no data value here if provided ...
+def stack_raster_tifs(band_paths, dest):
+    """Take a list of raster paths and turn into an ouput raster stack.
+    Note that this function depends upon the stack() function to be submitted to rasterio.
+
+    Parameters
+    ----------
+    band_paths : list of file paths
+        A list with paths to the bands you wish to stack. Bands
+        will be stacked in the order given in this list.
+    dest : string
+        A path for the output stacked raster file.
+    """
+
+    if not os.path.exists(dest):
+        raise ValueError("The output directory path that you provided does not exist")
+
+    # the with statement ensures that all files are closed at the end of the with statement
+    with contextlib.ExitStack() as context:
+        sources = [context.enter_context(rio.open(path, **kwds)) for path in band_paths]
+
+        dest_kwargs = sources[0].meta
+        dest_count = sum(src.count for src in sources)
+        dest_kwargs['count'] = dest_count
+
+        # save out a stacked gtif file
+        with rio.open(out_path, 'w', **dest_kwargs) as dest:
+            return (stack(sources, dest))
+
+
+# function to be submitted to rasterio
+# add unit tests: some are here: https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
+# remove tqdm although it is nice
+def stack(sources, dest):
+    """Stack a set of bands into a single file.
+
+    Parameters
+    ----------
+    sources : list of rasterio dataset objects
+        A list with paths to the bands you wish to stack. Objects
+        will be stacked in the order provided in this list.
+    dest : string
+        A path for the output stacked raster file.
+    """
+    if not os.path.exists(dest):
+        raise ValueError("The output directory path that you provided does not exist")
+
+    if not type(sources[0]) == rasterio._io.RasterReader:
+        raise ValueError("The sources object should be of type: rasterio.RasterReader")
+
+    for ii, ifile in tqdm(enumerate(sources)):
+            bands = sources[ii].read()
+            if bands.ndim != 3:
+                bands = bands[np.newaxis, ...]
+            for band in bands:
+                dest.write(band, ii+1)
+
+
+
+
+
+
+
+
+
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     """
     Code from the original scipy package to resolve non 8 bit images to 8 bit for easy plotting
@@ -33,10 +105,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     return (bytedata.clip(low, high) + 0.5).astype(np.int8)
 
 
-test = np.array([1,4,6,7,-127])
-bytescale(test)
 
-import numpy as np
 
 # scale an input array-like to a mininum and maximum number
 # the input array must be of a floating point array
@@ -44,6 +113,7 @@ import numpy as np
 # this works with n-dimensional arrays
 # it will mutate in place
 # min and max can be integers
+# may end up deprecating this
 def scale_range (input_array, min, max, clip=True):
     # coerce to float if int
     if input_array.dtype == "int":
@@ -56,28 +126,3 @@ def scale_range (input_array, min, max, clip=True):
     if clip:
         input_array.clip(min, max)
     return ((input_array+ 0.5).astype(np.int8))
-
-test = np.array([1,4,6,7,-127])
-min = 1
-max = 5
-input = test
-scale_range(input_array=test, min= 0, max=255, clip=False)
-
-
-test = np.array([1,4,6,7,-127])
-scale_range(input=test, min= 1, max=5)
-
-if test.dtype == "int":
-    print("yes")
-    test = test.astype(np.float16)
-
-
-cmin = test.min()
-cmax = test.max()
-cscale = cmax - cmin
-high=255
-low=0
-scale = float(high - low) / cscale
-scale
-bytedata = (data - cmin) * scale + low
-    return (bytedata.clip(low, high) + 0.5).astype(np.int8)
