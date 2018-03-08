@@ -4,8 +4,7 @@ from .io import EarthlabData, list_files
 from download import download
 import json
 import os.path as op
-from . import utils
-from . import spatial
+from . import utils, spatial
 
 data = EarthlabData()
 

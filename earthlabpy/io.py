@@ -14,6 +14,7 @@ DATA_URLS = {
                 ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file'),
                 ('https://ndownloader.figshare.com/files/7426738', '.', 'zip')],
     'week_03': ('https://ndownloader.figshare.com/files/7446715', '.', 'zip'),
+    'week_04': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'week_07': ('https://ndownloader.figshare.com/files/7677208', '.', 'zip'),
     'week_08': [('https://ndownloader.figshare.com/files/9666637?private_link=480fba92b3e882c4d35d', 'week_08', 'zip'),

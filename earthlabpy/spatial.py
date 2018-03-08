@@ -22,7 +22,7 @@ def normalized_diff(b1, b2):
     n_diff = (b2 - b1) / (b2 + b1)
     #ndvi[np.isnan(ndvi)] = 0
     n_diff = np.ma.masked_invalid(n_diff)
-    return (n_diff)
+    return n_diff
 
 
 # EL function
@@ -53,7 +53,7 @@ def stack_raster_tifs(band_paths, dest):
 
         # save out a stacked gtif file
         with rio.open(out_path, 'w', **dest_kwargs) as dest:
-            return (stack(sources, dest))
+            return stack(sources, dest)
 
 
 # function to be submitted to rasterio

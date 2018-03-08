@@ -14,6 +14,7 @@ DATA_URLS = {
                  'temperature_example.csv')],
     'week_02-hw': ('https://ndownloader.figshare.com/files/7426738', 'ZIPFILE'),
     'week_03': ('https://ndownloader.figshare.com/files/7446715', 'ZIPFILE'),
+    'week_04': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
     'week_05': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
     'week_07': [('https://ndownloader.figshare.com/files/7677208', 'ZIPFILE')]
 }
@@ -97,4 +98,3 @@ def get_data(self, key=None, name=None, replace=False, zipfile=True):
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
-
