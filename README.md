@@ -11,6 +11,11 @@ yet you can still use the `--upgrade` argument.
 
 `pip install --upgrade git+https://github.com/earthlab/earthlabpy.git`
 
+Then import it into python.
+
+`import earthlabpy as et`
+
+
 ## Contributors
 
 This package was originally developed by Chris Holdgraf.
