@@ -40,7 +40,7 @@ def stack_raster_tifs(band_paths, dest):
         A path for the output stacked raster file.
     """
 
-    if not os.path.exists(dest):
+    if not os.path.exists(os.path.dirname(dest)):
         raise ValueError("The output directory path that you provided does not exist")
 
     # the with statement ensures that all files are closed at the end of the with statement
@@ -70,7 +70,7 @@ def stack(sources, dest):
     dest : string
         A path for the output stacked raster file.
     """
-    if not os.path.exists(dest):
+    if not os.path.exists(os.path.dirname(dest)):
         raise ValueError("The output directory path that you provided does not exist")
 
     if not type(sources[0]) == rasterio._io.RasterReader:
