@@ -76,7 +76,7 @@ def stack(sources, dest):
     #if not os.path.exists(os.path.dirname(dest)):
     #    raise ValueError("The output directory path that you provided does not exist")
 
-    if not type(sources[0]) == rasterio._io.RasterReader:
+    if not type(sources[0]) == rio._io.RasterReader:
         raise ValueError("The sources object should be of type: rasterio.RasterReader")
 
     for ii, ifile in enumerate(sources):
