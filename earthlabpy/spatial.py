@@ -131,8 +131,8 @@ def crop_image(raster, geoms):
 
     # Mask the input image and update the metadata
     #with rio.open(path) as src:
-    out_image, out_transform = rio.mask.mask(src, geoms, crop = True)
-    out_meta = src.meta.copy()
+    out_image, out_transform = rio.mask.mask(raster, geoms, crop = True)
+    out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                     "height": out_image.shape[1],
                     "width": out_image.shape[2],
