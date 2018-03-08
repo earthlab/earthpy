@@ -2,8 +2,25 @@ import contextlib
 import os
 import rasterio as rio
 import numpy as np
-from shapely.geometry import Polygon, mapping
+from shapely.geometry import mapping, box
 
+def extent_to_json(left, right, bottom, top):
+    """Convert bounds to a shapely geojson like spatial object.
+    Helper function
+    This format is what shapely uses. The output object can be used
+    to crop a raster image.
+
+    Parameters
+    ----------
+    left, right, bottom, top : numbers
+    The left, right top corner coordinates of the extent to be used for cropping.
+    Return
+    ----------
+    extent_json : dict
+    A dictionary of corner coordinates for the new extent
+    """
+    extent_json = mapping(box(left, right, bottom, top))
+    return extent_json
 
 # calculate normalized difference between two arrays
 # both arrays must be of the same size
@@ -85,6 +102,42 @@ def stack(sources, dest):
                 bands = bands[np.newaxis, ...]
             for band in bands:
                 dest.write(band, ii+1)
+
+
+def crop_image(raster, geoms):
+    """Crop a single file using geometry objects.
+
+    Parameters
+    ----------
+    raster : rasterio object
+        The rasterio object to be cropped. Ideally this object is opened in a
+        scontext manager to ensure the file is properly closed.
+    geoms : list of polygons
+        Polygons are GeoJSON-like dicts specifying the boundaries of features
+        in the raster to be kept. All data outside of specified polygons
+        will be set to nodata.
+
+    Returns
+    ----------
+    out_image: masked numpy array
+        A masked numpy array that is masked / cropped to the geoms object extent
+    out_meta:  dict
+        A dictionary containing the updated metadata for the cropped raster.
+        Specifically the extent (shape elements) and transform properties are updated.
+    """
+
+    if not type(geoms) == list:
+        raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
+
+    # Mask the input image and update the metadata
+    #with rio.open(path) as src:
+    out_image, out_transform = rio.mask.mask(src, geoms, crop = True)
+    out_meta = src.meta.copy()
+    out_meta.update({"driver": "GTiff",
+                    "height": out_image.shape[1],
+                    "width": out_image.shape[2],
+                    "transform": out_transform})
+    return (out_image, out_meta)
 
 
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):

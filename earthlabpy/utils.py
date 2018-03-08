@@ -20,7 +20,7 @@ def bounds_to_box(left, right, bottom, top):
     box = Polygon(box)
     return box
 
-def crop_image(path, geoms, path_out=None):
+def crop_image_deprecate(path, geoms, path_out=None):
     """Crop a single file using geometry objects.
 
     Parameters
@@ -51,7 +51,7 @@ def crop_image(path, geoms, path_out=None):
         dest.write(out_image)
 
 # to be deprecated potentially
-def stack_old(band_paths, out_path, return_raster=True):
+def stack_deprecate(band_paths, out_path, return_raster=True):
     """Stack a set of bands into a single file.
 
     Parameters
