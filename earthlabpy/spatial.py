@@ -27,22 +27,23 @@ def normalized_diff(b1, b2):
 
 # EL function
 # we probably want to include a no data value here if provided ...
-def stack_raster_tifs(band_paths, dest):
+def stack_raster_tifs(band_paths, out_path):
     """Take a list of raster paths and turn into an ouput raster stack.
     Note that this function depends upon the stack() function to be submitted to rasterio.
+    but the stack function ins't stand alone as written
 
     Parameters
     ----------
     band_paths : list of file paths
         A list with paths to the bands you wish to stack. Bands
         will be stacked in the order given in this list.
-    dest : string
+    out_path : string
         A path for the output stacked raster file.
     """
     # set default import to read
     kwds = {'mode': 'r'}
 
-    if not os.path.exists(os.path.dirname(dest)):
+    if not os.path.exists(os.path.dirname(out_path)):
         raise ValueError("The output directory path that you provided does not exist")
 
     # the with statement ensures that all files are closed at the end of the with statement
@@ -60,7 +61,7 @@ def stack_raster_tifs(band_paths, dest):
 
 # function to be submitted to rasterio
 # add unit tests: some are here: https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
-# remove tqdm although it is nice
+# this function doesn't stand alone because it writes to a open object called in the other function.
 def stack(sources, dest):
     """Stack a set of bands into a single file.
 
@@ -69,23 +70,21 @@ def stack(sources, dest):
     sources : list of rasterio dataset objects
         A list with paths to the bands you wish to stack. Objects
         will be stacked in the order provided in this list.
-    dest : string
-        A path for the output stacked raster file.
+    dest : a rio.open writable object that will store raster data.
     """
-    if not os.path.exists(os.path.dirname(dest)):
-        raise ValueError("The output directory path that you provided does not exist")
+
+    #if not os.path.exists(os.path.dirname(dest)):
+    #    raise ValueError("The output directory path that you provided does not exist")
 
     if not type(sources[0]) == rasterio._io.RasterReader:
         raise ValueError("The sources object should be of type: rasterio.RasterReader")
 
-    for ii, ifile in tqdm(enumerate(sources)):
+    for ii, ifile in enumerate(sources):
             bands = sources[ii].read()
             if bands.ndim != 3:
                 bands = bands[np.newaxis, ...]
             for band in bands:
                 dest.write(band, ii+1)
-
-
 
 
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
