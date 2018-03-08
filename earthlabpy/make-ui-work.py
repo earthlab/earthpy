@@ -7,17 +7,18 @@ import matplotlib.pyplot as plt
 
 # plt.style.use('ggplot')
 
-DATA_URLS = {
-    'week_02': [('https://ndownloader.figshare.com/files/7010681',
-                 'boulder-precip.csv'),
-                ('https://ndownloader.figshare.com/files/7010681',
-                 'temperature_example.csv')],
-    'week_02-hw': ('https://ndownloader.figshare.com/files/7426738', 'ZIPFILE'),
-    'week_03': ('https://ndownloader.figshare.com/files/7446715', 'ZIPFILE'),
-    'week_04': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
-    'week_05': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
-    'week_07': [('https://ndownloader.figshare.com/files/7677208', 'ZIPFILE')]
-}
+# i believe this is deprecated 
+#DATA_URLS = {
+#    'week_02': [('https://ndownloader.figshare.com/files/7010681',
+#                 'boulder-precip.csv'),
+#                ('https://ndownloader.figshare.com/files/7010681',
+#                 'temperature_example.csv')],
+#    'week_02-hw': ('https://ndownloader.figshare.com/files/7426738', 'ZIPFILE'),
+#    'week_03': ('https://ndownloader.figshare.com/files/7446715', 'ZIPFILE'),
+#    'week_04': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
+#    'week_05': ('https://ndownloader.figshare.com/files/7525363', 'ZIPFILE'),
+#    'week_07': [('https://ndownloader.figshare.com/files/7677208', 'ZIPFILE')]
+#}
 
 #               destfile = "data/boulder-precip.csv"'}
 HOME = op.join(op.expanduser('~'))

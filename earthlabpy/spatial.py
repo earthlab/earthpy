@@ -39,6 +39,8 @@ def stack_raster_tifs(band_paths, dest):
     dest : string
         A path for the output stacked raster file.
     """
+    # set default import to read
+    kwds = {'mode': 'r'}
 
     if not os.path.exists(os.path.dirname(dest)):
         raise ValueError("The output directory path that you provided does not exist")
@@ -82,11 +84,6 @@ def stack(sources, dest):
                 bands = bands[np.newaxis, ...]
             for band in bands:
                 dest.write(band, ii+1)
-
-
-
-
-
 
 
 
