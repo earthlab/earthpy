@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/122149160.svg)](https://zenodo.org/badge/latestdoi/122149160)
+
 # Earth Py
 
 A package built to support python teaching in the Earth Lab earth analytics program
