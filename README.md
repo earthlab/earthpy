@@ -1,4 +1,4 @@
-# Earth Lab Py
+# Earth Py
 
 A package built to support python teaching in the Earth Lab earth analytics program
 at University of Colorado, Boulder.
@@ -9,11 +9,11 @@ To install, use pip. `--upgrade` is optional but it ensures that the package ove
 when you install and you have the current version. If you don't have the package
 yet you can still use the `--upgrade` argument.
 
-`pip install --upgrade git+https://github.com/earthlab/earthlabpy.git`
+`pip install --upgrade git+https://github.com/earthlab/earthpy.git`
 
 Then import it into python.
 
-`import earthlabpy as et`
+`import earthpy as et`
 
 
 ## Contributors
