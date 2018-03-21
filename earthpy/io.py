@@ -3,9 +3,9 @@
 from download import download
 import os.path as op
 import os
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
-plt.style.use('ggplot')
+#plt.style.use('ggplot')
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
 # If ZIPFILE / TARFILE / etc, we'll unzip to a folder w/ the week's name
