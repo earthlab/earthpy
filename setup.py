@@ -3,7 +3,7 @@ import setuptools
 from numpy.distutils.core import setup
 
 
-DISTNAME = 'earthlabpy'
+DISTNAME = 'earthpy'
 DESCRIPTION = 'Functions for the earthlab course'
 MAINTAINER = 'Chris Holdgraf'
 MAINTAINER_EMAIL = 'choldgraf@berkeley.edu'
@@ -17,7 +17,7 @@ def configuration(parent_package='', top_path=None):
     from numpy.distutils.misc_util import Configuration
     config = Configuration(None, parent_package, top_path)
 
-    config.add_subpackage('earthlabpy')
+    config.add_subpackage('earthpy')
 
     return config
 
