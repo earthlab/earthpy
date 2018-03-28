@@ -140,20 +140,52 @@ def crop_image(raster, geoms):
     return (out_image, out_meta)
 
 
-def bytescale(data, cmin=None, cmax=None, high=255, low=0):
+# this was imported directly from scipy as it's being deprecated
+def bytescale2(data, cmin=None, cmax=None, high=255, low=0):
     """
-    Code from the original scipy package to resolve non 8 bit images to 8 bit for easy plotting
-    Note that this will scale values <0 to 0 and values >255 to 255
-
+    Byte scales an array (image).
+    Byte scaling means converting the input image to uint8 dtype and scaling
+    the range to ``(low, high)`` (default 0-255).
+    If the input image already has dtype uint8, no scaling is done.
+    This function is only available if Python Imaging Library (PIL) is installed.
     Parameters
     ----------
-    data : numpy array
-        The dataset to be scaled.
-    cmin : number
-        minvalue in the dataset. by default set to data.min()
-    cmax : maxvalue in the dataset. by default set to data.min()
-
+    data : ndarray
+        PIL image data array.
+    cmin : scalar, optional
+        Bias scaling of small values. Default is ``data.min()``.
+    cmax : scalar, optional
+        Bias scaling of large values. Default is ``data.max()``.
+    high : scalar, optional
+        Scale max value to `high`.  Default is 255.
+    low : scalar, optional
+        Scale min value to `low`.  Default is 0.
+    Returns
+    -------
+    img_array : uint8 ndarray
+        The byte-scaled array.
+    Examples
+    --------
+    >>> from scipy.misc import bytescale
+    >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
+    ...                 [ 73.88003259,  80.91433048,   4.88878881],
+    ...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
+    >>> bytescale(img)
+    array([[255,   0, 236],
+           [205, 225,   4],
+           [140,  90,  70]], dtype=uint8)
+    >>> bytescale(img, high=200, low=100)
+    array([[200, 100, 192],
+           [180, 188, 102],
+           [155, 135, 128]], dtype=uint8)
+    >>> bytescale(img, cmin=0, cmax=255)
+    array([[91,  3, 84],
+           [74, 81,  5],
+           [52, 34, 28]], dtype=uint8)
     """
+    if data.dtype == "uint8":
+        return data
+
     if high > 255:
         raise ValueError("`high` should be less than or equal to 255.")
     if low < 0:
@@ -165,14 +197,16 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         cmin = data.min()
     if cmax is None:
         cmax = data.max()
+
     cscale = cmax - cmin
     if cscale < 0:
         raise ValueError("`cmax` should be larger than `cmin`.")
     elif cscale == 0:
         cscale = 1
+
     scale = float(high - low) / cscale
     bytedata = (data - cmin) * scale + low
-    return (bytedata.clip(low, high) + 0.5).astype(np.int8)
+    return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
 
