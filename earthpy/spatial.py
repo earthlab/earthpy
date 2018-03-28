@@ -141,7 +141,7 @@ def crop_image(raster, geoms):
 
 
 # this was imported directly from scipy as it's being deprecated
-def bytescale2(data, cmin=None, cmax=None, high=255, low=0):
+def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     """
     Byte scales an array (image).
     Byte scaling means converting the input image to uint8 dtype and scaling
