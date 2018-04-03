@@ -15,7 +15,7 @@ DATA_URLS = {
                 ('https://ndownloader.figshare.com/files/7426738', '.', 'zip')],
     'week_03': ('https://ndownloader.figshare.com/files/7446715', '.', 'zip'),
     'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/10813034', '.', 'zip'),
-    'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', .'', 'zip'),
+    'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
     #'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
     'cold-springs-naip-hw': ('https://figshare.com/s/18f892d9f3645344b2fe', '.', 'zip'),
