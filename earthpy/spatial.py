@@ -4,7 +4,7 @@ import rasterio as rio
 import numpy as np
 from shapely.geometry import mapping, box
 
-def extent_to_json(left, right, bottom, top):
+def extent_to_json(minx, miny, maxx, maxy):
     """Convert bounds to a shapely geojson like spatial object.
     Helper function
     This format is what shapely uses. The output object can be used
@@ -19,7 +19,8 @@ def extent_to_json(left, right, bottom, top):
     extent_json : dict
     A dictionary of corner coordinates for the new extent
     """
-    extent_json = mapping(box(left, right, bottom, top))
+    # box minx, miny, maxx, maxy
+    extent_json = mapping(box(minx, miny, maxx, maxy))
     return extent_json
 
 # calculate normalized difference between two arrays
@@ -230,3 +231,38 @@ def scale_range (input_array, min, max, clip=True):
     if clip:
         input_array.clip(min, max)
     return ((input_array+ 0.5).astype(np.int8))
+
+
+def colorbar(mapobj, size = "3%", pad=0.09):
+    """
+    Byte scales an array (image).
+    Byte scaling means converting the input image to uint8 dtype and scaling
+    the range to ``(low, high)`` (default 0-255).
+    If the input image already has dtype uint8, no scaling is done.
+    This function is only available if Python Imaging Library (PIL) is installed.
+    Parameters
+    ----------
+    mapobj : the matplotlib axes element.
+    size : char
+        The percent width of the colorbar relative to the plot. default = 3%
+    pad : int
+        The space between the plot and the color bar. Default = .09
+    Returns
+    -------
+    Matplotlib color bar object with the correct width that matches the y axis height.
+
+    Examples
+    --------
+    >>>fig, ax = plt.subplots(figsize = (10,5))
+    >>>im = ax.imshow(nbr_landsat_post, cmap = 'RdYlGn',
+        ...    vmin = -1, vmax = 1, extent=extent_landsat)
+
+    >>>colorbar(im)
+    >>>ax.set(title="Landsat POST Normalized Burn Index (dNBR)")
+    >>>ax.set_axis_off();
+    """
+        ax = mapobj.axes
+        fig = ax.figure
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size=size, pad=pad)
+        return fig.colorbar(mapobj, cax=cax)
