@@ -261,8 +261,8 @@ def colorbar(mapobj, size = "3%", pad=0.09):
     >>>ax.set(title="Landsat POST Normalized Burn Index (dNBR)")
     >>>ax.set_axis_off();
     """
-        ax = mapobj.axes
-        fig = ax.figure
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size=size, pad=pad)
-        return fig.colorbar(mapobj, cax=cax)
+    ax = mapobj.axes
+    fig = ax.figure
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size=size, pad=pad)
+    return fig.colorbar(mapobj, cax=cax)
