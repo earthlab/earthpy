@@ -3,7 +3,7 @@ import os
 import rasterio as rio
 import numpy as np
 from shapely.geometry import mapping, box
-# for color bar resizing 
+# for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 def extent_to_json(minx, miny, maxx, maxy):
@@ -268,3 +268,48 @@ def colorbar(mapobj, size = "3%", pad=0.09):
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size=size, pad=pad)
     return fig.colorbar(mapobj, cax=cax)
+
+
+
+# function to plot all layers in a stack
+def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, figb=15):
+    """
+    Plot each layer in a raster stack converted into a numpy array for quick visualization.
+
+    Parameters
+    ----------
+    arr: a n dimension numpy array
+    cmap: cmap name, str the colormap that you wish to use (greys = default)
+    cols: int the number of columsn you want to plot in
+    figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    Return
+    ----------
+    matplotlib plot of all layers
+    """
+    # test if there are enough titles to create plots
+    if titles:
+       if not (len(titles) == landsat_pre_fire.shape[0]):
+            raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
+
+    # calculate the total rows that will be required to plot each band
+    plot_rows = int(np.ceil(arr.shape[0] / cols))
+    total_layers = arr.shape[0]
+
+    # plot all bands
+    fig, axs = plt.subplots(plot_rows, cols, figsize=(figa, figb))
+    axs_ravel = axs.ravel()
+    for ax, i in zip(axs_ravel, range(total_layers)):
+        band = i+1
+        ax.imshow(et.spatial.bytescale(arr[i]), cmap=cmap)
+        if titles:
+            ax.set(title=titles[i])
+        else:
+            ax.set(title='Band %i' %band)
+        ax.set(xticks=[], yticks=[])
+    # this loop clears out the plots for bands 8-9 which are empty
+    # but you have to populate them in matplotlib when you specify plot rows and cols
+    for ax in axs_ravel[total_layers:]:
+       ax.set_axis_off()
+       ax.set(xticks=[], yticks=[])
+
+    plt.tight_layout()
