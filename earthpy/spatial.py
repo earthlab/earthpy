@@ -319,7 +319,9 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
 
 # function to plot all layers in a stack
 # should this wrap around show instead of plotting as it does?
-def plot_rgb(arr, rgb = [3,2,1], figa=15, figb=15, extent = None,
+def plot_rgb(arr, rgb = [3,2,1],
+             ax = ax,
+             extent = None,
              title = ""):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
@@ -327,20 +329,19 @@ def plot_rgb(arr, rgb = [3,2,1], figa=15, figb=15, extent = None,
     Parameters
     ----------
     arr: a n dimension numpy array in rasterio band order (bands, x, y)
-    figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    extent: the extent object that matplotlib expects (left, right, bottom, top)
     title: optional string representing the title of the plot
-    Return
+    ax: the ax object where the ax element should be plotted. Default = ax
+    Returns
     ----------
-   Returns
-    -------
     ax : matplotlib Axes
         Axes with plot of 3 band image.
     """
-    # grab 3 bands and turn into array
-    rgb_bands = np.asarray([arr[i] for i in rgb])
-    rgb_bands = rgb_bands.transpose([1, 2, 0])
+    # index bands for plotting and clean up data for matplotlib
+    #rgb_bands = np.asarray([arr[i] for i in rgb])
+    rgb_bands = bytescale(arr[[rgb]]).transpose([1, 2, 0])
     # then plot
-    fig, ax = plt.subplots(figsize = (figa,figb))
-    ax.imshow(bytescale(rgb_bands))
+    #fig, ax = plt.subplots(figsize = (figa,figb))
+    ax.imshow((rgb_bands))
     ax.set(title = title)
-    ax.set(xticks=[], yticks=[]);
+    ax.set(xticks=[], yticks=[])
