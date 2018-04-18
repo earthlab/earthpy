@@ -288,7 +288,7 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
     """
     # test if there are enough titles to create plots
     if titles:
-       if not (len(titles) == landsat_pre_fire.shape[0]):
+       if not (len(titles) == arr.shape[0]):
             raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
 
     # calculate the total rows that will be required to plot each band
