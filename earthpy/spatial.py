@@ -314,3 +314,28 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
        ax.set(xticks=[], yticks=[])
 
     plt.tight_layout()
+
+
+
+# function to plot all layers in a stack
+def plot_rgb(arr, rgb = [3,2,1], figa=15, figb=15, extent = None,
+             title = "RGB Image"):
+    """
+    Plot each layer in a raster stack converted into a numpy array for quick visualization.
+
+    Parameters
+    ----------
+    arr: a n dimension numpy array
+    figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    Return
+    ----------
+    matplotlib 3 color band image
+    """
+    # grab 3 bands and turn into array
+    rgb_bands = np.asarray([arr[i] for i in rgb])
+    rgb_bands = rgb_bands.transpose([1, 2, 0])
+    # then plot
+    fig, ax = plt.subplots(figsize =(9,9))
+    ax.imshow(et.spatial.bytescale(rgb_bands))
+    ax.set(title= title)
+    ax.set(xticks=[], yticks=[]);
