@@ -301,7 +301,7 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
     axs_ravel = axs.ravel()
     for ax, i in zip(axs_ravel, range(total_layers)):
         band = i+1
-        ax.imshow(et.spatial.bytescale(arr[i]), cmap=cmap)
+        ax.imshow(bytescale(arr[i]), cmap=cmap)
         if titles:
             ax.set(title=titles[i])
         else:
