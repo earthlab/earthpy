@@ -2,6 +2,7 @@ import contextlib
 import os
 import rasterio as rio
 import numpy as np
+import matplotlib.pyplot as plt
 from shapely.geometry import mapping, box
 # for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
