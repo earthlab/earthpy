@@ -318,24 +318,29 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
 
 
 # function to plot all layers in a stack
+# should this wrap around show instead of plotting as it does?
 def plot_rgb(arr, rgb = [3,2,1], figa=15, figb=15, extent = None,
-             title = "RGB Image"):
+             title = ""):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
     Parameters
     ----------
-    arr: a n dimension numpy array
+    arr: a n dimension numpy array in rasterio band order (bands, x, y)
     figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    title: optional string representing the title of the plot
     Return
     ----------
-    matplotlib 3 color band image
+   Returns
+    -------
+    ax : matplotlib Axes
+        Axes with plot of 3 band image.
     """
     # grab 3 bands and turn into array
     rgb_bands = np.asarray([arr[i] for i in rgb])
     rgb_bands = rgb_bands.transpose([1, 2, 0])
     # then plot
-    fig, ax = plt.subplots(figsize =(9,9))
-    ax.imshow(et.spatial.bytescale(rgb_bands))
-    ax.set(title= title)
+    fig, ax = plt.subplots(figsize = (figa,figb))
+    ax.imshow(bytescale(rgb_bands))
+    ax.set(title = title)
     ax.set(xticks=[], yticks=[]);
