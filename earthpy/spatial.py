@@ -345,5 +345,5 @@ def plot_rgb(arr, rgb = [0,1,2],
     if ax is None:
       fig, ax = plt.subplots(figsize = (figa,figb))
     ax.imshow(rgb_bands, extent = extent)
-    ax.set_title(title = title)
+    ax.set_title(title)
     ax.set(xticks=[], yticks=[])
