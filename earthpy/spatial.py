@@ -332,18 +332,18 @@ def plot_rgb(arr, rgb = [0,1,2],
     arr: a n dimension numpy array in rasterio band order (bands, x, y)
     extent: the extent object that matplotlib expects (left, right, bottom, top)
     title: optional string representing the title of the plot
-    ax: the ax object where the ax element should be plotted. Default = ax
+    ax: the ax object where the ax element should be plotted. Default = none
+    figa, figb: the x and y dimensions of the output plot if preferred to set. integer
     Returns
     ----------
     ax : matplotlib Axes
         Axes with plot of 3 band image.
     """
     # index bands for plotting and clean up data for matplotlib
-    #rgb_bands = np.asarray([arr[i] for i in rgb])
     rgb_bands = bytescale(arr[[rgb]]).transpose([1, 2, 0])
     # then plot. Define ax if it's default to none
     if ax is None:
       fig, ax = plt.subplots(figsize = (figa,figb))
-    ax.imshow((rgb_bands))
+    ax.imshow(rgb_bands)
     ax.set(title = title)
     ax.set(xticks=[], yticks=[])
