@@ -322,7 +322,8 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
 def plot_rgb(arr, rgb = [0,1,2],
              ax = None,
              extent = None,
-             title = ""):
+             title = "",
+             figa = 10, figb=10):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
@@ -340,8 +341,9 @@ def plot_rgb(arr, rgb = [0,1,2],
     # index bands for plotting and clean up data for matplotlib
     #rgb_bands = np.asarray([arr[i] for i in rgb])
     rgb_bands = bytescale(arr[[rgb]]).transpose([1, 2, 0])
-    # then plot
-    #fig, ax = plt.subplots(figsize = (figa,figb))
+    # then plot. Define ax if it's default to none
+    if ax is None:
+      fig, ax = plt.subplots(figsize = (figa,figb))
     ax.imshow((rgb_bands))
     ax.set(title = title)
     ax.set(xticks=[], yticks=[])
