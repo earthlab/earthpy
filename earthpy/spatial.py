@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from shapely.geometry import mapping, box
 # for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from skimage import exposure
 
 def extent_to_json(minx, miny, maxx, maxy):
     """Convert bounds to a shapely geojson like spatial object.
