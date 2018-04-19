@@ -320,7 +320,7 @@ def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, fig
 # function to plot all layers in a stack
 # should this wrap around show instead of plotting as it does?
 def plot_rgb(arr, rgb = [0,1,2],
-             ax = ax,
+             ax = None,
              extent = None,
              title = ""):
     """
