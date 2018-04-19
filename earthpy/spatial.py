@@ -344,6 +344,6 @@ def plot_rgb(arr, rgb = [0,1,2],
     # then plot. Define ax if it's default to none
     if ax is None:
       fig, ax = plt.subplots(figsize = (figa,figb))
-    ax.imshow(rgb_bands)
-    ax.set(title = title)
+    ax.imshow(rgb_bands, extent = extent)
+    ax.set_title(title = title)
     ax.set(xticks=[], yticks=[])
