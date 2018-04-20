@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from shapely.geometry import mapping, box
 # for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from skimage import exposure
 
 def extent_to_json(minx, miny, maxx, maxy):
     """Convert bounds to a shapely geojson like spatial object.
@@ -323,7 +324,9 @@ def plot_rgb(arr, rgb = [0,1,2],
              ax = None,
              extent = None,
              title = "",
-             figa = 10, figb=10):
+             figa = 10, figb=10,
+             stretch = None,
+             str_clip = 2):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
@@ -334,16 +337,31 @@ def plot_rgb(arr, rgb = [0,1,2],
     title: optional string representing the title of the plot
     ax: the ax object where the ax element should be plotted. Default = none
     figa, figb: the x and y dimensions of the output plot if preferred to set. integer
+    stretch: Boolean - if True a linear stretch will be applied
+    str_clip: int - the % of clip to apply to the stretch. Default = 2 (2 and 98)
+
     Returns
     ----------
     ax : matplotlib Axes
         Axes with plot of 3 band image.
     """
     # index bands for plotting and clean up data for matplotlib
-    rgb_bands = bytescale(arr[[rgb]]).transpose([1, 2, 0])
+    rgb_bands = (arr[[rgb]])
+
+    if stretch:
+        s_min = str_clip
+        s_max = 100 - str_clip
+        arr_rescaled = np.zeros_like(rgb_bands)
+        for ii, band in enumerate(rgb_bands):
+            p2, p98 = np.percentile(band, (s_min, s_max))
+            arr_rescaled[ii] = exposure.rescale_intensity(band, in_range=(p2, p98))
+        rgb_bands = arr_rescaled.copy()
+
+    # index bands for plotting and clean up data for matplotlib
+    rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
     # then plot. Define ax if it's default to none
     if ax is None:
       fig, ax = plt.subplots(figsize = (figa,figb))
     ax.imshow(rgb_bands, extent = extent)
-    ax.set_title(title = title)
+    ax.set_title(title)
     ax.set(xticks=[], yticks=[])
