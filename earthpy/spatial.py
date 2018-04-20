@@ -274,7 +274,7 @@ def colorbar(mapobj, size = "3%", pad=0.09):
 
 
 # function to plot all layers in a stack
-def plot_bands(arr, cmap = "Greys", cols = 3, titles = None, figa=15, figb=15):
+def plot_bands(arr, title = None, cmap = "Greys", figa=15, figb=15, cols = 3, extent = None):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
@@ -284,37 +284,46 @@ def plot_bands(arr, cmap = "Greys", cols = 3, titles = None, figa=15, figb=15):
     cmap: cmap name, str the colormap that you wish to use (greys = default)
     cols: int the number of columsn you want to plot in
     figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    extent: an extent object for plotting
     Return
     ----------
     matplotlib plot of all layers
     """
-    # test if there are enough titles to create plots
-    if titles:
-       if not (len(titles) == arr.shape[0]):
-            raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
+    # if the array is 3 dimensional setup grid plotting
+    if arr.ndim > 2:
+        # test if there are enough titles to create plots
+        if title:
+           if not (len(title) == arr.shape[0]):
+                raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
+        # calculate the total rows that will be required to plot each band
+        plot_rows = int(np.ceil(arr.shape[0] / cols))
+        total_layers = arr.shape[0]
 
-    # calculate the total rows that will be required to plot each band
-    plot_rows = int(np.ceil(arr.shape[0] / cols))
-    total_layers = arr.shape[0]
+        # plot all bands
+        fig, axs = plt.subplots(plot_rows, cols, figsize=(figa, figb))
+        axs_ravel = axs.ravel()
+        for ax, i in zip(axs_ravel, range(total_layers)):
+            band = i+1
+            ax.imshow(bytescale(arr[i]), cmap=cmap)
+            if title:
+                ax.set(title=title[i])
+            else:
+                ax.set(title='Band %i' %band)
+            ax.set(xticks=[], yticks=[])
+        # this loop clears out the plots for bands 8-9 which are empty
+        # but you have to populate them in matplotlib when you specify plot rows and cols
+        for ax in axs_ravel[total_layers:]:
+           ax.set_axis_off()
+           ax.set(xticks=[], yticks=[])
 
-    # plot all bands
-    fig, axs = plt.subplots(plot_rows, cols, figsize=(figa, figb))
-    axs_ravel = axs.ravel()
-    for ax, i in zip(axs_ravel, range(total_layers)):
-        band = i+1
-        ax.imshow(bytescale(arr[i]), cmap=cmap)
-        if titles:
-            ax.set(title=titles[i])
-        else:
-            ax.set(title='Band %i' %band)
+        plt.tight_layout()
+    elif arr.ndim == 2:
+        # plot all bands
+        fig, ax = plt.subplots(figsize=(figa, figb))
+        ax.imshow(bytescale(arr), cmap=cmap,
+                 extent = extent)
+        ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-    # this loop clears out the plots for bands 8-9 which are empty
-    # but you have to populate them in matplotlib when you specify plot rows and cols
-    for ax in axs_ravel[total_layers:]:
-       ax.set_axis_off()
-       ax.set(xticks=[], yticks=[])
-
-    plt.tight_layout()
 
 
 
