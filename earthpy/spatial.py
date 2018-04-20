@@ -273,7 +273,7 @@ def colorbar(mapobj, size = "3%", pad=0.09):
 
 
 # function to plot all layers in a stack
-def plot_stack_layers(arr, cmap = "Greys", cols = 3, titles = None, figa=15, figb=15):
+def plot_bands(arr, cmap = "Greys", cols = 3, titles = None, figa=15, figb=15):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
