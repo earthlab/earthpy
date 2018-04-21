@@ -274,7 +274,7 @@ def colorbar(mapobj, size = "3%", pad=0.09):
 
 
 # function to plot all layers in a stack
-def plot_bands(arr, title = None, cmap = "Greys", figa=15, figb=15, cols = 3, extent = None):
+def plot_bands(arr, title = None, cmap = "Greys", figsize=(12,12), cols = 3, extent = None):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
@@ -283,7 +283,7 @@ def plot_bands(arr, title = None, cmap = "Greys", figa=15, figb=15, cols = 3, ex
     arr: a n dimension numpy array
     cmap: cmap name, str the colormap that you wish to use (greys = default)
     cols: int the number of columsn you want to plot in
-    figa, figb: the figsize if you'd like to define it. otherwise it defaults to 15 x 15
+    figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
     extent: an extent object for plotting
     Return
     ----------
@@ -300,7 +300,7 @@ def plot_bands(arr, title = None, cmap = "Greys", figa=15, figb=15, cols = 3, ex
         total_layers = arr.shape[0]
 
         # plot all bands
-        fig, axs = plt.subplots(plot_rows, cols, figsize=(figa, figb))
+        fig, axs = plt.subplots(plot_rows, cols, figsize=figsize)
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i+1
@@ -319,10 +319,11 @@ def plot_bands(arr, title = None, cmap = "Greys", figa=15, figb=15, cols = 3, ex
         plt.tight_layout()
     elif arr.ndim == 2:
         # plot all bands
-        fig, ax = plt.subplots(figsize=(figa, figb))
+        fig, ax = plt.subplots(figsize=figsize)
         ax.imshow(bytescale(arr), cmap=cmap,
                  extent = extent)
-        ax.set(title=title)
+        if title:
+            ax.set(title=title)
         ax.set(xticks=[], yticks=[])
 
 
@@ -333,7 +334,7 @@ def plot_rgb(arr, rgb = [0,1,2],
              ax = None,
              extent = None,
              title = "",
-             figa = 10, figb=10,
+             figsize = (10,10),
              stretch = None,
              str_clip = 2):
     """
@@ -345,7 +346,7 @@ def plot_rgb(arr, rgb = [0,1,2],
     extent: the extent object that matplotlib expects (left, right, bottom, top)
     title: optional string representing the title of the plot
     ax: the ax object where the ax element should be plotted. Default = none
-    figa, figb: the x and y dimensions of the output plot if preferred to set. integer
+    figsize: tuple the x and y integer dimensions of the output plot if preferred to set.
     stretch: Boolean - if True a linear stretch will be applied
     str_clip: int - the % of clip to apply to the stretch. Default = 2 (2 and 98)
 
@@ -370,7 +371,7 @@ def plot_rgb(arr, rgb = [0,1,2],
     rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
     # then plot. Define ax if it's default to none
     if ax is None:
-      fig, ax = plt.subplots(figsize = (figa,figb))
+      fig, ax = plt.subplots(figsize = figsize)
     ax.imshow(rgb_bands, extent = extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
