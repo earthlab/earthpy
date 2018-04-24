@@ -1,6 +1,7 @@
 import contextlib
 import os
 import rasterio as rio
+from rasterio.mask import mask
 import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import mapping, box
