@@ -109,7 +109,7 @@ def stack(sources, dest):
                 dest.write(band, ii+1)
 
 
-def crop_image(raster, geoms):
+def crop_image(raster, geoms, all_touched = True):
     """Crop a single file using geometry objects.
 
     Parameters
@@ -121,6 +121,11 @@ def crop_image(raster, geoms):
         Polygons are GeoJSON-like dicts specifying the boundaries of features
         in the raster to be kept. All data outside of specified polygons
         will be set to nodata.
+    all_touched : bool
+        From rasterio: Include a pixel in the mask if it touches any of the shapes.
+        If False, include a pixel only if its center is within one of
+        the shapes, or if it is selected by Bresenham's line algorithm.
+        Default is True in this function.
 
     Returns
     ----------
@@ -136,7 +141,7 @@ def crop_image(raster, geoms):
 
     # Mask the input image and update the metadata
     #with rio.open(path) as src:
-    out_image, out_transform = rio.mask.mask(raster, geoms, crop = True)
+    out_image, out_transform = rio.mask.mask(raster, geoms, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                     "height": out_image.shape[1],
