@@ -429,7 +429,7 @@ def hist(arr,
         # plot all bands
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(arr.ravel(),
-                range=[np.nanmin(first_band), np.nanmax(first_band)],
+                range=[np.nanmin(arr), np.nanmax(arr)],
                 bins=bins,
                 color=colors[0])
         if title:
