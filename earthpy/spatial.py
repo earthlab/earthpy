@@ -423,7 +423,7 @@ def hist(arr,
             else:
                 the_color = colors[i]
             ax.hist(band.ravel(), bins=bins, color=the_color, alpha=.8)
-            if title:
+            if titles:
                 ax.set_title(titles[i])
     elif arr.ndim == 2:
         # plot all bands
@@ -432,5 +432,5 @@ def hist(arr,
                 range=[np.nanmin(arr), np.nanmax(arr)],
                 bins=bins,
                 color=colors[0])
-        if title:
+        if titles:
             ax.set(title=titles[0])
