@@ -424,7 +424,7 @@ def hist(arr,
                 the_color = colors[i]
             ax.hist(band.ravel(), bins=bins, color=the_color, alpha=.8)
             if title:
-                ax.set_title(title[i])
+                ax.set_title(titles[i])
     elif arr.ndim == 2:
         # plot all bands
         fig, ax = plt.subplots(figsize=figsize)
@@ -433,4 +433,4 @@ def hist(arr,
                 bins=bins,
                 color=colors[0])
         if title:
-            ax.set(title=title[0])
+            ax.set(title=titles[0])
