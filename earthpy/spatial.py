@@ -362,7 +362,7 @@ def plot_rgb(arr, rgb = [0,1,2],
         Axes with plot of 3 band image.
     """
     # index bands for plotting and clean up data for matplotlib
-    rgb_bands = (arr[[rgb]])
+    rgb_bands = arr[[rgb]]
 
     if stretch:
         s_min = str_clip
@@ -381,3 +381,56 @@ def plot_rgb(arr, rgb = [0,1,2],
     ax.imshow(rgb_bands, extent = extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
+
+
+
+def hist(arr,
+         titles = None,
+         colors = ["purple"],
+         figsize=(12,12), cols = 2,
+         bins = 20):
+    """
+    Plot histogram each layer in a raster stack converted into a numpy array for quick visualization.
+
+    Parameters
+    ----------
+    arr: a n dimension numpy array
+    titles: a list of title values that should either equal the number of bands or be empty, default = none
+    colors: a list of color values that should either equal the number of bands or be a single color, (purple = default)
+    cols: int the number of columsn you want to plot in
+    bins: the number of bins to calculate for the histogram
+    figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
+    Return
+    ----------
+    matplotlib plot of all layers
+    """
+
+    # if the array is 3 dimensional setup grid plotting
+    if arr.ndim > 2:
+        # test if there are enough titles to create plots
+        if titles:
+           if not (len(titles) == arr.shape[0]):
+                raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
+        # calculate the total rows that will be required to plot each band
+        plot_rows = int(np.ceil(arr.shape[0] / cols))
+        total_layers = arr.shape[0]
+
+        fig, axs = plt.subplots(plot_rows, cols, figsize=figsize, sharex=True, sharey=True)
+        # what happens if there is only one color?
+        for band, ax, i in zip(arr, axs.ravel(),range(total_layers)):
+            if len(colors) == 1:
+                the_color = colors[0]
+            else:
+                the_color = colors[i]
+            ax.hist(band.ravel(), bins=bins, color=the_color, alpha=.8)
+            if title:
+                ax.set_title(title[i])
+    elif arr.ndim == 2:
+        # plot all bands
+        fig, ax = plt.subplots(figsize=figsize)
+        ax.hist(arr.ravel(),
+                range=[np.nanmin(first_band), np.nanmax(first_band)],
+                bins=bins,
+                color=colors[0])
+        if title:
+            ax.set(title=title[0])
