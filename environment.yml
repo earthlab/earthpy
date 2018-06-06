@@ -40,3 +40,6 @@ dependencies:
       - tqdm
       - kiwisolver
       - git+https://github.com/geopandas/geopandas.git
+      #text mining
+      - tweepy
+      - nltk 
