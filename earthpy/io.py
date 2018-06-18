@@ -14,7 +14,7 @@ DATA_URLS = {
                 ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file'),
                 ('https://ndownloader.figshare.com/files/7426738', '.', 'zip')],
     'week_03': ('https://ndownloader.figshare.com/files/7446715', '.', 'zip'),
-    'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/10813034', '.', 'zip'),
+    'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/12080402', '.', 'zip'),
     'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
     #'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
