@@ -364,6 +364,10 @@ def plot_rgb(arr, rgb = [0,1,2],
     ax : matplotlib Axes
         Axes with plot of 3 band image.
     """
+
+    if len(arr.shape) != 3:
+        raise Exception('Input needs to be 3 dimensions and in rasterio order with bands first')
+
     # index bands for plotting and clean up data for matplotlib
     rgb_bands = arr[[rgb]]
 
@@ -376,8 +380,17 @@ def plot_rgb(arr, rgb = [0,1,2],
             arr_rescaled[ii] = exposure.rescale_intensity(band, in_range=(p2, p98))
         rgb_bands = arr_rescaled.copy()
 
-    # index bands for plotting and clean up data for matplotlib
-    rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
+    # if type is masked array - add alpha channel for plotting
+    if type(rgb_bands) is np.ma.MaskedArray:
+        # build alpha channel
+        mask = ~(np.ma.getmask(rgb_bands[0])) * 255
+
+        # add the mask to the array (ise earthpy bytescale)
+        rgb_bands = np.vstack((bytescale(rgb_bands), np.expand_dims(mask, axis=0))).transpose([1, 2, 0])
+    else:
+        # index bands for plotting and clean up data for matplotlib
+        rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
+
     # then plot. Define ax if it's default to none
     if ax is None:
       fig, ax = plt.subplots(figsize = figsize)

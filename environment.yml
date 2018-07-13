@@ -23,6 +23,10 @@ dependencies:
   - gdal
   - geocoder
 
+#text mining
+  - tweepy
+  - nltk 
+
   # Jupyter Environment
   - notebook
   - ipython
@@ -40,3 +44,4 @@ dependencies:
       - tqdm
       - kiwisolver
       - git+https://github.com/geopandas/geopandas.git
+
