@@ -447,3 +447,30 @@ def hist(arr,
                 color=colors[0])
         if titles:
             ax.set(title=titles[0])
+
+
+def hillshade(arr, azimuth=30, angle_altitude=30):
+    """
+    Create hillshade (Array) from a numpy array containing image elevation data.
+
+    Parameters
+    ----------
+    arr: a n dimension numpy array
+    azimuth:  default (30)
+    angle_altitude: default (30)
+
+    Return
+    ----------
+    numpy array containing hillshade values
+    """
+    azimuth = 360.0 - azimuth
+
+    x, y = np.gradient(arr)
+    slope = np.pi/2. - np.arctan(np.sqrt(x*x + y*y))
+    aspect = np.arctan2(-x, y)
+    azimuthrad = azimuth*np.pi/180.
+    altituderad = angle_altitude*np.pi/180.
+
+    shaded = np.sin(altituderad)*np.sin(slope) + np.cos(altituderad)*np.cos(slope)*np.cos((azimuthrad - np.pi/2.) - aspect)
+
+    return 255*(shaded + 1)/2
