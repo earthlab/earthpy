@@ -296,7 +296,7 @@ def plot_bands(arr, title = None, cmap = "Greys", figsize=(12,12), cols = 3, ext
     matplotlib plot of all layers
     """
     # if the array is 3 dimensional setup grid plotting
-    if arr.ndim > 2:
+    if arr.ndim > 2 and arr.shape[0] > 1:
         # test if there are enough titles to create plots
         if title:
            if not (len(title) == arr.shape[0]):
@@ -323,7 +323,10 @@ def plot_bands(arr, title = None, cmap = "Greys", figsize=(12,12), cols = 3, ext
            ax.set(xticks=[], yticks=[])
 
         plt.tight_layout()
-    elif arr.ndim == 2:
+    elif arr.ndim == 2 or arr.shape[0] == 1:
+        # if it's a 2 dimensional array with a 3rd dimension
+        if arr.shape[0] == 1:
+            arr = arr[0]
         # plot all bands
         fig, ax = plt.subplots(figsize=figsize)
         ax.imshow(bytescale(arr), cmap=cmap,
