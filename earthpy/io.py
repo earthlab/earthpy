@@ -18,7 +18,7 @@ DATA_URLS = {
     'co-flood-extras': [('https://ndownloader.figshare.com/files/7010681', 'boulder-precip.csv', 'file'),
                     ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file')],
     'colorado-flood': ('https://ndownloader.figshare.com/files/12395030', '.', 'zip'),
-    'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/12396203', '.', 'zip'),
+    'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/12447845', '.', 'zip'),
     'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
     #'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
