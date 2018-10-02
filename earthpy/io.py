@@ -22,8 +22,8 @@ DATA_URLS = {
     'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
     #'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
-    'cold-springs-naip-hw': ('https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe', '.', 'zip'),
-    'cold-springs-landsat-hw': ('https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e', '.', 'zip'),
+    'cs-test-naip': ('https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe', '.', 'zip'),
+    'cs-test-landsat': ('https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e', '.', 'zip'),
     #'week_08': [('https://ndownloader.figshare.com/files/9666637?private_link=480fba92b3e882c4d35d', 'week_08', 'zip'),
     #            ('https://ndownloader.figshare.com/files/9666637?private_link=480fba92b3e882c4d35d', 'week_08-hw', 'tar')],
 }

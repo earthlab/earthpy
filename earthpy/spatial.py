@@ -51,9 +51,8 @@ def normalized_diff(b1, b2):
 # EL function
 # we probably want to include a no data value here if provided ...
 def stack_raster_tifs(band_paths, out_path):
-    """Take a list of raster paths and turn into an ouput raster stack.
-    Note that this function depends upon the stack() function to be submitted to rasterio.
-    but the stack function ins't stand alone as written
+    """Take a list of raster paths and turn into an ouput raster stack in numpy format.
+    Note that this function depends upon the stack() function.
 
     Parameters
     ----------
@@ -77,9 +76,13 @@ def stack_raster_tifs(band_paths, out_path):
         dest_count = sum(src.count for src in sources)
         dest_kwargs['count'] = dest_count
 
-        # save out a stacked gtif file
+        # Write stacked gtif file
         with rio.open(out_path, 'w', **dest_kwargs) as dest:
-            return stack(sources, dest)
+            stack(sources, dest)
+
+        # Read and return array
+        with rio.open(out_path, 'r') as src:
+            return(src.read(), src.profile)
 
 
 # function to be submitted to rasterio
@@ -99,8 +102,8 @@ def stack(sources, dest):
     #if not os.path.exists(os.path.dirname(dest)):
     #    raise ValueError("The output directory path that you provided does not exist")
 
-    if not type(sources[0]) == rio._io.RasterReader:
-        raise ValueError("The sources object should be of type: rasterio.RasterReader")
+    if not type(sources[0]) == rio.io.DatasetReader:
+        raise ValueError("The sources object should be of type: rasterio.DatasetReader")
 
     for ii, ifile in enumerate(sources):
             bands = sources[ii].read()
@@ -117,7 +120,7 @@ def crop_image(raster, geoms, all_touched = True):
     ----------
     raster : rasterio object
         The rasterio object to be cropped. Ideally this object is opened in a
-        scontext manager to ensure the file is properly closed.
+        context manager to ensure the file is properly closed.
     geoms : list of polygons
         Polygons are GeoJSON-like dicts specifying the boundaries of features
         in the raster to be kept. All data outside of specified polygons
@@ -245,12 +248,7 @@ def scale_range (input_array, min, max, clip=True):
 
 def colorbar(mapobj, size = "3%", pad=0.09):
     """
-    Byte scales an array (image).
-    Byte scaling means converting the input image to uint8 dtype and scaling
-    the range to ``(low, high)`` (default 0-255).
-    If the input image already has dtype uint8, no scaling is done.
-    This function is only available if Python Imaging Library (PIL) is installed.
-    Parameters
+    Adjusts the height of a colorbar to match the axis height.
     ----------
     mapobj : the matplotlib axes element.
     size : char
@@ -339,7 +337,7 @@ def plot_bands(arr, title = None, cmap = "Greys", figsize=(12,12), cols = 3, ext
 
 # function to plot all layers in a stack
 # should this wrap around show instead of plotting as it does?
-def plot_rgb(arr, rgb = [0,1,2],
+def plot_rgb(arr, rgb = (0,1,2),
              ax = None,
              extent = None,
              title = "",
@@ -352,6 +350,7 @@ def plot_rgb(arr, rgb = [0,1,2],
     Parameters
     ----------
     arr: a n dimension numpy array in rasterio band order (bands, x, y)
+    rgb: tuple, indices of the three bands to be plotted (default = 0,1,2)
     extent: the extent object that matplotlib expects (left, right, bottom, top)
     title: optional string representing the title of the plot
     ax: the ax object where the ax element should be plotted. Default = none
@@ -369,7 +368,7 @@ def plot_rgb(arr, rgb = [0,1,2],
         raise Exception('Input needs to be 3 dimensions and in rasterio order with bands first')
 
     # index bands for plotting and clean up data for matplotlib
-    rgb_bands = arr[[rgb]]
+    rgb_bands = arr[rgb]
 
     if stretch:
         s_min = str_clip
