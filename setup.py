@@ -4,9 +4,9 @@ from numpy.distutils.core import setup
 
 
 DISTNAME = 'earthpy'
-DESCRIPTION = 'Functions for the earthlab course'
-MAINTAINER = 'Chris Holdgraf'
-MAINTAINER_EMAIL = 'choldgraf@berkeley.edu'
+DESCRIPTION = 'A set of helper functions to make working with spatial data in open source tools easier. This package is maintained by Earth Lab and was originally designed to support the earth analytics education program.'
+MAINTAINER = 'Leah Wasser'
+MAINTAINER_EMAIL = 'leah.wasser@colorado.edu'
 VERSION = '0.0.2-git'
 
 
