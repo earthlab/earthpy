@@ -68,10 +68,13 @@ def stack_raster_tifs(band_paths, out_path):
     if not os.path.exists(os.path.dirname(out_path)):
         raise ValueError("The output directory path that you provided does not exist")
 
+    if len(band_paths) < 2:
+        raise ValueError("The list of file paths is empty. You need atleast 2 files to create a stack.")
     # the with statement ensures that all files are closed at the end of the with statement
     with contextlib.ExitStack() as context:
         sources = [context.enter_context(rio.open(path, **kwds)) for path in band_paths]
 
+        # This should check that the CRS and TRANSFORM are the same. if not, fail gracefully
         dest_kwargs = sources[0].meta
         dest_count = sum(src.count for src in sources)
         dest_kwargs['count'] = dest_count
@@ -350,7 +353,7 @@ def plot_rgb(arr, rgb = (0,1,2),
     Parameters
     ----------
     arr: a n dimension numpy array in rasterio band order (bands, x, y)
-    rgb: tuple, indices of the three bands to be plotted (default = 0,1,2)
+    rgb: list, indices of the three bands to be plotted (default = 0,1,2)
     extent: the extent object that matplotlib expects (left, right, bottom, top)
     title: optional string representing the title of the plot
     ax: the ax object where the ax element should be plotted. Default = none
@@ -400,7 +403,7 @@ def plot_rgb(arr, rgb = (0,1,2),
 
 
 def hist(arr,
-         titles = None,
+         title = None,
          colors = ["purple"],
          figsize=(12,12), cols = 2,
          bins = 20):
@@ -410,7 +413,7 @@ def hist(arr,
     Parameters
     ----------
     arr: a n dimension numpy array
-    titles: a list of title values that should either equal the number of bands or be empty, default = none
+    title: a list of title values that should either equal the number of bands or be empty, default = none
     colors: a list of color values that should either equal the number of bands or be a single color, (purple = default)
     cols: int the number of columsn you want to plot in
     bins: the number of bins to calculate for the histogram
@@ -423,23 +426,28 @@ def hist(arr,
     # if the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
         # test if there are enough titles to create plots
-        if titles:
-           if not (len(titles) == arr.shape[0]):
+        if title:
+           if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
         # calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
 
         fig, axs = plt.subplots(plot_rows, cols, figsize=figsize, sharex=True, sharey=True)
+        axs_ravel = axs.ravel()
         # what happens if there is only one color?
-        for band, ax, i in zip(arr, axs.ravel(),range(total_layers)):
+        for band, ax, i in zip(arr, axs.ravel(), range(total_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
             else:
                 the_color = colors[i]
             ax.hist(band.ravel(), bins=bins, color=the_color, alpha=.8)
-            if titles:
-                ax.set_title(titles[i])
+            if title:
+                ax.set_title(title[i])
+        # Clear additional axis elements
+        for ax in axs_ravel[total_layers:]:
+           ax.set_axis_off()
+           #ax.set(xticks=[], yticks=[])
     elif arr.ndim == 2:
         # plot all bands
         fig, ax = plt.subplots(figsize=figsize)
@@ -447,8 +455,8 @@ def hist(arr,
                 range=[np.nanmin(arr), np.nanmax(arr)],
                 bins=bins,
                 color=colors[0])
-        if titles:
-            ax.set(title=titles[0])
+        if title:
+            ax.set(title=title[0])
 
 
 def hillshade(arr, azimuth=30, angle_altitude=30):
