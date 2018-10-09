@@ -11,7 +11,6 @@ Welcome to Earthpy's documentation!
    :caption: Contents:
 
    get-started
-   installation
    spatial-module
 
 
