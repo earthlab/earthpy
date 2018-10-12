@@ -1,4 +1,3 @@
-import pytest
 from earthpy import spatial
 
 def test_extent_to_json():
