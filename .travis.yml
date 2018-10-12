@@ -25,3 +25,6 @@ script:
   - pytest --cov=earthpy
   # Build documentation
   - pushd docs && make html && popd
+
+after_success:
+  - codecov
