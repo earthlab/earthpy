@@ -7,6 +7,7 @@ dependencies:
   - matplotlib
   - python=3.6
   - pyqt
+  - pytest
   - seaborn
 
   # Geo stuff
@@ -25,7 +26,7 @@ dependencies:
 
 #text mining
   - tweepy
-  - nltk 
+  - nltk
 
   # Jupyter Environment
   - notebook
@@ -44,4 +45,3 @@ dependencies:
       - tqdm
       - kiwisolver
       - git+https://github.com/geopandas/geopandas.git
-
