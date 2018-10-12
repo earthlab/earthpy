@@ -23,14 +23,10 @@ Then import it into python.
 
 ## Contributors
 
-This package was originally developed by Chris Holdgraf.
-Contributors:
-
-- Carson Farmer
-
-Contributing Breakers:
-
+- Chris Holdgraf
 - Leah Wasser
+- Carson Farmer
+- Max Joseph
 
 ## Testing
 
