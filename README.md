@@ -1,4 +1,5 @@
 [![DOI](https://zenodo.org/badge/122149160.svg)](https://zenodo.org/badge/latestdoi/122149160)
+[![Build Status](https://travis-ci.com/mbjoseph/earthpy.svg?branch=master)](https://travis-ci.com/mbjoseph/earthpy)
 [![Docs build](https://readthedocs.org/projects/earthpy/badge/?version=latest)](https://earthpy.readthedocs.io/en/latest/?badge=latest)
 
 # Earth Py
