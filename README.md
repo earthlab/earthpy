@@ -35,6 +35,4 @@ Contributing Breakers:
 ## Testing
 
 This package uses [pytest](https://pytest.org/) for tests.
-To run tests locally, you can exectute the command `pytest`.
-Tests will also be run on Travis CI, and upon a successful build test coverage
-information will be uploaded to Codecov.
+To run tests locally, execute the command `pytest` from the command line.
