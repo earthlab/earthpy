@@ -131,7 +131,7 @@ def crop_image(raster, geoms, all_touched = True):
     raster : rasterio object
         The rasterio object to be cropped. Ideally this object is opened in a
         context manager to ensure the file is properly closed.
-    geoms : list of polygons
+    geoms : geopandas object or list of polygons
         Polygons are GeoJSON-like dicts specifying the boundaries of features
         in the raster to be kept. All data outside of specified polygons
         will be set to nodata.
@@ -150,12 +150,16 @@ def crop_image(raster, geoms, all_touched = True):
         Specifically the extent (shape elements) and transform properties are updated.
     """
 
-    if not type(geoms) == list:
-        raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
+    #if not type(geoms) == list:
+    #    raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
 
+    if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
+        clip_ext = extent_to_json(geoms)
+    else:
+        clip_ext = geoms
     # Mask the input image and update the metadata
     #with rio.open(path) as src:
-    out_image, out_transform = rio.mask.mask(raster, geoms, crop = True, all_touched = all_touched)
+    out_image, out_transform = rio.mask.mask(raster, clip_ext, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                     "height": out_image.shape[1],
