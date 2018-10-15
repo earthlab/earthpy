@@ -1,5 +1,6 @@
 import contextlib
 import os
+import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 import numpy as np
@@ -9,7 +10,7 @@ from shapely.geometry import mapping, box
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 
-def extent_to_json(minx, miny, maxx, maxy):
+def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
     Helper function
     This format is what shapely uses. The output object can be used
@@ -17,15 +18,21 @@ def extent_to_json(minx, miny, maxx, maxy):
 
     Parameters
     ----------
-    left, right, bottom, top : numbers
-    The left, right top corner coordinates of the extent to be used for cropping.
+    ext_obj: list or geopandas geodataframe
+        Extent values should be in the order: minx, miny, maxx, maxy
     Return
     ----------
     extent_json : dict
     A dictionary of corner coordinates for the new extent
     """
-    # box minx, miny, maxx, maxy
-    extent_json = mapping(box(minx, miny, maxx, maxy))
+
+    if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
+        extent_json = mapping(box(*ext_obj.bounds.values[0]))
+    elif type(ext_obj) == list:
+        extent_json = mapping(box(ext_obj))
+    else:
+        raise ValueError("Please provide a geodataframe of a list of values - minx, miny, maxx, maxy")
+
     return extent_json
 
 # calculate normalized difference between two arrays
