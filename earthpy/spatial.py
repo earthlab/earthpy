@@ -1,15 +1,18 @@
 import contextlib
 import os
+import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import patches as mpatches
+
 from shapely.geometry import mapping, box
 # for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 
-def extent_to_json(minx, miny, maxx, maxy):
+def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
     Helper function
     This format is what shapely uses. The output object can be used
@@ -17,15 +20,21 @@ def extent_to_json(minx, miny, maxx, maxy):
 
     Parameters
     ----------
-    left, right, bottom, top : numbers
-    The left, right top corner coordinates of the extent to be used for cropping.
+    ext_obj: list or geopandas geodataframe
+        Extent values should be in the order: minx, miny, maxx, maxy
     Return
     ----------
     extent_json : dict
     A dictionary of corner coordinates for the new extent
     """
-    # box minx, miny, maxx, maxy
-    extent_json = mapping(box(minx, miny, maxx, maxy))
+
+    if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
+        extent_json = mapping(box(*ext_obj.bounds.values[0]))
+    elif type(ext_obj) == list:
+        extent_json = mapping(box(ext_obj))
+    else:
+        raise ValueError("Please provide a geodataframe of a list of values - minx, miny, maxx, maxy")
+
     return extent_json
 
 # calculate normalized difference between two arrays
@@ -50,7 +59,7 @@ def normalized_diff(b1, b2):
 
 # EL function
 # we probably want to include a no data value here if provided ...
-def stack_raster_tifs(band_paths, out_path):
+def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an ouput raster stack in numpy format.
     Note that this function depends upon the stack() function.
 
@@ -79,13 +88,17 @@ def stack_raster_tifs(band_paths, out_path):
         dest_count = sum(src.count for src in sources)
         dest_kwargs['count'] = dest_count
 
-        # Write stacked gtif file
-        with rio.open(out_path, 'w', **dest_kwargs) as dest:
-            stack(sources, dest)
-
-        # Read and return array
-        with rio.open(out_path, 'r') as src:
-            return(src.read(), src.profile)
+        if arr_out == True:
+            # Write stacked gtif file
+            with rio.open(out_path, 'w', **dest_kwargs) as dest:
+                stack(sources, dest)
+            # Read and return array
+            with rio.open(out_path, 'r') as src:
+                return(src.read(), src.profile)
+        else:
+            # Write stacked gtif file
+            with rio.open(out_path, 'w', **dest_kwargs) as dest:
+                return(stack(sources, dest))
 
 
 # function to be submitted to rasterio
@@ -124,7 +137,7 @@ def crop_image(raster, geoms, all_touched = True):
     raster : rasterio object
         The rasterio object to be cropped. Ideally this object is opened in a
         context manager to ensure the file is properly closed.
-    geoms : list of polygons
+    geoms : geopandas object or list of polygons
         Polygons are GeoJSON-like dicts specifying the boundaries of features
         in the raster to be kept. All data outside of specified polygons
         will be set to nodata.
@@ -143,12 +156,17 @@ def crop_image(raster, geoms, all_touched = True):
         Specifically the extent (shape elements) and transform properties are updated.
     """
 
-    if not type(geoms) == list:
-        raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
+    # test that you have a list of a geodataframe
+    #if not type(geoms) == list:
+    #    raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
 
+    if type(geoms) == gpd.geodataframe.GeoDataFrame:
+        clip_ext = [extent_to_json(geoms)]
+    else:
+        clip_ext = geoms
     # Mask the input image and update the metadata
     #with rio.open(path) as src:
-    out_image, out_transform = rio.mask.mask(raster, geoms, crop = True, all_touched = all_touched)
+    out_image, out_transform = rio.mask.mask(raster, clip_ext, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                     "height": out_image.shape[1],
@@ -281,7 +299,7 @@ def colorbar(mapobj, size = "3%", pad=0.09):
 
 
 # function to plot all layers in a stack
-def plot_bands(arr, title = None, cmap = "Greys", figsize=(12,12), cols = 3, extent = None):
+def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, extent = None):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
 
@@ -484,3 +502,39 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     shaded = np.sin(altituderad)*np.sin(slope) + np.cos(altituderad)*np.cos(slope)*np.cos((azimuthrad - np.pi/2.) - aspect)
 
     return 255*(shaded + 1)/2
+
+
+
+def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
+    """Create a custom legend with a box for each class in a raster using the image object,
+    the unique classes in the image and titles for each class.
+
+    Parameters
+    ----------
+    im : matplotlib image created using imshow
+        This is the image returned from a call to imshow().
+    classes : list
+        A list of unique values found in your raster.
+    titles : list
+        A list of a title or category for each uique value in your raster. This is the
+        label that will go next to each box in your legend.
+    bbox : optional, tuple
+        This is the bbox_to_anchor argument that will place the legend anywhere on or around your plot.
+    loc : int - Optional
+        This is the matplotlib location value that can be used to specify the location of the legend on your plot.
+
+    Returns
+    ----------
+    matplotlib legend object to be placed on our plot.
+    """
+
+    colors = [im.cmap(im.norm(aclass)) for aclass in classes]
+
+    patches = [mpatches.Patch(color=colors[i],
+                              label="{l}".format(l=titles[i])) for i in range(len(titles))]
+
+    return(plt.legend(handles=patches,
+                      bbox_to_anchor=bbox,
+                      loc=2,
+                      borderaxespad=0.,
+                      prop={'size': 13}))
