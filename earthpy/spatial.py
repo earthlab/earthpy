@@ -4,6 +4,7 @@ import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 import numpy as np
+import numpy.ma as ma 
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
 
@@ -401,7 +402,7 @@ def plot_rgb(arr, rgb = (0,1,2),
         rgb_bands = arr_rescaled.copy()
 
     # if type is masked array - add alpha channel for plotting
-    if type(rgb_bands) is np.ma.MaskedArray:
+    if ma.is_masked(rgb_bands):
         # build alpha channel
         mask = ~(np.ma.getmask(rgb_bands[0])) * 255
 
