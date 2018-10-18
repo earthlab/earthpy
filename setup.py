@@ -1,5 +1,4 @@
 import os
-import setuptools
 from numpy.distutils.core import setup
 
 
@@ -8,6 +7,18 @@ DESCRIPTION = 'A set of helper functions to make working with spatial data in op
 MAINTAINER = 'Leah Wasser'
 MAINTAINER_EMAIL = 'leah.wasser@colorado.edu'
 VERSION = '0.0.2-git'
+
+requirements = [
+    'download',
+    'geopandas',
+    'matplotlib',
+    'numpy',
+    'pandas',
+    'rasterio',
+    'shapely',
+    'scikit-image',
+    'tqdm'
+]
 
 
 def configuration(parent_package='', top_path=None):
@@ -30,8 +41,17 @@ if __name__ == "__main__":
           maintainer_email=MAINTAINER_EMAIL,
           description=DESCRIPTION,
           version=VERSION,
-          install_requires=['tqdm', 'pandas', 'numpy', 'geopandas',
-                            'matplotlib', 'rasterio', 'download'],
+          install_requires=requirements,
+          extras_require={
+              'dev': [
+                  'codecov',
+                  'pytest',
+                  'pytest-cov',
+                  'sphinx==1.8.0',
+                  'sphinx-autobuild==0.7.1',
+                  'sphinx_rtd_theme'
+              ]
+          },
           zip_safe=False,  # the package can run out of an .egg file
           classifiers=[
               'Intended Audience :: Developers',
@@ -42,4 +62,4 @@ if __name__ == "__main__":
               'Operating System :: POSIX',
               'Operating System :: Unix',
               'Operating System :: MacOS'],
-           package_data={DISTNAME: ["data/*.json"]},)
+          package_data={DISTNAME: ["data/*.json"]})

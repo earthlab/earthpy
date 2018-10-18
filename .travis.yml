@@ -6,20 +6,7 @@ python:
 cache: pip
 
 install:
-  - sudo apt-get update
-  # https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
-  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-  - conda env create -f environment.yml
-  - source activate earth-analytics-python
-  - python setup.py install
-  - pip install -r dev-requirements.txt
+  - pip install -e .[dev]
 
 script:
   - pytest --cov=earthpy
