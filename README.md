@@ -21,14 +21,25 @@ Then import it into python.
 `import earthpy as et`
 
 
+### Installing with development extras
+
+To install development extras to run tests and build documentation, you can
+clone the repository, navigate to the directory, and install earthpy via:
+
+```bash
+pip install -e .[dev]
+```
+
+
+## Testing
+
+This package uses [pytest](https://pytest.org/) for tests.
+To run tests locally, execute the command `pytest` from the command line.
+
+
 ## Contributors
 
 - Chris Holdgraf
 - Leah Wasser
 - Carson Farmer
 - Max Joseph
-
-## Testing
-
-This package uses [pytest](https://pytest.org/) for tests.
-To run tests locally, execute the command `pytest` from the command line.
