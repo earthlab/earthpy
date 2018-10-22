@@ -4,7 +4,7 @@ import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 import numpy as np
-import numpy.ma as ma 
+import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
 
@@ -512,10 +512,10 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
 
     Parameters
     ----------
-    im : matplotlib image created using imshow
+    im : matplotlib image object created using imshow()
         This is the image returned from a call to imshow().
     classes : list
-        A list of unique values found in your raster.
+        A list of unique values found in the numpy array that you wish to plot.
     titles : list
         A list of a title or category for each uique value in your raster. This is the
         label that will go next to each box in your legend.
