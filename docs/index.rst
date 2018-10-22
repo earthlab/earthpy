@@ -11,7 +11,8 @@ Welcome to Earthpy's documentation!
    :caption: Contents:
 
    get-started
-   spatial-module
+   spatial-raster
+   spatial-vector
 
 
 
