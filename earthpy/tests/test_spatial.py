@@ -28,7 +28,7 @@ def createArray(arr_shape):
 
 # a helper function to write a 3D array of data to disk as a GeoTIFF 
 # the result will have no spatial info or relevance
-def dummy_tif_writer(arr, dst_filename):
+def dummyTifWriter(arr, dst_filename):
     """
         dummy_tif_writer(arr_dst_filename) writes a tif file specified by dst_filename using the array specified
         by arr. The shape of arr should be 3 dimensional such that the last dimension is the number of bands.
