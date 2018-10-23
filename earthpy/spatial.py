@@ -13,6 +13,7 @@ from shapely.geometry import mapping, box
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 
+
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
     Helper function
@@ -30,13 +31,14 @@ def extent_to_json(ext_obj):
     """
 
     if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
-        extent_json = mapping(box(*ext_obj.bounds.values[0]))
+        extent_json = mapping(box(*ext_obj.total_bounds))
     elif type(ext_obj) == list:
-        extent_json = mapping(box(ext_obj))
+        extent_json = mapping(box(*ext_obj))
     else:
-        raise ValueError("Please provide a geodataframe of a list of values - minx, miny, maxx, maxy")
+        raise ValueError("Please provide a geodataframe of a list of values.")
 
     return extent_json
+
 
 # calculate normalized difference between two arrays
 # both arrays must be of the same size
