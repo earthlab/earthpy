@@ -245,30 +245,10 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
+# This function currently does not work properly with the latest matplotlib
+# it renders the colorbar over the entire plot! ie is TOO WIDE.
 
-
-# scale an input array-like to a mininum and maximum number
-# the input array must be of a floating point array
-# if you have a non-floating point array, convert to floating using `astype('float')`
-# this works with n-dimensional arrays
-# it will mutate in place
-# min and max can be integers
-# may end up deprecating this
-def scale_range (input_array, min, max, clip=True):
-    # coerce to float if int
-    if input_array.dtype == "int":
-        input_array = input_array.astype(np.float16)
-
-    input_array += -(np.min(input_array))
-    input_array /= np.max(input_array) / (max - min)
-    input_array += min
-    # if the data have negative values that the user wishes to clip, clip them
-    if clip:
-        input_array.clip(min, max)
-    return ((input_array+ 0.5).astype(np.int8))
-
-
-def colorbar(mapobj, size = "3%", pad=0.09):
+def colorbar(mapobj, size = "3%", pad=0.09, aspect=20):
     """
     Adjusts the height of a colorbar to match the axis height.
     ----------

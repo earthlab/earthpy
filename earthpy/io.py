@@ -1,4 +1,6 @@
 """File Input/Output utilities."""
+## This module will move to a new module for downloading data
+## and building lessons
 
 from download import download
 import os.path as op
@@ -102,6 +104,9 @@ class EarthlabData(object):
                 data_paths = data_paths[0]
             return data_paths
 
+
+# Potential functionality for website build.
+# Move to new utils package
 
 def list_files(path, depth=3):
     """
