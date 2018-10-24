@@ -33,6 +33,8 @@ def extent_to_json(ext_obj):
     if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
         extent_json = mapping(box(*ext_obj.total_bounds))
     elif type(ext_obj) == list:
+        assert ext_obj[0] <= ext_obj[2], "xmin must be <= xmax"
+        assert ext_obj[1] <= ext_obj[3], "ymin must be <= ymax"
         extent_json = mapping(box(*ext_obj))
     else:
         raise ValueError("Please provide a GeoDataFrame or a list of values.")
