@@ -4,7 +4,7 @@ import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 import numpy as np
-import numpy.ma as ma 
+import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
 
@@ -12,6 +12,7 @@ from shapely.geometry import mapping, box
 # for color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
+
 
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
@@ -30,13 +31,16 @@ def extent_to_json(ext_obj):
     """
 
     if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
-        extent_json = mapping(box(*ext_obj.bounds.values[0]))
+        extent_json = mapping(box(*ext_obj.total_bounds))
     elif type(ext_obj) == list:
-        extent_json = mapping(box(ext_obj))
+        assert ext_obj[0] <= ext_obj[2], "xmin must be <= xmax"
+        assert ext_obj[1] <= ext_obj[3], "ymin must be <= ymax"
+        extent_json = mapping(box(*ext_obj))
     else:
-        raise ValueError("Please provide a geodataframe of a list of values - minx, miny, maxx, maxy")
+        raise ValueError("Please provide a GeoDataFrame or a list of values.")
 
     return extent_json
+
 
 # calculate normalized difference between two arrays
 # both arrays must be of the same size
@@ -245,30 +249,10 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
+# This function currently does not work properly with the latest matplotlib
+# it renders the colorbar over the entire plot! ie is TOO WIDE.
 
-
-# scale an input array-like to a mininum and maximum number
-# the input array must be of a floating point array
-# if you have a non-floating point array, convert to floating using `astype('float')`
-# this works with n-dimensional arrays
-# it will mutate in place
-# min and max can be integers
-# may end up deprecating this
-def scale_range (input_array, min, max, clip=True):
-    # coerce to float if int
-    if input_array.dtype == "int":
-        input_array = input_array.astype(np.float16)
-
-    input_array += -(np.min(input_array))
-    input_array /= np.max(input_array) / (max - min)
-    input_array += min
-    # if the data have negative values that the user wishes to clip, clip them
-    if clip:
-        input_array.clip(min, max)
-    return ((input_array+ 0.5).astype(np.int8))
-
-
-def colorbar(mapobj, size = "3%", pad=0.09):
+def colorbar(mapobj, size = "3%", pad=0.09, aspect=20):
     """
     Adjusts the height of a colorbar to match the axis height.
     ----------
@@ -512,10 +496,10 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
 
     Parameters
     ----------
-    im : matplotlib image created using imshow
+    im : matplotlib image object created using imshow()
         This is the image returned from a call to imshow().
     classes : list
-        A list of unique values found in your raster.
+        A list of unique values found in the numpy array that you wish to plot.
     titles : list
         A list of a title or category for each uique value in your raster. This is the
         label that will go next to each box in your legend.
