@@ -5,8 +5,8 @@ import rasterio as rio
 import numpy as np
 import os
 
-# a helper function to write a 3D array of data to disk as a GeoTIFF 
-# the result will have no spatial info or relevance
+# A helper function to write a 3D array of data to disk as a GeoTIFF 
+# The result will have no spatial info or relevance
 def dummy_tif_writer(arr, destfile):
     """Writes a tif file to a specified location using an array.
 
@@ -21,26 +21,25 @@ def dummy_tif_writer(arr, destfile):
     """    
     
 
-    # make sure the array is 3 dimensional, assuming last dimension is number of bands
-    # this is assured by using createArray to generate the data
+    # Make sure the array is 3 dimensional, assuming last dimension is number of bands
     assert len(arr.shape) == 3
     
     try:
         
         dummy_geotrans = (0,1,0,0,0,-1)
 
-        # get the dimensions of the array
+        # Get the dimensions of the array
         y_pixels, x_pixels, n_channels = arr.shape
 
-        # create the GeoTIFF file
+        # Create the GeoTIFF file
         driver = gdal.GetDriverByName('GTiff')
         dataset = driver.Create(dst_filename, x_pixels, y_pixels, int(n_channels), gdal.GDT_Float32)
 
-        # write the bands to the GeoTIFF
+        # Write the bands to the GeoTIFF
         for i in range(n_channels):
             dataset.GetRasterBand(i+1).WriteArray(dummy[:,:,i])
 
-        # define the Unknown projection
+        # Define the Unknown projection
         srs = osr.SpatialReference()            
         srs.ImportFromEPSG(0)
         proj = srs.ExportToWkt() 
@@ -51,7 +50,7 @@ def dummy_tif_writer(arr, destfile):
 
         dataset.FlushCache()
 
-        # remove the dataset from memory
+        # Remove the dataset from memory
         dataset = None
     
         return (0, dst_filename)
@@ -75,6 +74,6 @@ def test_dummy_tif_writer():
     assert code == 0
     assert os.path.exists(destfile) is True
     
-    # clean up the file
+    # Clean up the file
     if os.path.exists(destfile):
         os.remove(destfile)
