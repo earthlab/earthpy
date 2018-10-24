@@ -35,7 +35,7 @@ def extent_to_json(ext_obj):
     elif type(ext_obj) == list:
         extent_json = mapping(box(*ext_obj))
     else:
-        raise ValueError("Please provide a geodataframe of a list of values.")
+        raise ValueError("Please provide a GeoDataFrame or a list of values.")
 
     return extent_json
 
