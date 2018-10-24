@@ -47,10 +47,12 @@ Style
   possible (all supported versions will be automatically tested on
   Travis CI).
 
-- Follow PEP 8 when possible.
+- Follow PEP 8 when possible. Some standards that we follow include
+    - The first word of a comment should be capitalized with a space   following the `#` sign like this: `# This is a comment here`
+    - Variable and function names should be all lowercase with words separated by `_`.
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and earthpy imports third following Pep 8 standards. Within each
+  3rd-party libraries next, and `earthpy` imports third following PEP 8 standards. Within each
   grouping, imports should be alphabetized. Always use absolute
   imports when possible, and explicit relative imports for local
   imports when necessary in tests.
