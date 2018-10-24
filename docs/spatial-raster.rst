@@ -13,7 +13,7 @@ into an
 1. a stacked geotiff on your hard drive and
 2. (optionally) an output raster stack in numpy format with associated metadata.
 
-All files in the list must be in the same Coordinate Refenence System (CRS) and
+All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
 
 ``stack_raster_tifs`` takes 2 input parameters:
