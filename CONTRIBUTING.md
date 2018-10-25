@@ -47,7 +47,7 @@ Style
   possible (all supported versions will be automatically tested on
   Travis CI).
 
-- Follow PEP 8 when possible. Some standards that we follow include
+- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some standards that we follow include
     - The first word of a comment should be capitalized with a space   following the `#` sign like this: `# This is a comment here`
     - Variable and function names should be all lowercase with words separated by `_`.
 
