@@ -73,7 +73,7 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
         A list with paths to the bands you wish to stack. Bands
         will be stacked in the order given in this list.
     out_path : string
-        A path with a file name for the output stacked raster 
+        A path with a file name for the output stacked raster
          tif file.
     arr_out : boolean
         A boolean argument to designate what is returned in the stacked
@@ -124,9 +124,6 @@ def stack(sources, dest):
     dest : a rio.open writable object that will store raster data.
     """
 
-    #if not os.path.exists(os.path.dirname(dest)):
-    #    raise ValueError("The output directory path that you provided does not exist")
-
     if not type(sources[0]) == rio.io.DatasetReader:
         raise ValueError("The sources object should be of type: rasterio.DatasetReader")
 
@@ -165,16 +162,12 @@ def crop_image(raster, geoms, all_touched = True):
         Specifically the extent (shape elements) and transform properties are updated.
     """
 
-    # Test that you have a list of a geodataframe
-    # If not type(geoms) == list:
-    #    raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
-
+    # TODO add test for list structure
     if type(geoms) == gpd.geodataframe.GeoDataFrame:
         clip_ext = [extent_to_json(geoms)]
     else:
         clip_ext = geoms
     # Mask the input image and update the metadata
-    #with rio.open(path) as src:
     out_image, out_transform = rio.mask.mask(raster, clip_ext, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
