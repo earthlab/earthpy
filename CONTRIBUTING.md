@@ -1,12 +1,13 @@
 Guidelines
 ==========
 
-Contributions to `earthpy` are welcome. They are likely to
-be accepted more quickly if they follow these guidelines.
+Contributions to `earthpy` are welcome. They are more likely to
+be accepted if they follow the guidelines below.
 
 At this stage of development, we are developing a set of
 usable wrapper functions that help make working with earth
-systems data easier.
+systems data easier. We are open to new functionality but are currently
+trying to ensure our package is stable, operational and well documented.
 
 Edits & Updates
 ===============
@@ -31,8 +32,15 @@ When submitting a pull request:
   line of a docstring should be a standalone summary. Parameters and
   return values should be documented explicitly.
 
+- Please note that tests are also run via Travis-CI on our documentation. So be sure that any ``.rst` file submissions are properly formatted and tests are passing!
+
+Documentation Updates
+=====================
+
 Improving the documentation and testing for code already in `earthpy`
-is a great way to get started if you'd like to make a contribution.
+is a great way to get started if you'd like to make a contribution. Please note
+that our documentation files are in [`ReStructuredText (.rst)`](http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html) format and format your pull request
+accordingly.
 
 Style
 -----
