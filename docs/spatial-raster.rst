@@ -66,6 +66,7 @@ The ``normalized_diff`` function returns a masked array of the normalized differ
 Example:
 
 .. code-block:: python
+
     import numpy as np
     import earthpy.spatial as es
 
