@@ -5,19 +5,25 @@
 
 Welcome to Earthpy's documentation!
 ===================================
+Earthpy's documentation contains one Element and two Options.
+  - Element: toctree
+  - Options: maxdepth, caption
+The element and options are applied to the following documents:
+    1. get-started
+    2. spatial-raster
+    3. spatial-vector
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+.. Element and Options applied to the following documents
    get-started
    spatial-raster
    spatial-vector
 
-
-
-Indices and tables
-==================
+Python indices and tables
+=========================
 
 * :ref:`genindex`
 * :ref:`modindex`
