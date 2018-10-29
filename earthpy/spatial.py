@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
 
 from shapely.geometry import mapping, box
-# for color bar resizing
+# For color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 
@@ -42,8 +42,8 @@ def extent_to_json(ext_obj):
     return extent_json
 
 
-# calculate normalized difference between two arrays
-# both arrays must be of the same size
+# Calculate normalized difference between two arrays
+# Both arrays must be of the same size
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference
     Math will be calculated (b2-b1) / (b2+b1).
@@ -62,8 +62,7 @@ def normalized_diff(b1, b2):
     return n_diff
 
 
-# EL function
-# we probably want to include a no data value here if provided ...
+# TODO: include a no data value here if provided ...
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an ouput raster stack in numpy format.
     Note that this function depends upon the stack() function.
@@ -74,9 +73,14 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
         A list with paths to the bands you wish to stack. Bands
         will be stacked in the order given in this list.
     out_path : string
-        A path for the output stacked raster file.
+        A path with a file name for the output stacked raster 
+         tif file.
+    arr_out : boolean
+        A boolean argument to designate what is returned in the stacked
+        raster tif output.
+
     """
-    # set default import to read
+    # Set default import to read
     kwds = {'mode': 'r'}
 
     if not os.path.exists(os.path.dirname(out_path)):
@@ -84,7 +88,7 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
 
     if len(band_paths) < 2:
         raise ValueError("The list of file paths is empty. You need atleast 2 files to create a stack.")
-    # the with statement ensures that all files are closed at the end of the with statement
+    # The with statement ensures that all files are closed at the end of the with statement
     with contextlib.ExitStack() as context:
         sources = [context.enter_context(rio.open(path, **kwds)) for path in band_paths]
 
@@ -106,9 +110,9 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
                 return(stack(sources, dest))
 
 
-# function to be submitted to rasterio
-# add unit tests: some are here: https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
-# this function doesn't stand alone because it writes to a open object called in the other function.
+# Function to be submitted to rasterio
+# TODO: add unit tests - some are here: https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
+# This function doesn't stand alone because it writes to an open object called in the other function
 def stack(sources, dest):
     """Stack a set of bands into a single file.
 
@@ -119,9 +123,6 @@ def stack(sources, dest):
         will be stacked in the order provided in this list.
     dest : a rio.open writable object that will store raster data.
     """
-
-    #if not os.path.exists(os.path.dirname(dest)):
-    #    raise ValueError("The output directory path that you provided does not exist")
 
     if not type(sources[0]) == rio.io.DatasetReader:
         raise ValueError("The sources object should be of type: rasterio.DatasetReader")
@@ -161,16 +162,11 @@ def crop_image(raster, geoms, all_touched = True):
         Specifically the extent (shape elements) and transform properties are updated.
     """
 
-    # test that you have a list of a geodataframe
-    #if not type(geoms) == list:
-    #    raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
-
     if type(geoms) == gpd.geodataframe.GeoDataFrame:
         clip_ext = [extent_to_json(geoms)]
     else:
         clip_ext = geoms
     # Mask the input image and update the metadata
-    #with rio.open(path) as src:
     out_image, out_transform = rio.mask.mask(raster, clip_ext, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
@@ -180,7 +176,7 @@ def crop_image(raster, geoms, all_touched = True):
     return (out_image, out_meta)
 
 
-# this was imported directly from scipy as it's being deprecated
+# This was imported directly from scipy as it's being deprecated
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     """
     Byte scales an array (image).
@@ -249,8 +245,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
-# This function currently does not work properly with the latest matplotlib
-# it renders the colorbar over the entire plot! ie is TOO WIDE.
+# TODO: verify colorbar works with the latest matplotlib, and is not too wide
 
 def colorbar(mapobj, size = "3%", pad=0.09, aspect=20):
     """
@@ -283,7 +278,7 @@ def colorbar(mapobj, size = "3%", pad=0.09, aspect=20):
 
 
 
-# function to plot all layers in a stack
+# Function to plot all layers in a stack
 def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, extent = None):
     """
     Plot each layer in a raster stack converted into a numpy array for quick visualization.
@@ -299,17 +294,17 @@ def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, e
     ----------
     matplotlib plot of all layers
     """
-    # if the array is 3 dimensional setup grid plotting
+    # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
         # test if there are enough titles to create plots
         if title:
            if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
-        # calculate the total rows that will be required to plot each band
+        # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
 
-        # plot all bands
+        # Plot all bands
         fig, axs = plt.subplots(plot_rows, cols, figsize=figsize)
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
@@ -320,18 +315,18 @@ def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, e
             else:
                 ax.set(title='Band %i' %band)
             ax.set(xticks=[], yticks=[])
-        # this loop clears out the plots for bands 8-9 which are empty
-        # but you have to populate them in matplotlib when you specify plot rows and cols
+        # This loop clears out the plots for bands 8-9 which are empty
+        # But you have to populate them in matplotlib when you specify plot rows and cols
         for ax in axs_ravel[total_layers:]:
            ax.set_axis_off()
            ax.set(xticks=[], yticks=[])
 
         plt.tight_layout()
     elif arr.ndim == 2 or arr.shape[0] == 1:
-        # if it's a 2 dimensional array with a 3rd dimension
+        # If it's a 2 dimensional array with a 3rd dimension
         if arr.shape[0] == 1:
             arr = arr[0]
-        # plot all bands
+        # Plot all bands
         fig, ax = plt.subplots(figsize=figsize)
         ax.imshow(bytescale(arr), cmap=cmap,
                  extent = extent)
@@ -340,9 +335,6 @@ def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, e
         ax.set(xticks=[], yticks=[])
 
 
-
-# function to plot all layers in a stack
-# should this wrap around show instead of plotting as it does?
 def plot_rgb(arr, rgb = (0,1,2),
              ax = None,
              extent = None,
@@ -373,7 +365,7 @@ def plot_rgb(arr, rgb = (0,1,2),
     if len(arr.shape) != 3:
         raise Exception('Input needs to be 3 dimensions and in rasterio order with bands first')
 
-    # index bands for plotting and clean up data for matplotlib
+    # Index bands for plotting and clean up data for matplotlib
     rgb_bands = arr[rgb]
 
     if stretch:
@@ -385,18 +377,18 @@ def plot_rgb(arr, rgb = (0,1,2),
             arr_rescaled[ii] = exposure.rescale_intensity(band, in_range=(p2, p98))
         rgb_bands = arr_rescaled.copy()
 
-    # if type is masked array - add alpha channel for plotting
+    # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
-        # build alpha channel
+        # Build alpha channel
         mask = ~(np.ma.getmask(rgb_bands[0])) * 255
 
-        # add the mask to the array (ise earthpy bytescale)
+        # Add the mask to the array (ise earthpy bytescale)
         rgb_bands = np.vstack((bytescale(rgb_bands), np.expand_dims(mask, axis=0))).transpose([1, 2, 0])
     else:
-        # index bands for plotting and clean up data for matplotlib
+        # Index bands for plotting and clean up data for matplotlib
         rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
 
-    # then plot. Define ax if it's default to none
+    # Then plot. Define ax if it's default to none
     if ax is None:
       fig, ax = plt.subplots(figsize = figsize)
     ax.imshow(rgb_bands, extent = extent)
@@ -426,19 +418,19 @@ def hist(arr,
     matplotlib plot of all layers
     """
 
-    # if the array is 3 dimensional setup grid plotting
+    # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
-        # test if there are enough titles to create plots
+        # Test if there are enough titles to create plots
         if title:
            if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same as the number of raster layers in your array.")
-        # calculate the total rows that will be required to plot each band
+        # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
 
         fig, axs = plt.subplots(plot_rows, cols, figsize=figsize, sharex=True, sharey=True)
         axs_ravel = axs.ravel()
-        # what happens if there is only one color?
+        # TODO: write test case for just one color
         for band, ax, i in zip(arr, axs.ravel(), range(total_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
@@ -452,7 +444,7 @@ def hist(arr,
            ax.set_axis_off()
            #ax.set(xticks=[], yticks=[])
     elif arr.ndim == 2:
-        # plot all bands
+        # Plot all bands
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(arr.ravel(),
                 range=[np.nanmin(arr), np.nanmax(arr)],
