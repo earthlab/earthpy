@@ -5,7 +5,7 @@
 
 Welcome to Earthpy's documentation!
 ===================================
------------------------------------
+
 Earthpy's documentation contains one Element and two Options.
   - Element: toctree
   - Options: maxdepth, caption
