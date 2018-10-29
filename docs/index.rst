@@ -16,6 +16,7 @@ The element and options are applied to the following documents:
   2. spatial-raster
   3. spatial-vector
 
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
