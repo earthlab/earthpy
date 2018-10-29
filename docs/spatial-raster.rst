@@ -54,20 +54,22 @@ Example:
     arr, arr_meta = es.stack_raster_tifs(all__paths, destfile)
 
 Crop Image
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
 
 The ``crop_image`` function takes a single rasterio object and crops the image
 using specified geometry objects.
 
 ``crop_image`` takes 3 input parameters:
 
-``raster``: rasterio object
+``raster``: rasterio DatasetReader object
       The rasterio object to be cropped. Ideally this object is opened in a
       context manager to ensure the file is properly closed.
-``geoms``: geopandas object or list of polygons
-      Polygons are GEOJSON-like dicts specifying the boundaries of features
-      in the raster to be kept. All data outside of specified polygons will
-      be set to nodata.
+``geoms``: geopandas object or list of polygons in GEOJSON-like structure
+      If the crop extent is a list, then the format should be GEOJSON-like
+      dictionaries specifying the boundaries of pixels in the raster to be kept.
+      If the crop extent is a geopandas object then the total_bounds of the object
+      is used to specify what pixels in the raster are kept. All data outside of
+      the specified polygons will be set to nodata.
 ``all_touched``: boolean
       From rasterio: Include a pixel in the mask if it touches any of the shapes.
       If False, include a pixel only if its center is within one ofthe shapes,
@@ -99,7 +101,7 @@ Example:
         out_image, out_meta = es.crop_image(raster, geoms)
 
 Hillshade
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
 
 The ``hillshade`` function takes a numpy array containing elevation data and creates
 a hillshade array.
