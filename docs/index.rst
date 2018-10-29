@@ -8,6 +8,8 @@ Welcome to Earthpy's documentation!
 Earthpy's documentation contains one Element and two Options.
   - Element: `toctree`
   - Options: `maxdepth`, `caption`
+Tables of Contents are inserted with a maximum depth of two, and a caption
+called "Contents".  
 The element and options are applied to the following documents:
     1. get-started
     2. spatial-raster
