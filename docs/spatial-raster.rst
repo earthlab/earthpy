@@ -13,7 +13,7 @@ into an
 1. a stacked geotiff on your hard drive and
 2. (optionally) an output raster stack in numpy format with associated metadata.
 
-All files in the list must be in the same Coordinate Refenence System (CRS) and
+All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
 
 ``stack_raster_tifs`` takes 3 input parameters:
@@ -52,3 +52,40 @@ Example:
 
     # Stack landsat tif files
     arr, arr_meta = es.stack_raster_tifs(all__paths, destfile)
+
+
+Plot Raster File Bands
+~~~~~~~~~~~~~~~~~~
+
+The ``plot_bands`` function displays a quick visualization of each raster file band
+individually as matplotlib plot(s). This function is helpful when first exploring raster data.
+
+``plot_bands`` takes 6 input parameters:
+
+``arr``: numpy array
+    a n dimension numpy array
+``title``: str or list
+    string for a single title of one band or list of x titles for x bands in plot
+``cmap``: str
+    cmap name, string the colormap that you wish to use (greys = default)
+``cols``: int
+    the number of columns you want to plot in
+``figsize``: tuple - optional
+    the figure size if you'd like to define it. default: (12, 12)
+``extent``: list or geopandas dataframe - optional
+    an extent object for plotting. Values should be in the order: minx, miny, maxx, maxy
+
+
+Example:
+
+.. code-block:: python
+
+    import earthpy.spatial as es
+
+    titles = ["Red Band", "Green Band", "Blue Band", "Near Infrared (NIR) Band"]
+
+    # Plot all bands of a raster tif
+    es.plot_bands(naip_image,
+                  title=titles,
+                  figsize=(12,5),
+                  cols=2)

@@ -73,7 +73,7 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
         A list with paths to the bands you wish to stack. Bands
         will be stacked in the order given in this list.
     out_path : string
-        A path with a file name for the output stacked raster 
+        A path with a file name for the output stacked raster
          tif file.
     arr_out : boolean
         A boolean argument to designate what is returned in the stacked
@@ -285,11 +285,19 @@ def plot_bands(arr, title = None, cmap = "Greys_r", figsize=(12,12), cols = 3, e
 
     Parameters
     ----------
-    arr: a n dimension numpy array
-    cmap: cmap name, str the colormap that you wish to use (greys = default)
-    cols: int the number of columsn you want to plot in
-    figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
-    extent: an extent object for plotting
+    arr: numpy array
+        a n dimension numpy array
+    title: str or list
+        string for a single title of one band or list of x titles for x band in plot
+    cmap: str
+        cmap name string of the colormap that you wish to use (greys = default)
+    cols: int
+        the number of columns you want to plot in
+    figsize: tuple - optional
+        the figsize if you'd like to define it. default: (12, 12)
+    extent: list or geopandas dataframe - optional
+        an extent object for plotting. Values should be in the order: minx, miny, maxx, maxy
+
     Return
     ----------
     matplotlib plot of all layers
