@@ -161,16 +161,11 @@ def crop_image(raster, geoms, all_touched = True):
         Specifically the extent (shape elements) and transform properties are updated.
     """
 
-    # test that you have a list of a geodataframe
-    #if not type(geoms) == list:
-    #    raise ValueError("The geoms element used to crop the raster needs to be of type: list. If it is of type dictionary, you can simpy add [object-name-here] to turn it into a list.")
-
     if type(geoms) == gpd.geodataframe.GeoDataFrame:
         clip_ext = [extent_to_json(geoms)]
     else:
         clip_ext = geoms
-    # Mask the input image and update the metadata
-    #with rio.open(path) as src:
+
     out_image, out_transform = rio.mask.mask(raster, clip_ext, crop = True, all_touched = all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",

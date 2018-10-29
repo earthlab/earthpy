@@ -45,6 +45,26 @@ def clip_line_poly(shp, clip_obj):
 
 def clip_shp(shp, clip_obj):
     '''
+   Clip points, lines, polygons.
+
+   Both layers must be same CRS.
+
+   Parameters:
+
+   shp: vector layer to be clipped.
+
+        Can be point, line, polygon.
+
+   clip_obj: polygon to which data is to be clipped.
+
+   Returns:
+
+   Points, lines, polygons clipped to vector boundary.
+
+   If there are multiple polygons in object,
+   data will be clipped to the total boundary of
+   all polygons.
+
     '''
     if shp["geometry"].iloc[0].type == "Point":
         return(clip_points(shp, clip_obj))
