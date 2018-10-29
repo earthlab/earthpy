@@ -7,8 +7,8 @@ import geopandas as gpd
 
 def clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
-    input point geopanda dataframe that will be clipped to the clip_obj
-    geopanda dataframe.
+    input point geopandas dataframe that will be clipped to the clip_obj
+    geopandas dataframe.
     
     Points that intersect with the geometry of clip_obj are extracted
     and returned.
@@ -17,20 +17,20 @@ def clip_points(shp, clip_obj):
     PARAMETERS
     ------------------
 
-    shp: Geopanda dataframe
-        composed of point geometry that is to be clipped to clip_obj
+    shp: Geopandas dataframe
+        Composed of point geometry that is clipped to clip_obj
 
-    clip_obj: Geopanda dataframe
-        polygon geometry that is used as the reference area for clipping the point data.
+    clip_obj: Geopandas dataframe
+        Polygon geometry that is used as the reference area for clipping the point data.
         The clip_obj's geometry is dissolved into a single geometric feature and intersected
-        with the spatial index of the shp input.
+        with the points of the shp input.
 
 
     RETURNS
     -------------------
-    Geopanda Dataframe:
+    Geopandas Dataframe:
 
-        The returned geopanda dataframe will be a subset of shp that intersects
+        The returned geopandas dataframe is a subset of shp that intersects
         with clip_obj
     """
 
@@ -45,32 +45,32 @@ def clip_points(shp, clip_obj):
 def clip_line_poly(shp, clip_obj):
     """A function to clip line and polygon data using geopandas.
 
-    Takes an input geopanda dataframe that is used as the clipped data, and a second
-    geopanda dataframe that is used as the clipping object or reference area.
+    Takes an input geopandas dataframe that is used as the clipped data, and a second
+    geopandas dataframe that is used as the clipping object or reference area.
 
     A spatial index is created around the shp input and is then intersected
     with the bounding box of the clip_obj.
 
-    Data within this intersection is extracted from the shp attribute table and the resulting
+    Data within this intersection is extracted from shp and the resulting
     subset is the output of the function.
 
     PARAMETERS
     ---------------------
 
-     shp: Geopanda dataframe
-        Composed of line or polygon geometry that is clipped down to the reference
+     shp: Geopandas dataframe
+        Composed of line or polygon geometry that is clipped to the reference
         area provided by the clip_obj
 
-     clip_obj: Geopanda dataframe
+     clip_obj: Geopandas dataframe
         Composed of polygon geometry that provides the reference area for clipping
         the shp input. The clip_obj's geometry is dissolved into a single geometric
         feature and intersected with the spatial index of the shp input.
 
      RETURNS
      -----------------------
-     Geopanda Dataframe:
+     Geopandas Dataframe:
 
-        The returned geopanda dataframe will be a clipped subset of shp
+        The returned geopandas dataframe is a clipped subset of shp
         that intersects with clip_obj.
 
 
