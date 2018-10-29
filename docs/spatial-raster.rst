@@ -16,13 +16,16 @@ into an
 All files in the list must be in the same Coordinate Refenence System (CRS) and
 must have the same spatial extent for this to work properly.
 
-``stack_raster_tifs`` takes 2 input parameters:
+``stack_raster_tifs`` takes 3 input parameters:
 
 ``band_paths``: list of file paths
       A list with paths to the bands you wish to stack. Bands
       will be stacked in the order given in this list.
 ``out_path``: string
       A path with a file name for the output stacked raster tif file.
+``arr_out``: boolean
+      A boolean argument to designate what is returned in the stacked
+      raster tif output.
 
 The default output of ``stack_raster_tiffs`` is:
 
