@@ -54,7 +54,7 @@ def clip_line_poly(shp, clip_obj):
     Data within this intersection is extracted from shp and the resulting
     subset is the output of the function.
 
-    PARAMETERS
+    Parameters
     ---------------------
 
      shp: Geopandas dataframe
@@ -66,7 +66,7 @@ def clip_line_poly(shp, clip_obj):
         the shp input. The clip_obj's geometry is dissolved into a single geometric
         feature and intersected with the spatial index of the shp input.
 
-     RETURNS
+     Returns
      -----------------------
      Geopandas Dataframe:
 
