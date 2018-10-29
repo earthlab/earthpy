@@ -14,7 +14,7 @@ def clip_points(shp, clip_obj):
     and returned.
     
     
-    PARAMETERS
+    Parameters
     ------------------
 
     shp: Geopandas dataframe
@@ -26,7 +26,7 @@ def clip_points(shp, clip_obj):
         with the points of the shp input.
 
 
-    RETURNS
+    Returns
     -------------------
     Geopandas Dataframe:
 
@@ -72,8 +72,6 @@ def clip_line_poly(shp, clip_obj):
 
         The returned geopandas dataframe is a clipped subset of shp
         that intersects with clip_obj.
-
-
     """
 
     # Create a single polygon object for clipping
