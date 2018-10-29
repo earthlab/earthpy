@@ -7,11 +7,11 @@ and ``geopandas`` to work with raster and vector data in Python.
 Stack Raster Files
 ~~~~~~~~~~~~~~~~~~
 
-The ``stack_raster_tifs`` function takes a list of raster paths and turns that list
-into an
+The ``stack_raster_tifs`` function takes a list of raster paths and turns the list
+into the following:
 
-1. a stacked geotiff on your hard drive and
-2. (optionally) an output raster stack in numpy format with associated metadata.
+1. a stacked geotiff on your local hard drive and
+2. (optional) an output raster stack in numpy format with associated metadata.
 
 All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
