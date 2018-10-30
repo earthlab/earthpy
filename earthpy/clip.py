@@ -9,6 +9,7 @@ def clip_points(shp, clip_obj):
     '''
     Docs Here
     '''
+    
     poly = clip_obj.geometry.unary_union
     return(shp[shp.geometry.intersects(poly)])
 
