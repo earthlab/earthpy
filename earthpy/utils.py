@@ -1,6 +1,6 @@
 import os
-import rasterio as rio
 import numpy as np
+import rasterio as rio
 from shapely.geometry import Polygon, mapping
 from tqdm import tqdm
 
