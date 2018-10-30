@@ -1,11 +1,11 @@
 import os
-import rasterio as rio
 import numpy as np
+import rasterio as rio
 from shapely.geometry import Polygon, mapping
 from tqdm import tqdm
 
 # This should be moved to the new package that handles data download
-# and the website build potentially 
+# and the website build potentially
 def fix_paths(path, images_folder='images'):
     """
     Replace the path that contains the site root with {{ site.url }}.
