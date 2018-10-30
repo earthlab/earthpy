@@ -20,7 +20,7 @@ DATA_URLS = {
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
     'cs-test-naip': ('https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe', '.', 'zip'),
     'cs-test-landsat': ('https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e', '.', 'zip'),
-   
+
 }
 
 ALLOWED_FILE_TYPES = ['zip', 'tar', 'tar.gz', 'file']
@@ -48,7 +48,7 @@ class EarthlabData(object):
         s = 'Available Datasets: {}'.format(self.data_keys)
         return s
 
-    def get_data(self, key=None, name=None, replace=False):
+    def get_data(self, key=None, replace=False):
         """
         Retrieve the data for a given week and return its path.
 
@@ -60,10 +60,6 @@ class EarthlabData(object):
         key : str
             The dataset to retrieve. Possible options can be found in
             ``self.data_keys``.
-        name: str
-            Name for file created if key is not in the stored data,
-            and not of an acceptable file type. The new file
-            will be named 'name'.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
