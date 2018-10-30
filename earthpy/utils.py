@@ -8,7 +8,21 @@ from tqdm import tqdm
 # and the website build potentially
 def fix_paths(path, images_folder='images'):
     """
-    Replace the path that contains the site root with {{ site.url }}.
+    Replace the path that contains the site root with {{ site.url }}, in
+    order to make the path usable outside of the local context.
+
+    Parameters
+    ----------
+    path : str
+        The path that needs to be modified
+    images_folder : str
+        Name of the desired folder to recieve images. Defaults to 
+        the users 'images' folder.
+
+    Returns
+    -------
+    new_path : str
+        The fixed path that contains the new site root.
     """
     img_from_root = path.split(images_folder + os.sep)[-1].split(os.sep)
     new_path = os.path.join('{{ site.url }}', images_folder, *img_from_root)
