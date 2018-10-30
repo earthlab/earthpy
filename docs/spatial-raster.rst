@@ -62,18 +62,19 @@ individually as matplotlib plot(s). This function is helpful when first explorin
 
 ``plot_bands`` takes 6 input parameters:
 
+
 ``arr``: numpy array
-    a n dimension numpy array
+  An n-dimensional numpy array
 ``title``: str or list
-    string for a single title of one band or list of x titles for x bands in plot
+  Title of one band, or list of titles with one title per band
 ``cmap``: str
-    cmap name, string the colormap that you wish to use (greys = default)
+  Colormap name ("greys" by default)
 ``cols``: int
-    the number of columns you want to plot in
+  Number of columns for plot grid
 ``figsize``: tuple - optional
-    the figure size if you'd like to define it. default: (12, 12)
-``extent``: list or geopandas dataframe - optional
-    an extent object for plotting. Values should be in the order: minx, miny, maxx, maxy
+  Figure size in inches ((12, 12) by default)
+``extent``: tuple - optional
+  Bounding box that the data will fill: (minx, miny, maxx, maxy)
 
 Example:
 
