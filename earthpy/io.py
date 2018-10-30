@@ -68,6 +68,10 @@ class EarthlabData(object):
         key : str
             The dataset to retrieve. Possible options can be found in
             ``self.data_keys``.
+        name: str
+            Name for file created if key is not in the stored data,
+            and not of an acceptable file type. The new file
+            will be named 'name'.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
