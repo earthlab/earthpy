@@ -55,7 +55,7 @@ Example:
 
 
 Plot Raster File Bands
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 The ``plot_bands`` function displays a quick visualization of each raster file band
 individually as matplotlib plot(s). This function is helpful when first exploring raster data.
