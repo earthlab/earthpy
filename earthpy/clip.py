@@ -9,7 +9,6 @@ def clip_points(shp, clip_obj):
     '''
     Docs Here
     '''
-
     poly = clip_obj.geometry.unary_union
     return(shp[shp.geometry.intersects(poly)])
 
@@ -37,7 +36,6 @@ def clip_line_poly(shp, clip_obj):
 
     # Return the clipped layer with no null geometry values
     return(clipped[clipped.geometry.notnull()])
-
 
 # Final clip function that handles points, lines and polygons
 
