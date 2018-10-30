@@ -52,7 +52,7 @@ Example:
 
 
 Draw Legend
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 The ``draw_legend`` function creates a custom legend with a box for each class in a raster using a maptplotlib image object, the unique classes in the image, and titles for each class.
 
