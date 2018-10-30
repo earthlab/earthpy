@@ -299,11 +299,19 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
 
     Parameters
     ----------
-    arr: a n dimension numpy array
-    cmap: cmap name, str the colormap that you wish to use (greys = default)
-    cols: int the number of columsn you want to plot in
-    figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
-    extent: an extent object for plotting
+    arr: numpy array
+        An n-dimensional numpy array
+    title: str or list
+        Title of one band, or list of titles with one title per band
+    cmap: str
+        Colormap name ("greys" by default)
+    cols: int
+        Number of columns for plot grid
+    figsize: tuple - optional
+        Figure size in inches ((12, 12) by default)
+    extent: tuple - optional
+        Bounding box that the data will fill: (minx, miny, maxx, maxy)
+
     Returns
     ----------
     fig, ax or axs : figure object, axes object
