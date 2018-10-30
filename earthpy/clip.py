@@ -29,7 +29,6 @@ def clip_line_poly(shp, clip_obj):
     bbox = poly.bounds
     # Get a list of id's for each road line that overlaps the bounding box and subset the data to just those lines
     sidx = list(spatial_index.intersection(bbox))
-    #shp_sub = shp[shp.index.isin(sidx)]
     shp_sub = shp.iloc[sidx]
 
     # Clip the data - with these data
