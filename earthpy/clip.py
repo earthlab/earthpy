@@ -29,6 +29,7 @@ def clip_line_poly(shp, clip_obj):
     bbox = poly.bounds
     # Get a list of id's for each road line that overlaps the bounding box and subset the data to just those lines
     sidx = list(spatial_index.intersection(bbox))
+    #shp_sub = shp[shp.index.isin(sidx)]
     shp_sub = shp.iloc[sidx]
 
     # Clip the data - with these data
@@ -46,7 +47,7 @@ def clip_shp(shp, clip_obj):
    """A function to clip points, lines, polygon geometries based on an input
    geometry.
 
-   Both layers must be the same CRS.
+   Both layers must be the same Coordinate Reference System (CRS).
 
    Depending on the geometry type, input data will be clipped to the full
    extent of clip_obj using either clip_points or clip_line_poly.
@@ -60,7 +61,8 @@ def clip_shp(shp, clip_obj):
    shp : geopandas dataframe
         Vector layer (point, line, polygon) to be clipped to clip_obj.
 
-   clip_obj : dataset to which data is to be clipped.
+   clip_obj : geopandas dataframe
+        Dataset to be clipped.
 
    Returns
    -------
