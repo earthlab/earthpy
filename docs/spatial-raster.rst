@@ -75,7 +75,6 @@ individually as matplotlib plot(s). This function is helpful when first explorin
 ``extent``: list or geopandas dataframe - optional
     an extent object for plotting. Values should be in the order: minx, miny, maxx, maxy
 
-
 Example:
 
 .. code-block:: python
@@ -89,3 +88,91 @@ Example:
                   title=titles,
                   figsize=(12,5),
                   cols=2)
+
+
+Crop Image
+~~~~~~~~~~
+
+The ``crop_image`` function takes a single rasterio object and crops the image
+using specified geometry objects.
+
+``crop_image`` takes 3 input parameters:
+
+``raster``: rasterio DatasetReader object
+      The rasterio object to be cropped. Ideally this object is opened in a
+      context manager to ensure the file is properly closed.
+``geoms``: geopandas object or list of polygons in GEOJSON-like structure
+      If the crop extent is a list, then the format should be GEOJSON-like
+      dictionaries specifying the boundaries of pixels in the raster to be kept.
+      If the crop extent is a geopandas object then the total_bounds of the object
+      is used to specify what pixels in the raster are kept. All data outside of
+      the specified polygons will be set to nodata.
+``all_touched``: boolean
+      From rasterio: Include a pixel in the mask if it touches any of the shapes.
+      If False, include a pixel only if its center is within one ofthe shapes,
+      or if it is selected by Bresenham's line algorithm.
+      Default is True in this function.
+
+The ``crop_image`` function returns the following:
+
+``out_image``: masked numpy array
+      A masked numpy array that is masked / cropped to the geoms object extent.
+``out_meta``: dictionary
+      A dictionary containing the updated metadata for the cropped raster.
+      Specifically the extent (shape elements) and transform properties are updated.
+
+Example:
+
+.. code-block:: python
+
+    import geopandas as gpd
+    import rasterio as rio
+    import earthpy.spatial as es
+
+    # Import geoms boundary
+    geoms = gpd.read_file("path_here_geoms_filename.shp")
+
+    # Open raster object in context manager
+    with rio.open("path_here_raster_filename.tif") as raster:
+        # Crop image using crop_image
+        out_image, out_meta = es.crop_image(raster, geoms)
+
+
+Hillshade
+~~~~~~~~~
+
+The ``hillshade`` function takes a numpy array containing elevation data and creates
+a hillshade array.
+
+``hillshade`` takes 3 input parameters:
+
+``arr``: a n dimension numpy array
+      The numpy array containing elevation data that will be used to calculate
+      the hillshade array.
+``azimuth``: float
+      The angular direction of the sun, measured from north in clockwise degrees
+      from 0 to 360.
+      Default is 30.
+``angle_altitude``: float
+      The slope or angle of the illumination source above the horizon from 0 (on
+      the horizon) to 90 (overhead).
+      Default is 30.
+
+The ``hillshade`` function returns the following:
+
+``a numpy array``: numpy array
+      A numpy array containing hillshade values.
+
+Example:
+
+.. code-block:: python
+
+    import rasterio as rio
+    import earthpy.spatial as es
+
+    # Open arr numpy array
+    with rio.open("path_her_arr_filename.tif") as src:
+        arr = src.read()
+
+    # Create hillshade numpy array
+    hillshade = es.hillshade(arr, 315, 45)
