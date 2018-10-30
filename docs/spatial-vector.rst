@@ -13,7 +13,7 @@ The second object will be used as the spatial extent to clip the first object.
 
 All inputs must be in the same Coordinate Refenence System (CRS).
 
-``clip_shp`` takes 2 input parameters:
+``clip_shp`` takes 2 input parameters: 
 
 ``shp``: geopandas GeoDataframe you wish to clip
 
