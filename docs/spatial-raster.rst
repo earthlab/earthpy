@@ -70,8 +70,8 @@ Example:
     import numpy as np
     import earthpy.spatial as es
 
-    b1 = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    b2 = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+    nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
 
     # Calculate normalized difference
-    ndiff = es.normalized_diff(b1, b2)
+    ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
