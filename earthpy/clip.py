@@ -58,15 +58,16 @@ def clip_shp(shp, clip_obj):
 
    Parameters
    ----------
-   shp : geopandas dataframe
-        Vector layer (point, line, polygon) to be clipped to clip_obj.
+   shp : Geopandas dataframe
+         Dataset to be clipped.
 
-   clip_obj : geopandas dataframe
-        Dataset to be clipped.
+   clip_obj : Geopandas dataframe
+        Vector layer (point, line, polygon) to be clipped to.       
 
    Returns
    -------
-   Points, lines, polygons clipped to vector boundary."""
+   Geopandas dataframe:
+        Points, lines, polygons clipped to vector boundary."""
 
     if shp["geometry"].iloc[0].type == "Point":
         return(clip_points(shp, clip_obj))
