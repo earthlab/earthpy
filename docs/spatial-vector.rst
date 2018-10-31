@@ -12,7 +12,7 @@ polygon vector object (Geopandas dataframe).
 
 It can be executed independently or using the ``clip_shp`` function.
 
-Both layers must be the same Coordinate Reference System (CRS).
+Both layers must be in the same Coordinate Reference System (CRS).
 
 ``clip_points`` takes 2 input parameters:
 

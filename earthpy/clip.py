@@ -86,13 +86,13 @@ def clip_shp(shp, clip_obj):
    """A function to clip points, lines, polygon geometries based on an input
    geometry.
 
-   Both layers must be the same Coordinate Reference System (CRS).
+   Both layers must be in the same Coordinate Reference System (CRS).
 
    Depending on the geometry type, input data will be clipped to the full
    extent of clip_obj using either clip_points or clip_line_poly.
 
    If there are multiple polygons in clip_obj,
-   data will be clipped to the total boundary of
+   data from shp will be clipped to the total boundary of
    all polygons in clip_obj.
 
    Parameters
