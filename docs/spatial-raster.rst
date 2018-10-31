@@ -1,17 +1,14 @@
 Earthpy Spatial Raster Data
 ===========================
 
-The ``earthpy`` spatial module provides functions that wrap around the ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+The ``earthpy`` spatial module provides functions that wrap around the
+``rasterio`` and ``geopandas`` to work with raster and vector data in Python.
 
 Stack Raster Files
 ~~~~~~~~~~~~~~~~~~
-
-The ``stack_raster_tifs`` function takes a list of raster paths and turns that list
-into an
-
+The ``stack_raster_tifs`` function turns a list of raster paths into:
 1. a stacked geotiff on your hard drive and
-2. (optionally) an output raster stack in numpy format with associated metadata.
+2. (optional) an output raster stack in numpy format with associated metadata.
 
 All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
@@ -36,7 +33,8 @@ The stack_raster_tiffs function returns the following if ``arr_out=True``:
 
 ``arr``: a numpy array containing all of the stacked data
 
-``meta``: dictionary - the updated metadata for the numpy array in rasterio metadata dictionary format
+``meta``: dictionary - the updated metadata for the numpy array in rasterio
+metadata dictionary format
 
 Example:
 
