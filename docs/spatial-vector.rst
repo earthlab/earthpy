@@ -20,7 +20,7 @@ Both layers must be in the same Coordinate Reference System (CRS).
     Point data to be clipped to clip_obj.
 
 ``clip_obj``: **geopandas dataframe**
-    Vector layer (point, line, polygon) to be clipped to.
+    Polygon vector layer used to clip shp.
 
 The ``clip_points`` function returns the following:
 
