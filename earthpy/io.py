@@ -7,19 +7,19 @@ import os.path as op
 from download import download
 
 
-
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
-# If ZIPFILE / TARFILE / etc, we'll unzip to a folder w/ the week's name
+# If zipfile, tarfile, etc, unzip to a folder w/ the name
 DATA_URLS = {
 
     'co-flood-extras': [('https://ndownloader.figshare.com/files/7010681', 'boulder-precip.csv', 'file'),
-                    ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file')],
+                        ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file')],
     'colorado-flood': ('https://ndownloader.figshare.com/files/12395030', '.', 'zip'),
     'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/12459464', '.', 'zip'),
     'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
     'cs-test-naip': ('https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe', '.', 'zip'),
     'cs-test-landsat': ('https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e', '.', 'zip'),
+    'ndvi-automation': ('https://ndownloader.figshare.com/files/13431344', '.', 'zip'),
 
 }
 
