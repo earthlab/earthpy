@@ -165,12 +165,95 @@ Example:
         # Crop image using crop_image
         out_image, out_meta = es.crop_image(raster, geoms)
 
+Plot RGB 
+~~~~~~~~
+
+The ``plot_rgb`` function takes a 3 dimensional numpy array that contains image data and plots the 3 bands together to create a composite image.
+
+``plot_rgb`` takes 8 input parameters:
+
+``arr``: numpy array
+      An n-dimension numpy array in rasterio band order (bands, x, y)
+``rgb``: list
+      Indices of the three bands to be plotted (default = 0,1,2)
+``extent``: tuple - optional
+      The extent object that matplotlib expects (left, right, bottom, top)
+``title``:  string- optional 
+      String representing the title of the plot
+``ax``: matplotlib AxesSubplot 
+      The ax object where the ax element should be plotted. Default = none
+``figsize``: tuple
+      The x and y integer dimensions of the output plot if preferred to set.
+``stretch``: boolean
+      If True, a linear stretch will be applied
+``str_clip``: int
+      The % of clip to apply to the stretch. Default = 2 (2 and 98)
+
+The ``plot_rgb`` function returns the following:
+
+``fig, ax``: figure object, axes object
+      The figure and axes object associated with the 3 band image.  If the ax keyword is specified, the figure return will be None.
+
+Example:
+
+.. code-block:: python
+
+    import matplotlib as plt
+    import earthpy.spatial as es
+
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+    es.plot_rgb(naip_image,
+                rgb=[0, 1, 2],
+                extent=naip_extent,
+                title="NAIP 2017 Post Fire RGB Image",
+                ax=ax1)
+
+Histogram 
+~~~~~~~~~
+
+The ``hist()`` function plots a histogram of each layer in a raster stack converted into a numpy array for quick visualization.
+
+``hist()`` takes 6 input parameters:
+
+``arr``: numpy array
+      An dimension numpy array
+``title``: list
+      A list of title values that should either equal the number of bands or be empty, default = none
+``colors``: list
+      A list of color values that should either equal the number of bands or be a single color, (purple = default)
+``cols``: int 
+      The number of columns you want to plot in
+``bins``: int
+      The number of bins to calculate for the histogram
+``figsize``: tuple
+      The figsize if you'd like to define it. default: (12, 12)
+    
+The ``hist()`` function returns the following:
+
+``fig, ax or axs`` : figure object, axes object
+      The figure and axes object(s) associated with the histogram.
+
+Example:
+
+.. code-block:: python
+
+    import earthpy.spatial as es
+
+    colors = ['r', 'k', 'b', 'g', 'k', 'y', 'y']
+    titles = ["Red Band", "Near Infrared (NIR) Band", "Blue/Green Band",
+              "Green Band", "Near Infrared (NIR) Band",
+              "Mid-infrared Band", "Mid-infrared Band"]
+
+    # Plot histogram
+    es.hist(modis_bands_pre_data,
+            colors=colors,
+            title=titles,
+            cols=2)
 
 Hillshade
 ~~~~~~~~~
 
-The ``hillshade`` function takes a numpy array containing elevation data and creates
-a hillshade array.
+The ``hillshade`` function takes a numpy array containing elevation data and creates a hillshade array.
 
 ``hillshade`` takes 3 input parameters:
 

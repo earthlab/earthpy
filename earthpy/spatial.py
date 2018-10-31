@@ -4,12 +4,12 @@ import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
+# For color bar resizing
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from shapely.geometry import mapping, box
 import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
-from shapely.geometry import mapping, box
-# For color bar resizing
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 
 
@@ -57,6 +57,17 @@ def normalized_diff(b1, b2):
     ----------
     n_diff : ndarray with the same shape as inputs
         The element-wise result of (b2-b1) / (b2+b1) with all nan values masked.
+    
+    Examples
+    --------
+    >>>import numpy as np
+    >>>import earthpy.spatial as es
+    ...
+    ...red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+    ...nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    ...
+    ...# Calculate normalized difference
+    ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
@@ -182,7 +193,7 @@ def crop_image(raster, geoms, all_touched=True):
     else:
         clip_ext = geoms
     # Mask the input image and update the metadata
-    out_image, out_transform = rio.mask.mask(raster, clip_ext, crop=True, all_touched=all_touched)
+    out_image, out_transform = mask(raster, clip_ext, crop=True, all_touched=all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                      "height": out_image.shape[1],
@@ -307,7 +318,7 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     cmap: str
         Colormap name ("greys" by default)
     cols: int
-        Number of columns for plot grid
+        Number of columns for plot grid (3 by default)
     figsize: tuple - optional
         Figure size in inches ((12, 12) by default)
     extent: tuple - optional
@@ -317,10 +328,22 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     ----------
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the plot.
+    
+    Examples
+    --------
+    >>>import earthpy.spatial as es
+    ...
+    ...titles = ["Red Band", "Green Band", "Blue Band", "Near Infrared (NIR) Band"]
+    ...
+    ...# Plot all bands of a raster tif
+    ...es.plot_bands(naip_image,
+    ...              title=titles,
+    ...              figsize=(12,5),
+    ...              cols=2)
     """
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
-        # test if there are enough titles to create plots
+        # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same " +
@@ -373,14 +396,22 @@ def plot_rgb(arr, rgb=(0, 1, 2),
 
     Parameters
     ----------
-    arr: a n dimension numpy array in rasterio band order (bands, x, y)
-    rgb: list, indices of the three bands to be plotted (default = 0,1,2)
-    extent: the extent object that matplotlib expects (left, right, bottom, top)
-    title: optional string representing the title of the plot
-    ax: the ax object where the ax element should be plotted. Default = none
-    figsize: tuple the x and y integer dimensions of the output plot if preferred to set.
-    stretch: Boolean - if True a linear stretch will be applied
-    str_clip: int - the % of clip to apply to the stretch. Default = 2 (2 and 98)
+    arr: numpy array
+        An n dimension numpy array in rasterio band order (bands, x, y)
+    rgb: list
+        Indices of the three bands to be plotted (default = 0,1,2)
+    extent: tuple
+        The extent object that matplotlib expects (left, right, bottom, top)
+    title: string (optional)
+        String representing the title of the plot
+    ax: object
+        The axes object where the ax element should be plotted. Default = none
+    figsize: tuple (optional)
+        The x and y integer dimensions of the output plot if preferred to set.
+    stretch: Boolean
+        If True a linear stretch will be applied
+    str_clip: int (optional)
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
 
     Returns
     ----------
