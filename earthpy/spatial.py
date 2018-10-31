@@ -1,16 +1,15 @@
-import contextlib
 import os
-import geopandas as gpd
-import rasterio as rio
-from rasterio.mask import mask
+import contextlib
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
-
-from shapely.geometry import mapping, box
 # For color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from shapely.geometry import mapping, box
+import geopandas as gpd
+import rasterio as rio
+from rasterio.mask import mask
 from skimage import exposure
 
 
@@ -44,6 +43,7 @@ def extent_to_json(ext_obj):
 
 # Calculate normalized difference between two arrays
 # Both arrays must be of the same size
+
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference
     Math will be calculated (b2-b1) / (b2+b1).
@@ -73,12 +73,12 @@ def normalized_diff(b1, b2):
         raise ValueError("Both arrays should be of the same dimensions")
 
     n_diff = (b2 - b1) / (b2 + b1)
-    #ndvi[np.isnan(ndvi)] = 0
     n_diff = np.ma.masked_invalid(n_diff)
     return n_diff
 
 
-# TODO: include a no data value here if provided ...
+# TODO: include a no data value here if provided 
+
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an ouput raster stack in numpy format.
     Note that this function depends upon the stack() function.
@@ -505,7 +505,7 @@ def hist(arr,
         # Clear additional axis elements
         for ax in axs_ravel[total_layers:]:
             ax.set_axis_off()
-            #ax.set(xticks=[], yticks=[])
+            
         return fig, axs
     elif arr.ndim == 2:
         # Plot all bands
