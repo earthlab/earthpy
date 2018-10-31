@@ -2,6 +2,7 @@ import contextlib
 import os
 import geopandas as gpd
 import rasterio as rio
+from rasterio.mask import mask
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
@@ -181,7 +182,7 @@ def crop_image(raster, geoms, all_touched=True):
     else:
         clip_ext = geoms
     # Mask the input image and update the metadata
-    out_image, out_transform = rio.mask.mask(raster, clip_ext, crop=True, all_touched=all_touched)
+    out_image, out_transform = mask(raster, clip_ext, crop=True, all_touched=all_touched)
     out_meta = raster.meta.copy()
     out_meta.update({"driver": "GTiff",
                      "height": out_image.shape[1],
