@@ -319,7 +319,7 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     """
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
-        # test if there are enough titles to create plots
+        # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same " +
