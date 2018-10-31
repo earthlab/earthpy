@@ -32,9 +32,9 @@ Get-Started Document
 --------------------
 The ``get-started`` document provides a description of Earthpy's modules, the installation process, and dependencies.
 Earthpy's Modules: 
-- Spatial
-- IO
-- Utils
+ * Spatial
+ * IO
+ * Utils
  
 Spatial-Raster Document
 -----------------------
