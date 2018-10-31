@@ -57,6 +57,17 @@ def normalized_diff(b1, b2):
     ----------
     n_diff : ndarray with the same shape as inputs
         The element-wise result of (b2-b1) / (b2+b1) with all nan values masked.
+    
+    Examples
+    --------
+    >>>import numpy as np
+    >>>import earthpy.spatial as es
+    ...
+    ...red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+    ...nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    ...
+    ...# Calculate normalized difference
+    ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
@@ -317,6 +328,18 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     ----------
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the plot.
+    
+    Examples
+    --------
+    >>>import earthpy.spatial as es
+    ...
+    ...titles = ["Red Band", "Green Band", "Blue Band", "Near Infrared (NIR) Band"]
+    ...
+    ...# Plot all bands of a raster tif
+    ...es.plot_bands(naip_image,
+    ...              title=titles,
+    ...              figsize=(12,5),
+    ...              cols=2)
     """
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
