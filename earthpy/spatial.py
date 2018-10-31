@@ -306,7 +306,7 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     cmap: str
         Colormap name ("greys" by default)
     cols: int
-        Number of columns for plot grid
+        Number of columns for plot grid (3 by default)
     figsize: tuple - optional
         Figure size in inches ((12, 12) by default)
     extent: tuple - optional
@@ -372,14 +372,22 @@ def plot_rgb(arr, rgb=(0, 1, 2),
 
     Parameters
     ----------
-    arr: a n dimension numpy array in rasterio band order (bands, x, y)
-    rgb: list, indices of the three bands to be plotted (default = 0,1,2)
-    extent: the extent object that matplotlib expects (left, right, bottom, top)
-    title: optional string representing the title of the plot
-    ax: the ax object where the ax element should be plotted. Default = none
-    figsize: tuple the x and y integer dimensions of the output plot if preferred to set.
-    stretch: Boolean - if True a linear stretch will be applied
-    str_clip: int - the % of clip to apply to the stretch. Default = 2 (2 and 98)
+    arr: numpy array
+        An n dimension numpy array in rasterio band order (bands, x, y)
+    rgb: list
+        Indices of the three bands to be plotted (default = 0,1,2)
+    extent: tuple
+        The extent object that matplotlib expects (left, right, bottom, top)
+    title: string (optional)
+        String representing the title of the plot
+    ax: object
+        The axes object where the ax element should be plotted. Default = none
+    figsize: tuple (optional)
+        The x and y integer dimensions of the output plot if preferred to set.
+    stretch: Boolean
+        If True a linear stretch will be applied
+    str_clip: int (optional)
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
 
     Returns
     ----------
