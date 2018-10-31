@@ -80,7 +80,7 @@ def normalized_diff(b1, b2):
 # TODO: include a no data value here if provided 
 
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """Take a list of raster paths and turn into an ouput raster stack in numpy format.
+    """Take a list of raster paths and turn into an output raster stack in numpy format.
     Note that this function depends upon the stack() function.
 
     Parameters
@@ -558,7 +558,7 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
     classes : list
         A list of unique values found in the numpy array that you wish to plot.
     titles : list
-        A list of a title or category for each uique value in your raster. This is the
+        A list of a title or category for each unique value in your raster. This is the
         label that will go next to each box in your legend.
     bbox : optional, tuple
         This is the bbox_to_anchor argument that will place the legend anywhere on or around your plot.
