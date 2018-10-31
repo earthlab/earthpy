@@ -7,7 +7,7 @@ DISTNAME = 'earthpy'
 DESCRIPTION = 'A set of helper functions to make working with spatial data in open source tools easier. This package is maintained by Earth Lab and was originally designed to support the earth analytics education program.'
 MAINTAINER = 'Leah Wasser'
 MAINTAINER_EMAIL = 'leah.wasser@colorado.edu'
-VERSION = '0.0.3-git'
+VERSION = '0.0.3a-git'
 
 
 def configuration(parent_package='', top_path=None):
