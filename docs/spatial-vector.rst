@@ -31,13 +31,13 @@ Example:
 .. code-block:: python
 
   import geopandas as gpd
-  import clip_data as cl
+  import earthpy.clip as cl
 
   # Import shapefile using geopandas
-  point_path = gpd.read_file("point_path_filename.shp")
+  points = gpd.read_file("point_path_filename.shp")
 
   # Import clip object using geopandas
-  boundary_path = gpd.read_file("boundary_path_filename.shp")
+  clip_obj = gpd.read_file("boundary_path_filename.shp")
 
   point_clip = cl.clip_points(points, clip_obj)
 

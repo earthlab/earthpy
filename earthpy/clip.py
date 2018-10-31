@@ -91,22 +91,23 @@ def clip_shp(shp, clip_obj):
    Depending on the geometry type, input data will be clipped to the full
    extent of clip_obj using either clip_points or clip_line_poly.
 
-   If there are multiple polygons in object,
+   If there are multiple polygons in clip_obj,
    data will be clipped to the total boundary of
-   all polygons.
+   all polygons in clip_obj.
 
    Parameters
    ----------
    shp : Geopandas dataframe
-         Dataset to be clipped.
+         Vector layer (point, line, polygon) to be clipped to clip_obj.
 
    clip_obj : Geopandas dataframe
-        Vector layer (point, line, polygon) to be clipped to.
+         Polygon vector layer used to clip shp.
 
    Returns
    -------
    Geopandas dataframe:
-        Points, lines, polygons clipped to vector boundary.
+        Vector data (points, lines, polygons) from shp clipped to
+        polygon boundary from clip_obj.
     """
 
     if shp["geometry"].iloc[0].type == "Point":
