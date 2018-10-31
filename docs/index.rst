@@ -5,10 +5,19 @@
 
 Welcome to Earthpy's documentation!
 ===================================
-Earthpy is a python package devoted to working with spatial and remote sensing data.
 
-Earthpy's Index (Table of Contents)
-===================================
+Earthpy: A Python Package for Earth Data
+========================================
+Earthpy is a python package that makes it easier to plot and work with spatial
+raster and vector data using open source tools. Earthpy depends upon `geopandas`
+which has a focus on vector data and `rasterio` with facilitates input and
+output of raster data files. It also requires `matplotlib` for plotting operations.
+
+Earthpy's goal is to make working with spatial data easier for scientists.
+Contributions to earthpy are welcome.
+
+Earthpy's User Guide
+====================
 
 .. toctree::
    :maxdepth: 2
@@ -24,26 +33,3 @@ Indices and Tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-About Earthpy's Documents
-===================
-
-Get-Started Document
---------------------
-The ``get-started`` document provides a description of Earthpy's modules, the installation process, and dependencies.
-Earthpy's Modules: 
- * Spatial
- * IO
- * Utils
- 
-Spatial-Raster Document
------------------------
-The ``spatial-raster`` document describes earthpy's spatial module, its functions, and provides an example code of how a function handles raster data in Python.
-The specific example in the document highlights the ``stack_raster_tifs`` function, which was created to stack raster files (such as Landsat imagery). 
-
-Spatial-Vector Document
------------------------
-The ``spatial-vector`` document describes earthpy's spatial module, its functions, and provides an example code of how a function handles vector data in Python.
-The specific example in the document highlights the ``clip_shp`` function, which was created to take two GeoDataframe objects, spatially clip the first object, and use the second object as the spatial extent (clip extent).
-
-
