@@ -7,11 +7,11 @@ def clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
     input point geopandas dataframe that will be clipped to the clip_obj
     geopandas dataframe.
-    
+
     Points that intersect with the geometry of clip_obj are extracted
     and returned.
-    
-    
+
+
     Parameters
     ------------------
     shp: Geopandas dataframe
@@ -83,8 +83,33 @@ def clip_line_poly(shp, clip_obj):
 
 
 def clip_shp(shp, clip_obj):
-    '''
-    '''
+   """A function to clip points, lines, polygon geometries based on an input
+   geometry.
+
+   Both layers must be in the same Coordinate Reference System (CRS).
+
+   Depending on the geometry type, input data will be clipped to the full
+   extent of clip_obj using either clip_points or clip_line_poly.
+
+   If there are multiple polygons in clip_obj,
+   data from shp will be clipped to the total boundary of
+   all polygons in clip_obj.
+
+   Parameters
+   ----------
+   shp : Geopandas dataframe
+         Vector layer (point, line, polygon) to be clipped to clip_obj.
+
+   clip_obj : Geopandas dataframe
+         Polygon vector layer used to clip shp.
+
+   Returns
+   -------
+   Geopandas dataframe:
+        Vector data (points, lines, polygons) from shp clipped to
+        polygon boundary from clip_obj.
+    """
+
     if shp["geometry"].iloc[0].type == "Point":
         return(clip_points(shp, clip_obj))
     else:
