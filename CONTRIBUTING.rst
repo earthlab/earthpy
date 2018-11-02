@@ -1,5 +1,5 @@
-Guidelines
-==========
+Contributing Guidelines
+=======================
 
 Contributions to `earthpy` are welcome. They are more likely to
 be accepted if they follow the guidelines below.
@@ -10,7 +10,7 @@ systems data easier. We are open to new functionality but are currently
 trying to ensure our package is stable, operational and well documented.
 
 Edits & Updates
-===============
+~~~~~~~~~~~~~~~
 
 When submitting a change to the repository, please do the following:
 
@@ -35,7 +35,7 @@ When submitting a pull request:
 - Please note that tests are also run via Travis-CI on our documentation. So be sure that any ``.rst` file submissions are properly formatted and tests are passing!
 
 Documentation Updates
-=====================
+~~~~~~~~~~~~~~~~~~~~~
 
 Improving the documentation and testing for code already in `earthpy`
 is a great way to get started if you'd like to make a contribution. Please note
@@ -46,17 +46,20 @@ Style
 -----
 
 - `Earthpy` currently only supports python 3 (3.2+). Please test code locally in
-python 3 when
+  python 3 when
   possible (all supported versions will be automatically tested on
   Travis CI).
 
-- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some standards that we follow include:
-    - The first word of a comment should be capitalized with a space   following the `#` sign like this: `# This is a comment here`
-    - Variable and function names should be all lowercase with words separated by `_`.
+- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some
+  standards that we follow include:
+    - The first word of a comment should be capitalized with a space following
+      the `#` sign like this: `# This is a comment here`
+    - Variable and function names should be all lowercase with words separated
+      by `_`.
     - Class definitions should use camel case - example: `ClassNameHere` .
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and `earthpy` imports third following PEP 8 standards.
-  Within each grouping, imports should be alphabetized. Always use absolute
-  imports when possible, and explicit relative imports for local
+  3rd-party libraries next, and `earthpy` imports third following PEP 8
+  standards. Within each grouping, imports should be alphabetized. Always use
+  absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
