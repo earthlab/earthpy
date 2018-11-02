@@ -32,7 +32,7 @@ When submitting a pull request:
   line of a docstring should be a standalone summary. Parameters and
   return values should be documented explicitly.
 
-- Please note that tests are also run via Travis-CI on our documentation. So be sure that any ``.rst` file submissions are properly formatted and tests are passing!
+- Please note that tests are also run via Travis-CI on our documentation. So be sure that any ``.rst`` file submissions are properly formatted and tests are passing.
 
 Documentation Updates
 =====================
