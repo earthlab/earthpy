@@ -22,10 +22,11 @@ When submitting a pull request:
 
 - All existing tests should pass. Please make sure that the test
   suite passes, both locally and on
-  [Travis CI](https://travis-ci.org/earthlab/earthpy). Status on
+  `Travis CI <https://travis-ci.org/earthlab/earthpy>`_
+  Status on
   Travis will be visible on a pull request. If you want to enable
   Travis CI on your own fork, please read the
-  [getting started docs](http://about.travis-ci.org/docs/user/getting-started/).
+  `getting started docs <http://about.travis-ci.org/docs/user/getting-started/>`_.
 
 - New functionality should include tests. Please write reasonable
   tests for your code and make sure that they pass on your pull request.
@@ -43,7 +44,9 @@ Documentation Updates
 
 Improving the documentation and testing for code already in `earthpy`
 is a great way to get started if you'd like to make a contribution. Please note
-that our documentation files are in [`ReStructuredText (.rst)`](http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html) format and format your pull request
+that our documentation files are in
+`ReStructuredText (.rst) <http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
+format and format your pull request
 accordingly.
 
 Style
@@ -53,9 +56,12 @@ Style
   Python 3 when possible (all supported versions will be automatically tested on
   Travis CI).
 
-- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some standards that we follow include:
-    - The first word of a comment should be capitalized with a space following the `#` sign like this: `# This is a comment here`
-    - Variable and function names should be all lowercase with words separated by `_`.
+- Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ when possible.
+  Some standards that we follow include:
+    - The first word of a comment should be capitalized with a space following
+      the `#` sign like this: `# This is a comment here`
+    - Variable and function names should be all lowercase with words separated
+      by `_`.
     - Class definitions should use camel case - example: `ClassNameHere` .
 
 - Imports should be grouped with standard library imports first,
