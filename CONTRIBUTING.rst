@@ -46,8 +46,7 @@ Style
 -----
 
 - `Earthpy` currently only supports python 3 (3.2+). Please test code locally in
-python 3 when
-  possible (all supported versions will be automatically tested on
+  python 3 when possible (all supported versions will be automatically tested on
   Travis CI).
 
 - Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some standards that we follow include:
