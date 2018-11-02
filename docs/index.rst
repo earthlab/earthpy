@@ -3,9 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Earthpy's documentation!
-===================================
-
 Earthpy: A Python Package for Earth Data
 ========================================
 Earthpy is a python package that makes it easier to plot and work with spatial
@@ -27,6 +24,7 @@ Earthpy's User Guide
    spatial-raster
    spatial-vector
    contributing
+   contributors
 
 Indices and Tables
 ==================
