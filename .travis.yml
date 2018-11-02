@@ -17,7 +17,7 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   - conda env create -f environment.yml
-  - source activate earth-analytics-python
+  - source activate earthpy-dev
   - python setup.py install
   - pip install -r dev-requirements.txt
 

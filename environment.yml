@@ -1,4 +1,4 @@
-name: earthpy-testing
+name: earthpy-dev
 channels:
   - conda-forge
 dependencies:
@@ -13,7 +13,6 @@ dependencies:
   - seaborn
 
   # Geo stuff
-  - rasterstats
   - geopy
   - cartopy
   - geopandas
@@ -23,13 +22,6 @@ dependencies:
   - scikit-image
   - gdal
   - geocoder
-
-  # Jupyter Environment
-  - notebook
-  - ipython
-  - jupyter_contrib_nbextensions
-  - nb_conda
-  - jupyterlab
 
   - pip:
       # Utilities

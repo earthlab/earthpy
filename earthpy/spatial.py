@@ -57,7 +57,7 @@ def normalized_diff(b1, b2):
     ----------
     n_diff : ndarray with the same shape as inputs
         The element-wise result of (b2-b1) / (b2+b1) with all nan values masked.
-    
+
     Examples
     --------
     >>>import numpy as np
@@ -77,7 +77,7 @@ def normalized_diff(b1, b2):
     return n_diff
 
 
-# TODO: include a no data value here if provided 
+# TODO: include a no data value here if provided
 
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an output raster stack in numpy format.
@@ -328,7 +328,7 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     ----------
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the plot.
-    
+
     Examples
     --------
     >>>import earthpy.spatial as es
@@ -505,7 +505,7 @@ def hist(arr,
         # Clear additional axis elements
         for ax in axs_ravel[total_layers:]:
             ax.set_axis_off()
-            
+
         return fig, axs
     elif arr.ndim == 2:
         # Plot all bands

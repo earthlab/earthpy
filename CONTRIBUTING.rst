@@ -1,7 +1,7 @@
 Guidelines
 ==========
 
-Contributions to `earthpy` are welcome. They are more likely to
+We welcome contributions to `earthpy`. They are more likely to
 be accepted if they follow the guidelines below.
 
 At this stage of development, we are developing a set of
@@ -14,7 +14,9 @@ Edits & Updates
 
 When submitting a change to the repository, please do the following:
 
-- Please first create an issue that covers the item that you'd like to change, update or enhance. Once a discussion has yielded a vote of support for that addition to the package, you are ready to submit a pull request.
+- Please first create an issue that covers the item that you'd like to 
+  change, update or enhance. Once a discussion has yielded a vote of support 
+  for that addition to the package, you are ready to submit a pull request.
 
 When submitting a pull request:
 
@@ -32,7 +34,9 @@ When submitting a pull request:
   line of a docstring should be a standalone summary. Parameters and
   return values should be documented explicitly.
 
-- Please note that tests are also run via Travis-CI on our documentation. So be sure that any ``.rst` file submissions are properly formatted and tests are passing!
+- Please note that tests are also run via Travis-CI on our documentation. 
+  So be sure that any ``.rst`` file submissions are properly formatted and 
+  tests are passing.
 
 Documentation Updates
 =====================
@@ -45,13 +49,12 @@ accordingly.
 Style
 -----
 
-- `Earthpy` currently only supports python 3 (3.2+). Please test code locally in
-python 3 when
-  possible (all supported versions will be automatically tested on
+- `Earthpy` currently only supports Python 3 (3.2+). Please test code locally in
+  Python 3 when possible (all supported versions will be automatically tested on
   Travis CI).
 
 - Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) when possible. Some standards that we follow include:
-    - The first word of a comment should be capitalized with a space   following the `#` sign like this: `# This is a comment here`
+    - The first word of a comment should be capitalized with a space following the `#` sign like this: `# This is a comment here`
     - Variable and function names should be all lowercase with words separated by `_`.
     - Class definitions should use camel case - example: `ClassNameHere` .
 
