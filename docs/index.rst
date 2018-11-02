@@ -26,6 +26,7 @@ Earthpy's User Guide
    get-started
    spatial-raster
    spatial-vector
+   contributing
 
 Indices and Tables
 ==================
