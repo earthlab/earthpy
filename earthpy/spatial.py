@@ -1,16 +1,15 @@
-import contextlib
 import os
-import geopandas as gpd
-import rasterio as rio
-from rasterio.mask import mask
+import contextlib
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
-
-from shapely.geometry import mapping, box
 # For color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from shapely.geometry import mapping, box
+import geopandas as gpd
+import rasterio as rio
+from rasterio.mask import mask
 from skimage import exposure
 
 
@@ -44,6 +43,7 @@ def extent_to_json(ext_obj):
 
 # Calculate normalized difference between two arrays
 # Both arrays must be of the same size
+
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference
     Math will be calculated (b2-b1) / (b2+b1).
@@ -57,19 +57,30 @@ def normalized_diff(b1, b2):
     ----------
     n_diff : ndarray with the same shape as inputs
         The element-wise result of (b2-b1) / (b2+b1) with all nan values masked.
+
+    Examples
+    --------
+    >>>import numpy as np
+    >>>import earthpy.spatial as es
+    ...
+    ...red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+    ...nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    ...
+    ...# Calculate normalized difference
+    ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
 
     n_diff = (b2 - b1) / (b2 + b1)
-    #ndvi[np.isnan(ndvi)] = 0
     n_diff = np.ma.masked_invalid(n_diff)
     return n_diff
 
 
-# TODO: include a no data value here if provided ...
+# TODO: include a no data value here if provided
+
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """Take a list of raster paths and turn into an ouput raster stack in numpy format.
+    """Take a list of raster paths and turn into an output raster stack in numpy format.
     Note that this function depends upon the stack() function.
 
     Parameters
@@ -307,7 +318,7 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     cmap: str
         Colormap name ("greys" by default)
     cols: int
-        Number of columns for plot grid
+        Number of columns for plot grid (3 by default)
     figsize: tuple - optional
         Figure size in inches ((12, 12) by default)
     extent: tuple - optional
@@ -317,10 +328,22 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
     ----------
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the plot.
+
+    Examples
+    --------
+    >>>import earthpy.spatial as es
+    ...
+    ...titles = ["Red Band", "Green Band", "Blue Band", "Near Infrared (NIR) Band"]
+    ...
+    ...# Plot all bands of a raster tif
+    ...es.plot_bands(naip_image,
+    ...              title=titles,
+    ...              figsize=(12,5),
+    ...              cols=2)
     """
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
-        # test if there are enough titles to create plots
+        # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
                 raise ValueError("The number of plot titles should be the same " +
@@ -373,14 +396,22 @@ def plot_rgb(arr, rgb=(0, 1, 2),
 
     Parameters
     ----------
-    arr: a n dimension numpy array in rasterio band order (bands, x, y)
-    rgb: list, indices of the three bands to be plotted (default = 0,1,2)
-    extent: the extent object that matplotlib expects (left, right, bottom, top)
-    title: optional string representing the title of the plot
-    ax: the ax object where the ax element should be plotted. Default = none
-    figsize: tuple the x and y integer dimensions of the output plot if preferred to set.
-    stretch: Boolean - if True a linear stretch will be applied
-    str_clip: int - the % of clip to apply to the stretch. Default = 2 (2 and 98)
+    arr: numpy array
+        An n dimension numpy array in rasterio band order (bands, x, y)
+    rgb: list
+        Indices of the three bands to be plotted (default = 0,1,2)
+    extent: tuple
+        The extent object that matplotlib expects (left, right, bottom, top)
+    title: string (optional)
+        String representing the title of the plot
+    ax: object
+        The axes object where the ax element should be plotted. Default = none
+    figsize: tuple (optional)
+        The x and y integer dimensions of the output plot if preferred to set.
+    stretch: Boolean
+        If True a linear stretch will be applied
+    str_clip: int (optional)
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
 
     Returns
     ----------
@@ -474,7 +505,7 @@ def hist(arr,
         # Clear additional axis elements
         for ax in axs_ravel[total_layers:]:
             ax.set_axis_off()
-            #ax.set(xticks=[], yticks=[])
+
         return fig, axs
     elif arr.ndim == 2:
         # Plot all bands
@@ -527,7 +558,7 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
     classes : list
         A list of unique values found in the numpy array that you wish to plot.
     titles : list
-        A list of a title or category for each uique value in your raster. This is the
+        A list of a title or category for each unique value in your raster. This is the
         label that will go next to each box in your legend.
     bbox : optional, tuple
         This is the bbox_to_anchor argument that will place the legend anywhere on or around your plot.

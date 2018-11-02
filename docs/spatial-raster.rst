@@ -1,17 +1,14 @@
 Earthpy Spatial Raster Data
 ===========================
 
-The ``earthpy`` spatial module provides functions that wrap around the ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+The ``earthpy`` spatial module provides functions that wrap around the
+``rasterio`` and ``geopandas`` to work with raster and vector data in Python.
 
 Stack Raster Files
 ~~~~~~~~~~~~~~~~~~
-
-The ``stack_raster_tifs`` function takes a list of raster paths and turns that list
-into an
-
+The ``stack_raster_tifs`` function turns a list of raster paths into:
 1. a stacked geotiff on your hard drive and
-2. (optionally) an output raster stack in numpy format with associated metadata.
+2. (optional) an output raster stack in numpy format with associated metadata.
 
 All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
@@ -36,7 +33,8 @@ The stack_raster_tiffs function returns the following if ``arr_out=True``:
 
 ``arr``: a numpy array containing all of the stacked data
 
-``meta``: dictionary - the updated metadata for the numpy array in rasterio metadata dictionary format
+``meta``: dictionary - the updated metadata for the numpy array in rasterio
+metadata dictionary format
 
 Example:
 
@@ -53,6 +51,31 @@ Example:
     # Stack landsat tif files
     arr, arr_meta = es.stack_raster_tifs(all__paths, destfile)
 
+
+Draw Legend
+~~~~~~~~~~~
+
+The ``draw_legend`` function creates a custom legend with a box for each class in a raster using a maptplotlib image object, the unique classes in the image, and titles for each class.
+
+This function requires the matplotlib Python plotting library.
+
+The ``draw_legend`` function takes five input parameters, two of which are optional:
+
+``im``: matplotlib image object
+      This is the image returned from a call to imshow().
+``classes``: list
+      This is a list of unique values found in the numpy array that you wish to plot.
+``titles``: list
+      This is a list of a title or category for each unique value in your raster. This will act as a label that will go next to each box in your legend.
+``bbox``: tuple (optional)
+      This is the bbox_to_anchor argument that will place the legend anywhere on or around your plot.  The default value is (1.05, 1).
+``loc``: integer (optional)
+      This is the maptplotlib location value that can be used to specify the location of the legend on your plot. The default value is 2.        
+
+
+The default output of ``draw_legend`` is:
+
+* A matplotlib legend object to be displayed as part of your plot.
 
 Calculate Normalized Difference
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -165,12 +188,116 @@ Example:
         # Crop image using crop_image
         out_image, out_meta = es.crop_image(raster, geoms)
 
+Plot RGB 
+~~~~~~~~
+
+The ``plot_rgb`` function takes a 3 dimensional numpy array that contains image data and plots the 3 bands together to create a composite image.
+
+``plot_rgb`` takes 8 input parameters:
+
+``arr``: numpy array
+      An n-dimension numpy array in rasterio band order (bands, x, y)
+``rgb``: list
+      Indices of the three bands to be plotted (default = 0,1,2)
+``extent``: tuple - optional
+      The extent object that matplotlib expects (left, right, bottom, top)
+``title``:  string- optional 
+      String representing the title of the plot
+``ax``: matplotlib AxesSubplot 
+      The ax object where the ax element should be plotted. Default = none
+``figsize``: tuple
+      The x and y integer dimensions of the output plot if preferred to set.
+``stretch``: boolean
+      If True, a linear stretch will be applied
+``str_clip``: int
+      The % of clip to apply to the stretch. Default = 2 (2 and 98)
+
+The ``plot_rgb`` function returns the following:
+
+``fig, ax``: figure object, axes object
+      The figure and axes object associated with the 3 band image.  If the ax keyword is specified, 
+      the figure return will be None.
+
+Example:
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    import earthpy.spatial as es
+
+    # Create list of category names for legend labels
+    category_names = ["Extreme",
+                      "Very High",
+                      "Moderate",
+                      "Low",
+                      "Very Low"]
+
+   # Create list of values from the numpy array
+   values = np.unique(example_raster.ravel())
+
+    # Plot the data with earthpy custom legend
+    fig, ax = plt.subplots(figsize=(10, 8))
+    im = ax.imshow(example_raster,
+                   cmap=PiYG,
+                   extent=example_extent)
+
+    es.draw_legend(im, 
+                   classes=values,
+                   titles=category_names)
+
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+    es.plot_rgb(naip_image,
+                rgb=[0, 1, 2],
+                extent=naip_extent,
+                title="NAIP 2017 Post Fire RGB Image",
+                ax=ax1)
+
+Histogram 
+~~~~~~~~~
+
+The ``hist()`` function plots a histogram of each layer in a raster stack converted into a numpy array for quick visualization.
+
+``hist()`` takes 6 input parameters:
+
+``arr``: numpy array
+      An dimension numpy array
+``title``: list
+      A list of title values that should either equal the number of bands or be empty, default = none
+``colors``: list
+      A list of color values that should either equal the number of bands or be a single color, (purple = default)
+``cols``: int 
+      The number of columns you want to plot in
+``bins``: int
+      The number of bins to calculate for the histogram
+``figsize``: tuple
+      The figsize if you'd like to define it. default: (12, 12)
+    
+The ``hist()`` function returns the following:
+
+``fig, ax or axs`` : figure object, axes object
+      The figure and axes object(s) associated with the histogram.
+
+Example:
+
+.. code-block:: python
+
+    import earthpy.spatial as es
+
+    colors = ['r', 'k', 'b', 'g', 'k', 'y', 'y']
+    titles = ["Red Band", "Near Infrared (NIR) Band", "Blue/Green Band",
+              "Green Band", "Near Infrared (NIR) Band",
+              "Mid-infrared Band", "Mid-infrared Band"]
+
+    # Plot histogram
+    es.hist(modis_bands_pre_data,
+            colors=colors,
+            title=titles,
+            cols=2)
 
 Hillshade
 ~~~~~~~~~
 
-The ``hillshade`` function takes a numpy array containing elevation data and creates
-a hillshade array.
+The ``hillshade`` function takes a numpy array containing elevation data and creates a hillshade array.
 
 ``hillshade`` takes 3 input parameters:
 
