@@ -294,7 +294,8 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
     >>>colorbar(im)
     >>>ax.set(title="Landsat POST Normalized Burn Index (dNBR)")
-    >>>ax.set_axis_off();
+    >>>ax.set_axis_off()
+    >>>plt.show()
     """
     ax = mapobj.axes
     fig = ax.figure
@@ -346,8 +347,8 @@ def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent
         # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
-                raise ValueError("The number of plot titles should be the same " +
-                                 "as the number of raster layers in your array.")
+                raise ValueError("The number of plot titles should equal " +
+                                 "as the number of array raster layers.")
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
