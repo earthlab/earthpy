@@ -82,4 +82,9 @@ def test_clip_funs():
         clipped = cl.clip_shp(locs_gdf, poly_in_gdf)
         clipped.geometry
 
+    # Test what happens with a clip when a donut hole topolgy is used
+
+    # Test what happens when you give the clip_extent a line
+    # Test what happens when you give the clip extent a perfectly straight line so there is not technically a box the extent is a line
+
 
