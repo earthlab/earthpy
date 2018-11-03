@@ -117,10 +117,11 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
                             not exist""")
 
     if len(band_paths) < 2:
-        raise ValueError("""The list of file paths is empty. You need atleast
+        raise ValueError("""The list of file paths is empty. You need at least
                             2 files to create a stack.""")
     with contextlib.ExitStack() as context:
-        sources = [context.enter_context(rio.open(path, **kwds)) for path in band_paths]
+        sources = [context.enter_context(rio.open(path, **kwds))
+                   for path in band_paths]
 
         # TODO: Check that the CRS and TRANSFORM are the same
         dest_kwargs = sources[0].meta
@@ -133,11 +134,11 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
                 stack(sources, dest)
             # Read and return array
             with rio.open(out_path, 'r') as src:
-                return(src.read(), src.profile)
+                return src.read(), src.profile
         else:
             # Write stacked gtif file
             with rio.open(out_path, 'w', **dest_kwargs) as dest:
-                return(stack(sources, dest))
+                return stack(sources, dest)
 
 
 # Function to be submitted to rasterio
@@ -283,11 +284,11 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
-# TODO: verify colorbar works with the latest matplotlib, and is not too wide
-
 def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
-    """
-    Adjusts the height of a colorbar to match the axis height.
+    """Adjusts the height of a colorbar to match the axis height. Note that
+    this function will not work properly using matplotlib v 3.0.0 in Jupyter
+    or when exporting an image. Be sure to update to 3.0.1.
+
     ----------
     mapobj : the matplotlib axes element.
     size : char
@@ -488,8 +489,12 @@ def hist(arr,
     Parameters
     ----------
     arr: a n dimension numpy array
-    title: a list of title values that should either equal the number of bands or be empty, default = none
-    colors: a list of color values that should either equal the number of bands or be a single color, (purple = default)
+    title: str_clip
+        A list of title values that should either equal the number of bands
+        or be empty, default = none
+    colors: list
+        a list of color values that should either equal the number of bands
+        or be a single color, (purple = default)
     cols: int the number of columsn you want to plot in
     bins: the number of bins to calculate for the histogram
     figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
@@ -504,8 +509,9 @@ def hist(arr,
         # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
-                raise ValueError("The number of plot titles should be the same " +
-                                 "as the number of raster layers in your array.")
+                raise ValueError(""""The number of plot titles should be the
+                                     same as the number of raster layers in
+                                      your array.""")
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
@@ -540,8 +546,7 @@ def hist(arr,
 
 
 def hillshade(arr, azimuth=30, angle_altitude=30):
-    """
-    Create hillshade (Array) from a numpy array containing image elevation data.
+    """Create hillshade from a numpy array containing elevation data.
 
     Parameters
     ----------
@@ -566,7 +571,6 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
               np.cos((azimuthrad - np.pi / 2.) - aspect))
 
     return 255*(shaded + 1)/2
-
 
 
 def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
