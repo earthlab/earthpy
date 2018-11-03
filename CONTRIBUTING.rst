@@ -59,13 +59,13 @@ Style
 - Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ when possible.
   Some standards that we follow include:
     - The first word of a comment should be capitalized with a space following
-      the `#` sign like this: `# This is a comment here`
+      the `#` sign like this: ``# This is a comment here``
     - Variable and function names should be all lowercase with words separated
       by `_`.
     - Class definitions should use camel case - example: `ClassNameHere` .
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and `earthpy` imports third following PEP 8
+  3rd-party libraries next, and ```earthpy`` imports third following PEP 8
   standards. Within each grouping, imports should be alphabetized. Always use
   absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
