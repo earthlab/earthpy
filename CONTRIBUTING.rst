@@ -1,7 +1,7 @@
 Contributing Guidelines
 =======================
 
-We welcome contributions to `earthpy`. They are more likely to
+We welcome contributions to ``earthpy``. They are more likely to
 be accepted if they follow the guidelines below.
 
 At this stage of development, we are developing a set of
@@ -42,7 +42,7 @@ When submitting a pull request:
 Documentation Updates
 ~~~~~~~~~~~~~~~~~~~~~
 
-Improving the documentation and testing for code already in `earthpy`
+Improving the documentation and testing for code already in ``earthpy``
 is a great way to get started if you'd like to make a contribution. Please note
 that our documentation files are in
 `ReStructuredText (.rst) <http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
@@ -52,20 +52,21 @@ accordingly.
 Style
 -----
 
-- `Earthpy` currently only supports Python 3 (3.2+). Please test code locally in
+- ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally in
   Python 3 when possible (all supported versions will be automatically tested on
   Travis CI).
 
 - Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ when possible.
   Some standards that we follow include:
+
     - The first word of a comment should be capitalized with a space following
-      the `#` sign like this: `# This is a comment here`
+      the ``#`` sign like this: ``# This is a comment here``
     - Variable and function names should be all lowercase with words separated
-      by `_`.
+      by ``_``.
     - Class definitions should use camel case - example: `ClassNameHere` .
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and `earthpy` imports third following PEP 8
+  3rd-party libraries next, and ``earthpy`` imports third following PEP 8
   standards. Within each grouping, imports should be alphabetized. Always use
   absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
