@@ -1,7 +1,17 @@
 language: python
-
 python:
 - 3.6
+- 3.5
+- 3.4
+matrix:
+  include:
+    - python: 3.6
+      env: TOXENV=flake8
+    - python: 3.6
+      env: TOXENV=pylint
+
+install: pip install -U tox-travis
+script: tox
 
 cache: pip
 
