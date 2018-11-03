@@ -52,9 +52,9 @@ accordingly.
 Style
 -----
 
-- ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally in
-  Python 3 when possible (all supported versions will be automatically tested on
-  Travis CI).
+- ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally
+  in Python 3 when possible (all supported versions will be automatically
+  tested on Travis CI).
 
 - Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ when possible.
   Some standards that we follow include:
@@ -63,7 +63,7 @@ Style
       the ``#`` sign like this: ``# This is a comment here``
     - Variable and function names should be all lowercase with words separated
       by ``_``.
-    - Class definitions should use camel case - example: `ClassNameHere` .
+    - Class definitions should use camel case - example: ``ClassNameHere`` .
 
 - Imports should be grouped with standard library imports first,
   3rd-party libraries next, and ``earthpy`` imports third following PEP 8
