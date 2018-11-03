@@ -59,11 +59,13 @@ def test_clip_funs():
 
     poly_out_gdf = gpd.GeoDataFrame(gpd.GeoSeries(poly_no_inters),
                        crs={'init': 'epsg:4326'})
-    poly_out_gdf = poly_out_gdf.rename(columns={0: 'geometry'}).set_geometry('geometry')
+    poly_out_gdf = poly_out_gdf.rename(columns={0: 'geometry'}).\
+        set_geometry('geometry')
 
     poly_in_gdf = gpd.GeoDataFrame(gpd.GeoSeries(poly_inters),
                        crs={'init': 'epsg:4326'})
-    poly_in_gdf = poly_in_gdf.rename(columns={0: 'geometry'}).set_geometry('geometry')
+    poly_in_gdf = poly_in_gdf.rename(columns={0: 'geometry'}).\
+        set_geometry('geometry')
 
     # Test that a bounding box returns error if the extents don't overlap
     with pytest.raises(ValueError):
@@ -75,7 +77,8 @@ def test_clip_funs():
 
     # Test that clip shape runs if extents do overlap
     # This code should run just fine -- how do i "test" that?
-    # Technically if this runs below and passes clipped.geometry then it's a GDF and it did run??
+    # Technically if this runs below and passes clipped.geometry then it's a
+    # GDF and it did run??
     try:
         clipped = cl.clip_shp(locs_gdf, poly_in_gdf)
         clipped.geometry
