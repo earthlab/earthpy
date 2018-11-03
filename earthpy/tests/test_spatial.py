@@ -65,8 +65,6 @@ def test_clip_funs():
                        crs={'init': 'epsg:4326'})
     poly_in_gdf = poly_in_gdf.rename(columns={0: 'geometry'}).set_geometry('geometry')
 
-
-
     # Test that a bounding box returns error if the extents don't overlap
     with pytest.raises(ValueError):
         cl.clip_shp(locs_gdf, poly_out_gdf)
@@ -82,9 +80,8 @@ def test_clip_funs():
         clipped = cl.clip_shp(locs_gdf, poly_in_gdf)
         clipped.geometry
 
-    # Test what happens with a clip when a donut hole topolgy is used
+    # Test what happens with a clip when a donut hole topology is used
 
     # Test what happens when you give the clip_extent a line
-    # Test what happens when you give the clip extent a perfectly straight line so there is not technically a box the extent is a line
-
-
+    # Test what happens when you give the clip extent a perfectly straight
+    # line so there is not technically a box the extent is a line
