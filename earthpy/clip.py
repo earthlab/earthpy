@@ -2,6 +2,7 @@ import geopandas as gpd
 
 "A module to clip vector data using geopandas"
 
+# TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
 def clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
