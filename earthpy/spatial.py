@@ -81,8 +81,8 @@ def normalized_diff(b1, b2):
 # TODO: include a no data value here if provided
 
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """Take a list of raster paths and turn into an output raster stack in
-    numpy format. Note that this function depends upon the stack() function.
+    """Take a list of raster paths and turn into an output raster stack
+    numpy array. Note that this function depends upon the stack() function.
 
     Parameters
     ----------
@@ -220,8 +220,6 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     Byte scaling means converting the input image to uint8 dtype and scaling
     the range to ``(low, high)`` (default 0-255).
     If the input image already has dtype uint8, no scaling is done.
-    This function is only available if Python Imaging Library (PIL) is
-    installed.
 
     Parameters
     ----------
@@ -362,8 +360,8 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
-                raise ValueError("The number of plot titles should equal " +
-                                 "as the number of array raster layers.")
+                raise ValueError("""The number of plot titles should equal 
+                                 the number of array raster layers.""")
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
@@ -449,9 +447,9 @@ def plot_rgb(arr, rgb=(0, 1, 2),
         s_max = 100 - str_clip
         arr_rescaled = np.zeros_like(rgb_bands)
         for ii, band in enumerate(rgb_bands):
-            p2, p98 = np.percentile(band, (s_min, s_max))
+            lower, upper = np.percentile(band, (s_min, s_max))
             arr_rescaled[ii] = exposure.rescale_intensity(band,
-                                                          in_range=(p2, p98))
+                                                          in_range=(lower, upper))
         rgb_bands = arr_rescaled.copy()
 
     # If type is masked array - add alpha channel for plotting
@@ -489,7 +487,7 @@ def hist(arr,
     Parameters
     ----------
     arr: a n dimension numpy array
-    title: str_clip
+    title: str
         A list of title values that should either equal the number of bands
         or be empty, default = none
     colors: list
