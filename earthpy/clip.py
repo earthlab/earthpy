@@ -71,8 +71,9 @@ def clip_line_poly(shp, clip_obj):
 
     # Create a box for the initial intersection
     bbox = poly.bounds
-    # Get a list of id's for each road line that overlaps the bounding box and subset the data to just those lines
-    sidx = list(spatial_index.intersection(bbox))#75
+    # Get a list of id's for each object that overlaps the bounding box and
+    # subset the data to just those lines
+    sidx = list(spatial_index.intersection(bbox))
     shp_sub = shp.iloc[sidx]
 
     # Clip the data - with these data
@@ -121,6 +122,12 @@ def clip_shp(shp, clip_obj):
     # Test to ensure shapes intersect
     if not any(shp.intersects(clip_obj)):
         raise ValueError("Shape and crop extent do not overlap.")
+
+    # Multipolys / point / line don't clip properly - alert if multipolys provided
+    if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
+        raise ValueError("""Clip doesn't currently support multipart 
+        geometries. Consider using .explode to create 
+        unique features in your GeoDataFrame""")
 
     if shp["geometry"].iloc[0].type == "Point":
         return clip_points(shp, clip_obj)
