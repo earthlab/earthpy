@@ -121,7 +121,7 @@ def test_clip_multipoly():
     assert len(clipped_multi.geometry) == 6 and clipped_multi.geom_type[
             1] == "MultiPolygon"
 
-def test_clip_multipoly():
+def test_clip_donut_poly():
     """Test what happens with a clip when a donut hole topology is used to
     clip points"""
 
