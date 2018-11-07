@@ -5,7 +5,6 @@ import shapely
 import geopandas as gpd
 import earthpy.clip as cl
 
-
 # Create points GDF
 pts = np.array([[2, 2],
                 [3, 4],
