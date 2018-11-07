@@ -224,7 +224,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     Parameters
     ----------
     data : ndarray
-        PIL image data array.
+        image data array.
     cmin : scalar, optional
         Bias scaling of small values. Default is ``data.min()``.
     cmax : scalar, optional
@@ -457,7 +457,8 @@ def plot_rgb(arr, rgb=(0, 1, 2),
         # Build alpha channel
         mask = ~(np.ma.getmask(rgb_bands[0])) * 255
 
-        # Add the mask to the array (ise earthpy bytescale)
+        # Add the mask to the array & swap the axes order from (bands,
+        # rows, columns) to (rows, columns, bands) for plotting
         rgb_bands = np.vstack((bytescale(rgb_bands),
                                np.expand_dims(mask, axis=0))).\
             transpose([1, 2, 0])

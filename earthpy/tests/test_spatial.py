@@ -94,46 +94,44 @@ multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
 
 # LINE OBJECTS
 
-def test_clip_funs():
-    # Test that a bounding box returns error if the extents don't overlap
+def test_non_overlapping_geoms():
+    """Test that a bounding box returns error if the extents don't overlap"""
     with pytest.raises(ValueError):
         cl.clip_shp(locs_gdf, poly_out_gdf)
 
-    # Test that function is provided 2 GDFs - quack
+def returns_gdf():
+    """Test that function is provided 2 GDFs """
     with pytest.raises(AssertionError):
         cl.clip_shp(locs, poly_in_gdf)
 
-    # Test that clip shape runs if extents do overlap
-    # This code should run just fine -- how do i "test" that?
-    # i dont love testing how many features are returned just in case we adjust the data in some way?
-    # but i want to test that 1. there is a geometry col in the output and
-    # 2. that 6 features are returned i suppose in this case
-    # Technically if this runs below and passes clipped.geometry then it's a
-    # GDF and it did run??
+def test_clip_points():
+    """Test clipping a points GDF with a generic polygon geometry."""
     clipped = cl.clip_shp(locs_gdf, poly_in_gdf)
     assert len(clipped.geometry) == 6 and clipped.geom_type[1] == "Point"
 
+def test_clip_poly():
+    """Test clipping a polygon GDF with a generic polygon geometry."""
     clipped_poly = cl.clip_shp(locs_buff, poly_in_gdf)
-    # Clip a poly with a poly - returns x num of features of type Polygon
-    assert len(clipped_poly.geometry) == 6 and clipped_poly.geom_type[1] == "Polygon"
+    assert len(clipped_poly.geometry) == 6 and \
+           clipped_poly.geom_type[1] == "Polygon"
 
-    # Clip a poly with a multi-poly - this should work (testing that all is in order)
-    # Should i "try" these statements vs running them?
+def test_clip_multipoly():
+    """Test clipping a polygon with a multi-polygon geometry"""
+
     clipped_multi = cl.clip_shp(poly_in_gdf, multi_gdf)
     assert len(clipped_multi.geometry) == 6 and clipped_multi.geom_type[
             1] == "MultiPolygon"
 
-    # Test what happens with a clip when a donut hole topology is used
+def test_clip_multipoly():
+    """Test what happens with a clip when a donut hole topology is used to
+    clip points"""
+
     clipz = cl.clip_shp(locs_gdf, donut_geom)
     assert len(clipz.geometry) == 1 and clipz.geom_type[
         1] == "Point"
 
-
-    # Test what happens when you give the clip_extent a line
+def test_clip_lines():
+    """Test what happens when you give the clip_extent a line GDF"""
     clipped_line = cl.clip_shp(linez_gdf, poly_in_gdf)
-    assert len(clipped_multi.geometry) == 6 and clipped_multi.geom_type[
+    assert len(clipped_line.geometry) == 6 and clipped_line.geom_type[
         1] == "LineString"
-
-
-    # Test what happens when you give the clip extent a perfectly straight
-    # line so there is not technically a box the extent is a line
