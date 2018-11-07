@@ -92,7 +92,6 @@ multi_gdf = gpd.GeoDataFrame(gpd.GeoSeries(multi_poly),
 multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
     set_geometry('geometry')
 
-# LINE OBJECTS
 
 def test_non_overlapping_geoms():
     """Test that a bounding box returns error if the extents don't overlap"""
