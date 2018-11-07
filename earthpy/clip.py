@@ -129,7 +129,6 @@ def clip_shp(shp, clip_obj):
         geometries. Consider using .explode to create 
         unique features in your GeoDataFrame""")
 
-
     if shp["geometry"].iloc[0].type == "Point":
         return clip_points(shp, clip_obj)
     else:
