@@ -105,13 +105,13 @@ def returns_gdf():
 
 def test_clip_points():
     """Test clipping a points GDF with a generic polygon geometry."""
-    clipped = cl.clip_shp(locs_gdf, poly_in_gdf)
-    assert len(clipped.geometry) == 6 and clipped.geom_type[1] == "Point"
+    clip_pts = cl.clip_shp(locs_gdf, poly_in_gdf)
+    assert len(clip_pts.geometry) == 3 and clip_pts.geom_type[1] == "Point"
 
 def test_clip_poly():
     """Test clipping a polygon GDF with a generic polygon geometry."""
     clipped_poly = cl.clip_shp(locs_buff, poly_in_gdf)
-    assert len(clipped_poly.geometry) == 6 and \
+    assert len(clipped_poly.geometry) == 3 and \
            clipped_poly.geom_type[1] == "Polygon"
 
 def test_clip_multipoly():
@@ -131,6 +131,6 @@ def test_clip_multipoly():
 
 def test_clip_lines():
     """Test what happens when you give the clip_extent a line GDF"""
-    clipped_line = cl.clip_shp(linez_gdf, poly_in_gdf)
-    assert len(clipped_line.geometry) == 6 and clipped_line.geom_type[
+    clip_line = cl.clip_shp(linez_gdf, poly_in_gdf)
+    assert len(clip_line.geometry) == 2 and clip_line.geom_type[
         1] == "LineString"
