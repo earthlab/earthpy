@@ -22,10 +22,10 @@ def make_cloud_mask(mask_arr, vals):
         True (Boolean)
     """
 
-    # construct the mask
+    # Construct the mask
     temp_mask = np.isin(mask_arr, vals)
     
-    # mask the values
+    # Mask the values
     mask_arr[temp_mask] = 1
     mask_arr[~temp_mask] = 0
     
