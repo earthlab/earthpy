@@ -23,7 +23,7 @@ locs_gdf = gpd.GeoDataFrame(locs,
 """ Create Line Objects For Testing """
 
 linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
-lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (17, 17)])
+lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
 
 linez_gdf = gpd.GeoDataFrame([1, 2],
                              geometry=[linea, lineb],
@@ -65,10 +65,12 @@ def test_non_overlapping_geoms():
         cl.clip_shp(locs_gdf, poly_out_gdf)
 
 
-def returns_gdf():
-    """Test that function is provided 2 GDFs """
+def check_input_gdfs():
+    """Test that function fails if not provided with 2 GDFs."""
     with pytest.raises(AssertionError):
         cl.clip_shp(locs, poly_in_gdf)
+    with pytest.raises(AssertionError):
+        cl.clip_shp(poly_in_gdf, locs)
 
 
 def test_clip_points():
@@ -92,15 +94,14 @@ def test_clip_multipoly():
 
 def test_clip_donut_poly():
     """Test what happens with a clip when a donut hole topology is used to
-    clip points"""
+    clip points. Turns out a donut hole is translated as a multi-poly so
+    it should also fail gracefully"""
 
-    clipz = cl.clip_shp(locs_gdf, donut_geom)
-    assert len(clipz.geometry) == 1 and clipz.geom_type[
-        1] == "Point"
+    with pytest.raises(ValueError):
+        clipz = cl.clip_shp(locs_gdf, donut_geom)
 
 
 def test_clip_lines():
     """Test what happens when you give the clip_extent a line GDF"""
     clip_line = cl.clip_shp(linez_gdf, poly_in_gdf)
-    assert len(clip_line.geometry) == 2 and clip_line.geom_type[
-        1] == "LineString"
+    assert len(clip_line.geometry) == 2
