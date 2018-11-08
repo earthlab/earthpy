@@ -86,6 +86,8 @@ def test_clip_poly():
            clipped_poly.geom_type[1] == "Polygon"
 
 # TODO same test for points and lines
+
+
 def test_clip_multipoly():
     """Test that multi poly returns a value error"""
     with pytest.raises(ValueError):
@@ -98,7 +100,7 @@ def test_clip_donut_poly():
     it should also fail gracefully"""
 
     with pytest.raises(ValueError):
-        clipz = cl.clip_shp(locs_gdf, donut_geom)
+        cl.clip_shp(locs_gdf, donut_geom)
 
 
 def test_clip_lines():
