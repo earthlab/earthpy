@@ -58,6 +58,10 @@ multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
 
 """ Run clip shape tests """
 
+def returns_gdf():
+    """Test that function returns a GeoDataFrame (or GDF-like) object."""
+    out = cl.clip_shp(locs_gdf, poly_in_gdf)
+    assert hasattr(out, 'geometry')
 
 def test_non_overlapping_geoms():
     """Test that a bounding box returns error if the extents don't overlap"""
