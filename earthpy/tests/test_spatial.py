@@ -1,4 +1,4 @@
-from earthpy import spatial
+import earthpy.spatial as es
 from osgeo import gdal
 from osgeo import osr
 import rasterio as rio
