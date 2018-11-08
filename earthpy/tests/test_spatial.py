@@ -1,8 +1,13 @@
+"""Tests for the spatial module"""
+
 import pandas as pd
+import numpy as np
 import pytest
-from shapely.geometry import Polygon, Point
+from shapely.geometry import Polygon, Point, LineString
+import shapely
 import geopandas as gpd
 import earthpy.spatial as es
+import earthpy.clip as cl
 
 
 def test_extent_to_json():

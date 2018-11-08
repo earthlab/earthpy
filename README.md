@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/earthlab/earthpy/branch/master/graph/badge.svg)](https://codecov.io/gh/earthlab/earthpy)
 [![Docs build](https://readthedocs.org/projects/earthpy/badge/?version=latest)](https://earthpy.readthedocs.io/en/latest/?badge=latest)
 
-# Earth Py
+# EarthPy
 
 A package built to support python teaching in the Earth Lab earth analytics program
 at University of Colorado, Boulder.
