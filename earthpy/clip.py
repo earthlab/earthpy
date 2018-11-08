@@ -1,13 +1,12 @@
-import geopandas as gpd
-
 "A module to clip vector data using geopandas"
 
 # TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
+
 def clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
-    input point geopandas dataframe that will be clipped to the clip_obj
-    geopandas dataframe.
+    input point GeoDataFrame that will be clipped to the clip_obj
+    GeoDataFrame.
 
     Points that intersect with the geometry of clip_obj are extracted
     and returned.
@@ -15,31 +14,31 @@ def clip_points(shp, clip_obj):
 
     Parameters
     ------------------
-    shp: Geopandas dataframe
+    shp: GeoDataFrame
         Composed of point geometry that is clipped to clip_obj
 
-    clip_obj: Geopandas dataframe
-        Polygon geometry that is used as the reference area for clipping the point data.
-        The clip_obj's geometry is dissolved into a single geometric feature and intersected
-        with the points of the shp input.
+    clip_obj: GeoDataFrame
+        Reference polygon for clipping points.
+        The clip_obj's geometry is dissolved into one geometric feature
+        and intersected with the points of shp.
 
 
     Returns
     -------------------
-    Geopandas Dataframe:
+    GeoDataFrame:
 
-        The returned geopandas dataframe is a subset of shp that intersects
+        The returned GeoDataFrame is a subset of shp that intersects
         with clip_obj
     """
     poly = clip_obj.geometry.unary_union
-    return(shp[shp.geometry.intersects(poly)])
+    return shp[shp.geometry.intersects(poly)]
 
 
 def clip_line_poly(shp, clip_obj):
     """A function to clip line and polygon data using geopandas.
 
-    Takes an input geopandas dataframe that is used as the clipped data, and a second
-    geopandas dataframe that is used as the clipping object or reference area.
+    Takes an input GeoDataFrame that is used as the clipped data, and a second
+    GeoDataFrame that is used as the clipping object or reference area.
 
     A spatial index is created around the shp input and is then intersected
     with the bounding box of the clip_obj.
@@ -49,20 +48,20 @@ def clip_line_poly(shp, clip_obj):
 
     Parameters
     ---------------------
-     shp: Geopandas dataframe
+     shp: GeoDataFrame
         Line or polygon geometry that is clipped to the reference
         area provided by the clip_obj
 
-     clip_obj: Geopandas dataframe
+     clip_obj: GeoDataFrame
         Polygon geometry that provides the reference area for clipping
         the input. The clip_obj's geometry is dissolved into one geometric
         feature and intersected with the spatial index of the shp input.
 
      Returns
      -----------------------
-     Geopandas Dataframe:
+     GeoDataFrame:
 
-        The returned geopandas dataframe is a clipped subset of shp
+        The returned GeoDataFrame is a clipped subset of shp
         that intersects with clip_obj.
     """
     # Create a single polygon object for clipping
@@ -81,7 +80,7 @@ def clip_line_poly(shp, clip_obj):
     clipped['geometry'] = shp_sub.intersection(poly)
 
     # Return the clipped layer with no null geometry values
-    return(clipped[clipped.geometry.notnull()])
+    return clipped[clipped.geometry.notnull()]
 
 
 def clip_shp(shp, clip_obj):
@@ -99,34 +98,30 @@ def clip_shp(shp, clip_obj):
 
     Parameters
     ----------
-    shp : Geopandas dataframe
+    shp : GeoDataFrame
           Vector layer (point, line, polygon) to be clipped to clip_obj.
 
-    clip_obj : Geopandas dataframe
+    clip_obj : GeoDataFrame
           Polygon vector layer used to clip shp.
 
     Returns
     -------
-    Geopandas dataframe:
+    GeoDataFrame:
          Vector data (points, lines, polygons) from shp clipped to
          polygon boundary from clip_obj.
     """
-
-    # Both objects should be GeoDataFrame
     try:
-        shp.geometry
-        clip_obj.geometry
-    except (AttributeError, TypeError):
-        raise AssertionError('Input variables should be GeoDataFrames with a geometry column')
+        shp.geometry and clip_obj.geometry
+    except AssertionError:
+        raise AssertionError('Input variables are missing geometry attributes')
 
-    # Test to ensure shapes intersect
     if not any(shp.intersects(clip_obj)):
         raise ValueError("Shape and crop extent do not overlap.")
 
-    # Multipolys / point / line don't clip properly - alert if multipolys provided
+    # Multipolys / point / line don't clip properly
     if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
-        raise ValueError("""Clip doesn't currently support multipart 
-        geometries. Consider using .explode to create 
+        raise ValueError("""Clip doesn't currently support multipart
+        geometries. Consider using .explode to create
         unique features in your GeoDataFrame""")
 
     if shp["geometry"].iloc[0].type == "Point":

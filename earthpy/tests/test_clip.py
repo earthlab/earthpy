@@ -1,3 +1,5 @@
+"""Tests for the clip module."""
+
 import numpy as np
 import pytest
 from shapely.geometry import Polygon, Point, LineString
@@ -5,7 +7,9 @@ import shapely
 import geopandas as gpd
 import earthpy.clip as cl
 
-# Create points GDF
+
+""" Setup dummy data for tests """
+
 pts = np.array([[2, 2],
                 [3, 4],
                 [9, 8],
@@ -34,8 +38,8 @@ linez_gdf = gpd.GeoDataFrame([1, 2],
 # Create crop box
 poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
 poly_in_gdf = gpd.GeoDataFrame([1],
-                             geometry=[poly_inters],
-                             crs={'init': 'epsg:4326'})
+                               geometry=[poly_inters],
+                               crs={'init': 'epsg:4326'})
 
 # Shift by 20
 poly_out_gdf = poly_in_gdf.copy()
@@ -51,17 +55,25 @@ donut_geom = gpd.overlay(locs_buff, poly_in_gdf,
 
 multi_poly = donut_geom.unary_union
 multi_gdf = gpd.GeoDataFrame(gpd.GeoSeries(multi_poly),
-            crs={'init': 'epsg:4326'})
+                             crs={'init': 'epsg:4326'})
 multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
     set_geometry('geometry')
 
 
 """ Run clip shape tests """
 
+
 def returns_gdf():
     """Test that function returns a GeoDataFrame (or GDF-like) object."""
     out = cl.clip_shp(locs_gdf, poly_in_gdf)
     assert hasattr(out, 'geometry')
+
+
+def test_returns_gdf():
+    """Test that function returns a GeoDataFrame (or GDF-like) object."""
+    out = cl.clip_shp(locs_gdf, poly_in_gdf)
+    assert hasattr(out, 'geometry')
+
 
 def test_non_overlapping_geoms():
     """Test that a bounding box returns error if the extents don't overlap"""
@@ -86,28 +98,26 @@ def test_clip_points():
 def test_clip_poly():
     """Test clipping a polygon GDF with a generic polygon geometry."""
     clipped_poly = cl.clip_shp(locs_buff, poly_in_gdf)
-    assert len(clipped_poly.geometry) == 3 and \
-           clipped_poly.geom_type[1] == "Polygon"
+    assert len(clipped_poly.geometry) == 3
+    assert clipped_poly.geom_type[1] == "Polygon"
+
 
 # TODO same test for points and lines
 
 
 def test_clip_multipoly():
-    """Test that multi poly returns a value error"""
+    """Test that multi poly returns a value error."""
     with pytest.raises(ValueError):
         cl.clip_shp(poly_in_gdf, multi_gdf)
 
 
 def test_clip_donut_poly():
-    """Test what happens with a clip when a donut hole topology is used to
-    clip points. Turns out a donut hole is translated as a multi-poly so
-    it should also fail gracefully"""
-
+    """Donut holes are multipolygons and should raise ValueErrors."""
     with pytest.raises(ValueError):
         cl.clip_shp(locs_gdf, donut_geom)
 
 
 def test_clip_lines():
-    """Test what happens when you give the clip_extent a line GDF"""
+    """Test what happens when you give the clip_extent a line GDF."""
     clip_line = cl.clip_shp(linez_gdf, poly_in_gdf)
     assert len(clip_line.geometry) == 2
