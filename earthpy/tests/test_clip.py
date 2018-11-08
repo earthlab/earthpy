@@ -60,13 +60,8 @@ multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
     set_geometry('geometry')
 
 
+
 """ Run clip shape tests """
-
-
-def returns_gdf():
-    """Test that function returns a GeoDataFrame (or GDF-like) object."""
-    out = cl.clip_shp(locs_gdf, poly_in_gdf)
-    assert hasattr(out, 'geometry')
 
 
 def test_returns_gdf():
