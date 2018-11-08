@@ -111,9 +111,15 @@ def clip_shp(shp, clip_obj):
          polygon boundary from clip_obj.
     """
     try:
-        assert hasattr(shp, 'geometry') and hasattr(clip_obj, 'geometry')
+        shp.geometry
     except AssertionError:
-        raise AssertionError('Input variables are missing geometry attributes')
+        raise AssertionError("""Please provide a geoDataFrame with a valid
+                             geometry column""")
+    try:
+        clip_obj.geometry
+    except AssertionError:
+        raise AssertionError("""Please provide a geoDataFrame with a valid
+                             geometry column""")
 
     if not any(shp.intersects(clip_obj)):
         raise ValueError("Shape and crop extent do not overlap.")
