@@ -9,10 +9,11 @@ def make_cloud_mask(mask_arr, vals):
     Parameters
     -----------
     mask_arr : numpy array
-        A array... to open the pixel_qa or mask raster of interest
+        An array... to open the pixel_qa or mask raster of interest
+        
     vals : list of numbers (int or float)
         A list of values that represent no data in the provided raster
-        layer (arr)
+        layer (mask_arr)
 
     Returns
     -----------
@@ -21,11 +22,13 @@ def make_cloud_mask(mask_arr, vals):
         True (Boolean)
     """
 
-    # Improved by Joe! Not tested yet but should work!
+    # construct the mask
     temp_mask = np.isin(mask_arr, vals)
+    
+    # mask the values
     mask_arr[temp_mask] = 1
-    # for cval in vals:
-    #    mask_arr[mask_arr == cval] = 1
+    mask_arr[~temp_mask] = 0
+    
     return(mask_arr)
 
 
@@ -43,5 +46,5 @@ def apply_cloud_mask(arr, the_mask):
 
 
 def make_apply_mask(arr, mask_arr, vals):
-    cl_mask = make_cloud_mask(mask_arr, vals, arr)
+    cl_mask = make_cloud_mask(mask_arr, vals)
     return (apply_cloud_mask(arr, cl_mask))
