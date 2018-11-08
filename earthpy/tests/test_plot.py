@@ -11,24 +11,11 @@ import earthpy.clip as cl
 
 """ General functions for matplotlib elements """
 
-def get_titles(ax):
-		"""Returns the suptitle (Figure title) and axes title of ax
-		returns
-		-------
-		suptitle: figure title of the Figure ax is on. If none, this is an empty string
-		title: title on the axes. If none, this is an empty string.
-		"""
-		fig, suptitle = ax.get_figure(), ''
-		if fig._suptitle: suptitle += fig._suptitle.get_text()
-return suptitle, self.ax.get_title()
-
 
 # Create tuple
 tuups = (1, 2)
 
 im = np.indices((3, 3))
-
-
 
 
 def test_arr_parameter():
