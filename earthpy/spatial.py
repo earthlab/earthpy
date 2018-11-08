@@ -355,13 +355,20 @@ def plot_bands(arr, title=None, cmap="Greys_r",
     ...              figsize=(12,5),
     ...              cols=2)
     """
+
+    try:
+        arr.ndims
+    except AssertionError:
+        raise AssertionError("Input arr should be a numpy array")
+
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
         # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
-                raise ValueError("""The number of plot titles should equal 
+                raise ValueError("""The number of plot titles should equal
                                  the number of array raster layers.""")
+
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
