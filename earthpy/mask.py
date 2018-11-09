@@ -1,6 +1,37 @@
 import numpy as np
 import numpy.ma as ma
 
+# A dictionary for values to use in masking the QA band
+pixel_flags = {
+    "pixel_qa": {
+        "L47": {
+            "Fill": [1],
+            "Clear": [66, 130],
+            "Water": [68, 132],
+            "Cloud Shadow": [72, 136],
+            "Snow": [80, 112, 144, 176],
+            "Cloud": [96, 112, 160, 176, 224],
+            "Low Cloud Confidence": [66, 68, 72, 80, 96, 112],
+            "Medium Cloud Confidence": [130, 132, 136, 144, 160, 176],
+            "High Cloud Confidence": [224]
+        },
+        "L8": {
+            "Fill": [1],
+            "Clear": [322, 386, 834, 898, 1346],
+            "Water": [324, 388, 836, 900, 1348],
+            "Cloud Shadow": [328, 392, 840, 904, 1350],
+            "Snow": [336, 368, 400, 432, 848, 880, 912, 944, 1352],
+            "Cloud": [352, 368, 416, 432, 480, 864, 880, 928, 944, 992],
+            "Low Cloud Confidence": [322, 324, 328, 336, 352, 368, 834, 836, 840, 848, 864, 880],
+            "Medium Cloud Confidence": [386, 388, 392, 400, 416, 432, 900, 904, 928, 944],
+            "High Cloud Confidence": [480, 992],
+            "Low Cirrus Confidence": [322, 324, 328, 336, 352, 368, 386, 388, 392, 400, 416, 432, 480],
+            "Medium Cirrus Confidence": [],
+            "High Cirrus Confidence": [834, 836, 840, 848, 864, 880, 898, 900, 904, 912, 928, 944, 992],
+            "Terrain Occlusion": [1346, 1348, 1350, 1352]
+        }
+    }
+}
 
 def make_cloud_mask(mask_arr, vals):
     """Take an input single band mask layer such as a pixel_qa
@@ -9,10 +40,11 @@ def make_cloud_mask(mask_arr, vals):
     Parameters
     -----------
     mask_arr : numpy array
-        A array... to open the pixel_qa or mask raster of interest
+        An array... to open the pixel_qa or mask raster of interest
+        
     vals : list of numbers (int or float)
         A list of values that represent no data in the provided raster
-        layer (arr)
+        layer (mask_arr)
 
     Returns
     -----------
@@ -21,11 +53,13 @@ def make_cloud_mask(mask_arr, vals):
         True (Boolean)
     """
 
-    # Improved by Joe! Not tested yet but should work!
+    # Construct the mask
     temp_mask = np.isin(mask_arr, vals)
+    
+    # Mask the values
     mask_arr[temp_mask] = 1
-    # for cval in vals:
-    #    mask_arr[mask_arr == cval] = 1
+    mask_arr[~temp_mask] = 0
+    
     return(mask_arr)
 
 
@@ -43,5 +77,5 @@ def apply_cloud_mask(arr, the_mask):
 
 
 def make_apply_mask(arr, mask_arr, vals):
-    cl_mask = make_cloud_mask(mask_arr, vals, arr)
+    cl_mask = make_cloud_mask(mask_arr, vals)
     return (apply_cloud_mask(arr, cl_mask))
