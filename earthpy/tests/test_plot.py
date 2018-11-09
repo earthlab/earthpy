@@ -12,7 +12,7 @@ import earthpy.spatial as es
 # Create tuple
 tuups = (1, 2)
 
-im = np.indices((3, 3))
+im = np.random.randint(10, size=(2, 4, 5))
 single_band = im[0]
 
 

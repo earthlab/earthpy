@@ -346,24 +346,22 @@ def plot_bands(arr, title=None, cmap="Greys_r",
     --------
     >>>import earthpy.spatial as es
     ...
-    ...titles = ["Red Band", "Green Band", "Blue Band",
-    ...          "Near Infrared (NIR) Band"]
+    ...im = np.random.randint(10, size=(2, 4, 5))
+    ...titles = ["Red Band", "Green Band"]
     ...
     ...# Plot all bands of a raster tif
-    ...es.plot_bands(naip_image,
+    ...es.plot_bands(im,
     ...              title=titles,
     ...              figsize=(12,5),
     ...              cols=2)
     """
+    if not isinstance(arr, np.ndarray):
+        raise AssertionError("Input arr should be a numpy array")
 
     if (arr.ndim == 2) and (len(title) > 1):
         raise AssertionError("""You have provided more than one title for a
                              single band array""")
 
-    try:
-        arr.ndim
-    except AssertionError:
-        raise AssertionError("Input arr should be a numpy array")
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
