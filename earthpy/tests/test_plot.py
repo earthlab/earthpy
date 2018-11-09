@@ -34,9 +34,7 @@ def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
     fig, ax = es.plot_bands(im)
-
-    with pytest.raises(ValueError):
-        len(fig.axes) == 3
+    assert len(fig.axes) == 3
 
 
 def test_two_plot_title():

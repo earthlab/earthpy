@@ -361,7 +361,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
                              single band array""")
 
     try:
-        arr.ndims
+        arr.ndim
     except AssertionError:
         raise AssertionError("Input arr should be a numpy array")
 
