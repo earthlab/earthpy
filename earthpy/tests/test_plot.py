@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 import earthpy.spatial as es
+import matplotlib as mpl
 
 
 
@@ -17,8 +18,8 @@ single_band = im[0]
 
 
 def test_arr_parameter():
-    """Test that a bounding box returns error if the extents don't overlap"""
-    with pytest.raises(AttributeError):
+    """Error raised is not provided with an array"""
+    with pytest.raises(AssertionError):
         es.plot_bands(arr=tuups)
 
 def test_num_titles():
@@ -54,3 +55,19 @@ def test_custom_plot_title():
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ['Red Band', 'Green Band']
+
+
+def single_band_3dims():
+    """If you provide a single band array with 3 dimensions (shape[0]==1
+    test that it still plots and only returns a single axis"""
+    single_band_3dims = np.random.randint(10, size=(1, 4, 5))
+
+    fig, ax = es.plot_bands(single_band_3dims)
+    # Get array from mpl figure -- should use this above
+    # i think this should probably test whether the output is a
+    arr = ax.get_images()[0].get_array()
+    assert arr.ndim == 2
+    try:
+        ax.bbox
+    except ValueError:
+        print("A single band image should only return one matplotlib axis")
