@@ -74,3 +74,6 @@ def single_band_3dims():
         ax.bbox
     except ValueError:
         print("A single band image should only return one matplotlib axis")
+
+
+

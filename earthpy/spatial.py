@@ -319,19 +319,20 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 # Function to plot all layers in a stack
 def plot_bands(arr, title=None, cmap="Greys_r",
                figsize=(12, 12), cols=3, extent=None):
-    """Plot each layer in a raster stack converted into a numpy array for
-       quick visualization.
+    """Plot each layer in a raster stack read from rasterio in
+    (band, row ,col) order as a numpy array. plot_bands will create an
+    individual plot for each band in a grid.
 
     Parameters
     ----------
     arr: numpy array
-        An n-dimensional numpy array
+        An n-dimensional numpy array in (band, row, col) order
     title: str or list
         Title of one band, or list of titles with one title per band
     cmap: str
         Colormap name ("greys" by default)
     cols: int
-        Number of columns for plot grid (3 by default)
+        Number of columns for plot grid (default: 3)
     figsize: tuple - optional
         Figure size in inches ((12, 12) by default)
     extent: tuple - optional
@@ -389,26 +390,25 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             else:
                 ax.set(title='Band %i' %band)
             ax.set(xticks=[], yticks=[])
-        # This loop clears out the plots for bands 8-9 which are empty
-        # These plots are req by matplotlib when you specify plot rows & cols
+        # This loop clears out the plots for axes which are empty
+        # A matplotlib grid is always x by x. eg: 8 bands with 3 cols
         for ax in axs_ravel[total_layers:]:
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
-
         plt.tight_layout()
-        return fig, axs
+        return fig
+
     elif arr.ndim == 2 or arr.shape[0] == 1:
         # If it's a 2 dimensional array with a 3rd dimension
-        if arr.shape[0] == 1:
-            arr = arr[0]
-        # Plot all bands
+        np.squeeze(arr)
+        # Plot one bands
         fig, ax = plt.subplots(figsize=figsize)
         ax.imshow(bytescale(arr), cmap=cmap,
                   extent=extent)
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-        return fig, ax
+        return fig
 
 
 def plot_rgb(arr, rgb=(0, 1, 2),
