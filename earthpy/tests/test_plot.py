@@ -19,17 +19,20 @@ single_band = im[0]
 
 def test_arr_parameter():
     """Error raised is not provided with an array"""
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         es.plot_bands(arr=tuups)
 
 def test_num_titles():
     """If a user provides two titles for a single band array, the function
-    should raise an error"""
+    should raise an error OR if the title list is a different length than
+    the array it should also raise an errors"""
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         es.plot_bands(arr=single_band,
                       title=["Title1", "Title2"])
-
+    with pytest.raises(ValueError):
+        es.plot_bands(arr=im,
+                      title=["Title1", "Title2", "Title3"])
 
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
