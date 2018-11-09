@@ -2,11 +2,8 @@
 
 import numpy as np
 import pytest
-from shapely.geometry import Polygon, Point, LineString
-import shapely
-import geopandas as gpd
 import earthpy.spatial as es
-import earthpy.clip as cl
+
 
 
 """ General functions for matplotlib elements """
@@ -16,17 +13,22 @@ import earthpy.clip as cl
 tuups = (1, 2)
 
 im = np.indices((3, 3))
+single_band = im[0]
 
 
 def test_arr_parameter():
     """Test that a bounding box returns error if the extents don't overlap"""
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         es.plot_bands(arr=tuups)
 
 def test_num_titles():
-    """Test that a bounding box returns error if the extents don't overlap"""
-    with pytest.raises(ValueError):
-        es.plot_bands(arr=tuups, title=["Title1", "Title2"])
+    """If a user provides two titles for a single band array, the function
+    should raise an error"""
+
+    with pytest.raises(AssertionError):
+        es.plot_bands(arr=single_band,
+                      title=["Title1", "Title2"])
+
 
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by

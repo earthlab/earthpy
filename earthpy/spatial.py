@@ -356,6 +356,10 @@ def plot_bands(arr, title=None, cmap="Greys_r",
     ...              cols=2)
     """
 
+    if (arr.ndim == 2) and (len(title) > 1):
+        raise AssertionError("""You have provided more than one title for a
+                             single band array""")
+
     try:
         arr.ndims
     except AssertionError:
