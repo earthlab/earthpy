@@ -44,6 +44,7 @@ def test_num_axes():
 def test_two_plot_title():
     """Test that the default title is provided for a 2 band array plot"""
     fig = es.plot_bands(im)
+    ax = fig.axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -54,6 +55,7 @@ def test_custom_plot_title():
     """Test that the custom title is applied for a 2 band array plot"""
     im = np.indices((4, 4))
     fig = es.plot_bands(im, title=["Red Band", "Green Band"])
+    ax = fig.axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -63,15 +65,14 @@ def test_custom_plot_title():
 def single_band_3dims():
     """If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis"""
-    single_band_3dims = np.random.randint(10, size=(1, 4, 5))
 
+    single_band_3dims = np.random.randint(10, size=(1, 4, 5))
     fig = es.plot_bands(single_band_3dims)
     # Get array from mpl figure -- should use this above
     # i think this should probably test whether the output is a
-    arr = ax.get_images()[0].get_array()
+    ax = fig.axes
+    arr = ax[0].get_images()[0].get_array()
     assert arr.ndim == 2
-    try:
-        ax.bbox
-    except ValueError:
-        print("A single band image should only return one matplotlib axis")
+    assert len(ax) == 1
+
 
