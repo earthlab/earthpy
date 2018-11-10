@@ -53,8 +53,17 @@ def make_cloud_mask(mask_arr, vals):
         True (Boolean)
     """
 
-    # Construct the mask
-    temp_mask = np.isin(mask_arr, vals)
+    # Make sure vals is a list
+    try:
+        vals.sort()
+    except AttributeError:
+        raise AttributeError("Values should be provided as a list")
+
+    try:
+        mask_arr.ndim
+        temp_mask = np.isin(mask_arr, vals)
+    except AttributeError:
+        raise AttributeError("Input arr should be a numpy array")
     
     # Mask the values
     mask_arr[temp_mask] = 1
@@ -81,9 +90,17 @@ def apply_cloud_mask(arr, the_mask):
     masked arr : a masked numpy array
         A masked numpy array with the mask having the same dimensions as arr
     """
-    # Create a mask for all bands in the landsat scene
-    cl_mask = np.broadcast_to(the_mask == 1,
+
+    # Test if the_mask is numpy array w values == 1 for masked
+    if not np.any(the_mask == 1):
+        raise ValueError("Mask requires values of 1 (True) to be applied.")
+
+    try:
+        # Create a mask for all bands in the landsat scene
+        cl_mask = np.broadcast_to(the_mask == 1,
                               arr.shape)
+    except AttributeError:
+        raise AttributeError("Input arr should be a numpy array")
 
     # If the user provides a masked array, combine masks
     if isinstance(arr, np.ma.MaskedArray):
