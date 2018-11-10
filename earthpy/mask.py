@@ -64,6 +64,23 @@ def make_cloud_mask(mask_arr, vals):
 
 
 def apply_cloud_mask(arr, the_mask):
+    """Take an input raster numpy array in band order (bands, rows,cols)
+     and apply a mask to the array
+
+    Parameters
+    -----------
+    arr : numpy array
+        An array in rasterio (band, row, col) order
+
+    the_mask : single dimension (band) numpy array
+        A numpy array containing a qa values for raster pixels that should be
+        masked - ex landsat pixel_qa layer.
+
+    Returns
+    -----------
+    masked arr : a masked numpy array
+        A masked numpy array with the mask having the same dimensions as arr
+    """
     # Create a mask for all bands in the landsat scene
     cl_mask = np.broadcast_to(the_mask == 1,
                               arr.shape)
