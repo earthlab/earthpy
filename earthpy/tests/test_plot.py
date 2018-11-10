@@ -37,13 +37,13 @@ def test_num_titles():
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
-    fig, ax = es.plot_bands(im)
+    fig = es.plot_bands(im)
     assert len(fig.axes) == 3
 
 
 def test_two_plot_title():
     """Test that the default title is provided for a 2 band array plot"""
-    fig, ax = es.plot_bands(im)
+    fig = es.plot_bands(im)
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -53,7 +53,7 @@ def test_two_plot_title():
 def test_custom_plot_title():
     """Test that the custom title is applied for a 2 band array plot"""
     im = np.indices((4, 4))
-    fig, ax = es.plot_bands(im, title=["Red Band", "Green Band"])
+    fig = es.plot_bands(im, title=["Red Band", "Green Band"])
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -65,7 +65,7 @@ def single_band_3dims():
     test that it still plots and only returns a single axis"""
     single_band_3dims = np.random.randint(10, size=(1, 4, 5))
 
-    fig, ax = es.plot_bands(single_band_3dims)
+    fig = es.plot_bands(single_band_3dims)
     # Get array from mpl figure -- should use this above
     # i think this should probably test whether the output is a
     arr = ax.get_images()[0].get_array()
@@ -74,6 +74,4 @@ def single_band_3dims():
         ax.bbox
     except ValueError:
         print("A single band image should only return one matplotlib axis")
-
-
 
