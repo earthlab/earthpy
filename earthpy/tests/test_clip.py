@@ -8,7 +8,7 @@ import geopandas as gpd
 import earthpy.clip as cl
 
 
-""" Setup fake data for tests """
+""" Setup dummy data for tests """
 
 pts = np.array([[2, 2],
                 [3, 4],
@@ -107,7 +107,7 @@ def test_clip_multipoly():
 
 
 def test_clip_donut_poly():
-    """Donut holes are multipolygons, and should raise ValueErrors."""
+    """Donut holes are multipolygons and should raise ValueErrors."""
     with pytest.raises(ValueError):
         cl.clip_shp(locs_gdf, donut_geom)
 
