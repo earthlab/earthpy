@@ -11,7 +11,6 @@ import rasterio as rio
 im = np.random.randint(10, size=(4, 5))
 im_mask = np.random.randint(5, size=(4, 5))
 
-#def make_apply_mask(arr, mask_arr, vals):
 
 def test_arr_provided():
     an_arr_tup = (2,3)
@@ -36,3 +35,9 @@ def test_masked_arr_returned():
 #         make_apply_mask(im,
 #                     mask_arr=im_mask,
 #                     vals=[0,4])
+
+# Test that a mask is provided to apply mask that doesn't have 1's in it.
+# should return - there's nothing to mask here!
+
+# test that a user provides an array with a mask already. does it merge properly?
+# and return a masked array with the values expected?
