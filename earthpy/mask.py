@@ -41,7 +41,7 @@ def make_cloud_mask(mask_arr, vals):
     -----------
     mask_arr : numpy array
         An array... to open the pixel_qa or mask raster of interest
-        
+
     vals : list of numbers (int or float)
         A list of values that represent no data in the provided raster
         layer (mask_arr)
@@ -64,12 +64,12 @@ def make_cloud_mask(mask_arr, vals):
         temp_mask = np.isin(mask_arr, vals)
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array")
-    
+
     # Mask the values
     mask_arr[temp_mask] = 1
     mask_arr[~temp_mask] = 0
-    
-    return(mask_arr)
+
+    return mask_arr
 
 
 def apply_cloud_mask(arr, the_mask):
@@ -107,9 +107,9 @@ def apply_cloud_mask(arr, the_mask):
         cl_mask = np.logical_or(arr.mask, cl_mask)
 
     # Return combined mask
-    return (ma.masked_array(arr, mask=cl_mask))
+    return ma.masked_array(arr, mask=cl_mask)
 
 
 def make_apply_mask(arr, mask_arr, vals):
     cl_mask = make_cloud_mask(mask_arr, vals)
-    return (apply_cloud_mask(arr, cl_mask))
+    return apply_cloud_mask(arr, cl_mask)
