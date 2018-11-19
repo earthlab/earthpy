@@ -102,3 +102,11 @@ ENV/
 
 # Pycharm
 .idea/
+.idea/*
+
+# Testing files
+earthpy/deprecated.py
+earthpy/testing.py
+
+# OS stuff
+.DS_Store
