@@ -31,4 +31,19 @@ Then import it into python.
 ## Testing
 
 This package uses [pytest](https://pytest.org/) for tests.
-To run tests locally, execute the command `pytest` from the command line.
+To run tests locally, execute the command `pytest` from the command line:
+
+```
+pytest
+```
+
+### Fake data for testing
+
+If a test requires a data object such as a GeoDataFrame or numpy array, and
+copies of that data object is required by multiple tests, we can use [pytest
+fixtures](https://docs.pytest.org/en/latest/fixture.html) to cleanly create
+and tear down those objects independently for each test.
+
+See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
+definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
+for example usage of fixtures in tests.
