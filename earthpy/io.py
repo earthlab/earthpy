@@ -112,6 +112,12 @@ class EarthlabData(object):
                 if fname.endswith(kind):
                     file_type = kind
 
+            # strip off the file extension so we get pretty download
+            # directories
+            if file_type != 'file':
+                # cut off an extra character to remove the trailing dot as well
+                fname = fname[:-(len(file_type) + 1)]
+
             this_data = (url, fname, file_type)
             this_root = op.join(self.path, "unsorted")
 
