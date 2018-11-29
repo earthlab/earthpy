@@ -16,7 +16,6 @@ tuups = (1, 2)
 im = np.random.randint(10, size=(2, 4, 5))
 single_band = im[0]
 
-
 def test_arr_parameter():
     """Error raised is not provided with an array"""
     with pytest.raises(AttributeError):
@@ -68,11 +67,9 @@ def single_band_3dims():
 
     single_band_3dims = np.random.randint(10, size=(1, 4, 5))
     fig = es.plot_bands(single_band_3dims)
-    # Get array from mpl figure -- should use this above
-    # i think this should probably test whether the output is a
-    ax = fig.axes
-    arr = ax[0].get_images()[0].get_array()
+    # Get array from mpl figure
+    arr = fig[0].axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
-    assert len(ax) == 1
+    assert len(fig[0].axes[0].get_images()) == 1
 
 
