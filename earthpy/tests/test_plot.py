@@ -36,14 +36,14 @@ def test_num_titles():
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
-    fig = es.plot_bands(im)
-    assert len(fig[0].axes) == 3
+    fig, ax = es.plot_bands(im)
+    assert len(fig.axes) == 3
 
 
 def test_two_plot_title():
     """Test that the default title is provided for a 2 band array plot"""
-    fig = es.plot_bands(im)
-    ax = fig[0].axes
+    fig, ax = es.plot_bands(im)
+    ax = fig.axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -53,8 +53,8 @@ def test_two_plot_title():
 def test_custom_plot_title():
     """Test that the custom title is applied for a 2 band array plot"""
     im = np.indices((4, 4))
-    fig = es.plot_bands(im, title=["Red Band", "Green Band"])
-    ax = fig[0].axes
+    fig, ax = es.plot_bands(im, title=["Red Band", "Green Band"])
+    ax = fig.axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -66,11 +66,11 @@ def single_band_3dims():
     test that it still plots and only returns a single axis"""
 
     single_band_3dims = np.random.randint(10, size=(1, 4, 5))
-    fig = es.plot_bands(single_band_3dims)
+    fig, ax = es.plot_bands(single_band_3dims)
     # Get array from mpl figure
-    arr = fig[0].axes[0].get_images()[0].get_array()
+    arr = fig.axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
-    assert len(fig[0].axes[0].get_images()) == 1
+    assert len(fig.axes[0].get_images()) == 1
 
 
 def single_band_2dims():
@@ -78,9 +78,9 @@ def single_band_2dims():
     test that it still plots and only returns a single axis"""
 
     single_band_2dims = np.random.randint(10, size=(4, 5))
-    fig = es.plot_bands(single_band_2dims)
+    fig, ax = es.plot_bands(single_band_2dims)
     # Get array from mpl figure
-    arr = fig[0].axes[0].get_images()[0].get_array()
+    arr = fig.axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
-    assert len(fig[0].axes[0].get_images()) == 1
+    assert len(fig.axes[0].get_images()) == 1
 
