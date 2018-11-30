@@ -112,13 +112,13 @@ def clip_shp(shp, clip_obj):
     """
     try:
         shp.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
+    except AttributeError:
+        raise AttributeError("""Please provide a geoDataFrame with a valid
                              geometry column""")
     try:
         clip_obj.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
+    except AttributeError:
+        raise AttributeError("""Please provide a geoDataFrame with a valid
                              geometry column""")
 
     if not any(shp.intersects(clip_obj)):
