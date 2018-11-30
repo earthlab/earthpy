@@ -77,8 +77,8 @@ def single_band_2dims():
     """If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis"""
 
-    single_band_3dims = np.random.randint(10, size=(4, 5))
-    fig = es.plot_bands(single_band_3dims)
+    single_band_2dims = np.random.randint(10, size=(4, 5))
+    fig = es.plot_bands(single_band_2dims)
     # Get array from mpl figure
     arr = fig[0].axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
