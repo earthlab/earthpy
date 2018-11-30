@@ -396,7 +396,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        #return fig
+        return fig, ax
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
         # If it's a 2 dimensional array with a 3rd dimension
@@ -408,7 +408,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-        return fig
+        return fig, ax
 
 
 def plot_rgb(arr, rgb=(0, 1, 2),
