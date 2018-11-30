@@ -408,7 +408,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-        return fig, axs
+        return fig, ax
 
 
 def plot_rgb(arr, rgb=(0, 1, 2),
