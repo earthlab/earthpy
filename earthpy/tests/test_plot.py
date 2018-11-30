@@ -37,13 +37,13 @@ def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
     fig = es.plot_bands(im)
-    assert len(fig.axes) == 3
+    assert len(fig[0].axes) == 3
 
 
 def test_two_plot_title():
     """Test that the default title is provided for a 2 band array plot"""
     fig = es.plot_bands(im)
-    ax = fig.axes
+    ax = fig[0].axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
@@ -54,7 +54,7 @@ def test_custom_plot_title():
     """Test that the custom title is applied for a 2 band array plot"""
     im = np.indices((4, 4))
     fig = es.plot_bands(im, title=["Red Band", "Green Band"])
-    ax = fig.axes
+    ax = fig[0].axes
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
