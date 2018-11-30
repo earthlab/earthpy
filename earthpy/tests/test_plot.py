@@ -61,7 +61,7 @@ def test_custom_plot_title():
     assert all_titles == ['Red Band', 'Green Band']
 
 
-def single_band_3dims():
+def test_single_band_3dims():
     """If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis"""
 
@@ -73,7 +73,7 @@ def single_band_3dims():
     assert len(fig.axes[0].get_images()) == 1
 
 
-def single_band_2dims():
+def test_single_band_2dims():
     """If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis"""
 
