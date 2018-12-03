@@ -392,7 +392,8 @@ def plot_bands(arr, title=None, cmap="Greys_r",
                 ax.set(title='Band %i' %band)
             ax.set(xticks=[], yticks=[])
         # This loop clears out the plots for axes which are empty
-        # A matplotlib grid is always x by x. eg: 8 bands with 3 cols
+        # A matplotlib axis grid is always uniform with x cols and x rows
+        # eg: an 8 band plot with 3 cols will always be 3 x 3
         for ax in axs_ravel[total_layers:]:
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
