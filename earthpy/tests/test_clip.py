@@ -64,7 +64,7 @@ multi_gdf = multi_gdf.rename(columns={0: 'geometry'}).\
 """ Run clip shape tests """
 
 def test_not_gdf():
-    """Test that an error is raised when provided with a non geodataframe
+    """Non-GeoDataFrame inputs raise attribute errors."""
     objects"""
     with pytest.raises(AttributeError):
         cl.clip_shp((2, 3), poly_out_gdf)
