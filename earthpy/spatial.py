@@ -345,6 +345,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
 
     Examples
     --------
+    >>>import numpy as np
     >>>import earthpy.spatial as es
     ...
     ...im = np.random.randint(10, size=(2, 4, 5))
