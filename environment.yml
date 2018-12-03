@@ -1,4 +1,4 @@
-name: earth-analytics-python
+name: earthpy-dev
 channels:
   - conda-forge
 dependencies:
@@ -13,37 +13,19 @@ dependencies:
   - seaborn
 
   # Geo stuff
-  - rasterstats
   - geopy
   - cartopy
   - geopandas
   - rasterio
-  - contextily
   - pysal
   - pyproj
-  - folium
   - scikit-image
   - gdal
   - geocoder
 
-#text mining
-  - tweepy
-  - nltk
-
-  # Jupyter Environment
-  - notebook
-  - ipython
-  - jupyter_contrib_nbextensions
-  - nb_conda
-  - jupyterlab
-
   - pip:
       # Utilities
       - download
-      - nbgrader
-      - nbclean
       - mne
       - sklearn
       - tqdm
-      - kiwisolver
-      - git+https://github.com/geopandas/geopandas.git
