@@ -116,5 +116,33 @@ def apply_cloud_mask(arr, the_mask):
 
 
 def make_apply_mask(arr, mask_arr, vals):
+    """Take an input array to be masked, single band mask layer such as a
+    pixel_qa layer for MODIS or Landsat and apply a mask given a range of
+    vals to mask.
+
+    Parameters
+    -----------
+    arr : numpy array
+        An array in rasterio (band, row, col) order
+
+    mask_arr : numpy array
+        An array... to open the pixel_qa or mask raster of interest
+
+    vals : list of numbers (int or float)
+        A list of values that represent no data in the provided raster
+        layer (mask_arr)
+
+    Returns
+    -----------
+    arr : numpy array
+        A numpy array with values that should be masked set to 1 for
+        True (Boolean)
+
+    >>>import numpy as np
+    >>>import from earthpy.mask import apply_cloud_mask
+    >>>im = np.random.randint(10, size=(4, 5))
+    >>>im_mask = np.random.randint(5, size=(4, 5))
+    >>>make_apply_mask(im, mask_arr=im_mask, vals=[0, 4])
+    """
     cl_mask = make_cloud_mask(mask_arr, vals)
     return apply_cloud_mask(arr, cl_mask)
