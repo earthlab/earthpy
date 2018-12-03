@@ -12,12 +12,10 @@ import matplotlib as mpl
 
 # Create tuple
 tuups = (1, 2)
-
 im = np.random.randint(10, size=(2, 4, 5))
-single_band = im[0]
 
 def test_arr_parameter():
-    """Error raised is not provided with an array"""
+    """Raise an AttributeError if an array is not provided."""
     with pytest.raises(AttributeError):
         es.plot_bands(arr=tuups)
 
@@ -25,6 +23,8 @@ def test_num_titles():
     """If a user provides two titles for a single band array, the function
     should raise an error OR if the title list is a different length than
     the array it should also raise an errors"""
+
+    single_band = im[0]
 
     with pytest.raises(ValueError):
         es.plot_bands(arr=single_band,

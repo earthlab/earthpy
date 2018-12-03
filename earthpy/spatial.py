@@ -365,11 +365,12 @@ def plot_bands(arr, title=None, cmap="Greys_r",
 
     if title:
         if (arr.ndim == 2) and (len(title) > 1):
-            raise ValueError("""You have provided more than one title for a
-                             single band array""")
+            raise ValueError("""Plot_bands() expects one title for a single 
+                             band array. You have provided more than one 
+                             title.""")
         elif not (len(title) == arr.shape[0]):
-            raise ValueError("""The number of plot titles should equal
-                         the number of array raster layers.""")
+            raise ValueError("""Plot_bands() expects the number of plot titles 
+                             to equal the number of array raster layers.""")
 
 
     # If the array is 3 dimensional setup grid plotting
