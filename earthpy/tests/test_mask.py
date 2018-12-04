@@ -1,8 +1,8 @@
+""" Tests for the mask module. """
+
 import numpy as np
 from earthpy.mask import make_apply_mask
 import pytest
-
-"""Functions for the mask module"""
 
 
 im = np.random.randint(10, size=(4, 5))
@@ -55,5 +55,4 @@ def test_im_with_mask_as_masked_array():
 
     im_with_mask = np.ma.masked_where(im_mask < 2, im)
     im_result = make_apply_mask(im_with_mask, mask_arr=im_mask, vals=[0, 4])
-
     assert np.ma.is_masked(im_result)
