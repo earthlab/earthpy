@@ -112,14 +112,12 @@ def clip_shp(shp, clip_obj):
     """
     try:
         shp.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
-                             geometry column""")
-    try:
         clip_obj.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
+    except AttributeError:
+        raise AttributeError("""Please make sure that your input and clip
+                             GeoDataFrames have a valid
                              geometry column""")
+
 
     if not any(shp.intersects(clip_obj)):
         raise ValueError("Shape and crop extent do not overlap.")
