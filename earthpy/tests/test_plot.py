@@ -7,7 +7,7 @@ import earthpy.spatial as es
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
-plt.show = lambda :None
+plt.show = lambda: None
 
 
 

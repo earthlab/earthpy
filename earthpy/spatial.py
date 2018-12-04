@@ -399,6 +399,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
+        plt.show()
         return fig, axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
@@ -411,6 +412,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
+        plt.show()
         return fig, ax
 
 
