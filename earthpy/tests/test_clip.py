@@ -7,15 +7,15 @@ import geopandas as gpd
 import earthpy.clip as cl
 
 
-def test_not_gdf():
+def test_not_gdf(poly_in_gdf):
     """Non-GeoDataFrame inputs raise attribute errors."""
     with pytest.raises(AttributeError):
-        cl.clip_shp((2, 3), poly_out_gdf)
+        cl.clip_shp((2, 3), poly_in_gdf)
     with pytest.raises(AttributeError):
-        cl.clip_shp(poly_out_gdf, (2, 3))
+        cl.clip_shp(poly_in_gdf, (2, 3))
 
 
-def test_returns_gdf():
+def test_returns_gdf(locs_gdf, poly_in_gdf):
     """Test that function returns a GeoDataFrame (or GDF-like) object."""
     out = cl.clip_shp(locs_gdf, poly_in_gdf)
     assert hasattr(out, 'geometry')
@@ -37,9 +37,9 @@ def test_non_overlapping_geoms():
 def check_input_gdfs(poly_in_gdf):
     """Test that function fails if not provided with 2 GDFs."""
     with pytest.raises(AssertionError):
-        cl.clip_shp([], poly_in_gdf)
+        cl.clip_shp(list(), poly_in_gdf)
     with pytest.raises(AssertionError):
-        cl.clip_shp(poly_in_gdf, [])
+        cl.clip_shp(poly_in_gdf, list())
 
 
 def test_clip_points(locs_gdf, poly_in_gdf):

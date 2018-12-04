@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from shapely.geometry import Polygon, Point
 import geopandas as gpd
-from earthpy import spatial as es
+import earthpy.spatial as es
 
 
 def test_extent_to_json():
