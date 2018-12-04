@@ -8,9 +8,21 @@ lab earth analytics courses.
 Earthpy Modules
 ---------------
 
-Spatial
-IO
-Utils
+- Spatial: Various functions for loading, manipulating, and displaying raster data
+  - ``create_raster_stack``: generates a single multi-band raster from separate raster TIFs,
+  such as a collection of single-band TIFs from Landsat
+  - ``normalized_diff``: calculate a normalized difference for two bands of a multi-band raster
+  - ``hillshade``: create a hillshade array from image elevation data
+  - ``crop_image``: crop raster data to a polygon
+  - Custom plotting shortcuts, such as ``colorbar`` for appropriately sized legends, ``create_legend`` for
+  legends showing a color for each class of a raster, ``plot_bands`` for creating a grid of images
+  showing each individual band of a raster, and ``plot_rgb`` for quickly generating
+  composite images or false color images from raster bands.
+
+- IO: Handles data search and retrieval from EarthLab, supporting analytics courses
+  available `here <https://www.earthdatascience.org/courses/>`_.
+
+- Utils: Handles path fixes for EarthLab image retrieval -- new utils module forthcoming
 
 Installation
 ------------

@@ -2,37 +2,32 @@
 ## This module will move to a new module for downloading data
 ## and building lessons
 
-from download import download
-import os.path as op
 import os
-#import matplotlib.pyplot as plt
+import os.path as op
 
-#plt.style.use('ggplot')
+import requests
+
+from download import download
+
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
-# If ZIPFILE / TARFILE / etc, we'll unzip to a folder w/ the week's name
+# If zipfile, tarfile, etc, unzip to a folder w/ the name
 DATA_URLS = {
 
-# deprecating week 2 & 8 data given i've reorganized these data into single repos
-#    'week_02': [('https://ndownloader.figshare.com/files/7010681', 'boulder-precip.csv', 'file'),
-#                ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file'),
-#                ('https://ndownloader.figshare.com/files/7426738', '.', 'zip')],
     'co-flood-extras': [('https://ndownloader.figshare.com/files/7010681', 'boulder-precip.csv', 'file'),
-                    ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file')],
+                        ('https://ndownloader.figshare.com/files/7010681', 'temperature_example.csv', 'file')],
     'colorado-flood': ('https://ndownloader.figshare.com/files/12395030', '.', 'zip'),
     'spatial-vector-lidar': ('https://ndownloader.figshare.com/files/12459464', '.', 'zip'),
     'cold-springs-modis-h5': ('https://ndownloader.figshare.com/files/10960112', '.', 'zip'),
-    #'week_05': ('https://ndownloader.figshare.com/files/7525363', '.', 'zip'),
     'cold-springs-fire': ('https://ndownloader.figshare.com/files/10960109', '.', 'zip'),
     'cs-test-naip': ('https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe', '.', 'zip'),
     'cs-test-landsat': ('https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e', '.', 'zip'),
-    #'week_08': [('https://ndownloader.figshare.com/files/9666637?private_link=480fba92b3e882c4d35d', 'week_08', 'zip'),
-    #            ('https://ndownloader.figshare.com/files/9666637?private_link=480fba92b3e882c4d35d', 'week_08-hw', 'tar')],
+    'ndvi-automation': ('https://ndownloader.figshare.com/files/13431344', '.', 'zip'),
+
 }
 
 ALLOWED_FILE_TYPES = ['zip', 'tar', 'tar.gz', 'file']
 
-#               destfile = "data/boulder-precip.csv"'}
 HOME = op.join(op.expanduser('~'))
 DATA_NAME = op.join('earth-analytics', 'data')
 
@@ -56,7 +51,7 @@ class EarthlabData(object):
         s = 'Available Datasets: {}'.format(self.data_keys)
         return s
 
-    def get_data(self, key=None, name=None, replace=False):
+    def get_data(self, key=None, replace=False, url=None):
         """
         Retrieve the data for a given week and return its path.
 
@@ -67,7 +62,11 @@ class EarthlabData(object):
         ----------
         key : str
             The dataset to retrieve. Possible options can be found in
-            ``self.data_keys``.
+            ``self.data_keys``. Note: ``key`` and ``url`` are mutually
+            exclusive.
+        url : str
+            A URL to fetch into the data directory. Use this for ad-hoc dataset
+            downloads. Note: ``key`` and ``url`` are mutually exclusive.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
@@ -77,32 +76,68 @@ class EarthlabData(object):
         path_data : str
             The path to the downloaded data.
         """
-        if key is None:
+        if key is not None and url is not None:
+            raise ValueError("The `url` and `key` parameters can not both be "
+                             "set at the same time.")
+        if key is None and url is None:
             print('Available datasets: {}'.format(
                 list(DATA_URLS.keys())))
-        elif key not in DATA_URLS:
-            raise ValueError("Don't understand key "
-                             "{}\nChoose one of {}".format(
-                                key, DATA_URLS.keys()))
-        else:
-            this_root = op.join(self.path, key)
-            this_data = DATA_URLS[key]
-            if not isinstance(this_data, list):
-                this_data = [this_data]
-            data_paths = []
-            for url, name, kind in this_data:
-                if kind not in ALLOWED_FILE_TYPES:
-                    raise ValueError('kind must be one of {}, got {}'.format(ALLOWED_FILE_TYPES, kind))
+            return
 
-                # If kind is not 'file' it will be un-archived to a folder w/ `name`
-                # else create a file called `name`
-                this_path = download(url, os.path.join(this_root, name),
-                                     replace=replace, kind=kind,
-                                     verbose=False)
-                data_paths.append(this_path)
-            if len(data_paths) == 1:
-                data_paths = data_paths[0]
-            return data_paths
+        if key is not None:
+            if key not in DATA_URLS:
+                raise ValueError("Don't understand key "
+                                 "{}\nChoose one of {}".format(
+                                     key, DATA_URLS.keys()))
+
+            this_data = DATA_URLS[key]
+            this_root = op.join(self.path, key)
+
+        if url is not None:
+            # try and workout the filename and file type
+            fname = None
+            r = requests.head(url)
+            content_disposition = r.headers['content-disposition'].split(';')
+            for c in content_disposition:
+                if c.startswith('filename='):
+                    fname = c.split('=')[1]
+                    break
+            else:
+                raise RuntimeError("Could not deduce filename for "
+                                   "{}.".format(url))
+
+            # try and deduce filetype
+            file_type = 'file'
+            for kind in ALLOWED_FILE_TYPES:
+                if fname.endswith(kind):
+                    file_type = kind
+
+            # strip off the file extension so we get pretty download
+            # directories
+            if file_type != 'file':
+                # cut off an extra character to remove the trailing dot as well
+                fname = fname[:-(len(file_type) + 1)]
+
+            this_data = (url, fname, file_type)
+            this_root = op.join(self.path, "unsorted")
+
+        if not isinstance(this_data, list):
+            this_data = [this_data]
+
+        data_paths = []
+        for url, name, kind in this_data:
+            if kind not in ALLOWED_FILE_TYPES:
+                raise ValueError('kind must be one of {}, got {}'.format(ALLOWED_FILE_TYPES, kind))
+
+            # If kind is not 'file' it will be un-archived to a folder w/ `name`
+            # else create a file called `name`
+            this_path = download(url, os.path.join(this_root, name),
+                                 replace=replace, kind=kind,
+                                 verbose=False)
+            data_paths.append(this_path)
+        if len(data_paths) == 1:
+            data_paths = data_paths[0]
+        return data_paths
 
 
 # Potential functionality for website build.
