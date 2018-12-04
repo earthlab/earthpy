@@ -320,13 +320,13 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 def plot_bands(arr, title=None, cmap="Greys_r",
                figsize=(12, 12), cols=3, extent=None):
     """Plot each layer in a raster stack read from rasterio in
-    (band, row ,col) order as a numpy array. plot_bands will create an
+    (band, row , col) order as a numpy array. plot_bands will create an
     individual plot for each band in a grid.
 
     Parameters
     ----------
     arr: numpy array
-        An n-dimensional numpy array in (band, row, col) order
+        An n-dimensional numpy array with the order and numpy shape: (nbands, nrows, ncols)
     title: str or list
         Title of one band, or list of titles with one title per band
     cmap: str
