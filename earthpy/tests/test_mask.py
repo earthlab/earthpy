@@ -55,5 +55,4 @@ def test_im_with_mask_as_masked_array():
 
     im_with_mask = np.ma.masked_where(im_mask < 2, im)
     im_result = make_apply_mask(im_with_mask, mask_arr=im_mask, vals=[0, 4])
-
     assert np.ma.is_masked(im_result)
