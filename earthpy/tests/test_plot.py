@@ -3,7 +3,11 @@
 import numpy as np
 import pytest
 import earthpy.spatial as es
+# For builds on travis to avoid plot display errors
 import matplotlib as mpl
+mpl.use('agg')
+import matplotlib.pyplot as plt
+plt.show = lambda :None
 
 
 
