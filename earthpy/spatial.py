@@ -56,7 +56,7 @@ def normalized_diff(b1, b2):
     Returns
     ----------
     n_diff : ndarray with the same shape as inputs
-        The element-wise result of (b2-b1) / (b2+b1) with all nan values
+        The element-wise result of (b2-b1) / (b2+b1) with all nan and inf values
         masked.
 
     Examples
@@ -74,7 +74,15 @@ def normalized_diff(b1, b2):
         raise ValueError("Both arrays should be of the same dimensions")
 
     n_diff = (b2 - b1) / (b2 + b1)
-    n_diff = np.ma.masked_invalid(n_diff)
+
+    # Mask invalid values
+    if np.isnan(n_diff).any():
+        n_diff = np.ma.masked_invalid(n_diff)
+
+        # Set inf values to nan
+        if np.isinf(n_diff).any():
+            n_diff[np.isinf(n_diff)] = np.nan
+
     return n_diff
 
 

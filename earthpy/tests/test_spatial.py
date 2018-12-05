@@ -42,6 +42,47 @@ def test_extent_to_json():
         es.extent_to_json([0, 1, 1, 0])
 
 
+def test_normalized_diff_shapes():
+    """If provided with arrays of different shapes,
+    normalized_diff will return ValueError"""
+
+    # Test data
+    b1_2d = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
+    b2_1d = np.array([[6, 7, 8, 9, 10, 16, 17, 18, 19, 20]])
+
+    with pytest.raises(ValueError):
+        normalized_diff(b2=b2_1d, b1=b1_2d)
+
+
+def test_normalized_diff_nomask():
+    """If result of normalized_diff does not include nan or inf values,
+    array is returned as unmasked."""
+
+    # Test data
+    b1_2d = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
+    b2_2d = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+
+    n_diff = normalized_diff(b2=b2_2d, b1=b1_2d)
+
+    # Output array unmasked
+    assert ma.is_masked(n_diff) == False
+
+
+def test_normalized_diff_mask():
+    """If result of normalized_diff includes nan or inf values,
+    array is returned as masked."""
+
+    # Test data
+    b1_2d_inf = np.array([[1, 2, 3, 4, 5], [np.nan, 12, 13, 14, -15]])
+    b2_2d_inf = np.array([[6, 7, 8, 9, 10], [16, 17, 18, np.nan, 15]])
+
+    n_diff = normalized_diff(b2=b2_2d_inf, b1=b1_2d_inf)
+
+    # Output array masked
+    assert ma.is_masked(n_diff)
+    assert np.isinf(n_diff).any() == False
+
+
 def test_bytescale_high_low_val():
     """"Unit tests for earthpy.spatial.bytescale """
 
