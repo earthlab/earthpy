@@ -44,7 +44,7 @@ def extent_to_json(ext_obj):
 # Calculate normalized difference between two arrays
 # Both arrays must be of the same size
 
-def normalized_diff(b1, b2):
+def normalized_diff(b2, b1):
     """Take two numpy arrays and calculate the normalized difference
     Math will be calculated (b2-b1) / (b2+b1).
 
