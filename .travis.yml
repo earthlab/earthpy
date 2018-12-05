@@ -23,6 +23,7 @@ install:
   - conda info -a
   - conda env create -f environment.yml
   - source activate earthpy-dev
+  - conda list
   - python setup.py install
   - pip install -r dev-requirements.txt
 
