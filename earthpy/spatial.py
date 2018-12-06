@@ -45,19 +45,19 @@ def extent_to_json(ext_obj):
 # Both arrays must be of the same size
 
 def normalized_diff(b2, b1):
-    """Take two numpy arrays and calculate the normalized difference
+    """Take two numpy arrays and calculate the normalized difference.
     Math will be calculated (b2-b1) / (b2+b1).
 
     Parameters
     ----------
-    b1, b2 : arrays with the same shape
+    b2, b1 : arrays with the same shape
         Math will be calculated (b2-b1) / (b2+b1).
 
     Returns
     ----------
     n_diff : ndarray with the same shape as inputs
-        The element-wise result of (b2-b1) / (b2+b1) with all nan and inf values
-        masked.
+        The element-wise result of (b2-b1) / (b2+b1). Inf values are set
+        to nan. Array returned as masked if result includes nan values.
 
     Examples
     --------
@@ -70,18 +70,18 @@ def normalized_diff(b2, b1):
     ...# Calculate normalized difference
     ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
     """
-    if not (b1.shape == b2.shape):
+    if not (b2.shape == b1.shape):
         raise ValueError("Both arrays should be of the same dimensions")
 
     n_diff = (b2 - b1) / (b2 + b1)
 
+    # Set inf values to nan
+    if np.isinf(n_diff).any():
+        n_diff[np.isinf(n_diff)] = np.nan
+
     # Mask invalid values
     if np.isnan(n_diff).any():
         n_diff = np.ma.masked_invalid(n_diff)
-
-        # Set inf values to nan
-        if np.isinf(n_diff).any():
-            n_diff[np.isinf(n_diff)] = np.nan
 
     return n_diff
 
