@@ -36,7 +36,7 @@ def dummy_tif_writer(arr, destfile):
 
         # Create the GeoTIFF file
         driver = gdal.GetDriverByName('GTiff')
-        dataset = driver.Create(dst_filename, x_pixels, y_pixels, int(n_channels), gdal.GDT_Float32)
+        dataset = driver.Create(destfile, x_pixels, y_pixels, int(n_channels), gdal.GDT_Float32)
 
         # Write the bands to the GeoTIFF
         for i in range(n_channels):
@@ -56,7 +56,7 @@ def dummy_tif_writer(arr, destfile):
         # Remove the dataset from memory
         dataset = None
     
-        return (0, dst_filename)
+        return (0, destfile)
     
     except Exception as e:
         
