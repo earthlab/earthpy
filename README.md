@@ -14,11 +14,15 @@ To install, use pip. `--upgrade` is optional but it ensures that the package ove
 when you install and you have the current version. If you don't have the package
 yet you can still use the `--upgrade` argument.
 
-`pip install --upgrade git+https://github.com/earthlab/earthpy.git`
+```bash
+$ pip install --upgrade git+https://github.com/earthlab/earthpy.git
+```
 
 Then import it into python.
 
-`import earthpy as et`
+```python
+>>> import earthpy as et
+```
 
 
 ## Contributors
@@ -31,4 +35,19 @@ Then import it into python.
 ## Testing
 
 This package uses [pytest](https://pytest.org/) for tests.
-To run tests locally, execute the command `pytest` from the command line.
+To run tests locally, execute the command `pytest` from the command line:
+
+```bash
+$ pytest
+```
+
+### Data generated for testing
+
+If a test requires a data object such as a GeoDataFrame or numpy array, and
+copies of that data object are required by multiple tests, we can use [pytest
+fixtures](https://docs.pytest.org/en/latest/fixture.html) to cleanly create
+and tear down those objects independently for each test.
+
+See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
+definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
+for example usage of fixtures in tests.
