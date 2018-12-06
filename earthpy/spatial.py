@@ -266,19 +266,25 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if high < low:
         raise ValueError("`high` should be greater than or equal to `low`.")
 
-    if cmin is None:
+    if (cmin is None) or (cmin < data.min()):
         cmin = data.min()
-    if cmax is None:
+        
+    if (cmax is None) or (cmax > data.max()):
         cmax = data.max()
 
-    cscale = cmax - cmin
-    if cscale < 0:
+    # calculate range of values
+    crange = cmax - cmin
+    if crange < 0:
         raise ValueError("`cmax` should be larger than `cmin`.")
-    elif cscale == 0:
-        cscale = 1
+    elif crange == 0:
+        raise ValueError("`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`")
 
-    scale = float(high - low) / cscale
+    scale = float(high - low) / crange
+    
+    # if cmax is less than the data max, then this scale parameter will create data > 1.0. clip the data to cmax first.
+    data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
+    
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
