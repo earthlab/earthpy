@@ -34,11 +34,11 @@ def test_non_overlapping_geoms():
         cl.clip_shp(unit_gdf, non_overlapping_gdf)
 
 
-def check_input_gdfs(poly_in_gdf):
+def test_input_gdfs(poly_in_gdf):
     """Test that function fails if not provided with 2 GDFs."""
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         cl.clip_shp(list(), poly_in_gdf)
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         cl.clip_shp(poly_in_gdf, list())
 
 
