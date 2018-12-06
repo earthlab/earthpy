@@ -29,7 +29,7 @@ def dummy_tif_writer(arr, destfile):
     assert len(arr.shape) == 3
     
     try:
-        dummy_geotrans = (0,1,0,0,0,-1)
+        geotrans = (0,1,0,0,0,-1)
 
         # Get the dimensions of the array
         y_pixels, x_pixels, n_channels = arr.shape
@@ -40,7 +40,7 @@ def dummy_tif_writer(arr, destfile):
 
         # Write the bands to the GeoTIFF
         for i in range(n_channels):
-            dataset.GetRasterBand(i+1).WriteArray(dummy[:,:,i])
+            dataset.GetRasterBand(i+1).WriteArray(arr[:,:,i])
 
         # Define the Unknown projection
         srs = osr.SpatialReference()            
