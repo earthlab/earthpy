@@ -277,7 +277,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if crange < 0:
         raise ValueError("`cmax` should be larger than `cmin`.")
     elif crange == 0:
-        crange = 1
+        raise ValueError("`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`")
 
     scale = float(high - low) / crange
     
