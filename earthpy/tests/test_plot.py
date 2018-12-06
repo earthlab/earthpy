@@ -88,3 +88,27 @@ def test_single_band_2dims():
     assert arr.ndim == 2
     assert len(fig.axes[0].get_images()) == 1
 
+""" Colorbar Tests """
+
+
+def test_colorbar_height():
+    """Test that the colorbar ax height matches the image axis height"""
+
+    im = np.random.randint(10, size=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 5))
+    im = ax.imshow(im,
+                   cmap='RdYlGn')
+    cb = es.colorbar(im)
+
+    # Get bbox for colorbar
+    #cbar_bbox = cb.ax.get_position()
+
+    # Get bbox for image axis object
+    #im_ax_bbox = im.axes.get_position()
+
+    try:
+        cb.ax.get_position().get_position().height == \
+        cb.ax.get_position().get_position().height
+    except:
+        raise AssertionError("""Extents are not the same.""")
+
