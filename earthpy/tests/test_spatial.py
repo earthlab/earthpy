@@ -1,6 +1,7 @@
 """ Tests for the spatial module. """
 
 import numpy as np
+import numpy.ma as ma
 import pandas as pd
 import pytest
 from shapely.geometry import Polygon, Point
