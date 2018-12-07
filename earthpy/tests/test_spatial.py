@@ -9,6 +9,7 @@ import earthpy.spatial as es
 from osgeo import gdal
 from osgeo import osr
 import rasterio as rio
+import os
 
 # A helper function to write a 3D array of data to disk as a GeoTIFF 
 # The result will have no spatial info or relevance
