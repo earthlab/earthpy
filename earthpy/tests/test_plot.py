@@ -5,7 +5,7 @@ import pytest
 import earthpy.spatial as es
 # For builds on travis to avoid plot display errors
 import matplotlib as mpl
-mpl.use('agg')
+#mpl.use('agg')
 import matplotlib.pyplot as plt
 plt.show = lambda: None
 
@@ -90,32 +90,32 @@ def test_single_band_2dims():
 
 
 """ Legend Tests """
-
+# Array to use in tests below - could become a fixture
+im_arr = np.random.randint(10, size=(15, 15))
+im_cl_all = np.digitize(im_arr, [-np.inf, 2, 7, np.inf])
 
 def test_num_titles_classes():
     """Test to ensure the the number of "handles" or classes provided for each
     legend items matches the number of classes being used to build the legend.
     This case should return a ValueError if these items are different"""
 
-    im_arr = np.random.randint(10, size=(15, 15))
-    cl_im_all = np.digitize(im_arr, [-np.inf, 2, 7, np.inf])
-    cl_im = cl_im_all.copy()
-    cl_im[cl_im == 2] = 3
+    im_cl_1_3 = im_cl_all.copy()
+    im_cl_1_3[im_cl_1_3 == 2] = 3
 
     fig, ax = plt.subplots(figsize=(5, 5))
-    im_ax = ax.imshow(cl_im, cmap='Blues')
+    im_ax = ax.imshow(im_cl_1_3, cmap='Blues')
 
     with pytest.raises(ValueError):
-        es.draw_legend(im=im_ax,
-                       classes=list(np.unique(cl_im)),
+        es.draw_legend(im_ax=im_ax,
+                       classes=[1, 2],
                        titles=["small", "medium", "large"])
 
     fig, ax = plt.subplots(figsize=(5, 5))
-    im_ax2 = ax.imshow(cl_im_all, cmap='Blues')
+    im_ax2 = ax.imshow(im_cl_all, cmap='Blues')
 
     with pytest.raises(ValueError):
-        es.draw_legend(im=im_ax2,
-                       classes=list(np.unique(cl_im_all)),
+        es.draw_legend(im_ax=im_ax2,
+                       classes=[1, 2, 3],
                        titles=["small", "large"])
 
 # Test that a mpl axis object is provided for the legend

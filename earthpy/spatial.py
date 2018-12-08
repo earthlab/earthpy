@@ -605,8 +605,9 @@ def make_col_list(unique_vals, cmap='Greys', nclasses=None):
     if not nclasses:
         nclasses = len(unique_vals)
 
-    #TODO i think i can simplify this to
-    #cmap=plt.cm.get_cmap('Blues', 3)
+    # TODO i think i can simplify this to  the below if i could figure out
+    # how to access the colors
+    # cmap=plt.cm.get_cmap('Blues', 3)
     cm = plt.cm.get_cmap(cmap)
     increment = 1/(nclasses-1)
 
@@ -622,9 +623,9 @@ def make_col_list(unique_vals, cmap='Greys', nclasses=None):
 
 def draw_legend(im_ax,
                 titles=None,
-                bbox=(1.05, 1),
                 cmap='Greys',
-                classes=None):
+                classes=None,
+                bbox=(1.05, 1)):
     """Create a custom legend with a box for each class in a raster using the
        image object, the unique classes in the image and titles for each class.
 
@@ -632,29 +633,24 @@ def draw_legend(im_ax,
     ----------
     im : matplotlib image object created using imshow()
         This is the image returned from a call to imshow().
-    classes : list
+    classes : list (optional)
         A list of unique values found in the numpy array that you wish to plot.
-    titles : list
+    titles : list (optional)
         A list of a title or category for each unique value in your raster.
-        This is the label that will go next to each box in your legend.
-    bbox : optional, tuple
+        This is the label that will go next to each box in your legend. If
+        nothing is provided, a generic "Category x" will be populated.
+    bbox : tuple (optional)
         This is the bbox_to_anchor argument that will place the legend
         anywhere on or around your plot.
-    loc : int - Optional
-        This is the matplotlib location value that can be used to specify the
-        location of the legend on your plot.
 
     Returns
     ----------
     matplotlib legend object to be placed on our plot.
     """
 
-    # TODO create default titles if not provided like done for plot_bands
-
-    # If classes not provided, get them from the im array in the ax
-
+    # If classes not provided, get them from the im array in the ax object
+    # Else use provided vals
     if classes:
-        # Create a colormap using the class values provided
         colors = make_col_list(nclasses=len(classes),
                                unique_vals=classes,
                                cmap=cmap)
@@ -680,10 +676,4 @@ def draw_legend(im_ax,
                       loc=2,
                       borderaxespad=0.,
                       prop={'size': 13}))
-
-
-
-
-#def make_listed_colormap()
-
 
