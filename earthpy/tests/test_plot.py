@@ -89,10 +89,15 @@ def test_single_band_2dims():
     assert len(fig.axes[0].get_images()) == 1
 
 
-""" Legend Tests """
+""" Draw legend tests """
+
 # Array to use in tests below - could become a fixture
 im_arr = np.random.randint(10, size=(15, 15))
 im_cl_all = np.digitize(im_arr, [-np.inf, 2, 7, np.inf])
+
+# Basic plot
+fig, ax = plt.subplots(figsize=(5, 5))
+imp2 = ax.imshow(im_cl_all, cmap='Blues')
 
 def test_num_titles_classes():
     """Test to ensure the the number of "handles" or classes provided for each
@@ -110,18 +115,58 @@ def test_num_titles_classes():
                        classes=[1, 2],
                        titles=["small", "medium", "large"])
 
-    fig, ax = plt.subplots(figsize=(5, 5))
-    im_ax2 = ax.imshow(im_cl_all, cmap='Blues')
-
     with pytest.raises(ValueError):
-        es.draw_legend(im_ax=im_ax2,
+        es.draw_legend(im_ax=im_ax,
                        classes=[1, 2, 3],
                        titles=["small", "large"])
 
-# Test that a mpl axis object is provided for the legend
-# this means i'll have to add an assert to the function as well so it fails gracefully
+def test_stock_legend_titles():
+    """Test that the correct number of generic titles plot when titles
+    parameter = None"""
 
-# Test that the number of "classes" provided aligns with the number of titles
+    # Default legend title values should be
+    def_titles = ["Category {}".format(i) for i in np.unique(im_cl_all)]
 
-# What happens when i provide it with 4 classes but one value is missing in the data?
-#maybe suggest that provide colors??
+    the_legend = es.draw_legend(im_ax=imp2)
+    # Legend handle titles should equal unique values in ax array
+    assert len(the_legend.get_texts()) == len(np.unique(imp2.get_array().data))
+    assert def_titles == [text.get_text() for text in the_legend.get_texts()]
+
+
+def test_custom_legend_titles():
+    """Test that the correct number of generic titles plot when titles
+    parameter = None"""
+
+    # Default legend title values should be
+    custom_titles = ["one", "two", "three"]
+
+    the_legend = es.draw_legend(im_ax=imp2,
+                                titles=custom_titles)
+    # Legend handle titles should equal unique values in ax array
+    assert len(the_legend.get_texts()) == len(np.unique(imp2.get_array().data))
+    assert custom_titles == [text.get_text() for text in the_legend.get_texts()]
+
+
+def test_non_ax_obj():
+    """draw_legend fun should raise ValueError if provided with a
+    non mpl axis object"""
+
+    with pytest.raises(AttributeError):
+        es.draw_legend(im_ax=list())
+
+
+def test_colors():
+    """Test that the correct colors appear in the patches of the legend"""
+    the_legend = es.draw_legend(im_ax=imp2)
+    # NOTE: Do I know for sure things are rendering in the right order?
+    legend_cols = [i.get_facecolor() for i in the_legend.get_patches()]
+    # Get the array and cmap from axis object
+    cmap_name = imp2.axes.get_images()[0].get_cmap().name
+    unique_vals = np.unique(imp2.get_array().data)
+    image_colors = es.make_col_list(unique_vals, cmap=cmap_name)
+
+    assert image_colors == legend_cols
+
+
+# TODO add tests for plots where there are non continuous / missing classes
+# Like in the jupyter notebook demo!

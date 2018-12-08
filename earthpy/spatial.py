@@ -648,6 +648,13 @@ def draw_legend(im_ax,
     matplotlib legend object to be placed on our plot.
     """
 
+    try:
+        im_ax.axes
+    except AttributeError:
+        raise AttributeError("""Oops. The legend function requires a matplotlib
+                         axis object to run properly. You have provided 
+                         a {}.""".format(type(im_ax)))
+
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
     if classes:
