@@ -88,3 +88,40 @@ def test_single_band_2dims():
     assert arr.ndim == 2
     assert len(fig.axes[0].get_images()) == 1
 
+
+""" Legend Tests """
+
+
+def test_num_titles_classes():
+    """Test to ensure the the number of "handles" or classes provided for each
+    legend items matches the number of classes being used to build the legend.
+    This case should return a ValueError if these items are different"""
+
+    im_arr = np.random.randint(10, size=(15, 15))
+    cl_im_all = np.digitize(im_arr, [-np.inf, 2, 7, np.inf])
+    cl_im = cl_im_all.copy()
+    cl_im[cl_im == 2] = 3
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+    im_ax = ax.imshow(cl_im, cmap='Blues')
+
+    with pytest.raises(ValueError):
+        es.draw_legend(im=im_ax,
+                       classes=list(np.unique(cl_im)),
+                       titles=["small", "medium", "large"])
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+    im_ax2 = ax.imshow(cl_im_all, cmap='Blues')
+
+    with pytest.raises(ValueError):
+        es.draw_legend(im=im_ax2,
+                       classes=list(np.unique(cl_im_all)),
+                       titles=["small", "large"])
+
+# Test that a mpl axis object is provided for the legend
+# this means i'll have to add an assert to the function as well so it fails gracefully
+
+# Test that the number of "classes" provided aligns with the number of titles
+
+# What happens when i provide it with 4 classes but one value is missing in the data?
+#maybe suggest that provide colors??
