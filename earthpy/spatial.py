@@ -605,9 +605,7 @@ def make_col_list(unique_vals, cmap='Greys', nclasses=None):
     if not nclasses:
         nclasses = len(unique_vals)
 
-    # TODO i think i can simplify this to  the below if i could figure out
-    # how to access the colors
-    # cmap=plt.cm.get_cmap('Blues', 3)
+    # TODO i think i can simplify this if the colors can be accessed directly
     cm = plt.cm.get_cmap(cmap)
     increment = 1/(nclasses-1)
 
