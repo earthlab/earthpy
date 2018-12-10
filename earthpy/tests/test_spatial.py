@@ -69,7 +69,7 @@ def test_dummy_tif_writer():
     
     destfile = 'dummy.tif'
     arr = np.ones((5,5,1))
-    code,fi = dummy_tif_writer(arr, destfile)
+    code,fi = create_tif_file(arr, destfile)
     
     assert code == 0
     assert os.path.exists(destfile) is True
