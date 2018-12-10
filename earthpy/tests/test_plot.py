@@ -5,7 +5,6 @@ import pytest
 import earthpy.spatial as es
 # For builds on travis to avoid plot display errors
 import matplotlib as mpl
-mpl.use('agg')
 import matplotlib.pyplot as plt
 plt.show = lambda: None
 
@@ -16,7 +15,7 @@ plt.show = lambda: None
 
 # Create tuple
 tuups = (1, 2)
-im = np.random.randint(10, size=(2, 4, 5))
+im_arr = np.random.randint(10, size=(2, 4, 5))
 
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
@@ -28,27 +27,27 @@ def test_num_titles():
     should raise an error OR if the title list is a different length than
     the array it should also raise an errors"""
 
-    single_band = im[0]
+    single_band = im_arr[0]
 
     with pytest.raises(ValueError):
         es.plot_bands(arr=single_band,
                       title=["Title1", "Title2"])
     with pytest.raises(ValueError):
-        es.plot_bands(arr=im,
+        es.plot_bands(arr=im_arr,
                       title=["Title1", "Title2", "Title3"])
 
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
-    fig, ax = es.plot_bands(im)
+    fig, ax = es.plot_bands(im_arr)
     assert len(fig.axes) == 3
 
 
 def test_two_plot_title():
     """Test that the default title is provided for a 2 band array plot"""
-    fig, ax = es.plot_bands(im)
+    fig, ax = es.plot_bands(im_arr)
     ax = fig.axes
-    num_plts = im.shape[0]
+    num_plts = im_arr.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ['Band 1', 'Band 2']
@@ -91,9 +90,9 @@ def test_single_band_2dims():
 """ Colorbar Tests """
 
 
-im_arr = np.random.randint(10, size=(5, 5))
+im_arr2 = np.random.randint(10, size=(5, 5))
 fig, ax = plt.subplots(figsize=(5, 5))
-im = ax.imshow(im_arr,
+im = ax.imshow(im_arr2,
                cmap='RdYlGn')
 
 def test_colorbar_height():
