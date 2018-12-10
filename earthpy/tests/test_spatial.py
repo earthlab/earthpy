@@ -64,7 +64,7 @@ def create_tif_file(arr, destfile):
         return(e, None)
     
 
-def test_dummy_tif_writer():
+def test_create_tif_file():
     """ Testing dummy_tif_writer."""
     
     destfile = 'dummy.tif'
