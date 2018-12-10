@@ -148,7 +148,7 @@ def test_custom_legend_titles():
 
 
 def test_non_ax_obj():
-    """draw_legend fun should raise ValueError if provided with a
+    """Draw_legend fun should raise ValueError if provided with a
     non mpl axis object"""
 
     with pytest.raises(AttributeError):
@@ -167,6 +167,3 @@ def test_colors():
 
     assert image_colors == legend_cols
 
-
-# TODO add tests for plots where there are non continuous / missing classes
-# Like in the jupyter notebook demo!
