@@ -91,13 +91,14 @@ def test_single_band_2dims():
 """ Colorbar Tests """
 
 
+im_arr = np.random.randint(10, size=(5, 5))
+fig, ax = plt.subplots(figsize=(5, 5))
+im = ax.imshow(im_arr,
+               cmap='RdYlGn')
+
 def test_colorbar_height():
     """Test that the colorbar ax height matches the image axis height"""
 
-    im_arr = np.random.randint(10, size=(5, 5))
-    fig, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(im_arr,
-                   cmap='RdYlGn')
     cb = es.colorbar(im)
 
     try:
@@ -106,4 +107,10 @@ def test_colorbar_height():
     except AssertionError:
         raise AssertionError("""Colorbar height does not match 
                              the axes object provided.""")
+
+def test_colorbar_raises_value_error():
+    """Test that a non matbplotlib axis object raises an value error"""
+
+    with pytest.raises(AttributeError):
+        es.colorbar(list())
 
