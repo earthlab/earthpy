@@ -13,7 +13,7 @@ import os
 
 # A helper function to write a 3D array of data to disk as a GeoTIFF 
 # The result will have no spatial info or relevance
-def dummy_tif_writer(arr, destfile):
+def create_tif_file(arr, destfile):
     """Writes a tif file to a specified location using an array.
     Parameters
     ----------
