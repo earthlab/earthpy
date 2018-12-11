@@ -596,7 +596,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     return 255*(shaded + 1)/2
 
 
-def make_col_list(unique_vals, cmap='Greys', nclasses=None):
+def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
     Take a defined matplotlib colormap, and create a list of colors based on
     a set of values. This is useful when you need to plot a series of
@@ -605,23 +605,24 @@ def make_col_list(unique_vals, cmap='Greys', nclasses=None):
     if not nclasses:
         nclasses = len(unique_vals)
 
-    # TODO i think i can simplify this if the colors can be accessed directly
-    cm = plt.cm.get_cmap(cmap)
     increment = 1/(nclasses-1)
 
     # Create increments to grab colormap colors
     col_index = [(increment * c) for c in range(nclasses-1)]
     col_index.append(1.0)
-    # Create cmap list
-    cols = [cm(c) for c in col_index]
 
+    # Create cmap list of colors
+    cm = plt.cm.get_cmap(cmap)
+    # cols =
+    # [cols[i-1] for i in unique_vals]
 
-    return [cols[i-1] for i in unique_vals]
+    return [cm(c) for c in col_index]
+
 
 
 def draw_legend(im_ax,
                 titles=None,
-                cmap='Greys',
+                cmap=None,
                 classes=None,
                 bbox=(1.05, 1)):
     """Create a custom legend with a box for each class in a raster using the
@@ -656,6 +657,17 @@ def draw_legend(im_ax,
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
     if classes:
+        try:
+            # Get the colormap from the mpl object
+            # Note that this needs to be TESTED for when a user provides an
+            # created manually listed or other cmap that has no name
+            cmap = im_ax.cmap.name
+        except AssertionError:
+            raise AssertionError("""Looks like we can't find the colormap 
+                                 name which means a custom colormap was likely
+                                 used. Please provide the draw_legend function 
+                                  with a cmap= argument to ensure your 
+                                  legend draws properly.""")
         colors = make_col_list(nclasses=len(classes),
                                unique_vals=classes,
                                cmap=cmap)
