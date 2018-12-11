@@ -28,18 +28,11 @@ Points from shp clipped to polygon boundary of clip_obj.
 
 Example:
 
-.. code-block:: python
-
-  import geopandas as gpd
-  import earthpy.clip as cl
-
-  # Import shapefile using geopandas
-  points = gpd.read_file("point_path_filename.shp")
-
-  # Import clip object using geopandas
-  clip_obj = gpd.read_file("boundary_path_filename.shp")
-
-  point_clip = cl.clip_points(points, clip_obj)
+    >>> import geopandas as gpd
+    >>> import earthpy.clip as cl
+    >>> points = gpd.read_file("point_path_filename.shp")
+    >>> clip_obj = gpd.read_file("boundary_path_filename.shp")
+    >>> point_clip = cl.clip_points(points, clip_obj)
 
 Clip Vector Data
 ~~~~~~~~~~~~~~~~
@@ -60,14 +53,8 @@ The output of ``clip_shp`` is a geopandas GeoDataframe clipped to the clip objec
 
 Example:
 
-.. code-block:: python
-
-    import geopandas as gpd
-    import earthpy.clip as cl
-
-    # Open shapefiles as geopandas GeoDataframe
-    shp_2_clip = gpd.read_file(shapefile.shp)
-    clip_obj = gpd.read_file(clip.shp)
-
-    # Clip data
-    clipped_gdf = cl.clip_shp(shp=shp_2_clip, clip_obj=clip_obj)
+    >>> import geopandas as gpd
+    >>> import earthpy.clip as cl
+    >>> shp_2_clip = gpd.read_file(shapefile.shp)
+    >>> clip_obj = gpd.read_file(clip.shp)
+    >>> clipped_gdf = cl.clip_shp(shp=shp_2_clip, clip_obj=clip_obj)
