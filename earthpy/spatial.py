@@ -1,5 +1,6 @@
 import os
 import contextlib
+import warnings
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
@@ -11,7 +12,6 @@ import geopandas as gpd
 import rasterio as rio
 from rasterio.mask import mask
 from skimage import exposure
-
 
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
@@ -44,39 +44,46 @@ def extent_to_json(ext_obj):
 # Calculate normalized difference between two arrays
 # Both arrays must be of the same size
 
-def normalized_diff(b2, b1):
+def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference.
-    Math will be calculated (b2-b1) / (b2+b1).
+    Math will be calculated (b1-b2) / (b1+b2).
 
     Parameters
     ----------
-    b2, b1 : arrays with the same shape
-        Math will be calculated (b2-b1) / (b2+b1).
+    b1, b2 : arrays with the same shape
+        Math will be calculated (b1-b2) / (b1+b2).
 
     Returns
     ----------
     n_diff : ndarray with the same shape as inputs
-        The element-wise result of (b2-b1) / (b2+b1). Inf values are set
+        The element-wise result of (b1-b2) / (b1+b2). Inf values are set
         to nan. Array returned as masked if result includes nan values.
 
     Examples
     --------
-    >>>import numpy as np
-    >>>import earthpy.spatial as es
+    >>> import numpy as np
+    >>> import earthpy.spatial as es
     ...
-    ...red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    ...nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    ... # Calculate normalized difference vegetation index
+    >>> nir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    >>> red_band = np.array([[1, 2, 3, 4, 5], [11, 12, 13, 14, 15]])
+    >>> ndvi = es.normalized_diff(b1=nir_band, b2=red_band)
     ...
-    ...# Calculate normalized difference
-    ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
+    ... # Calculate normalized burn ratio
+    >>> nir_band = np.array([[8, 10, 13, 17, 15], [18, 20, 22, 23, 25]])
+    >>> swir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    >>> nbr = es.normalized_diff(b1=nir_band, b2=swir_band)
     """
-    if not (b2.shape == b1.shape):
+    if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
 
-    n_diff = (b2 - b1) / (b2 + b1)
+    # Ignore warning for division by zero
+    with np.errstate(divide='ignore'):
+        n_diff = (b1 - b2) / (b1 + b2)
 
-    # Set inf values to nan
+    # Set inf values to nan and provide custom warning
     if np.isinf(n_diff).any():
+        warnings.warn("Divide by zero produced infinity values that will be replaced with nan values", Warning)
         n_diff[np.isinf(n_diff)] = np.nan
 
     # Mask invalid values
@@ -276,7 +283,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
 
     if (cmin is None) or (cmin < data.min()):
         cmin = data.min()
-        
+
     if (cmax is None) or (cmax > data.max()):
         cmax = data.max()
 
@@ -288,11 +295,11 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         raise ValueError("`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`")
 
     scale = float(high - low) / crange
-    
+
     # If cmax is less than the data max, then this scale parameter will create data > 1.0. clip the data to cmax first.
     data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
-    
+
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
@@ -380,11 +387,11 @@ def plot_bands(arr, title=None, cmap="Greys_r",
 
     if title:
         if (arr.ndim == 2) and (len(title) > 1):
-            raise ValueError("""Plot_bands() expects one title for a single 
-                             band array. You have provided more than one 
+            raise ValueError("""Plot_bands() expects one title for a single
+                             band array. You have provided more than one
                              title.""")
         elif not (len(title) == arr.shape[0]):
-            raise ValueError("""Plot_bands() expects the number of plot titles 
+            raise ValueError("""Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers.""")
 
 
