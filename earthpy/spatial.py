@@ -613,8 +613,6 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
     # Create cmap list of colors
     cm = plt.cm.get_cmap(cmap)
-    # cols =
-    # [cols[i-1] for i in unique_vals]
 
     return [cm(c) for c in col_index]
 
@@ -668,6 +666,10 @@ def draw_legend(im_ax,
                                  used. Please provide the draw_legend function 
                                   with a cmap= argument to ensure your 
                                   legend draws properly.""")
+        # If the colormap is manually generated from a list
+        if cmap == "from_list":
+            cmap = ListedColormap(im_ax.cmap.colors)
+
         colors = make_col_list(nclasses=len(classes),
                                unique_vals=classes,
                                cmap=cmap)
