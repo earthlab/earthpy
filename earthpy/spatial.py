@@ -112,7 +112,9 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     # Set default import to read
     kwds = {'mode': 'r'}
 
-    if not os.path.exists(os.path.dirname(out_path)):
+    out_dir = os.path.dirname(out_path)
+    writing_to_cwd = out_dir == ""
+    if not os.path.exists(out_dir) and not writing_to_cwd:
         raise ValueError("""The output directory path that you provided does
                             not exist""")
 
@@ -268,7 +270,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
 
     if (cmin is None) or (cmin < data.min()):
         cmin = data.min()
-        
+
     if (cmax is None) or (cmax > data.max()):
         cmax = data.max()
 
@@ -280,11 +282,11 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         raise ValueError("`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`")
 
     scale = float(high - low) / crange
-    
+
     # If cmax is less than the data max, then this scale parameter will create data > 1.0. clip the data to cmax first.
     data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
-    
+
     return (bytedata.clip(low, high) + 0.5).astype('uint8')
 
 
@@ -372,11 +374,11 @@ def plot_bands(arr, title=None, cmap="Greys_r",
 
     if title:
         if (arr.ndim == 2) and (len(title) > 1):
-            raise ValueError("""Plot_bands() expects one title for a single 
-                             band array. You have provided more than one 
+            raise ValueError("""Plot_bands() expects one title for a single
+                             band array. You have provided more than one
                              title.""")
         elif not (len(title) == arr.shape[0]):
-            raise ValueError("""Plot_bands() expects the number of plot titles 
+            raise ValueError("""Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers.""")
 
 
