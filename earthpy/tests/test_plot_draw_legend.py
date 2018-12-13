@@ -9,7 +9,7 @@ import matplotlib as mpl
 # mpl.use('agg')
 import matplotlib.pyplot as plt
 
-plt.show = lambda: None
+#plt.show = lambda: None
 from matplotlib.colors import ListedColormap
 import earthpy.spatial as es
 
@@ -197,4 +197,40 @@ def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == len([1, 2, 3, 4, 5])
     plt.close(f)
+
+
+def test_masked_vals():
+    """Test to ensure that a masked array plots properly"""
+    im_arr = np.random.uniform(-2, 1, (15, 15))
+    bins = [-0.8, -0.2, 0.2, 0.8, np.Inf]
+    # Create an array with values == 0
+    im_arr_bin = np.digitize(im_arr, bins)
+    # Mask a value
+    arr_bin_ma = np.ma.masked_equal(im_arr_bin, 0)
+    # Get just unique unmasked values
+    unmasked_vals = [val for val in np.unique(arr_bin_ma) if val is not np.ma.core.masked]
+
+    f, ax = plt.subplots()
+    im_ax = ax.imshow(arr_bin_ma)
+    leg = es.draw_legend(im_ax)
+    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
+    assert len(legend_cols) == len(unmasked_vals)
+    plt.close(f)
+
+
+def test_subplots(bins, arr_class = binned_array):
+    """Test to ensure that a plot with subplots still has a legend."""
+    bins, arr_class = binned_array()
+
+    class_bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
+    im_arr_neg = np.random.uniform(-2, 1, (15, 15))
+    arr_class = np.digitize(im_arr_neg, class_bins)
+
+    f, (ax1, ax2) = plt.subplots(2,1)
+    im_ax = ax1.imshow(arr_class)
+    es.draw_legend(im_ax, ax=ax1)
+
+    im_ax2 = ax2.imshow(arr_class)
+    es.draw_legend(im_ax2)
+    plt.show()
 

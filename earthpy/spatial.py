@@ -675,6 +675,8 @@ def draw_legend(im_ax,
                                cmap=cmap)
     else:
         classes = list(np.unique(im_ax.axes.get_images()[0].get_array()))
+        # Remove masked values, could next this list comp but keeping it simple
+        classes = [aclass for aclass in classes if aclass is not np.ma.core.masked]
         colors = [im_ax.cmap(im_ax.norm(aclass)) for aclass in classes]
 
     # If titles are not provided, create filler titles
@@ -689,8 +691,9 @@ def draw_legend(im_ax,
     patches = [mpatches.Patch(color=colors[i],
                               label="{l}".
                               format(l=titles[i])) for i in range(len(titles))]
-
-    return(plt.legend(handles=patches,
+    # Get the axis for the legend
+    ax = im_ax.axes
+    return(ax.legend(handles=patches,
                       bbox_to_anchor=bbox,
                       loc=2,
                       borderaxespad=0.,
