@@ -221,13 +221,13 @@ def crop_image(raster, geoms, all_touched=True):
     return (out_image, out_meta)
 
 
-# This was imported directly from scipy as it's being deprecated
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     """
     Byte scales an array (image).
     Byte scaling means converting the input image to uint8 dtype and scaling
     the range to ``(low, high)`` (default 0-255).
     If the input image already has dtype uint8, no scaling is done.
+    Source code adapted from scipy.misc.bytescale (deprecated in scipy-1.0.0)
 
     Parameters
     ----------
@@ -247,7 +247,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         The byte-scaled array.
     Examples
     --------
-    >>> from scipy.misc import bytescale
+    >>> from earthpy.spatial import bytescale
     >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
     ...                 [ 73.88003259,  80.91433048,   4.88878881],
     ...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
@@ -274,10 +274,10 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if high < low:
         raise ValueError("`high` should be greater than or equal to `low`.")
 
-    if (cmin is None) or (cmin < data.min()):
+    if cmin is None:
         cmin = data.min()
 
-    if (cmax is None) or (cmax > data.max()):
+    if cmax is None:
         cmax = data.max()
 
     # Calculate range of values
@@ -324,8 +324,8 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     >>> im = ax.imshow(dem.squeeze())
     >>> es.colorbar(im)  #doctest: +ELLIPSIS
     <matplotlib.colorbar.Colorbar object at 0x...>
-    >>> ax.set(title="Rocky Mountain National Park DEM")
-    [Text(0.5,1,'Rocky Mountain National Park DEM')]
+    >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+    [Text(...'Rocky Mountain National Park DEM')]
     >>> ax.set_axis_off()
     >>> plt.show()
     """
