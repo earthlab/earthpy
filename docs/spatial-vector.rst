@@ -37,6 +37,20 @@ a polygon (the boundary of Rocky Mountain National Park):
     >>> rmnp_glaciers.shape
     (36, 2)
 
+Example of clipping a line (the Continental Divide Trail) with a
+polygon (the boundary of Rocky Mountain National Park):
+
+    >>> import geopandas as gpd
+    >>> import earthpy.clip as cl
+    >>> import earthpy.data as ed
+
+    >>> rmnp = gpd.read_file(ed.get_path('rmnp.shp'))
+    >>> cdt = gpd.read_file(ed.get_path('continental-div-trail.geojson'))
+    >>> rmnp_cdt_section = cl.clip_shp(cdt, rmnp)
+    >>> cdt['geometry'].length > rmnp_cdt_section['geometry'].length
+    0    True
+    dtype: bool
+
 Example of clipping a polygon (Colorado counties) with another polygon
 (the boundary of Rocky Mountain National Park):
 

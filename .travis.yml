@@ -28,7 +28,7 @@ install:
   - pip install -r dev-requirements.txt
 
 script:
-  - pytest --cov=earthpy
+  - pytest  --doctest-modules --cov=earthpy
   # Build documentation
   - pushd docs && make doctest && make html && popd
 

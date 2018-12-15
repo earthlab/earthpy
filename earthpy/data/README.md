@@ -146,3 +146,35 @@ TODO: name source
 ### License
 
 TODO: include license info
+
+
+
+# Continental Divide Trail path
+
+A simplified path of the Continental Divide Trail
+
+### Filename
+
+`continental-div-trail.geojson`
+
+### Source
+
+Continental Divide Trail Coalition data clearinghouse:
+https://continentaldividetrail.org/cdt-data/
+
+### License
+
+All data is provided without warranty and for use at your own risk, please read
+the data disclaimer below.
+
+Improved gravel or surfaced roads are not official sections of the CDNST travel
+route.  Information contained online, in map books or other publications, is
+dynamic and may change over time. Landownership is not depicted and access
+through non-Federal areas is only allowed at the discretion or by agreement
+with the landowner. CDTC and the U.S. Forest Service shall not be responsible
+for errors or omissions in the data and shall not be obligated to provide
+updates, additions, or corrections to the data in the future. CDTC and the U.S.
+Forest Service give no warranty, expressed or implied, as to the accuracy,
+reliability, or completeness of the information. CDTC and the U.S. Forest
+Service shall not be held liable for improper or incorrect use of the data
+described and/or contained herein.

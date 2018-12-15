@@ -69,7 +69,14 @@ def normalized_diff(b1, b2):
 
     >>> # Calculate normalized difference
     >>> es.normalized_diff(b2=nir_band, b1=red_band)
-    TODO: put expected output here
+    masked_array(
+      data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
+             0.38461538461538464, 0.3333333333333333],
+            [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
+             0.15151515151515152, 0.14285714285714285]],
+      mask=[[False, False, False, False, False],
+            [False, False, False, False, False]],
+      fill_value=1e+20)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
@@ -307,12 +314,18 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
     Examples
     --------
-    >>> fig, ax = plt.subplots(figsize = (10,5))
-    >>> im = ax.imshow(nbr_landsat_post, cmap = 'RdYlGn',
-    ...                vmin = -1, vmax = 1, extent=extent_landsat)
-
-    >>> colorbar(im)
-    >>> ax.set(title="Landsat POST Normalized Burn Index (dNBR)")
+    >>> import matplotlib.pyplot as plt
+    >>> import rasterio as rio
+    >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
+    >>> with rio.open(ed.get_path('rmnp-dem.tif')) as src:
+    ...     dem = src.read()
+    ...     fig, ax = plt.subplots(figsize = (10, 5))
+    >>> im = ax.imshow(dem.squeeze())
+    >>> es.colorbar(im)  #doctest: +ELLIPSIS
+    <matplotlib.colorbar.Colorbar object at 0x...>
+    >>> ax.set(title="Rocky Mountain National Park DEM")
+    [Text(0.5,1,'Rocky Mountain National Park DEM')]
     >>> ax.set_axis_off()
     >>> plt.show()
     """
@@ -359,7 +372,8 @@ def plot_bands(arr, title=None, cmap="Greys_r",
     >>> es.plot_bands(im,
     ...               title=titles,
     ...               figsize=(12,5),
-    ...               cols=2)
+    ...               cols=2)  #doctest: +ELLIPSIS
+    (<Figure size 1200x500 with 2 Axes>, ...)
     """
 
     try:
