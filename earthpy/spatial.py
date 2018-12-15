@@ -403,7 +403,6 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        plt.show()
         return fig, axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
@@ -416,7 +415,6 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-        plt.show()
         return fig, ax
 
 
@@ -431,8 +429,8 @@ def plot_rgb(arr, rgb=(0, 1, 2),
 
     Parameters
     ----------
-    arr: numpy array
-        An n dimension numpy array in rasterio band order (bands, x, y)
+    arr: numpy ndarray
+        N-dimensional array in rasterio band order (bands, rows, columns)
     rgb: list
         Indices of the three bands to be plotted (default = 0,1,2)
     extent: tuple
@@ -461,7 +459,7 @@ def plot_rgb(arr, rgb=(0, 1, 2),
                            order with bands first""")
 
     # Index bands for plotting and clean up data for matplotlib
-    rgb_bands = arr[rgb]
+    rgb_bands = arr[rgb, :, :]
 
     if stretch:
         s_min = str_clip
@@ -570,7 +568,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr: a n dimension numpy array
+    arr: a numpy ndarray of shape (rows, columns) containing elevation values
     azimuth:  default (30)
     angle_altitude: default (30)
 

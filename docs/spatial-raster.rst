@@ -38,13 +38,21 @@ metadata dictionary format
 
 Example:
 
-    >>> from glob import glob
+    >>> import os
     >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
 
-    >>> all_file_paths = glob("path/here/*band*.tif")
-    >>> destfile = "data/location/filename.tif"
+    >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
+    >>> band_paths = [ed.get_path(fname) for fname in band_fnames]
+    >>> destfile = "./stack_result.tif"
+    >>> arr, arr_meta = es.stack_raster_tifs(band_paths, destfile)
+    >>> arr.shape
+    (3, 373, 485)
+    >>> os.path.isfile(destfile)
+    True
 
-    >>> arr, arr_meta = es.stack_raster_tifs(all_file_paths, destfile)
+    >>> # optionally, clean up example output
+    >>> os.remove(destfile)
 
 
 Draw Legend
@@ -92,7 +100,15 @@ Example:
 
     >>> red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
     >>> nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
-    >>> ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
+    >>> es.normalized_diff(b2=nir_band, b1=red_band)
+    masked_array(
+      data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
+             0.38461538461538464, 0.3333333333333333],
+            [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
+             0.15151515151515152, 0.14285714285714285]],
+      mask=[[False, False, False, False, False],
+            [False, False, False, False, False]],
+      fill_value=1e+20)
 
 
 Plot Raster File Bands
@@ -119,12 +135,17 @@ individually as matplotlib plot(s). This function is helpful when first explorin
 
 Example:
 
+    >>> import matplotlib.pyplot as plt
     >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
+    >>> import rasterio as rio
 
-    >>> titles = ["Red Band", "Green Band", "Blue Band", "Near Infrared (NIR) Band"]
+    >>> titles = ['Red', 'Green', 'Blue']
+    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    ...     es.plot_bands(src.read(), title=titles) #doctest: +ELLIPSIS
+    (<Figure size 1200x1200 with 3 Axes>, ...)
 
-    # Plot all bands of a raster tif
-    >>> es.plot_bands(naip_image, title=titles, figsize=(12,5), cols=2)
+
 
 
 Crop Image
@@ -164,10 +185,17 @@ Example:
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
 
-    >>> geoms = gpd.read_file("path_here_geoms_filename.shp")
+    >>> # clip an RGB image to the extent of Rocky Mountain National Park
+    >>> rmnp = gpd.read_file(ed.get_path("rmnp.shp"))
+    >>> with rio.open(ed.get_path("rmnp-rgb.tif")) as raster:
+    ...     src_image = raster.read()
+    ...     out_image, out_meta = es.crop_image(raster, rmnp)
+    >>> out_image.shape
+    (3, 265, 281)
+    >>> src_image.shape
+    (3, 373, 485)
 
-    >>> with rio.open("path_here_raster_filename.tif") as raster:
-    ...     out_image, out_meta = es.crop_image(raster, geoms)
+
 
 Plot RGB
 ~~~~~~~~
@@ -176,8 +204,8 @@ The ``plot_rgb`` function takes a 3 dimensional numpy array that contains image 
 
 ``plot_rgb`` takes 8 input parameters:
 
-``arr``: numpy array
-      An n-dimension numpy array in rasterio band order (bands, x, y)
+``arr``: numpy ndarray
+      A numpy N-dimensional array in rasterio band order (bands, x, y)
 ``rgb``: list
       Indices of the three bands to be plotted (default = 0,1,2)
 ``extent``: tuple - optional
@@ -196,46 +224,37 @@ The ``plot_rgb`` function takes a 3 dimensional numpy array that contains image 
 The ``plot_rgb`` function returns the following:
 
 ``fig, ax``: figure object, axes object
-      The figure and axes object associated with the 3 band image.  If the ax keyword is specified,
-      the figure return will be None.
+      The figure and axes object associated with the 3 band image.  If the ax
+      keyword is specified, the figure return will be None.
 
 Example:
 
     >>> import matplotlib.pyplot as plt
+    >>> import rasterio as rio
     >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
 
-    >>> category_names = ["Extreme", "Very High", "Moderate", "Low", "Very Low"]
-
-    >>> values = np.unique(example_raster.ravel())
-
-    # Plot the data with earthpy custom legend
-    >>> fig, ax = plt.subplots(figsize=(10, 8))
-    >>> im = ax.imshow(example_raster,
-    ...                cmap=PiYG,
-    ...                extent=example_extent)
-
-    >>> es.draw_legend(im, classes=values, titles=category_names)
-
-    >>> fig, ax1 = plt.subplots(figsize=(12, 6))
-    >>> es.plot_rgb(naip_image,
-    ...             rgb=[0, 1, 2],
-    ...             extent=naip_extent,
-    ...             title="NAIP 2017 Post Fire RGB Image",
-    ...             ax=ax1)
+    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    ...     img_array = src.read()
+    >>> es.plot_rgb(img_array) #doctest: +ELLIPSIS
+    (<Figure size 1000x1000 with 1 Axes>, ...)
 
 Histogram
 ~~~~~~~~~
 
-The ``hist()`` function plots a histogram of each layer in a raster stack converted into a numpy array for quick visualization.
+The ``hist()`` function plots a histogram of each layer in a raster stack
+converted into a numpy array for quick visualization.
 
 ``hist()`` takes 6 input parameters:
 
 ``arr``: numpy array
       An dimension numpy array
 ``title``: list
-      A list of title values that should either equal the number of bands or be empty, default = none
+      A list of title values that should either equal the number of bands or be
+      empty, default = none
 ``colors``: list
-      A list of color values that should either equal the number of bands or be a single color, (purple = default)
+      A list of color values that should either equal the number of bands or be
+      a single color, (purple = default)
 ``cols``: int
       The number of columns you want to plot in
 ``bins``: int
@@ -250,17 +269,21 @@ The ``hist()`` function returns the following:
 
 Example:
 
+    >>> import matplotlib.pyplot as plt
+    >>> import rasterio as rio
     >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
 
-    >>> colors = ['r', 'k', 'b', 'g', 'k', 'y', 'y']
-    >>> titles = ["Red Band", "Near Infrared (NIR) Band", "Blue/Green Band",
-    ...           "Green Band", "Near Infrared (NIR) Band",
-    ...           "Mid-infrared Band", "Mid-infrared Band"]
+    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    ...     img_array = src.read()
 
-    >>> es.hist(modis_bands_pre_data,
-    ...         colors=colors,
-    ...         title=titles,
-    ...         cols=2)
+    >>> es.hist(img_array,
+    ...     colors=['r', 'g', 'b'],
+    ...     title=['Red', 'Green', 'Blue'],
+    ...     cols=3,
+    ...     figsize=(8, 3)) #doctest: +ELLIPSIS
+    (<Figure size 800x300 with 3 Axes>, ...)
+
 
 Hillshade
 ~~~~~~~~~
@@ -288,9 +311,20 @@ The ``hillshade`` function returns the following:
 
 Example:
 
+    >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
+    >>> import earthpy.data as ed
 
-    >>> with rio.open("path_her_arr_filename.tif") as src:
-    ...     arr = src.read()
-    >>> hillshade = es.hillshade(arr, 315, 45)
+    >>> with rio.open(ed.get_path('rmnp-dem.tif')) as src:
+    ...     dem = src.read()
+    >>> print(dem.shape)
+    (1, 187, 152)
+
+    >>> squeezed_dem = dem.squeeze() # remove first dimension
+    >>> print(squeezed_dem.shape)
+    (187, 152)
+
+    >>> shade = es.hillshade(squeezed_dem)
+    >>> plt.imshow(shade) #doctest: +ELLIPSIS
+    <matplotlib.image.AxesImage object at 0x...>
