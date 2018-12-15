@@ -16,7 +16,6 @@ def configuration(parent_package='', top_path=None):
 
     from numpy.distutils.misc_util import Configuration
     config = Configuration(None, parent_package, top_path)
-
     config.add_subpackage('earthpy')
 
     return config
@@ -30,6 +29,7 @@ if __name__ == "__main__":
           maintainer_email=MAINTAINER_EMAIL,
           description=DESCRIPTION,
           version=VERSION,
+          packages=setuptools.find_packages(),
           install_requires=['tqdm', 'pandas', 'numpy', 'geopandas',
                             'matplotlib', 'rasterio', 'download'],
           zip_safe=False,  # the package can run out of an .egg file
@@ -42,4 +42,13 @@ if __name__ == "__main__":
               'Operating System :: POSIX',
               'Operating System :: Unix',
               'Operating System :: MacOS'],
-           package_data={DISTNAME: ["data/*.json"]},)
+           package_data={DISTNAME: [
+               "data/*.json",
+               "data/*.tif",
+               "data/*.geojson",
+               "data/*.shp",
+               "data/*.shx",
+               "data/*.prj",
+               "data/*.dbf"
+           ]}
+        )

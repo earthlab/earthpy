@@ -6,7 +6,7 @@ import json
 import os.path as op
 from . import utils, spatial
 
-data = EarthlabData()
+earthlabdata = EarthlabData()
 
 # This EPSG mapping converted from:
 # https://github.com/jswhit/pyproj/blob/master/lib/pyproj/data/epsg
