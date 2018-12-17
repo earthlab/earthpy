@@ -6,10 +6,10 @@ import json
 import os.path as op
 from . import utils, spatial
 
-earthlabdata = EarthlabData()
+data = EarthlabData()
 
 # This EPSG mapping converted from:
 # https://github.com/jswhit/pyproj/blob/master/lib/pyproj/data/epsg
 
 from pkg_resources import resource_string
-epsg = json.loads(resource_string("earthpy", "data/epsg.json").decode('utf-8'))
+epsg = json.loads(resource_string("earthpy", "example-data/epsg.json").decode('utf-8'))

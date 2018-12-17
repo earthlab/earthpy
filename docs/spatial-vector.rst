@@ -27,10 +27,10 @@ a polygon (the boundary of Rocky Mountain National Park):
 
     >>> import geopandas as gpd
     >>> import earthpy.clip as cl
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> rmnp = gpd.read_file(ed.get_path('rmnp.shp'))
-    >>> glaciers = gpd.read_file(ed.get_path('colorado-glaciers.geojson'))
+    >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
+    >>> glaciers = gpd.read_file(path_to_example('colorado-glaciers.geojson'))
     >>> glaciers.shape
     (134, 2)
     >>> rmnp_glaciers = cl.clip_shp(glaciers, rmnp)
@@ -42,10 +42,10 @@ polygon (the boundary of Rocky Mountain National Park):
 
     >>> import geopandas as gpd
     >>> import earthpy.clip as cl
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> rmnp = gpd.read_file(ed.get_path('rmnp.shp'))
-    >>> cdt = gpd.read_file(ed.get_path('continental-div-trail.geojson'))
+    >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
+    >>> cdt = gpd.read_file(path_to_example('continental-div-trail.geojson'))
     >>> rmnp_cdt_section = cl.clip_shp(cdt, rmnp)
     >>> cdt['geometry'].length > rmnp_cdt_section['geometry'].length
     0    True
@@ -56,10 +56,10 @@ Example of clipping a polygon (Colorado counties) with another polygon
 
     >>> import geopandas as gpd
     >>> import earthpy.clip as cl
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> rmnp = gpd.read_file(ed.get_path('rmnp.shp'))
-    >>> counties = gpd.read_file(ed.get_path('colorado-counties.geojson'))
+    >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
+    >>> counties = gpd.read_file(path_to_example('colorado-counties.geojson'))
     >>> counties.shape
     (64, 13)
     >>> rmnp_counties = cl.clip_shp(counties, rmnp)

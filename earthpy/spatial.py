@@ -247,6 +247,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         The byte-scaled array.
     Examples
     --------
+    >>> import numpy as np
     >>> from earthpy.spatial import bytescale
     >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
     ...                 [ 73.88003259,  80.91433048,   4.88878881],
@@ -260,9 +261,9 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
            [180, 188, 102],
            [155, 135, 128]], dtype=uint8)
     >>> bytescale(img, cmin=0, cmax=255)
-    array([[91,  3, 84],
-           [74, 81,  5],
-           [52, 34, 28]], dtype=uint8)
+    array([[255,   0, 236],
+           [205, 225,   4],
+           [140,  90,  70]], dtype=uint8)
     """
     if data.dtype == "uint8":
         return data
@@ -274,10 +275,10 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if high < low:
         raise ValueError("`high` should be greater than or equal to `low`.")
 
-    if cmin is None:
+    if cmin is None or (cmin < data.min()):
         cmin = data.min()
 
-    if cmax is None:
+    if cmax is None or (cmax > data.max()):
         cmax = data.max()
 
     # Calculate range of values
@@ -317,8 +318,8 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
-    >>> with rio.open(ed.get_path('rmnp-dem.tif')) as src:
+    >>> from earthpy.io import path_to_example
+    >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
     ...     dem = src.read()
     ...     fig, ax = plt.subplots(figsize = (10, 5))
     >>> im = ax.imshow(dem.squeeze())
@@ -387,7 +388,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             raise ValueError("""Plot_bands() expects one title for a single
                              band array. You have provided more than one
                              title.""")
-        elif not (len(title) == arr.shape[0]):
+        elif not len(title) == arr.shape[0]:
             raise ValueError("""Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers.""")
 

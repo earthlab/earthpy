@@ -42,12 +42,12 @@ if __name__ == "__main__":
               'Operating System :: Unix',
               'Operating System :: MacOS'],
            package_data={DISTNAME: [
-               "data/*.json",
-               "data/*.tif",
-               "data/*.geojson",
-               "data/*.shp",
-               "data/*.shx",
-               "data/*.prj",
-               "data/*.dbf"
+               "example-data/*.json",
+               "example-data/*.tif",
+               "example-data/*.geojson",
+               "example-data/*.shp",
+               "example-data/*.shx",
+               "example-data/*.prj",
+               "example-data/*.dbf"
            ]}
         )
