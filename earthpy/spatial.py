@@ -247,6 +247,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         The byte-scaled array.
     Examples
     --------
+    >>> import numpy as np
     >>> from earthpy.spatial import bytescale
     >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
     ...                 [ 73.88003259,  80.91433048,   4.88878881],
@@ -260,9 +261,9 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
            [180, 188, 102],
            [155, 135, 128]], dtype=uint8)
     >>> bytescale(img, cmin=0, cmax=255)
-    array([[91,  3, 84],
-           [74, 81,  5],
-           [52, 34, 28]], dtype=uint8)
+    array([[255,   0, 236],
+           [205, 225,   4],
+           [140,  90,  70]], dtype=uint8)
     """
     if data.dtype == "uint8":
         return data
@@ -274,10 +275,10 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if high < low:
         raise ValueError("`high` should be greater than or equal to `low`.")
 
-    if cmin is None:
+    if cmin is None or (cmin < data.min()):
         cmin = data.min()
 
-    if cmax is None:
+    if cmax is None or (cmax > data.max()):
         cmax = data.max()
 
     # Calculate range of values
