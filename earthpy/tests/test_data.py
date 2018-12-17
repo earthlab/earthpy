@@ -63,7 +63,7 @@ def test_colorado_glaciers():
 
 
 def test_continental_divide_trail():
-    """ Check assumptions about CDT path. """
+    """ Check assumptions about Continental Divide Trail path. """
     cdt = gpd.read_file(ed.get_path('continental-div-trail.geojson'))
     assert cdt.shape == (1, 2)
     assert cdt.crs == {'init': 'epsg:4326'}

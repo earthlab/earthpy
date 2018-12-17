@@ -387,7 +387,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
             raise ValueError("""Plot_bands() expects one title for a single
                              band array. You have provided more than one
                              title.""")
-        elif not (len(title) == arr.shape[0]):
+        elif not len(title) == arr.shape[0]:
             raise ValueError("""Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers.""")
 

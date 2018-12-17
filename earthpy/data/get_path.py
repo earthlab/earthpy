@@ -24,7 +24,6 @@ def get_path(dataset):
     earthpy_path = os.path.split(earthpy.__file__)[0]
     data_dir = os.path.join(earthpy_path, "data")
     data_files = os.listdir(data_dir)
-    if dataset in data_files:
-        return os.path.join(data_dir, dataset)
-    else:
+    if dataset not in data_files:
         raise KeyError(dataset + " not found in earthpy example data.")
+    return os.path.join(data_dir, dataset)
