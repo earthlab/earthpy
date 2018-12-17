@@ -318,8 +318,8 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
-    >>> with rio.open(ed.get_path('rmnp-dem.tif')) as src:
+    >>> from earthpy.io import path_to_example
+    >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
     ...     dem = src.read()
     ...     fig, ax = plt.subplots(figsize = (10, 5))
     >>> im = ax.imshow(dem.squeeze())

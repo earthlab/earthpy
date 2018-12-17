@@ -40,10 +40,10 @@ Example:
 
     >>> import os
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
     >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
-    >>> band_paths = [ed.get_path(fname) for fname in band_fnames]
+    >>> band_paths = [path_to_example(fname) for fname in band_fnames]
     >>> destfile = "./stack_result.tif"
     >>> arr, arr_meta = es.stack_raster_tifs(band_paths, destfile)
     >>> arr.shape
@@ -137,11 +137,11 @@ Example:
 
     >>> import matplotlib.pyplot as plt
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
     >>> import rasterio as rio
 
     >>> titles = ['Red', 'Green', 'Blue']
-    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
     ...     es.plot_bands(src.read(), title=titles) #doctest: +ELLIPSIS
     (<Figure size 1200x1200 with 3 Axes>, ...)
 
@@ -186,8 +186,8 @@ Example:
     >>> import earthpy.spatial as es
 
     >>> # clip an RGB image to the extent of Rocky Mountain National Park
-    >>> rmnp = gpd.read_file(ed.get_path("rmnp.shp"))
-    >>> with rio.open(ed.get_path("rmnp-rgb.tif")) as raster:
+    >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
+    >>> with rio.open(path_to_example("rmnp-rgb.tif")) as raster:
     ...     src_image = raster.read()
     ...     out_image, out_meta = es.crop_image(raster, rmnp)
     >>> out_image.shape
@@ -232,9 +232,9 @@ Example:
     >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
     ...     img_array = src.read()
     >>> es.plot_rgb(img_array) #doctest: +ELLIPSIS
     (<Figure size 1000x1000 with 1 Axes>, ...)
@@ -272,9 +272,9 @@ Example:
     >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> with rio.open(ed.get_path('rmnp-rgb.tif')) as src:
+    >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
     ...     img_array = src.read()
 
     >>> es.hist(img_array,
@@ -314,9 +314,9 @@ Example:
     >>> import matplotlib.pyplot as plt
     >>> import rasterio as rio
     >>> import earthpy.spatial as es
-    >>> import earthpy.data as ed
+    >>> from earthpy.io import path_to_example
 
-    >>> with rio.open(ed.get_path('rmnp-dem.tif')) as src:
+    >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
     ...     dem = src.read()
     >>> print(dem.shape)
     (1, 187, 152)
