@@ -29,7 +29,6 @@ if __name__ == "__main__":
           maintainer_email=MAINTAINER_EMAIL,
           description=DESCRIPTION,
           version=VERSION,
-          packages=setuptools.find_packages(),
           install_requires=['tqdm', 'pandas', 'numpy', 'geopandas',
                             'matplotlib', 'rasterio', 'download'],
           zip_safe=False,  # the package can run out of an .egg file
