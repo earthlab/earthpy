@@ -1,11 +1,11 @@
-import os, sys
+import os
+import sys
 import contextlib
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
-
-# For color bar resizing
+from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from shapely.geometry import mapping, box
 import geopandas as gpd
@@ -178,11 +178,11 @@ def stack(sources, dest):
     try:
         for src in sources:
             src.profile
-            
+
     except ValueError as ve:
         raise ValueError("The sources object should be Dataset Reader")
         sys.exit()
-        
+
     else:
         pass
 
@@ -650,7 +650,28 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     return 255 * (shaded + 1) / 2
 
 
-def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
+def make_col_list(unique_vals, nclasses=None, cmap=None):
+    """
+    Take a defined matplotlib colormap, and create a list of colors based on
+    a set of values. This is useful when you need to plot a series of
+    classified numpy arrays that are missing some of the sequential classes.
+    """
+    if not nclasses:
+        nclasses = len(unique_vals)
+
+    increment = 1 / (nclasses - 1)
+
+    # Create increments to grab colormap colors
+    col_index = [(increment * c) for c in range(nclasses - 1)]
+    col_index.append(1.0)
+
+    # Create cmap list of colors
+    cm = plt.cm.get_cmap(cmap)
+
+    return [cm(c) for c in col_index]
+
+
+def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
     """Create a custom legend with a box for each class in a raster using the
        image object, the unique classes in the image and titles for each class.
 
@@ -658,31 +679,81 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
     ----------
     im : matplotlib image object created using imshow()
         This is the image returned from a call to imshow().
-    classes : list
+    classes : list (optional)
         A list of unique values found in the numpy array that you wish to plot.
-    titles : list
+    titles : list (optional)
         A list of a title or category for each unique value in your raster.
-        This is the label that will go next to each box in your legend.
-    bbox : optional, tuple
+        This is the label that will go next to each box in your legend. If
+        nothing is provided, a generic "Category x" will be populated.
+    bbox : tuple (optional)
         This is the bbox_to_anchor argument that will place the legend
         anywhere on or around your plot.
-    loc : int - Optional
-        This is the matplotlib location value that can be used to specify the
-        location of the legend on your plot.
 
     Returns
     ----------
     matplotlib legend object to be placed on our plot.
     """
 
-    colors = [im.cmap(im.norm(aclass)) for aclass in classes]
+    try:
+        im_ax.axes
+    except AttributeError:
+        raise AttributeError(
+            """Oops. The legend function requires a matplotlib
+                         axis object to run properly. You have provided
+                         a {}.""".format(
+                type(im_ax)
+            )
+        )
+
+    # If classes not provided, get them from the im array in the ax object
+    # Else use provided vals
+    if classes:
+        try:
+            # Get the colormap from the mpl object
+            cmap = im_ax.cmap.name
+        except AssertionError:
+            raise AssertionError(
+                """Looks like we can't find the colormap
+                                 name which means a custom colormap was likely
+                                 used. Please provide the draw_legend function
+                                  with a cmap= argument to ensure your
+                                  legend draws properly."""
+            )
+        # If the colormap is manually generated from a list
+        if cmap == "from_list":
+            cmap = ListedColormap(im_ax.cmap.colors)
+
+        colors = make_col_list(
+            nclasses=len(classes), unique_vals=classes, cmap=cmap
+        )
+    else:
+        classes = list(np.unique(im_ax.axes.get_images()[0].get_array()))
+        # Remove masked values, could next this list comp but keeping it simple
+        classes = [
+            aclass for aclass in classes if aclass is not np.ma.core.masked
+        ]
+        colors = [im_ax.cmap(im_ax.norm(aclass)) for aclass in classes]
+
+    # If titles are not provided, create filler titles
+    if not titles:
+        titles = ["Category {}".format(i + 1) for i in range(len(classes))]
+
+    if not len(classes) == len(titles):
+        raise ValueError(
+            """The number of classes should equal the number of
+                                 titles. You have provided {0} classes and {1}
+                                 titles.""".format(
+                len(classes), len(titles)
+            )
+        )
 
     patches = [
         mpatches.Patch(color=colors[i], label="{l}".format(l=titles[i]))
         for i in range(len(titles))
     ]
-
-    return plt.legend(
+    # Get the axis for the legend
+    ax = im_ax.axes
+    return ax.legend(
         handles=patches,
         bbox_to_anchor=bbox,
         loc=2,

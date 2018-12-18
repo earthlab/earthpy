@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 import earthpy.spatial as es
 import matplotlib.pyplot as plt
+
 plt.show = lambda: None
 
 
@@ -25,7 +26,6 @@ def one_band_2dims():
 """ General functions for matplotlib elements """
 
 
-
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
     with pytest.raises(AttributeError):
@@ -42,43 +42,47 @@ def test_num_titles(image_array_2bands):
     with pytest.raises(ValueError):
         es.plot_bands(arr=single_band, title=["Title1", "Title2"])
     with pytest.raises(ValueError):
-        es.plot_bands(arr=image_array_2bands, title=["Title1", "Title2", "Title3"])
+        es.plot_bands(
+            arr=image_array_2bands, title=["Title1", "Title2", "Title3"]
+        )
 
 
 def test_num_axes(image_array_2bands):
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
-    fig, ax = es.plot_bands(image_array_2bands)
-    assert len(fig.axes) == 3
+
+    f, ax = es.plot_bands(image_array_2bands)
+    assert len(f.axes) == 3
+    plt.close(f)
 
 
 def test_two_plot_title(image_array_2bands):
     """Test that the default title is provided for a 2 band array plot"""
-    im_arr = image_array_2bands
-    f, ax = es.plot_bands(im_arr)
+
+    f, ax = es.plot_bands(image_array_2bands)
     ax = f.axes
-    num_plts = im_arr.shape[0]
+    num_plts = image_array_2bands.shape[0]
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ["Band 1", "Band 2"]
     plt.close(f)
 
 
-def test_custom_plot_title():
+def test_custom_plot_title(image_array_2bands):
     """Test that the custom title is applied for a 2 band array plot"""
-    im = np.indices((4, 4))
-    f, ax = es.plot_bands(im, title=["Red Band", "Green Band"])
+
+    f, ax = es.plot_bands(image_array_2bands, title=["Red Band", "Green Band"])
     ax = f.axes
-    num_plts = im.shape[0]
+    num_plts = image_array_2bands.shape[0]
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ["Red Band", "Green Band"]
     plt.close(f)
 
 
-def test_single_band_3dims(image_array_2bands):
+def test_single_band_3dims(one_band_3dims):
     """If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis"""
 
-    f, ax = es.plot_bands(image_array_2bands)
+    f, ax = es.plot_bands(one_band_3dims)
     arr = f.axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
     assert len(f.axes[0].get_images()) == 1
