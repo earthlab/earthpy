@@ -9,7 +9,9 @@ def make_locs_gdf():
     """ Create a dummy point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
     gdf = gpd.GeoDataFrame(
-        [Point(xy) for xy in pts], columns=["geometry"], crs={"init": "epsg:4326"}
+        [Point(xy) for xy in pts],
+        columns=["geometry"],
+        crs={"init": "epsg:4326"},
     )
     return gdf
 
@@ -17,7 +19,9 @@ def make_locs_gdf():
 def make_poly_in_gdf():
     """ Bounding box polygon. """
     poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
-    gdf = gpd.GeoDataFrame([1], geometry=[poly_inters], crs={"init": "epsg:4326"})
+    gdf = gpd.GeoDataFrame(
+        [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
+    )
     return gdf
 
 
@@ -53,7 +57,9 @@ def linez_gdf():
     """ Create Line Objects For Testing """
     linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
     lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
-    gdf = gpd.GeoDataFrame([1, 2], geometry=[linea, lineb], crs={"init": "epsg:4326"})
+    gdf = gpd.GeoDataFrame(
+        [1, 2], geometry=[linea, lineb], crs={"init": "epsg:4326"}
+    )
     return gdf
 
 
@@ -79,6 +85,8 @@ def donut_geom():
 def multi_gdf():
     """ Create a multi-polygon GeoDataFrame. """
     multi_poly = make_donut_geom().unary_union
-    out_df = gpd.GeoDataFrame(gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"})
+    out_df = gpd.GeoDataFrame(
+        gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
+    )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     return out_df

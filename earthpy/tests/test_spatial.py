@@ -141,7 +141,9 @@ def test_bytescale_high_low_val():
     assert val_arr.max() == 255
 
     # Test scale value max is less than min
-    with pytest.raises(ValueError, message="`cmax` should be larger than `cmin`."):
+    with pytest.raises(
+        ValueError, message="`cmax` should be larger than `cmin`."
+    ):
         es.bytescale(arr, cmin=100, cmax=50)
 
     # Test scale value max is less equal to min. Commented out for now because it breaks stuff somehow.

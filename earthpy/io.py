@@ -25,7 +25,11 @@ DATA_URLS = {
             "file",
         ),
     ],
-    "colorado-flood": ("https://ndownloader.figshare.com/files/12395030", ".", "zip"),
+    "colorado-flood": (
+        "https://ndownloader.figshare.com/files/12395030",
+        ".",
+        "zip",
+    ),
     "spatial-vector-lidar": (
         "https://ndownloader.figshare.com/files/12459464",
         ".",
@@ -51,7 +55,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
-    "ndvi-automation": ("https://ndownloader.figshare.com/files/13431344", ".", "zip"),
+    "ndvi-automation": (
+        "https://ndownloader.figshare.com/files/13431344",
+        ".",
+        "zip",
+    ),
 }
 
 ALLOWED_FILE_TYPES = ["zip", "tar", "tar.gz", "file"]
@@ -134,7 +142,9 @@ class EarthlabData(object):
                     fname = c.split("=")[1]
                     break
             else:
-                raise RuntimeError("Could not deduce filename for " "{}.".format(url))
+                raise RuntimeError(
+                    "Could not deduce filename for " "{}.".format(url)
+                )
 
             # try and deduce filetype
             file_type = "file"
@@ -158,7 +168,9 @@ class EarthlabData(object):
         for url, name, kind in this_data:
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
-                    "kind must be one of {}, got {}".format(ALLOWED_FILE_TYPES, kind)
+                    "kind must be one of {}, got {}".format(
+                        ALLOWED_FILE_TYPES, kind
+                    )
                 )
 
             # If kind is not 'file' it will be un-archived to a folder w/ `name`

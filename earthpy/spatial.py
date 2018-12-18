@@ -127,7 +127,10 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
                             2 files to create a stack."""
         )
     with contextlib.ExitStack() as context:
-        sources = [context.enter_context(rio.open(path, **kwds)) for path in band_paths]
+        sources = [
+            context.enter_context(rio.open(path, **kwds))
+            for path in band_paths
+        ]
 
         # TODO: Check that the CRS and TRANSFORM are the same
         dest_kwargs = sources[0].meta
@@ -338,7 +341,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
 
 # Function to plot all layers in a stack
-def plot_bands(arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None):
+def plot_bands(
+    arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
+):
     """Plot each layer in a raster stack read from rasterio in
     (band, row , col) order as a numpy array. plot_bands will create an
     individual plot for each band in a grid.
@@ -491,7 +496,9 @@ def plot_rgb(
         arr_rescaled = np.zeros_like(rgb_bands)
         for ii, band in enumerate(rgb_bands):
             lower, upper = np.percentile(band, (s_min, s_max))
-            arr_rescaled[ii] = exposure.rescale_intensity(band, in_range=(lower, upper))
+            arr_rescaled[ii] = exposure.rescale_intensity(
+                band, in_range=(lower, upper)
+            )
         rgb_bands = arr_rescaled.copy()
 
     # If type is masked array - add alpha channel for plotting
@@ -519,7 +526,9 @@ def plot_rgb(
     return fig, ax
 
 
-def hist(arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20):
+def hist(
+    arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20
+):
     """
     Plot histogram for each layer in a numpy array.
 
@@ -608,9 +617,9 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     azimuthrad = azimuth * np.pi / 180.0
     altituderad = angle_altitude * np.pi / 180.0
 
-    shaded = np.sin(altituderad) * np.sin(slope) + np.cos(altituderad) * np.cos(
-        slope
-    ) * np.cos((azimuthrad - np.pi / 2.0) - aspect)
+    shaded = np.sin(altituderad) * np.sin(slope) + np.cos(
+        altituderad
+    ) * np.cos(slope) * np.cos((azimuthrad - np.pi / 2.0) - aspect)
 
     return 255 * (shaded + 1) / 2
 
