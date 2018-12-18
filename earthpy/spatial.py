@@ -1,4 +1,4 @@
-import os
+import os, sys
 import contextlib
 import numpy as np
 import numpy.ma as ma
@@ -166,11 +166,16 @@ def stack(sources, dest):
     dest : a rio.open writable object that will store raster data.
     """
 
-    if not type(sources[0]) == rio.io.DatasetReader:
-        raise ValueError(
-            """The sources object should be of type:
-                            rasterio.DatasetReader"""
-        )
+    try:
+        for src in sources:
+            src.profile
+            
+    except ValueError as ve:
+        raise ValueError("The sources object should be Dataset Reader")
+        sys.exit()
+        
+    else:
+        pass
 
     for ii, ifile in enumerate(sources):
         bands = sources[ii].read()
