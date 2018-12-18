@@ -20,6 +20,10 @@ When submitting a change to the repository, please do the following:
 
 When submitting a pull request:
 
+- Install the tools needed for development by running
+  `pip install -r dev-requirements.txt` or the equivalent of it for your package
+  manager.
+
 - All existing tests should pass. Please make sure that the test
   suite passes, both locally and on
   `Travis CI <https://travis-ci.org/earthlab/earthpy>`_
