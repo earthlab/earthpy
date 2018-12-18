@@ -338,7 +338,17 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     >>>ax.set_axis_off()
     >>>plt.show()
     """
-    ax = mapobj.axes
+
+    try:
+        ax = mapobj.axes
+    except AttributeError:
+        raise AttributeError(
+            """The colorbar function requires a matplotlib
+                             axis object. You have provided
+                             a {}.""".format(
+                type(mapobj)
+            )
+        )
     fig = ax.figure
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size=size, pad=pad)
@@ -396,13 +406,13 @@ def plot_bands(
     if title:
         if (arr.ndim == 2) and (len(title) > 1):
             raise ValueError(
-                """Plot_bands() expects one title for a single 
-                             band array. You have provided more than one 
+                """Plot_bands() expects one title for a single
+                             band array. You have provided more than one
                              title."""
             )
         elif not (len(title) == arr.shape[0]):
             raise ValueError(
-                """Plot_bands() expects the number of plot titles 
+                """Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers."""
             )
 
