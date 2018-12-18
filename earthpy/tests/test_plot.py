@@ -2,10 +2,6 @@
 
 import numpy as np
 import pytest
-
-# For builds on travis to avoid plot display errors
-import matplotlib as mpl
-# mpl.use('agg')
 import matplotlib.pyplot as plt
 plt.show = lambda: None
 from matplotlib.colors import ListedColormap
@@ -21,6 +17,7 @@ import earthpy.spatial as es
 tuups = (1, 2)
 im = np.random.randint(10, size=(2, 4, 5))
 """ Plot Bands Tests """
+
 
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
@@ -96,4 +93,3 @@ def test_single_band_2dims():
     assert arr.ndim == 2
     assert len(f.axes[0].get_images()) == 1
     plt.close(f)
-
