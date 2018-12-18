@@ -9,16 +9,16 @@ plt.show = lambda: None
 from matplotlib.colors import ListedColormap
 import earthpy.spatial as es
 
+
 @pytest.fixture
 def listed_cmap():
-    cmap = ListedColormap(["white", "tan", "purple",
-                           "springgreen", "darkgreen"])
+    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
     norm = mpl.colors.Normalize(vmin=1, vmax=5)
     return cmap, norm
 
+
 @pytest.fixture
 def binned_array_3bins():
-    # Array to use in tests below - could become a fixture
     im_arr = np.random.randint(10, size=(15, 15))
     bins = [-np.inf, 2, 7, np.inf]
     im_arr_bin = np.digitize(im_arr, bins)
@@ -107,8 +107,7 @@ def test_colors(binned_array_3bins):
     bins, im_arr_bin = binned_array_3bins
 
     f, ax = plt.subplots()
-    im = ax.imshow(im_arr_bin,
-                     cmap="Blues")
+    im = ax.imshow(im_arr_bin, cmap="Blues")
     the_legend = es.draw_legend(im_ax=im)
     # NOTE: Do I know for sure things are rendering in the right order?
     legend_cols = [i.get_facecolor() for i in the_legend.get_patches()]
@@ -140,8 +139,7 @@ def test_listed_cmap(binned_array):
     bins, arr_class = binned_array
 
     # TODO make the list of colors a fixture for reuse
-    cmap_list = ListedColormap(["white", "tan", "purple",
-                                "springgreen", "darkgreen"])
+    cmap_list = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
     f, ax = plt.subplots()
     im_plt = ax.imshow(arr_class, cmap=cmap_list)
     leg = es.draw_legend(im_plt)
@@ -155,9 +153,8 @@ def test_noncont_listed_cmap(binned_array, listed_cmap):
      would need to be normalized, only creates a legend with x handles
      by default"""
 
-    #cmap, _ = listed_cmap
-    cmap = ListedColormap(["white", "tan", "purple",
-                           "springgreen", "darkgreen"])
+    # cmap, _ = listed_cmap
+    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
 
     bins, arr_class = binned_array
     arr_class[arr_class == 1] = 2
@@ -180,9 +177,8 @@ def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
 
     # Note here i tried to create a fixture for the cmap and norm obj but
     # ERROR: ListedColormap is not iterable
-    #cmap, norm = listed_cmap
-    cmap = ListedColormap(["white", "tan", "purple",
-                           "springgreen", "darkgreen"])
+    # cmap, norm = listed_cmap
+    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
     norm = mpl.colors.Normalize(vmin=1, vmax=5)
 
     bins, arr_class = binned_array
@@ -199,12 +195,11 @@ def test_masked_vals():
     """Test to ensure that a masked array plots properly"""
     im_arr = np.random.uniform(-2, 1, (15, 15))
     bins = [-0.8, -0.2, 0.2, 0.8, np.Inf]
-    # Create an array with values == 0
     im_arr_bin = np.digitize(im_arr, bins)
-    # Mask a value
     arr_bin_ma = np.ma.masked_equal(im_arr_bin, 0)
-    # Get just unique unmasked values
-    unmasked_vals = [val for val in np.unique(arr_bin_ma) if val is not np.ma.core.masked]
+    unmasked_vals = [
+        val for val in np.unique(arr_bin_ma) if val is not np.ma.core.masked
+    ]
 
     f, ax = plt.subplots()
     im_ax = ax.imshow(arr_bin_ma)
@@ -214,19 +209,15 @@ def test_masked_vals():
     plt.close(f)
 
 
-def test_subplots(bins, arr_class = binned_array):
+def test_subplots(binned_array):
     """Test to ensure that a plot with subplots still has a legend."""
-    bins, arr_class = binned_array()
 
-    class_bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
-    im_arr_neg = np.random.uniform(-2, 1, (15, 15))
-    arr_class = np.digitize(im_arr_neg, class_bins)
+    bins, arr_class = binned_array
 
-    f, (ax1, ax2) = plt.subplots(2,1)
+    f, (ax1, ax2) = plt.subplots(2, 1)
     im_ax = ax1.imshow(arr_class)
-    es.draw_legend(im_ax, ax=ax1)
+    es.draw_legend(im_ax)
 
     im_ax2 = ax2.imshow(arr_class)
     es.draw_legend(im_ax2)
     plt.show()
-
