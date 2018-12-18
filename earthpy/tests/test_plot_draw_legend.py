@@ -12,7 +12,9 @@ import earthpy.spatial as es
 
 @pytest.fixture
 def listed_cmap():
-    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
+    cmap = ListedColormap(
+        ["white", "tan", "purple", "springgreen", "darkgreen"]
+    )
     norm = mpl.colors.Normalize(vmin=1, vmax=5)
     return cmap, norm
 
@@ -34,11 +36,6 @@ def binned_array():
     return bins, im_arr_bin
 
 
-@pytest.fixture
-def listed_cmap():
-    return ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
-
-
 """ Draw legend tests """
 
 
@@ -53,10 +50,14 @@ def test_num_titles_classes(binned_array_3bins):
     im_ax = ax.imshow(im_arr_bin, cmap="Blues")
 
     with pytest.raises(ValueError):
-        es.draw_legend(im_ax=im_ax, classes=[1, 2], titles=["small", "medium", "large"])
+        es.draw_legend(
+            im_ax=im_ax, classes=[1, 2], titles=["small", "medium", "large"]
+        )
 
     with pytest.raises(ValueError):
-        es.draw_legend(im_ax=im_ax, classes=[1, 2, 3], titles=["small", "large"])
+        es.draw_legend(
+            im_ax=im_ax, classes=[1, 2, 3], titles=["small", "large"]
+        )
 
 
 def test_stock_legend_titles(binned_array_3bins):
@@ -89,7 +90,9 @@ def test_custom_legend_titles(binned_array_3bins):
 
     the_legend = es.draw_legend(im_ax=imp2, titles=custom_titles)
     assert len(the_legend.get_texts()) == len(np.unique(imp2.get_array().data))
-    assert custom_titles == [text.get_text() for text in the_legend.get_texts()]
+    assert custom_titles == [
+        text.get_text() for text in the_legend.get_texts()
+    ]
     plt.close(f)
 
 
@@ -139,7 +142,9 @@ def test_listed_cmap(binned_array):
     bins, arr_class = binned_array
 
     # TODO make the list of colors a fixture for reuse
-    cmap_list = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
+    cmap_list = ListedColormap(
+        ["white", "tan", "purple", "springgreen", "darkgreen"]
+    )
     f, ax = plt.subplots()
     im_plt = ax.imshow(arr_class, cmap=cmap_list)
     leg = es.draw_legend(im_plt)
@@ -153,13 +158,11 @@ def test_noncont_listed_cmap(binned_array, listed_cmap):
      would need to be normalized, only creates a legend with x handles
      by default"""
 
-    # cmap, _ = listed_cmap
-    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
-
+    cmap, norm = listed_cmap
     bins, arr_class = binned_array
+
     arr_class[arr_class == 1] = 2
     arr_class[arr_class == 5] = 4
-    norm = mpl.colors.Normalize(vmin=1, vmax=5)
 
     f, ax = plt.subplots(figsize=(5, 5))
     im = ax.imshow(arr_class, cmap=cmap, norm=norm)
@@ -175,13 +178,9 @@ def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
     the user wants all classes to be drawn in the legend. IE the classified
     image has classes 2,3,4 and the user wants classes 1-5 to appear """
 
-    # Note here i tried to create a fixture for the cmap and norm obj but
-    # ERROR: ListedColormap is not iterable
-    # cmap, norm = listed_cmap
-    cmap = ListedColormap(["white", "tan", "purple", "springgreen", "darkgreen"])
-    norm = mpl.colors.Normalize(vmin=1, vmax=5)
-
+    cmap, norm = listed_cmap
     bins, arr_class = binned_array
+
     f, ax = plt.subplots(figsize=(5, 5))
     im = ax.imshow(arr_class, cmap=cmap, norm=norm)
     leg = es.draw_legend(im, classes=[1, 2, 3, 4, 5])
@@ -221,3 +220,4 @@ def test_subplots(binned_array):
     im_ax2 = ax2.imshow(arr_class)
     es.draw_legend(im_ax2)
     plt.show()
+    plt.close(f)

@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 import earthpy.spatial as es
 import matplotlib.pyplot as plt
+
 plt.show = lambda: None
 
 
@@ -41,14 +42,15 @@ def test_num_titles(image_array_2bands):
     with pytest.raises(ValueError):
         es.plot_bands(arr=single_band, title=["Title1", "Title2"])
     with pytest.raises(ValueError):
-        es.plot_bands(arr=image_array_2bands, title=["Title1", "Title2", "Title3"])
+        es.plot_bands(
+            arr=image_array_2bands, title=["Title1", "Title2", "Title3"]
+        )
 
 
 def test_num_axes(image_array_2bands):
     """If provided with a 2 band array, plot_bands should return 3 axes by
     default"""
 
-    #im_arr = image_array_2bands()
     f, ax = es.plot_bands(image_array_2bands)
     assert len(f.axes) == 3
     plt.close(f)

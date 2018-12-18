@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import contextlib
 import numpy as np
 import numpy.ma as ma
@@ -177,11 +178,11 @@ def stack(sources, dest):
     try:
         for src in sources:
             src.profile
-            
+
     except ValueError as ve:
         raise ValueError("The sources object should be Dataset Reader")
         sys.exit()
-        
+
     else:
         pass
 
@@ -658,10 +659,10 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     if not nclasses:
         nclasses = len(unique_vals)
 
-    increment = 1/(nclasses-1)
+    increment = 1 / (nclasses - 1)
 
     # Create increments to grab colormap colors
-    col_index = [(increment * c) for c in range(nclasses-1)]
+    col_index = [(increment * c) for c in range(nclasses - 1)]
     col_index.append(1.0)
 
     # Create cmap list of colors
@@ -670,12 +671,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     return [cm(c) for c in col_index]
 
 
-
-def draw_legend(im_ax,
-                titles=None,
-                cmap=None,
-                classes=None,
-                bbox=(1.05, 1)):
+def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
     """Create a custom legend with a box for each class in a raster using the
        image object, the unique classes in the image and titles for each class.
 
@@ -701,9 +697,13 @@ def draw_legend(im_ax,
     try:
         im_ax.axes
     except AttributeError:
-        raise AttributeError("""Oops. The legend function requires a matplotlib
+        raise AttributeError(
+            """Oops. The legend function requires a matplotlib
                          axis object to run properly. You have provided
-                         a {}.""".format(type(im_ax)))
+                         a {}.""".format(
+                type(im_ax)
+            )
+        )
 
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
@@ -712,40 +712,51 @@ def draw_legend(im_ax,
             # Get the colormap from the mpl object
             cmap = im_ax.cmap.name
         except AssertionError:
-            raise AssertionError("""Looks like we can't find the colormap
+            raise AssertionError(
+                """Looks like we can't find the colormap
                                  name which means a custom colormap was likely
                                  used. Please provide the draw_legend function
                                   with a cmap= argument to ensure your
-                                  legend draws properly.""")
+                                  legend draws properly."""
+            )
         # If the colormap is manually generated from a list
         if cmap == "from_list":
             cmap = ListedColormap(im_ax.cmap.colors)
 
-        colors = make_col_list(nclasses=len(classes),
-                               unique_vals=classes,
-                               cmap=cmap)
+        colors = make_col_list(
+            nclasses=len(classes), unique_vals=classes, cmap=cmap
+        )
     else:
         classes = list(np.unique(im_ax.axes.get_images()[0].get_array()))
         # Remove masked values, could next this list comp but keeping it simple
-        classes = [aclass for aclass in classes if aclass is not np.ma.core.masked]
+        classes = [
+            aclass for aclass in classes if aclass is not np.ma.core.masked
+        ]
         colors = [im_ax.cmap(im_ax.norm(aclass)) for aclass in classes]
 
     # If titles are not provided, create filler titles
     if not titles:
-        titles = ["Category {}".format(i+1) for i in range(len(classes))]
+        titles = ["Category {}".format(i + 1) for i in range(len(classes))]
 
     if not len(classes) == len(titles):
-        raise ValueError("""The number of classes should equal the number of
+        raise ValueError(
+            """The number of classes should equal the number of
                                  titles. You have provided {0} classes and {1}
-                                 titles.""".format(len(classes), len(titles)))
+                                 titles.""".format(
+                len(classes), len(titles)
+            )
+        )
 
-    patches = [mpatches.Patch(color=colors[i],
-                              label="{l}".
-                              format(l=titles[i])) for i in range(len(titles))]
+    patches = [
+        mpatches.Patch(color=colors[i], label="{l}".format(l=titles[i]))
+        for i in range(len(titles))
+    ]
     # Get the axis for the legend
     ax = im_ax.axes
-    return(ax.legend(handles=patches,
-                      bbox_to_anchor=bbox,
-                      loc=2,
-                      borderaxespad=0.,
-                      prop={'size': 13}))
+    return ax.legend(
+        handles=patches,
+        bbox_to_anchor=bbox,
+        loc=2,
+        borderaxespad=0.0,
+        prop={"size": 13},
+    )
