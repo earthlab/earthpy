@@ -4,7 +4,6 @@ import numpy as np
 import pytest
 import earthpy.spatial as es
 import matplotlib.pyplot as plt
-
 plt.show = lambda: None
 
 
@@ -24,6 +23,7 @@ def one_band_2dims():
 
 
 """ General functions for matplotlib elements """
+
 
 
 def test_arr_parameter():
