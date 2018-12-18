@@ -18,18 +18,17 @@ def test_not_gdf(poly_in_gdf):
 def test_returns_gdf(locs_gdf, poly_in_gdf):
     """Test that function returns a GeoDataFrame (or GDF-like) object."""
     out = cl.clip_shp(locs_gdf, poly_in_gdf)
-    assert hasattr(out, 'geometry')
+    assert hasattr(out, "geometry")
 
 
 def test_non_overlapping_geoms():
     """Test that a bounding box returns error if the extents don't overlap"""
     unit_box = Polygon([(0, 0), (0, 1), (1, 1), (1, 0), (0, 0)])
-    unit_gdf = gpd.GeoDataFrame([1],
-                                geometry=[unit_box],
-                                crs={'init': 'epsg:4326'})
+    unit_gdf = gpd.GeoDataFrame([1], geometry=[unit_box], crs={"init": "epsg:4326"})
     non_overlapping_gdf = unit_gdf.copy()
-    non_overlapping_gdf = unit_gdf.geometry.apply(lambda x: shapely.affinity.
-                                                  translate(x, xoff=20))
+    non_overlapping_gdf = unit_gdf.geometry.apply(
+        lambda x: shapely.affinity.translate(x, xoff=20)
+    )
     with pytest.raises(ValueError):
         cl.clip_shp(unit_gdf, non_overlapping_gdf)
 
