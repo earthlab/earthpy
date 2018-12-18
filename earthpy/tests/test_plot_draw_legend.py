@@ -219,5 +219,4 @@ def test_subplots(binned_array):
 
     im_ax2 = ax2.imshow(arr_class)
     es.draw_legend(im_ax2)
-    plt.show()
     plt.close(f)
