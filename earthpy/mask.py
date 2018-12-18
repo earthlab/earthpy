@@ -185,11 +185,27 @@ def make_apply_mask(arr, mask_arr, vals):
         A numpy array with values that should be masked set to 1 for
         True (Boolean)
 
-    >>>import numpy as np
-    >>>import from earthpy.mask import apply_cloud_mask
-    >>>im = np.random.randint(10, size=(4, 5))
-    >>>im_mask = np.random.randint(5, size=(4, 5))
-    >>>make_apply_mask(im, mask_arr=im_mask, vals=[0, 4])
+    >>> import numpy as np
+    >>> from earthpy.mask import make_apply_mask
+    >>> im = np.arange(9).reshape((3, 3))
+    >>> im
+    array([[0, 1, 2],
+           [3, 4, 5],
+           [6, 7, 8]])
+    >>> im_mask = np.array([1, 1, 1, 0, 0, 0, 1, 1, 1]).reshape(3, 3)
+    >>> im_mask
+    array([[1, 1, 1],
+           [0, 0, 0],
+           [1, 1, 1]])
+    >>> make_apply_mask(im, mask_arr=im_mask, vals=[1])
+    masked_array(
+      data=[[--, --, --],
+            [3, 4, 5],
+            [--, --, --]],
+      mask=[[ True,  True,  True],
+            [False, False, False],
+            [ True,  True,  True]],
+      fill_value=999999)
     """
     cl_mask = make_cloud_mask(mask_arr, vals)
     return apply_cloud_mask(arr, cl_mask)
