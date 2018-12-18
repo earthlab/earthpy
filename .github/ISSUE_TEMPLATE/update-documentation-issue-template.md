@@ -1,6 +1,9 @@
 ---
 name: Update Documentation Issue Template
 about: This template is designed for those who wish to update documentation earthpy.
+title: ''
+labels: ''
+assignees: ''
 
 ---
 

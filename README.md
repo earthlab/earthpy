@@ -27,10 +27,14 @@ Then import it into python.
 
 ## Contributors
 
-- Chris Holdgraf
 - Leah Wasser
-- Carson Farmer
 - Max Joseph
+- Joe McGlinchy
+- Chris Holdgraf
+- Jenny Palomino
+- Carson Farmer
+- Students from the Earth Analytics Fall 2018 Python course & Professional certificate
+
 
 ## Testing
 

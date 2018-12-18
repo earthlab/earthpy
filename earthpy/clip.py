@@ -77,7 +77,7 @@ def clip_line_poly(shp, clip_obj):
 
     # Clip the data - with these data
     clipped = shp_sub.copy()
-    clipped['geometry'] = shp_sub.intersection(poly)
+    clipped["geometry"] = shp_sub.intersection(poly)
 
     # Return the clipped layer with no null geometry values
     return clipped[clipped.geometry.notnull()]
@@ -114,19 +114,22 @@ def clip_shp(shp, clip_obj):
         shp.geometry
         clip_obj.geometry
     except AttributeError:
-        raise AttributeError("""Please make sure that your input and clip
+        raise AttributeError(
+            """Please make sure that your input and clip
                              GeoDataFrames have a valid
-                             geometry column""")
-
+                             geometry column"""
+        )
 
     if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
 
     # Multipolys / point / line don't clip properly
     if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
-        raise ValueError("""Clip doesn't currently support multipart
+        raise ValueError(
+            """Clip doesn't currently support multipart
         geometries. Consider using .explode to create
-        unique features in your GeoDataFrame""")
+        unique features in your GeoDataFrame"""
+        )
 
     if shp["geometry"].iloc[0].type == "Point":
         return clip_points(shp, clip_obj)
