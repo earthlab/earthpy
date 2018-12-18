@@ -115,10 +115,11 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     # Set default import to read
     kwds = {"mode": "r"}
 
-    if not os.path.exists(os.path.dirname(out_path)):
+    out_dir = os.path.dirname(out_path)
+    writing_to_cwd = out_dir == ""
+    if not os.path.exists(out_dir) and not writing_to_cwd:
         raise ValueError(
-            """The output directory path that you provided does
-                            not exist"""
+            "The output directory path that you provided does not exist"
         )
 
     if len(band_paths) < 2:
