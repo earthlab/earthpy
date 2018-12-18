@@ -120,7 +120,7 @@ def clip_shp(shp, clip_obj):
                              geometry column"""
         )
 
-    if not any(shp.intersects(clip_obj)):
+    if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
 
     # Multipolys / point / line don't clip properly

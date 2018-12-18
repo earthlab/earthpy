@@ -17,7 +17,6 @@ def configuration(parent_package="", top_path=None):
     from numpy.distutils.misc_util import Configuration
 
     config = Configuration(None, parent_package, top_path)
-
     config.add_subpackage("earthpy")
 
     return config
@@ -52,5 +51,13 @@ if __name__ == "__main__":
             "Operating System :: Unix",
             "Operating System :: MacOS",
         ],
-        package_data={DISTNAME: ["data/*.json"]},
+        package_data={DISTNAME: [
+            "example-data/*.json",
+            "example-data/*.tif",
+            "example-data/*.geojson",
+            "example-data/*.shp",
+            "example-data/*.shx",
+            "example-data/*.prj",
+            "example-data/*.dbf"
+        ]},
     )

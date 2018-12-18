@@ -1,4 +1,4 @@
-import os
+import os, sys
 import contextlib
 import numpy as np
 import numpy.ma as ma
@@ -62,14 +62,22 @@ def normalized_diff(b1, b2):
 
     Examples
     --------
-    >>>import numpy as np
-    >>>import earthpy.spatial as es
-    ...
-    ...red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    ...nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
-    ...
-    ...# Calculate normalized difference
-    ...ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
+    >>> import numpy as np
+    >>> import earthpy.spatial as es
+
+    >>> red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+    >>> nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+
+    >>> # Calculate normalized difference
+    >>> es.normalized_diff(b2=nir_band, b1=red_band)
+    masked_array(
+      data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
+             0.38461538461538464, 0.3333333333333333],
+            [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
+             0.15151515151515152, 0.14285714285714285]],
+      mask=[[False, False, False, False, False],
+            [False, False, False, False, False]],
+      fill_value=1e+20)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
@@ -114,10 +122,11 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     # Set default import to read
     kwds = {"mode": "r"}
 
-    if not os.path.exists(os.path.dirname(out_path)):
+    out_dir = os.path.dirname(out_path)
+    writing_to_cwd = out_dir == ""
+    if not os.path.exists(out_dir) and not writing_to_cwd:
         raise ValueError(
-            """The output directory path that you provided does
-                            not exist"""
+            "The output directory path that you provided does not exist"
         )
 
     if len(band_paths) < 2:
@@ -165,11 +174,16 @@ def stack(sources, dest):
     dest : a rio.open writable object that will store raster data.
     """
 
-    if not type(sources[0]) == rio.io.DatasetReader:
-        raise ValueError(
-            """The sources object should be of type:
-                            rasterio.DatasetReader"""
-        )
+    try:
+        for src in sources:
+            src.profile
+            
+    except ValueError as ve:
+        raise ValueError("The sources object should be Dataset Reader")
+        sys.exit()
+        
+    else:
+        pass
 
     for ii, ifile in enumerate(sources):
         bands = sources[ii].read()
@@ -228,13 +242,13 @@ def crop_image(raster, geoms, all_touched=True):
     return (out_image, out_meta)
 
 
-# This was imported directly from scipy as it's being deprecated
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     """
     Byte scales an array (image).
     Byte scaling means converting the input image to uint8 dtype and scaling
     the range to ``(low, high)`` (default 0-255).
     If the input image already has dtype uint8, no scaling is done.
+    Source code adapted from scipy.misc.bytescale (deprecated in scipy-1.0.0)
 
     Parameters
     ----------
@@ -254,7 +268,8 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         The byte-scaled array.
     Examples
     --------
-    >>> from scipy.misc import bytescale
+    >>> import numpy as np
+    >>> from earthpy.spatial import bytescale
     >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
     ...                 [ 73.88003259,  80.91433048,   4.88878881],
     ...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
@@ -267,9 +282,9 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
            [180, 188, 102],
            [155, 135, 128]], dtype=uint8)
     >>> bytescale(img, cmin=0, cmax=255)
-    array([[91,  3, 84],
-           [74, 81,  5],
-           [52, 34, 28]], dtype=uint8)
+    array([[255,   0, 236],
+           [205, 225,   4],
+           [140,  90,  70]], dtype=uint8)
     """
     if data.dtype == "uint8":
         return data
@@ -281,7 +296,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if high < low:
         raise ValueError("`high` should be greater than or equal to `low`.")
 
-    if (cmin is None) or (cmin < data.min()):
+    if cmin is None or (cmin < data.min()):
         cmin = data.min()
 
     if (cmax is None) or (cmax > data.max()):
@@ -301,7 +316,6 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     # If cmax is less than the data max, then this scale parameter will create data > 1.0. clip the data to cmax first.
     data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
-
     return (bytedata.clip(low, high) + 0.5).astype("uint8")
 
 
@@ -323,16 +337,32 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
     Examples
     --------
-    >>>fig, ax = plt.subplots(figsize = (10,5))
-    >>>im = ax.imshow(nbr_landsat_post, cmap = 'RdYlGn',
-        ...    vmin = -1, vmax = 1, extent=extent_landsat)
-
-    >>>colorbar(im)
-    >>>ax.set(title="Landsat POST Normalized Burn Index (dNBR)")
-    >>>ax.set_axis_off()
-    >>>plt.show()
+    >>> import matplotlib.pyplot as plt
+    >>> import rasterio as rio
+    >>> import earthpy.spatial as es
+    >>> from earthpy.io import path_to_example
+    >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
+    ...     dem = src.read()
+    ...     fig, ax = plt.subplots(figsize = (10, 5))
+    >>> im = ax.imshow(dem.squeeze())
+    >>> es.colorbar(im)  #doctest: +ELLIPSIS
+    <matplotlib.colorbar.Colorbar object at 0x...>
+    >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+    [Text(...'Rocky Mountain National Park DEM')]
+    >>> ax.set_axis_off()
+    >>> plt.show()
     """
-    ax = mapobj.axes
+
+    try:
+        ax = mapobj.axes
+    except AttributeError:
+        raise AttributeError(
+            """The colorbar function requires a matplotlib
+                             axis object. You have provided
+                             a {}.""".format(
+                type(mapobj)
+            )
+        )
     fig = ax.figure
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size=size, pad=pad)
@@ -369,17 +399,15 @@ def plot_bands(
 
     Examples
     --------
-    >>>import numpy as np
-    >>>import earthpy.spatial as es
-    ...
-    ...im = np.random.randint(10, size=(2, 4, 5))
-    ...titles = ["Red Band", "Green Band"]
-    ...
-    ...# Plot all bands of a raster tif
-    ...es.plot_bands(im,
-    ...              title=titles,
-    ...              figsize=(12,5),
-    ...              cols=2)
+    >>> import numpy as np
+    >>> import earthpy.spatial as es
+    >>> im = np.random.randint(10, size=(2, 4, 5))
+    >>> titles = ["Red Band", "Green Band"]
+    >>> es.plot_bands(im,
+    ...               title=titles,
+    ...               figsize=(12,5),
+    ...               cols=2)  #doctest: +ELLIPSIS
+    (<Figure size 1200x500 with 2 Axes>, ...)
     """
 
     try:
@@ -425,7 +453,6 @@ def plot_bands(
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        plt.show()
         return fig, axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
@@ -437,7 +464,6 @@ def plot_bands(
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
-        plt.show()
         return fig, ax
 
 
@@ -455,8 +481,8 @@ def plot_rgb(
 
     Parameters
     ----------
-    arr: numpy array
-        An n dimension numpy array in rasterio band order (bands, x, y)
+    arr: numpy ndarray
+        N-dimensional array in rasterio band order (bands, rows, columns)
     rgb: list
         Indices of the three bands to be plotted (default = 0,1,2)
     extent: tuple
@@ -487,7 +513,7 @@ def plot_rgb(
         )
 
     # Index bands for plotting and clean up data for matplotlib
-    rgb_bands = arr[rgb]
+    rgb_bands = arr[rgb, :, :]
 
     if stretch:
         s_min = str_clip
@@ -600,7 +626,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr: a n dimension numpy array
+    arr: a numpy ndarray of shape (rows, columns) containing elevation values
     azimuth:  default (30)
     angle_altitude: default (30)
 

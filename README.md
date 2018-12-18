@@ -42,7 +42,22 @@ This package uses [pytest](https://pytest.org/) for tests.
 To run tests locally, execute the command `pytest` from the command line:
 
 ```bash
-$ pytest
+$ pytest --doctest-modules
+```
+
+The `--doctest-modules` syntax allows pytest to check examples in
+docstrings contained in modules (e.g., if a function has an example section),
+in addition to the normal tests that pytest would discover.
+
+### Testing example code in the `docs` directory
+
+To locally test examples in the `docs` directory (e.g., examples contained in
+`.rst` files), you can run the following command from the top-level
+`earthpy` directory:
+
+
+```bash
+$ make -C docs doctest
 ```
 
 ### Data generated for testing

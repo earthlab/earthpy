@@ -17,14 +17,13 @@ def create_tif_file(arr, destfile):
     """Writes a tif file to a specified location using an array.
     Parameters
     ----------
-    arr : numpy ndarray 
+    arr : numpy ndarray
         The array should have 3 dimensions, arranged such that
         a the result of arr.shape is in the form [rows, columns, channels].
-        
+
     destfile : filepath string
         The filepath for where the GeoTIFF file will be written.
     """
-
     # Make sure the array is 3 dimensional, assuming last dimension is number of bands
     assert len(arr.shape) == 3
 
@@ -61,13 +60,11 @@ def create_tif_file(arr, destfile):
         return (0, destfile)
 
     except Exception as e:
-
         return (e, None)
 
 
 def test_create_tif_file():
     """ Testing dummy_tif_writer."""
-
     destfile = "dummy.tif"
     arr = np.ones((5, 5, 1))
     code, fi = create_tif_file(arr, destfile)
@@ -113,7 +110,6 @@ def test_extent_to_json():
 
 def test_bytescale_high_low_val():
     """"Unit tests for earthpy.spatial.bytescale """
-
     arr = np.random.randint(300, size=(10, 10))
 
     # Bad high value
@@ -158,3 +154,10 @@ def test_bytescale_high_low_val():
 
     assert scale_arr.min() == 0
     assert scale_arr.max() == 255
+
+
+def test_stack_invalid_out_paths_raise_errors():
+    """ If users provide an output path that doesn't exist, raise error. """
+    with pytest.raises(ValueError, match="not exist"):
+        es.stack_raster_tifs(band_paths=['fname1.tif', 'fname2.tif'],
+                             out_path="nonexistent_directory/output.tif")
