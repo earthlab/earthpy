@@ -67,12 +67,12 @@ def normalized_diff(b1, b2):
     ... # Calculate normalized difference vegetation index
     >>> nir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
     >>> red_band = np.array([[1, 2, 3, 4, 5], [11, 12, 13, 14, 15]])
-    >>> ndvi = es.normalized_diff(b1=nir_band, b2=red_band)
+    >>> ndvi = es.normalized_diff(b1 = nir_band, b2 = red_band)
     ...
     ... # Calculate normalized burn ratio
     >>> nir_band = np.array([[8, 10, 13, 17, 15], [18, 20, 22, 23, 25]])
     >>> swir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
-    >>> nbr = es.normalized_diff(b1=nir_band, b2=swir_band)
+    >>> nbr = es.normalized_diff(b1 = nir_band, b2 = swir_band)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")

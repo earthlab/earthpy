@@ -86,9 +86,13 @@ calculates the normalized difference from them.
 ``normalized_diff`` takes two input parameters:
 
 ``b1``, ``b2``: arrays with the same shape
-      Math will be calculated (b2-b1) / (b2+b1)
+      Math will be calculated (b1-b2) / (b1+b2)
 
-The ``normalized_diff`` function returns a masked array of the normalized difference with the same shape as the input arrays.
+The ``normalized_diff`` function returns an array of the normalized difference with the same shape as the input arrays.
+
+If the calculation produces infinity values due to a divide by zero, the infinity values are converted to nan values.
+
+If the result of the ``normalized_diff`` function contains any nan values, then the array is returned as masked.
 
 Example:
 
@@ -97,11 +101,15 @@ Example:
     import numpy as np
     import earthpy.spatial as es
 
-    red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+    # Calculate normalized difference vegetation index
+    nir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    red_band = np.array([[1, 2, 3, 4, 5], [11, 12, 13, 14, 15]])
+    ndvi = es.normalized_diff(b1 = nir_band, b2 = red_band)
 
-    # Calculate normalized difference
-    ndiff = es.normalized_diff(b2=nir_band, b1=red_band)
+    # Calculate normalized burn ratio
+    nir_band = np.array([[8, 10, 13, 17, 15], [18, 20, 22, 23, 25]])
+    swir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    nbr = es.normalized_diff(b1 = nir_band, b2 = swir_band)
 
 
 Plot Raster File Bands
