@@ -3,12 +3,14 @@
 import numpy as np
 import pytest
 import earthpy.spatial as es
+
 # For builds on travis to avoid plot display errors
 import matplotlib as mpl
-mpl.use('agg')
-import matplotlib.pyplot as plt
-plt.show = lambda: None
 
+mpl.use("agg")
+import matplotlib.pyplot as plt
+
+plt.show = lambda: None
 
 
 """ General functions for matplotlib elements """
@@ -18,10 +20,12 @@ plt.show = lambda: None
 tuups = (1, 2)
 im = np.random.randint(10, size=(2, 4, 5))
 
+
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
     with pytest.raises(AttributeError):
         es.plot_bands(arr=tuups)
+
 
 def test_num_titles():
     """If a user provides two titles for a single band array, the function
@@ -31,11 +35,10 @@ def test_num_titles():
     single_band = im[0]
 
     with pytest.raises(ValueError):
-        es.plot_bands(arr=single_band,
-                      title=["Title1", "Title2"])
+        es.plot_bands(arr=single_band, title=["Title1", "Title2"])
     with pytest.raises(ValueError):
-        es.plot_bands(arr=im,
-                      title=["Title1", "Title2", "Title3"])
+        es.plot_bands(arr=im, title=["Title1", "Title2", "Title3"])
+
 
 def test_num_axes():
     """If provided with a 2 band array, plot_bands should return 3 axes by
@@ -51,7 +54,7 @@ def test_two_plot_title():
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
-    assert all_titles == ['Band 1', 'Band 2']
+    assert all_titles == ["Band 1", "Band 2"]
 
 
 def test_custom_plot_title():
@@ -62,7 +65,7 @@ def test_custom_plot_title():
     num_plts = im.shape[0]
     # Get titles
     all_titles = [ax[i].get_title() for i in range(num_plts)]
-    assert all_titles == ['Red Band', 'Green Band']
+    assert all_titles == ["Red Band", "Green Band"]
 
 
 def test_single_band_3dims():
@@ -87,4 +90,3 @@ def test_single_band_2dims():
     arr = fig.axes[0].get_images()[0].get_array()
     assert arr.ndim == 2
     assert len(fig.axes[0].get_images()) == 1
-
