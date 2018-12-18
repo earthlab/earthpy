@@ -1,9 +1,10 @@
-import os
+import os, sys
 import contextlib
 import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
+
 # For color bar resizing
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from shapely.geometry import mapping, box
@@ -44,6 +45,7 @@ def extent_to_json(ext_obj):
 # Calculate normalized difference between two arrays
 # Both arrays must be of the same size
 
+
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference
     Math will be calculated (b2-b1) / (b2+b1).
@@ -80,6 +82,7 @@ def normalized_diff(b1, b2):
 
 # TODO: include a no data value here if provided
 
+
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an output raster stack
     numpy array. Note that this function depends upon the stack() function.
@@ -110,36 +113,41 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
         an input given by the user. This will make the output type consistent.
     """
     # Set default import to read
-    kwds = {'mode': 'r'}
+    kwds = {"mode": "r"}
 
     out_dir = os.path.dirname(out_path)
     writing_to_cwd = out_dir == ""
     if not os.path.exists(out_dir) and not writing_to_cwd:
-        raise ValueError("""The output directory path that you provided does
-                            not exist""")
+        raise ValueError(
+            "The output directory path that you provided does not exist"
+        )
 
     if len(band_paths) < 2:
-        raise ValueError("""The list of file paths is empty. You need at least
-                            2 files to create a stack.""")
+        raise ValueError(
+            """The list of file paths is empty. You need at least
+                            2 files to create a stack."""
+        )
     with contextlib.ExitStack() as context:
-        sources = [context.enter_context(rio.open(path, **kwds))
-                   for path in band_paths]
+        sources = [
+            context.enter_context(rio.open(path, **kwds))
+            for path in band_paths
+        ]
 
         # TODO: Check that the CRS and TRANSFORM are the same
         dest_kwargs = sources[0].meta
         dest_count = sum(src.count for src in sources)
-        dest_kwargs['count'] = dest_count
+        dest_kwargs["count"] = dest_count
 
         if arr_out:
             # Write stacked gtif file
-            with rio.open(out_path, 'w', **dest_kwargs) as dest:
+            with rio.open(out_path, "w", **dest_kwargs) as dest:
                 stack(sources, dest)
             # Read and return array
-            with rio.open(out_path, 'r') as src:
+            with rio.open(out_path, "r") as src:
                 return src.read(), src.profile
         else:
             # Write stacked gtif file
-            with rio.open(out_path, 'w', **dest_kwargs) as dest:
+            with rio.open(out_path, "w", **dest_kwargs) as dest:
                 return stack(sources, dest)
 
 
@@ -159,16 +167,23 @@ def stack(sources, dest):
     dest : a rio.open writable object that will store raster data.
     """
 
-    if not type(sources[0]) == rio.io.DatasetReader:
-        raise ValueError("""The sources object should be of type:
-                            rasterio.DatasetReader""")
+    try:
+        for src in sources:
+            src.profile
+            
+    except ValueError as ve:
+        raise ValueError("The sources object should be Dataset Reader")
+        sys.exit()
+        
+    else:
+        pass
 
     for ii, ifile in enumerate(sources):
         bands = sources[ii].read()
         if bands.ndim != 3:
             bands = bands[np.newaxis, ...]
         for band in bands:
-            dest.write(band, ii+1)
+            dest.write(band, ii + 1)
 
 
 def crop_image(raster, geoms, all_touched=True):
@@ -205,13 +220,18 @@ def crop_image(raster, geoms, all_touched=True):
     else:
         clip_ext = geoms
     # Mask the input image and update the metadata
-    out_image, out_transform = mask(raster, clip_ext, crop=True,
-                                    all_touched=all_touched)
+    out_image, out_transform = mask(
+        raster, clip_ext, crop=True, all_touched=all_touched
+    )
     out_meta = raster.meta.copy()
-    out_meta.update({"driver": "GTiff",
-                     "height": out_image.shape[1],
-                     "width": out_image.shape[2],
-                     "transform": out_transform})
+    out_meta.update(
+        {
+            "driver": "GTiff",
+            "height": out_image.shape[1],
+            "width": out_image.shape[2],
+            "transform": out_transform,
+        }
+    )
     return (out_image, out_meta)
 
 
@@ -279,7 +299,9 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     if crange < 0:
         raise ValueError("`cmax` should be larger than `cmin`.")
     elif crange == 0:
-        raise ValueError("`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`")
+        raise ValueError(
+            "`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`"
+        )
 
     scale = float(high - low) / crange
 
@@ -287,7 +309,7 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
 
-    return (bytedata.clip(low, high) + 0.5).astype('uint8')
+    return (bytedata.clip(low, high) + 0.5).astype("uint8")
 
 
 def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
@@ -325,8 +347,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
 
 # Function to plot all layers in a stack
-def plot_bands(arr, title=None, cmap="Greys_r",
-               figsize=(12, 12), cols=3, extent=None):
+def plot_bands(
+    arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
+):
     """Plot each layer in a raster stack read from rasterio in
     (band, row , col) order as a numpy array. plot_bands will create an
     individual plot for each band in a grid.
@@ -371,16 +394,18 @@ def plot_bands(arr, title=None, cmap="Greys_r",
     except AttributeError:
         "Input arr should be a numpy array"
 
-
     if title:
         if (arr.ndim == 2) and (len(title) > 1):
-            raise ValueError("""Plot_bands() expects one title for a single
-                             band array. You have provided more than one
-                             title.""")
+            raise ValueError(
+                """Plot_bands() expects one title for a single 
+                             band array. You have provided more than one 
+                             title."""
+            )
         elif not (len(title) == arr.shape[0]):
-            raise ValueError("""Plot_bands() expects the number of plot titles
-                             to equal the number of array raster layers.""")
-
+            raise ValueError(
+                """Plot_bands() expects the number of plot titles 
+                             to equal the number of array raster layers."""
+            )
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
@@ -393,12 +418,12 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         fig, axs = plt.subplots(plot_rows, cols, figsize=figsize)
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
-            band = i+1
+            band = i + 1
             ax.imshow(bytescale(arr[i]), cmap=cmap)
             if title:
                 ax.set(title=title[i])
             else:
-                ax.set(title='Band %i' %band)
+                ax.set(title="Band %i" % band)
             ax.set(xticks=[], yticks=[])
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -415,8 +440,7 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         arr = np.squeeze(arr)
 
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(bytescale(arr), cmap=cmap,
-                  extent=extent)
+        ax.imshow(bytescale(arr), cmap=cmap, extent=extent)
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
@@ -424,13 +448,16 @@ def plot_bands(arr, title=None, cmap="Greys_r",
         return fig, ax
 
 
-def plot_rgb(arr, rgb=(0, 1, 2),
-             ax=None,
-             extent=None,
-             title="",
-             figsize=(10, 10),
-             stretch=None,
-             str_clip=2):
+def plot_rgb(
+    arr,
+    rgb=(0, 1, 2),
+    ax=None,
+    extent=None,
+    title="",
+    figsize=(10, 10),
+    stretch=None,
+    str_clip=2,
+):
     """Plot three bands in a numpy array as a composite RGB image.
 
     Parameters
@@ -461,8 +488,10 @@ def plot_rgb(arr, rgb=(0, 1, 2),
     """
 
     if len(arr.shape) != 3:
-        raise Exception("""Input needs to be 3 dimensions and in rasterio
-                           order with bands first""")
+        raise Exception(
+            """Input needs to be 3 dimensions and in rasterio
+                           order with bands first"""
+        )
 
     # Index bands for plotting and clean up data for matplotlib
     rgb_bands = arr[rgb]
@@ -473,8 +502,9 @@ def plot_rgb(arr, rgb=(0, 1, 2),
         arr_rescaled = np.zeros_like(rgb_bands)
         for ii, band in enumerate(rgb_bands):
             lower, upper = np.percentile(band, (s_min, s_max))
-            arr_rescaled[ii] = exposure.rescale_intensity(band,
-                                                          in_range=(lower, upper))
+            arr_rescaled[ii] = exposure.rescale_intensity(
+                band, in_range=(lower, upper)
+            )
         rgb_bands = arr_rescaled.copy()
 
     # If type is masked array - add alpha channel for plotting
@@ -484,9 +514,9 @@ def plot_rgb(arr, rgb=(0, 1, 2),
 
         # Add the mask to the array & swap the axes order from (bands,
         # rows, columns) to (rows, columns, bands) for plotting
-        rgb_bands = np.vstack((bytescale(rgb_bands),
-                               np.expand_dims(mask, axis=0))).\
-            transpose([1, 2, 0])
+        rgb_bands = np.vstack(
+            (bytescale(rgb_bands), np.expand_dims(mask, axis=0))
+        ).transpose([1, 2, 0])
     else:
         # Index bands for plotting and clean up data for matplotlib
         rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
@@ -502,11 +532,9 @@ def plot_rgb(arr, rgb=(0, 1, 2),
     return fig, ax
 
 
-def hist(arr,
-         title=None,
-         colors=["purple"],
-         figsize=(12, 12), cols=2,
-         bins=20):
+def hist(
+    arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20
+):
     """
     Plot histogram for each layer in a numpy array.
 
@@ -533,15 +561,18 @@ def hist(arr,
         # Test if there are enough titles to create plots
         if title:
             if not (len(title) == arr.shape[0]):
-                raise ValueError(""""The number of plot titles should be the
+                raise ValueError(
+                    """"The number of plot titles should be the
                                      same as the number of raster layers in
-                                      your array.""")
+                                      your array."""
+                )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
         total_layers = arr.shape[0]
 
-        fig, axs = plt.subplots(plot_rows, cols, figsize=figsize,
-                                sharex=True, sharey=True)
+        fig, axs = plt.subplots(
+            plot_rows, cols, figsize=figsize, sharex=True, sharey=True
+        )
         axs_ravel = axs.ravel()
         # TODO: write test case for just one color
         for band, ax, i in zip(arr, axs.ravel(), range(total_layers)):
@@ -549,7 +580,7 @@ def hist(arr,
                 the_color = colors[0]
             else:
                 the_color = colors[i]
-            ax.hist(band.ravel(), bins=bins, color=the_color, alpha=.8)
+            ax.hist(band.ravel(), bins=bins, color=the_color, alpha=0.8)
             if title:
                 ax.set_title(title[i])
         # Clear additional axis elements
@@ -560,10 +591,12 @@ def hist(arr,
     elif arr.ndim == 2:
         # Plot all bands
         fig, ax = plt.subplots(figsize=figsize)
-        ax.hist(arr.ravel(),
-                range=[np.nanmin(arr), np.nanmax(arr)],
-                bins=bins,
-                color=colors[0])
+        ax.hist(
+            arr.ravel(),
+            range=[np.nanmin(arr), np.nanmax(arr)],
+            bins=bins,
+            color=colors[0],
+        )
         if title:
             ax.set(title=title[0])
         return fig, ax
@@ -585,16 +618,16 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     azimuth = 360.0 - azimuth
 
     x, y = np.gradient(arr)
-    slope = np.pi/2. - np.arctan(np.sqrt(x*x + y*y))
+    slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
     aspect = np.arctan2(-x, y)
-    azimuthrad = azimuth*np.pi/180.
-    altituderad = angle_altitude*np.pi/180.
+    azimuthrad = azimuth * np.pi / 180.0
+    altituderad = angle_altitude * np.pi / 180.0
 
-    shaded = (np.sin(altituderad)*np.sin(slope) +
-              np.cos(altituderad) * np.cos(slope) *
-              np.cos((azimuthrad - np.pi / 2.) - aspect))
+    shaded = np.sin(altituderad) * np.sin(slope) + np.cos(
+        altituderad
+    ) * np.cos(slope) * np.cos((azimuthrad - np.pi / 2.0) - aspect)
 
-    return 255*(shaded + 1)/2
+    return 255 * (shaded + 1) / 2
 
 
 def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
@@ -624,12 +657,15 @@ def draw_legend(im, classes, titles, bbox=(1.05, 1), loc=2):
 
     colors = [im.cmap(im.norm(aclass)) for aclass in classes]
 
-    patches = [mpatches.Patch(color=colors[i],
-                              label="{l}".
-                              format(l=titles[i])) for i in range(len(titles))]
+    patches = [
+        mpatches.Patch(color=colors[i], label="{l}".format(l=titles[i]))
+        for i in range(len(titles))
+    ]
 
-    return(plt.legend(handles=patches,
-                      bbox_to_anchor=bbox,
-                      loc=2,
-                      borderaxespad=0.,
-                      prop={'size': 13}))
+    return plt.legend(
+        handles=patches,
+        bbox_to_anchor=bbox,
+        loc=2,
+        borderaxespad=0.0,
+        prop={"size": 13},
+    )
