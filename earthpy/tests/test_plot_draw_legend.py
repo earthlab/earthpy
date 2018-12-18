@@ -2,14 +2,10 @@
 
 import numpy as np
 import pytest
-
-# For builds on travis to avoid plot display errors
 import matplotlib as mpl
-
-# mpl.use('agg')
 import matplotlib.pyplot as plt
 
-#plt.show = lambda: None
+plt.show = lambda: None
 from matplotlib.colors import ListedColormap
 import earthpy.spatial as es
 
