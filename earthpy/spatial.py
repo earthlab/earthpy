@@ -657,8 +657,6 @@ def draw_legend(im_ax,
     if classes:
         try:
             # Get the colormap from the mpl object
-            # Note that this needs to be TESTED for when a user provides an
-            # created manually listed or other cmap that has no name
             cmap = im_ax.cmap.name
         except AssertionError:
             raise AssertionError("""Looks like we can't find the colormap 
