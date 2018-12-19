@@ -208,7 +208,7 @@ def test_stack_raster():
     stack_arr, stack_prof = es.stack(test_files)
     
     assert stack_arr.shape[0] == len(test_files)
-    assert type(stack_prof) is dict
+    assert stack_prof['count'] == len(test_files)
     
     # Clean up files
     for tfi in test_files:
