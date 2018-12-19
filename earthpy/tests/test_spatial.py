@@ -169,7 +169,7 @@ def test_stack_raster():
     # Create a number of files with create_tif_file
     band_files = ["dummy{}.tif".format(i) for i in range(4)]
     arr = np.ones((5, 5, 1))
-    
+
     test_files = []
     for bfi in band_files:    
         code, fi = create_tif_file(arr, bfi)
