@@ -24,17 +24,14 @@ Then import it into python.
 >>> import earthpy as et
 ```
 
-
-## Contributors
+## Active Contributors
 
 - Leah Wasser
 - Max Joseph
 - Joe McGlinchy
+- Tim Head
 - Chris Holdgraf
 - Jenny Palomino
-- Carson Farmer
-- Students from the Earth Analytics Fall 2018 Python course & Professional certificate
-
 
 ## Testing
 
