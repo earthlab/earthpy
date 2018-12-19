@@ -26,11 +26,13 @@ install:
   - conda list
   - python setup.py install
   - pip install -r dev-requirements.txt
+  - conda install black
 
 script:
   - pytest  --doctest-modules --cov=earthpy
   # Build documentation
   - pushd docs && make doctest && make html && popd
+  - black --check --verbose .
 
 after_success:
   - codecov
