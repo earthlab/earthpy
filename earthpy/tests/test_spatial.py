@@ -109,13 +109,11 @@ def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
     """
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=True)
-        print(meta)
     assert np.sum(img) == 9
 
 
 def test_crop_image_with_gdf_touch_false(basic_image_tif, basic_geometry_gdf):
     """ Cropping with a GeoDataFrame works when all_touched=False. """
-    print([es.extent_to_json(basic_geometry_gdf)])
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=False)
     assert np.sum(img) == 4
@@ -158,3 +156,18 @@ def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError, match="width and height must be > 0"):
             es.crop_image(src, [line])
+
+
+def test_crop_image_checks_inputs(basic_image_tif, basic_geometry):
+    """ crop_image should raise an error if provided two rasters. """
+    with rio.open(basic_image_tif) as src:
+        with pytest.raises(TypeError):
+            es.crop_image(src, src)
+
+
+def test_crop_image_swapped_args(basic_image_tif, basic_geometry):
+    """ If users provide a polygon instead of raster raise an error. """
+    with pytest.raises(AttributeError):
+        es.crop_image(basic_geometry, basic_image_tif)
+    with pytest.raises(AttributeError):
+        es.crop_image(basic_geometry, basic_geometry)
