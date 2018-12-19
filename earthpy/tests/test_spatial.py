@@ -158,7 +158,7 @@ def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
             es.crop_image(src, [line])
 
 
-def test_crop_image_checks_inputs(basic_image_tif, basic_geometry):
+def test_crop_image_fails_two_rasters(basic_image_tif, basic_geometry):
     """ crop_image should raise an error if provided two rasters. """
     with rio.open(basic_image_tif) as src:
         with pytest.raises(TypeError):
