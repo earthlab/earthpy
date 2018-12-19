@@ -159,5 +159,7 @@ def test_bytescale_high_low_val():
 def test_stack_invalid_out_paths_raise_errors():
     """ If users provide an output path that doesn't exist, raise error. """
     with pytest.raises(ValueError, match="not exist"):
-        es.stack_raster_tifs(band_paths=['fname1.tif', 'fname2.tif'],
-                             out_path="nonexistent_directory/output.tif")
+        es.stack_raster_tifs(
+            band_paths=["fname1.tif", "fname2.tif"],
+            out_path="nonexistent_directory/output.tif",
+        )
