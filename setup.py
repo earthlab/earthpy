@@ -51,13 +51,15 @@ if __name__ == "__main__":
             "Operating System :: Unix",
             "Operating System :: MacOS",
         ],
-        package_data={DISTNAME: [
-            "example-data/*.json",
-            "example-data/*.tif",
-            "example-data/*.geojson",
-            "example-data/*.shp",
-            "example-data/*.shx",
-            "example-data/*.prj",
-            "example-data/*.dbf"
-        ]},
+        package_data={
+            DISTNAME: [
+                "example-data/*.json",
+                "example-data/*.tif",
+                "example-data/*.geojson",
+                "example-data/*.shp",
+                "example-data/*.shx",
+                "example-data/*.prj",
+                "example-data/*.dbf",
+            ]
+        },
     )

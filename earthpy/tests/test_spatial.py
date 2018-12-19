@@ -213,6 +213,3 @@ def test_stack_raster():
     # Clean up files
     for tfi in test_files:
         os.remove(tfi)
-    
-    
-    
