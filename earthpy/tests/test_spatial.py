@@ -159,5 +159,60 @@ def test_bytescale_high_low_val():
 def test_stack_invalid_out_paths_raise_errors():
     """ If users provide an output path that doesn't exist, raise error. """
     with pytest.raises(ValueError, match="not exist"):
-        es.stack_raster_tifs(band_paths=['fname1.tif', 'fname2.tif'],
+        es.stack(band_paths=['fname1.tif', 'fname2.tif'],
                              out_path="nonexistent_directory/output.tif")
+
+                             
+def test_stack_raster():
+    """Unit tests for raster stacking with es.stack()."""
+    
+    # Create a number of files with create_tif_file
+    band_files = ["dummy{}.tif".format(i) for i in range(4)]
+    arr = np.ones((5, 5, 1))
+    
+    test_files = []
+    for bfi in band_files:    
+        code, fi = create_tif_file(arr, bfi)
+        test_files.append(fi)
+    
+    # Test output path is valid when write_raster is True
+    with pytest.raises(ValueError, message="Please specify a valid file name for output."):
+        stack_arr, stack_prof = es.stack(band_files, out_path='', write_raster=True)
+        
+    # Test write_raster flag needs to be True if out_path is valid and specified
+    out_fi = 'test_stack.tif'
+    with pytest.raises(ValueError, message="Please specify write_raster==True to generate output file {}".format(out_fi)):
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=False)
+        
+    # Test that out_path needs a file extension to be valid
+    out_fi = 'test_stack'
+    with pytest.raises(ValueError, message="Please specify a valid file name for output."):
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True) 
+
+    # Test that the output file format is same as inputs
+    # THIS CAN BE FLEXIBLE BUT FOR NOW FORCING SAME FORMAT
+    out_fi = 'test_stack.jp2'
+    with pytest.raises(ValueError, message="Source data is GTiff. Please specify corresponding output extension."):
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True)
+        
+    # Test valid use case specifying output file. 
+    # Make sure the output file exists and then clean it up
+    out_fi = 'test_stack.tif'
+    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True)
+    
+    assert os.path.exists(out_fi)
+    if os.path.exists(out_fi):
+        os.remove(out_fi)
+        
+    # Test valid use case of just getting back the array. 
+    stack_arr, stack_prof = es.stack(test_files)
+    
+    assert stack_arr.shape[0] == len(test_files)
+    assert type(stack_prof) is dict
+    
+    # Clean up files
+    for tfi in test_files:
+        os.remove(tfi)
+    
+    
+    
