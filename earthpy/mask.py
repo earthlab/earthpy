@@ -13,7 +13,7 @@ pixel_flags = {
             "Cloud": [96, 112, 160, 176, 224],
             "Low Cloud Confidence": [66, 68, 72, 80, 96, 112],
             "Medium Cloud Confidence": [130, 132, 136, 144, 160, 176],
-            "High Cloud Confidence": [224]
+            "High Cloud Confidence": [224],
         },
         "L8": {
             "Fill": [1],
@@ -22,18 +22,66 @@ pixel_flags = {
             "Cloud Shadow": [328, 392, 840, 904, 1350],
             "Snow": [336, 368, 400, 432, 848, 880, 912, 944, 1352],
             "Cloud": [352, 368, 416, 432, 480, 864, 880, 928, 944, 992],
-            "Low Cloud Confidence": [322, 324, 328, 336, 352, 368, 834, 836,
-                                     840, 848, 864, 880],
-            "Medium Cloud Confidence": [386, 388, 392, 400, 416, 432, 900, 904,
-                                        928, 944],
+            "Low Cloud Confidence": [
+                322,
+                324,
+                328,
+                336,
+                352,
+                368,
+                834,
+                836,
+                840,
+                848,
+                864,
+                880,
+            ],
+            "Medium Cloud Confidence": [
+                386,
+                388,
+                392,
+                400,
+                416,
+                432,
+                900,
+                904,
+                928,
+                944,
+            ],
             "High Cloud Confidence": [480, 992],
-            "Low Cirrus Confidence": [322, 324, 328, 336, 352, 368, 386, 388,
-                                      392, 400, 416, 432, 480],
+            "Low Cirrus Confidence": [
+                322,
+                324,
+                328,
+                336,
+                352,
+                368,
+                386,
+                388,
+                392,
+                400,
+                416,
+                432,
+                480,
+            ],
             "Medium Cirrus Confidence": [],
-            "High Cirrus Confidence": [834, 836, 840, 848, 864, 880, 898, 900,
-                                       904, 912, 928, 944, 992],
-            "Terrain Occlusion": [1346, 1348, 1350, 1352]
-        }
+            "High Cirrus Confidence": [
+                834,
+                836,
+                840,
+                848,
+                864,
+                880,
+                898,
+                900,
+                904,
+                912,
+                928,
+                944,
+                992,
+            ],
+            "Terrain Occlusion": [1346, 1348, 1350, 1352],
+        },
     }
 }
 
@@ -102,8 +150,7 @@ def apply_cloud_mask(arr, the_mask):
 
     try:
         # Create a mask for all bands in the landsat scene
-        cl_mask = np.broadcast_to(the_mask == 1,
-                                  arr.shape)
+        cl_mask = np.broadcast_to(the_mask == 1, arr.shape)
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array")
 
@@ -138,11 +185,27 @@ def make_apply_mask(arr, mask_arr, vals):
         A numpy array with values that should be masked set to 1 for
         True (Boolean)
 
-    >>>import numpy as np
-    >>>import from earthpy.mask import apply_cloud_mask
-    >>>im = np.random.randint(10, size=(4, 5))
-    >>>im_mask = np.random.randint(5, size=(4, 5))
-    >>>make_apply_mask(im, mask_arr=im_mask, vals=[0, 4])
+    >>> import numpy as np
+    >>> from earthpy.mask import make_apply_mask
+    >>> im = np.arange(9).reshape((3, 3))
+    >>> im
+    array([[0, 1, 2],
+           [3, 4, 5],
+           [6, 7, 8]])
+    >>> im_mask = np.array([1, 1, 1, 0, 0, 0, 1, 1, 1]).reshape(3, 3)
+    >>> im_mask
+    array([[1, 1, 1],
+           [0, 0, 0],
+           [1, 1, 1]])
+    >>> make_apply_mask(im, mask_arr=im_mask, vals=[1])
+    masked_array(
+      data=[[--, --, --],
+            [3, 4, 5],
+            [--, --, --]],
+      mask=[[ True,  True,  True],
+            [False, False, False],
+            [ True,  True,  True]],
+      fill_value=999999)
     """
     cl_mask = make_cloud_mask(mask_arr, vals)
     return apply_cloud_mask(arr, cl_mask)
