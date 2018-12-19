@@ -26,9 +26,7 @@ if __name__ == "__main__":
     setup(
         configuration=configuration,
         name=DISTNAME,
-        maintainer=MAINTAINER,
-        include_package_data=True,
-        maintainer_email=MAINTAINER_EMAIL,
+        maintainer=MAINTAINER,include_package_data=True,maintainer_email=MAINTAINER_EMAIL,
         description=DESCRIPTION,
         version=VERSION,
         install_requires=[
