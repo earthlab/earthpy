@@ -152,7 +152,7 @@ def test_crop_image_with_one_point_raises_error(basic_image_tif):
             es.crop_image(src, [point])
 
 
-def crop_image_with_1d_extent_raises_error(basic_image_tif):
+def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
     """ Cropping with a horizontal or vertical line raises an error. """
     line = LineString([(1, 1), (2, 1), (3, 1)])
     with rio.open(basic_image_tif) as src:
