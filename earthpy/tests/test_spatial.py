@@ -12,6 +12,14 @@ from osgeo import osr
 import rasterio as rio
 import os
 
+
+@pytest.fixture
+def b1_b2_arrs():
+    b1 = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    b2 = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
+    return b1, b2
+
+
 # A helper function to write a 3D array of data to disk as a GeoTIFF
 # The result will have no spatial info or relevance
 def create_tif_file(arr, destfile):
@@ -109,58 +117,58 @@ def test_extent_to_json():
         es.extent_to_json([0, 1, 1, 0])
 
 
-def test_normalized_diff_shapes():
-    """If provided with arrays of different shapes,
-    normalized_diff returns ValueError."""
+def test_normalized_diff_shapes(b1_b2_arrs):
+    """Test that two arrays with different shapes returns a ValueError."""
 
     # Test data
-    b1_2d = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
-    b2_1d = np.array([[1, 2, 3, 4, 5, 14, 12, 13, 14, 17]])
+    b1, b2 = b1_b2_arrs
+    b2 = b2[0]
 
     # Check ValueError
-    with pytest.raises(ValueError, match=r"Both arrays should be of the same dimensions"):
-        es.normalized_diff(b1 = b1_2d, b2 = b2_1d)
+    with pytest.raises(ValueError, match=r"Both arrays should have the same dimensions"):
+        es.normalized_diff(b1 = b1, b2 = b2)
 
 
-def test_normalized_diff_no_mask():
-    """If result of normalized_diff does not include nan values,
-    array is returned as unmasked."""
+def test_normalized_diff_no_mask(b1_b2_arrs):
+    """Test that if result does not include nan values,
+    the array is returned as unmasked."""
 
     # Test data
-    b1_2d = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
-    b2_2d = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
+    b1, b2 = b1_b2_arrs
 
-    n_diff = es.normalized_diff(b1 = b1_2d, b2 = b2_2d)
+    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
 
     # Output array unmasked
-    assert ma.is_masked(n_diff) == False
+    assert not ma.is_masked(n_diff)
 
 
-def test_normalized_diff_inf():
-    """Inf values in result are set to nan. Array is returned as masked."""
+def test_normalized_diff_inf(b1_b2_arrs):
+    """Test that inf values in result are set to nan and
+    that array is returned as masked."""
 
     # Test data
-    b1_2d_inf = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 15]])
-    b2_2d_inf = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, -15]])
+    b1, b2 = b1_b2_arrs
+    b2[1:, 4:] = -20
 
-    n_diff = es.normalized_diff(b1 = b1_2d_inf, b2 = b2_2d_inf)
+    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
 
     # Inf values set to nan
-    assert np.isinf(n_diff).any() == False
+    assert not np.isinf(n_diff).any()
 
     # Output array masked
     assert ma.is_masked(n_diff)
 
 
-def test_normalized_diff_mask():
-    """If result of normalized_diff includes nan values,
-    array is returned as masked."""
+def test_normalized_diff_mask(b1_b2_arrs):
+    """Test that if result does include nan values,
+    the array is returned as masked."""
 
     # Test data
-    b1_2d_nan = np.array([[6, 7, 8, 9, 10], [np.nan, 17, 18, 19, 20]])
-    b2_2d_nan = np.array([[1, 2, np.nan, 4, 5], [14, 12, 13, 14, 17]])
+    b1, b2 = b1_b2_arrs
+    b2 = b2.astype(float)
+    b2[1:, 4:] = np.nan
 
-    n_diff = es.normalized_diff(b1 = b1_2d_nan, b2 = b2_2d_nan)
+    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
 
     # Output array masked
     assert ma.is_masked(n_diff)
