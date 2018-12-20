@@ -111,13 +111,11 @@ def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
     """
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=True)
-        print(meta)
     assert np.sum(img) == 9
 
 
 def test_crop_image_with_gdf_touch_false(basic_image_tif, basic_geometry_gdf):
     """ Cropping with a GeoDataFrame works when all_touched=False. """
-    print([es.extent_to_json(basic_geometry_gdf)])
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=False)
     assert np.sum(img) == 4
