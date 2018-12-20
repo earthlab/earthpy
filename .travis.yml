@@ -22,8 +22,7 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   - conda env create -f environment.yml
-  - echo ". /home/travis/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
-  - conda activate earthpy-dev
+  - source activate earthpy-dev
   - conda list
   - python setup.py install
   - conda install --file dev-requirements.txt
