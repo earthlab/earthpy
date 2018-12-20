@@ -214,22 +214,37 @@ def crop_image(raster, geoms, all_touched=True):
 
     Returns
     ----------
-    out_image: masked numpy array
-        A masked numpy array that is masked / cropped to the geoms object
-        extent
+    out_image: cropped numpy array
+        A numpy ndarray that is cropped to the geoms object
+        extent with shape (bands, rows, columns)
     out_meta:  dict
         A dictionary containing the updated metadata for the cropped raster.
         Specifically the extent (shape elements) and transform properties are
         updated.
-    """
 
-    if type(geoms) == gpd.geodataframe.GeoDataFrame:
-        clip_ext = [extent_to_json(geoms)]
+    Example
+    -------
+        >>> import geopandas as gpd
+        >>> import rasterio as rio
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+
+        >>> # Clip an RGB image to the extent of Rocky Mountain National Park
+        >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
+        >>> with rio.open(path_to_example("rmnp-rgb.tif")) as raster:
+        ...     src_image = raster.read()
+        ...     out_image, out_meta = es.crop_image(raster, rmnp)
+        >>> out_image.shape
+        (3, 265, 281)
+        >>> src_image.shape
+        (3, 373, 485)
+    """
+    if isinstance(geoms, gpd.geodataframe.GeoDataFrame):
+        clip_extent = [extent_to_json(geoms)]
     else:
-        clip_ext = geoms
-    # Mask the input image and update the metadata
+        clip_extent = geoms
     out_image, out_transform = mask(
-        raster, clip_ext, crop=True, all_touched=all_touched
+        raster, clip_extent, crop=True, all_touched=all_touched
     )
     out_meta = raster.meta.copy()
     out_meta.update(
@@ -240,7 +255,7 @@ def crop_image(raster, geoms, all_touched=True):
             "transform": out_transform,
         }
     )
-    return (out_image, out_meta)
+    return out_image, out_meta
 
 
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
