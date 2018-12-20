@@ -29,9 +29,8 @@ install:
   - pip install black
 
 script:
-  - pytest  --doctest-modules --cov=earthpy
-  # Build documentation
-  - pushd docs && make doctest && make html && popd
+  - pytest --doctest-modules --cov=earthpy
+  - make docs
   - black --check --verbose .
 
 after_success:

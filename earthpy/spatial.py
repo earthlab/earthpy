@@ -1,3 +1,8 @@
+"""
+The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
+and ``geopandas`` to work with raster and vector data in Python.
+"""
+
 import os
 import sys
 import contextlib
@@ -24,10 +29,21 @@ def extent_to_json(ext_obj):
     ----------
     ext_obj: list or geopandas geodataframe
         Extent values should be in the order: minx, miny, maxx, maxy
+
     Return
-    ----------
-    extent_json : dict
-    A dictionary of corner coordinates for the new extent
+    ------
+    dict
+
+        A GeoJSON style dictionary of corner coordinates for the new extent.
+
+    Example
+    -------
+    >>> import geopandas as gpd
+    >>> import earthpy.spatial as es
+    >>> from earthpy.io import path_to_example
+    >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
+    >>> es.extent_to_json(rmnp)   #doctest: +ELLIPSIS
+    {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
     if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
@@ -61,24 +77,21 @@ def normalized_diff(b1, b2):
         The element-wise result of (b2-b1) / (b2+b1) with all nan values
         masked.
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import earthpy.spatial as es
-
-    >>> red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    >>> nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
-
-    >>> # Calculate normalized difference
-    >>> es.normalized_diff(b2=nir_band, b1=red_band)
-    masked_array(
-      data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
-             0.38461538461538464, 0.3333333333333333],
-            [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
-             0.15151515151515152, 0.14285714285714285]],
-      mask=[[False, False, False, False, False],
-            [False, False, False, False, False]],
-      fill_value=1e+20)
+    Example
+    -------
+        >>> import numpy as np
+        >>> import earthpy.spatial as es
+        >>> red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
+        >>> nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
+        >>> es.normalized_diff(b2=nir_band, b1=red_band)
+        masked_array(
+          data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
+                 0.38461538461538464, 0.3333333333333333],
+                [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
+                 0.15151515151515152, 0.14285714285714285]],
+          mask=[[False, False, False, False, False],
+                [False, False, False, False, False]],
+          fill_value=1e+20)
     """
     if not (b1.shape == b2.shape):
         raise ValueError("Both arrays should be of the same dimensions")
@@ -95,6 +108,10 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """Take a list of raster paths and turn into an output raster stack
     numpy array. Note that this function depends upon the stack() function.
 
+    TODO: Instead of returning a file path when arr_out=False, consider
+        returning None since the out_path is already
+        an input given by the user. This will make the output type consistent.
+
     Parameters
     ----------
     band_paths : list of file paths
@@ -108,7 +125,7 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
         raster tif output.
 
     Returns
-    ----------
+    -------
     If arr_out keyword is True:
         tuple: The first value representing the result of src.read() of the
         stacked array and the second value
@@ -116,9 +133,21 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     If arr_out keyword is False:
         str : A path with a file name for the output stacked raster tif file.
 
-    TODO: Instead of returning a file path when arr_out=False, consider
-        returning None since the out_path is already
-        an input given by the user. This will make the output type consistent.
+    Example
+    -------
+        >>> import os
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
+        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
+        >>> destfile = "./stack_result.tif"
+        >>> arr, arr_meta = es.stack_raster_tifs(band_paths, destfile)
+        >>> arr.shape
+        (3, 373, 485)
+        >>> os.path.isfile(destfile)
+        True
+        >>> # optionally, clean up example output
+        >>> os.remove(destfile)
     """
     # Set default import to read
     kwds = {"mode": "r"}
@@ -214,13 +243,14 @@ def crop_image(raster, geoms, all_touched=True):
 
     Returns
     ----------
-    out_image: cropped numpy array
-        A numpy ndarray that is cropped to the geoms object
-        extent with shape (bands, rows, columns)
-    out_meta:  dict
-        A dictionary containing the updated metadata for the cropped raster.
-        Specifically the extent (shape elements) and transform properties are
-        updated.
+    tuple
+
+        out_image: cropped numpy array
+            A numpy ndarray that is cropped to the geoms object
+            extent with shape (bands, rows, columns)
+        out_meta:  dict
+            A dictionary containing updated metadata for the cropped raster,
+            including extent (shape elements) and transform properties.
 
     Example
     -------
@@ -228,7 +258,6 @@ def crop_image(raster, geoms, all_touched=True):
         >>> import rasterio as rio
         >>> import earthpy.spatial as es
         >>> from earthpy.io import path_to_example
-
         >>> # Clip an RGB image to the extent of Rocky Mountain National Park
         >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
         >>> with rio.open(path_to_example("rmnp-rgb.tif")) as raster:
@@ -259,10 +288,10 @@ def crop_image(raster, geoms, all_touched=True):
 
 
 def bytescale(data, cmin=None, cmax=None, high=255, low=0):
-    """
-    Byte scales an array (image).
-    Byte scaling means converting the input image to uint8 dtype and scaling
-    the range to ``(low, high)`` (default 0-255).
+    """Byte scales an array (image).
+
+    Byte scaling converts the input image to uint8 dtype, and rescales
+    the data range to ``(low, high)`` (default 0-255).
     If the input image already has dtype uint8, no scaling is done.
     Source code adapted from scipy.misc.bytescale (deprecated in scipy-1.0.0)
 
@@ -278,29 +307,31 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
         Scale max value to `high`.  Default is 255.
     low : scalar, optional
         Scale min value to `low`.  Default is 0.
+
     Returns
     -------
     img_array : uint8 ndarray
         The byte-scaled array.
+
     Examples
     --------
-    >>> import numpy as np
-    >>> from earthpy.spatial import bytescale
-    >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
-    ...                 [ 73.88003259,  80.91433048,   4.88878881],
-    ...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
-    >>> bytescale(img)
-    array([[255,   0, 236],
-           [205, 225,   4],
-           [140,  90,  70]], dtype=uint8)
-    >>> bytescale(img, high=200, low=100)
-    array([[200, 100, 192],
-           [180, 188, 102],
-           [155, 135, 128]], dtype=uint8)
-    >>> bytescale(img, cmin=0, cmax=255)
-    array([[255,   0, 236],
-           [205, 225,   4],
-           [140,  90,  70]], dtype=uint8)
+        >>> import numpy as np
+        >>> from earthpy.spatial import bytescale
+        >>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
+        ...                 [ 73.88003259,  80.91433048,   4.88878881],
+        ...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
+        >>> bytescale(img)
+        array([[255,   0, 236],
+               [205, 225,   4],
+               [140,  90,  70]], dtype=uint8)
+        >>> bytescale(img, high=200, low=100)
+        array([[200, 100, 192],
+               [180, 188, 102],
+               [155, 135, 128]], dtype=uint8)
+        >>> bytescale(img, cmin=0, cmax=255)
+        array([[255,   0, 236],
+               [205, 225,   4],
+               [140,  90,  70]], dtype=uint8)
     """
     if data.dtype == "uint8":
         return data
@@ -340,33 +371,40 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     this function will not work properly using matplotlib v 3.0.0 in Jupyter
     or when exporting an image. Be sure to update to 3.0.1.
 
+    Parameters
     ----------
     mapobj : the matplotlib axes element.
     size : char
         The percent width of the colorbar relative to the plot. default = 3%
     pad : int
         The space between the plot and the color bar. Default = .09
+
     Returns
     -------
-    Matplotlib color bar object with the correct width that matches the y axis
-    height.
+    matplotlib.pyplot.colorbar
+
+        Matplotlib color bar object with the correct width that matches the
+        y-axis height.
 
     Examples
     --------
-    >>> import matplotlib.pyplot as plt
-    >>> import rasterio as rio
-    >>> import earthpy.spatial as es
-    >>> from earthpy.io import path_to_example
-    >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
-    ...     dem = src.read()
-    ...     fig, ax = plt.subplots(figsize = (10, 5))
-    >>> im = ax.imshow(dem.squeeze())
-    >>> es.colorbar(im)  #doctest: +ELLIPSIS
-    <matplotlib.colorbar.Colorbar object at 0x...>
-    >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
-    [Text(...'Rocky Mountain National Park DEM')]
-    >>> ax.set_axis_off()
-    >>> plt.show()
+
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import rasterio as rio
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
+        ...     dem = src.read()
+        ...     fig, ax = plt.subplots(figsize = (10, 5))
+        >>> im = ax.imshow(dem.squeeze())
+        >>> es.colorbar(im)  #doctest: +ELLIPSIS
+        <matplotlib.colorbar.Colorbar object at 0x...>
+        >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+        [Text(...'Rocky Mountain National Park DEM')]
+        >>> ax.set_axis_off()
+        >>> plt.show()
     """
 
     try:
@@ -413,17 +451,20 @@ def plot_bands(
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the plot.
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import earthpy.spatial as es
-    >>> im = np.random.randint(10, size=(2, 4, 5))
-    >>> titles = ["Red Band", "Green Band"]
-    >>> es.plot_bands(im,
-    ...               title=titles,
-    ...               figsize=(12,5),
-    ...               cols=2)  #doctest: +ELLIPSIS
-    (<Figure size 1200x500 with 2 Axes>, ...)
+    Example
+    -------
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> import rasterio as rio
+        >>> titles = ['Red', 'Green', 'Blue']
+        >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
+        ...     es.plot_bands(src.read(),
+        ...                   title=titles,
+        ...                   figsize=(8, 3)) #doctest: +ELLIPSIS
+        (<Figure size ... with 3 Axes>, ...)
     """
 
     try:
@@ -520,6 +561,21 @@ def plot_rgb(
         The figure and axes object associated with the 3 band image. If the
         ax keyword is specified,
         the figure return will be None.
+
+    Example
+    -------
+
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import rasterio as rio
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
+        ...     img_array = src.read()
+        >>> es.plot_rgb(img_array) #doctest: +ELLIPSIS
+        (<Figure size 1000x1000 with 1 Axes>, ...)
+
     """
 
     if len(arr.shape) != 3:
@@ -585,10 +641,28 @@ def hist(
     cols: int the number of columsn you want to plot in
     bins: the number of bins to calculate for the histogram
     figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
+
     Returns
     ----------
     fig, ax or axs : figure object, axes object
         The figure and axes object(s) associated with the histogram.
+
+    Example
+    -------
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import rasterio as rio
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
+        ...     img_array = src.read()
+        >>> es.hist(img_array,
+        ...     colors=['r', 'g', 'b'],
+        ...     title=['Red', 'Green', 'Blue'],
+        ...     cols=3,
+        ...     figsize=(8, 3)) #doctest: +ELLIPSIS
+        (<Figure size 800x300 with 3 Axes>, ...)
     """
 
     # If the array is 3 dimensional setup grid plotting
@@ -646,9 +720,30 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     azimuth:  default (30)
     angle_altitude: default (30)
 
-    Return
-    ----------
-    numpy array containing hillshade values
+    Returns
+    -------
+    numpy array
+
+        A numpy array containing hillshade values.
+
+    Example
+    -------
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import rasterio as rio
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> with rio.open(path_to_example('rmnp-dem.tif')) as src:
+        ...     dem = src.read()
+        >>> print(dem.shape)
+        (1, 187, 152)
+        >>> squeezed_dem = dem.squeeze() # remove first dimension
+        >>> print(squeezed_dem.shape)
+        (187, 152)
+        >>> shade = es.hillshade(squeezed_dem)
+        >>> plt.imshow(shade) #doctest: +ELLIPSIS
+        <matplotlib.image.AxesImage object at 0x...>
     """
     azimuth = 360.0 - azimuth
 
@@ -706,7 +801,9 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
 
     Returns
     ----------
-    matplotlib legend object to be placed on our plot.
+    matplotlib.pyplot.legend
+
+        matplotlib legend object to be placed on our plot.
     """
 
     try:
