@@ -239,7 +239,7 @@ def crop_image(raster, geoms, all_touched=True):
         >>> src_image.shape
         (3, 373, 485)
     """
-    if type(geoms) == gpd.geodataframe.GeoDataFrame:
+    if isinstance(geoms, gpd.geodataframe.GeoDataFrame):
         clip_extent = [extent_to_json(geoms)]
     else:
         clip_extent = geoms

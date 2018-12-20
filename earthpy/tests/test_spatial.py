@@ -1,13 +1,9 @@
 """ Tests for the spatial module. """
 
-import os
 import numpy as np
 import pandas as pd
 import pytest
-from affine import Affine
 import geopandas as gpd
-from osgeo import gdal
-from osgeo import osr
 import rasterio as rio
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
@@ -125,21 +121,6 @@ def test_crop_image_with_geometry(basic_image_tif, basic_geometry):
     """ Cropping with a geometry works with all_touched=True. """
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, [basic_geometry], all_touched=True)
-    assert np.sum(img) == 9
-
-
-def test_crop_image_with_geometry_touch_false(basic_image_tif, basic_geometry):
-    """ Cropping with a geometry works with all_touched=False. """
-    with rio.open(basic_image_tif) as src:
-        img, meta = es.crop_image(src, [basic_geometry], all_touched=False)
-    assert np.sum(img) == 4
-
-
-def test_crop_image_with_geojson(basic_image_tif, basic_geometry):
-    """ Cropping with GeoJSON works when all_touched=True. """
-    geojson = basic_geometry.__geo_interface__
-    with rio.open(basic_image_tif) as src:
-        img, meta = es.crop_image(src, [geojson], all_touched=True)
     assert np.sum(img) == 9
 
 
