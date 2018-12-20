@@ -56,8 +56,10 @@ def test_normalized_diff_shapes(b1_b2_arrs):
     b2 = b2[0]
 
     # Check ValueError
-    with pytest.raises(ValueError, match="Both arrays should have the same dimensions"):
-        es.normalized_diff(b1 = b1, b2 = b2)
+    with pytest.raises(
+        ValueError, match="Both arrays should have the same dimensions"
+    ):
+        es.normalized_diff(b1=b1, b2=b2)
 
 
 def test_normalized_diff_no_mask(b1_b2_arrs):
@@ -67,7 +69,7 @@ def test_normalized_diff_no_mask(b1_b2_arrs):
     # Test data
     b1, b2 = b1_b2_arrs
 
-    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
+    n_diff = es.normalized_diff(b1=b1, b2=b2)
 
     # Output array unmasked
     assert not ma.is_masked(n_diff)
@@ -81,7 +83,11 @@ def test_normalized_diff_inf(b1_b2_arrs):
     b1, b2 = b1_b2_arrs
     b2[1:, 4:] = -20
 
-    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
+    # Check warning
+    with pytest.warns(
+        Warning, match="Divide by zero produced infinity values"
+    ):
+        n_diff = es.normalized_diff(b1=b1, b2=b2)
 
     # Inf values set to nan
     assert not np.isinf(n_diff).any()
@@ -99,7 +105,7 @@ def test_normalized_diff_mask(b1_b2_arrs):
     b2 = b2.astype(float)
     b2[1:, 4:] = np.nan
 
-    n_diff = es.normalized_diff(b1 = b1, b2 = b2)
+    n_diff = es.normalized_diff(b1=b1, b2=b2)
 
     # Output array masked
     assert ma.is_masked(n_diff)
