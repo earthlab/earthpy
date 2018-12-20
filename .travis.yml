@@ -25,7 +25,7 @@ install:
   - source activate earthpy-dev
   - conda list
   - python setup.py install
-  - conda install --file dev-requirements.txt
+  - pip install -r dev-requirements.txt
   - pip install black
 
 script:

@@ -44,7 +44,7 @@ installed, this is how you set up your fork for local development::
     $ conda env create -f environment.yml
     $ source activate earthpy-dev
     $ pip install -e .
-    $ conda install --file dev-requirements.txt
+    $ pip install -r dev-requirements.txt
     $ pre-commit install
 
 4. Create a branch for local development::
