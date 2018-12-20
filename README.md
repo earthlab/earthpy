@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/earthlab/earthpy.svg?branch=master)](https://travis-ci.org/earthlab/earthpy)
 [![codecov](https://codecov.io/gh/earthlab/earthpy/branch/master/graph/badge.svg)](https://codecov.io/gh/earthlab/earthpy)
 [![Docs build](https://readthedocs.org/projects/earthpy/badge/?version=latest)](https://earthpy.readthedocs.io/en/latest/?badge=latest)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 # EarthPy
 
@@ -24,17 +25,14 @@ Then import it into python.
 >>> import earthpy as et
 ```
 
-
-## Contributors
+## Active Contributors
 
 - Leah Wasser
 - Max Joseph
 - Joe McGlinchy
+- Tim Head
 - Chris Holdgraf
 - Jenny Palomino
-- Carson Farmer
-- Students from the Earth Analytics Fall 2018 Python course & Professional certificate
-
 
 ## Testing
 
