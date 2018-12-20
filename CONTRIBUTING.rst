@@ -31,14 +31,9 @@ Ready to contribute? Here's how to set up `earthpy` for local development.
 1. Fork the `earthpy` repo on GitHub.
 2. Clone your fork locally::
 
-Using SSH:
     $ git clone git@github.com:your_name_here/earthpy.git
 
-Or, if using HTTPS:
-    $ git clone https://github.com/your_name_here/earthpy.git
-
-3. Install your local copy into a conda environment. Assuming conda is
-installed, this is how you set up your fork for local development::
+3. Set up your fork for local development with conda::
 
     $ cd earthpy/
     $ conda env create -f environment.yml
