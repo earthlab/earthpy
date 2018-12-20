@@ -125,7 +125,7 @@ def test_normalized_diff_shapes(b1_b2_arrs):
     b2 = b2[0]
 
     # Check ValueError
-    with pytest.raises(ValueError, match=r"Both arrays should have the same dimensions"):
+    with pytest.raises(ValueError, match="Both arrays should have the same dimensions"):
         es.normalized_diff(b1 = b1, b2 = b2)
 
 
