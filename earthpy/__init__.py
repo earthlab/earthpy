@@ -1,4 +1,4 @@
-"""Utility functions for the earthlab class."""
+"""Utility functions for the working with spatial data."""
 
 from .io import EarthlabData  # , list_files
 from download import download

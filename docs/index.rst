@@ -21,10 +21,9 @@ Earthpy's User Guide
    :caption: Contents:
 
    get-started
-   spatial-raster
-   spatial-vector
    contributing
    contributors
+   modules
 
 Indices and Tables
 ==================
