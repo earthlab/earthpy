@@ -171,20 +171,18 @@ def make_apply_mask(arr, mask_arr, vals):
     -----------
     arr : numpy array
         An array in rasterio (band, row, col) order
-
     mask_arr : numpy array
-        An array... to open the pixel_qa or mask raster of interest
-
+        An array to open the pixel_qa or mask raster of interest
     vals : list of numbers (int or float)
-        A list of values that represent no data in the provided raster
-        layer (mask_arr)
+        A list of values that represent no data in mask_arr
 
     Returns
-    -----------
+    -------
     arr : numpy array
-        A numpy array with values that should be masked set to 1 for
-        True (Boolean)
+        A numpy array with values that should be masked set to 1 for True
 
+    Example
+    -------
     >>> import numpy as np
     >>> from earthpy.mask import make_apply_mask
     >>> im = np.arange(9).reshape((3, 3))
