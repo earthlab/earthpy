@@ -89,26 +89,34 @@ calculates the normalized difference from them.
 ``normalized_diff`` takes two input parameters:
 
 ``b1``, ``b2``: arrays with the same shape
-      Math will be calculated (b2-b1) / (b2+b1)
+      Math will be calculated (b1-b2) / (b1+b2)
 
-The ``normalized_diff`` function returns a masked array of the normalized difference with the same shape as the input arrays.
+The ``normalized_diff`` function returns an array of the normalized difference with the same shape as the input arrays.
+
+If the calculation produces infinity values due to a divide by zero, the infinity values are converted to nan values.
+
+If the result of the ``normalized_diff`` function contains any nan values, then the array is returned as masked.
 
 Example:
 
     >>> import numpy as np
     >>> import earthpy.spatial as es
 
-    >>> red_band = np.array([[1, 2, 3, 4, 5],[11,12,13,14,15]])
-    >>> nir_band = np.array([[6, 7, 8, 9, 10],[16,17,18,19,20]])
-    >>> es.normalized_diff(b2=nir_band, b1=red_band)
-    masked_array(
-      data=[[0.7142857142857143, 0.5555555555555556, 0.45454545454545453,
-             0.38461538461538464, 0.3333333333333333],
-            [0.18518518518518517, 0.1724137931034483, 0.16129032258064516,
-             0.15151515151515152, 0.14285714285714285]],
-      mask=[[False, False, False, False, False],
-            [False, False, False, False, False]],
-      fill_value=1e+20)
+    >>> # Calculate normalized difference vegetation index
+    >>> nir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    >>> red_band = np.array([[1, 2, 3, 4, 5], [11, 12, 13, 14, 15]])
+    >>> ndvi = es.normalized_diff(b1 = nir_band, b2 = red_band)
+    >>> ndvi
+    array([[0.71428571, 0.55555556, 0.45454545, 0.38461538, 0.33333333],
+           [0.18518519, 0.17241379, 0.16129032, 0.15151515, 0.14285714]])
+
+    >>> # Calculate normalized burn ratio
+    >>> nir_band = np.array([[8, 10, 13, 17, 15], [18, 20, 22, 23, 25]])
+    >>> swir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    >>> nbr = es.normalized_diff(b1 = nir_band, b2 = swir_band)
+    >>> nbr
+    array([[0.14285714, 0.17647059, 0.23809524, 0.30769231, 0.2       ],
+           [0.05882353, 0.08108108, 0.1       , 0.0952381 , 0.11111111]])
 
 
 Plot Raster File Bands
