@@ -82,16 +82,15 @@ def normalized_diff(b1, b2):
     --------
     >>> import numpy as np
     >>> import earthpy.spatial as es
-    ...
-    ... # Calculate normalized difference vegetation index
+    >>> # Calculate normalized difference vegetation index
     >>> nir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
     >>> red_band = np.array([[1, 2, 3, 4, 5], [11, 12, 13, 14, 15]])
     >>> ndvi = es.normalized_diff(b1=nir_band, b2=red_band)
     >>> ndvi
     array([[0.71428571, 0.55555556, 0.45454545, 0.38461538, 0.33333333],
            [0.18518519, 0.17241379, 0.16129032, 0.15151515, 0.14285714]])
-    ...
-    ... # Calculate normalized burn ratio
+
+    >>> # Calculate normalized burn ratio
     >>> nir_band = np.array([[8, 10, 13, 17, 15], [18, 20, 22, 23, 25]])
     >>> swir_band = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
     >>> nbr = es.normalized_diff(b1=nir_band, b2=swir_band)

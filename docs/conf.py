@@ -77,6 +77,7 @@ exclude_patterns = [
     ".DS_Store",
     "earthpy/tests",
     "earthpy/example-data",
+    "ignoreme",
 ]
 
 # The name of the Pygments (syntax highlighting) style to use.
