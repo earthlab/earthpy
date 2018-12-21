@@ -51,7 +51,7 @@ Ready to contribute? Here's how to set up `earthpy` for local development.
 5. When you're done making changes, check that tests pass, and examples run::
 
     $ pytest --doctest-modules
-    $ make -C docs doctest
+    $ make docs
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -69,7 +69,7 @@ When submitting a pull request:
   Status on
   Travis will be visible on a pull request. If you want to enable
   Travis CI on your own fork, please read the
-  `getting started docs <http://about.travis-ci.org/docs/user/getting-started/>`_.
+  `getting started docs <https://docs.travis-ci.com/user/getting-started/>`_.
 
 - New functionality should include tests. Please write reasonable
   tests for your code and make sure that they pass on your pull request.
@@ -77,6 +77,10 @@ When submitting a pull request:
 - Classes, methods, functions, etc. should have docstrings. The first
   line of a docstring should be a standalone summary. Parameters and
   return values should be documented explicitly.
+
+- The API documentation is automatically generated from docstrings, which
+  should conform to NumpPy styling. For examples, see the `Napoleon docs
+  <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html>`_.
 
 - Please note that tests are also run via Travis-CI on our documentation.
   So be sure that any ``.rst`` file submissions are properly formatted and
