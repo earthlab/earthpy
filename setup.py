@@ -46,7 +46,7 @@ if __name__ == "__main__":
             "pandas",
             "numpy",
             "geopandas",
-            "matplotlib",
+            "matplotlib>=2.0.0",
             "rasterio",
             "download",
             "scikit-image",
