@@ -49,7 +49,7 @@ if __name__ == "__main__":
             "matplotlib",
             "rasterio",
             "download",
-            "skimage",
+            "scikit-image",
         ],
         zip_safe=False,  # the package can run out of an .egg file
         classifiers=[
