@@ -1,0 +1,36 @@
+{
+  "creators": [
+    {
+      "affiliation": "Earth Lab, University of Colorado - Boulder",
+      "name": "Wasser, Leah",
+      "orcid": "0000-000-000-000"
+    },
+    {
+      "affiliation": "Earth Lab, University of Colorado - Boulder",
+      "name": "Joseph, Max",
+      "orcid": "0000-000-000-000"
+    },
+    {
+      "affiliation": "Earth Lab, University of Colorado - Boulder",
+      "name": "Palomino, Jenny",
+      "orcid": "0000-000-000-000"
+    },
+    {
+      "affiliation": "...Berkeley",
+      "name": "Holdgraf, Chris",
+      "orcid": "0000-000-000-000"
+    },
+    {
+      "affiliation": "...",
+      "name": "Head, Tim",
+      "orcid": "0000-0002-000-000"
+    }
+  ],
+  "keywords": [
+    "geospatial",
+    "GIS",
+    "earth analytics"
+  ],
+  "license": "BSD-3",
+  "upload_type": "software"
+}
