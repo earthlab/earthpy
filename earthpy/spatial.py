@@ -686,24 +686,21 @@ def hist(
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
-        # Test if there are enough titles to create plots
-        if title:
-            if not (len(title) == arr.shape[0]):
-                raise ValueError(
-                    """"The number of plot titles should be the
-                                     same as the number of raster layers in
-                                      your array."""
-                )
+        n_layers = arr.shape[0]
+        if title and not len(title) == n_layers:
+            raise ValueError(
+                """"The number of plot titles should be the
+                    same as the number of raster layers in
+                    your array."""
+            )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
-        total_layers = arr.shape[0]
 
         fig, axs = plt.subplots(
             plot_rows, cols, figsize=figsize, sharex=True, sharey=True
         )
         axs_ravel = axs.ravel()
-        # TODO: write test case for just one color
-        for band, ax, i in zip(arr, axs.ravel(), range(total_layers)):
+        for band, ax, i in zip(arr, axs.ravel(), range(n_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
             else:
@@ -712,7 +709,7 @@ def hist(
             if title:
                 ax.set_title(title[i])
         # Clear additional axis elements
-        for ax in axs_ravel[total_layers:]:
+        for ax in axs_ravel[n_layers:]:
             ax.set_axis_off()
 
         return fig, axs
