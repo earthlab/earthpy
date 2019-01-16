@@ -35,3 +35,13 @@ script:
 
 after_success:
   - codecov
+
+deploy:
+  provider: pypi
+  user: lwasser
+  password:
+    secure:
+  on:
+    tags: true
+    repo: earthlab/earthpy
+    python: 3.6
