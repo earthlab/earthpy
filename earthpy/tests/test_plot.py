@@ -18,11 +18,6 @@ def one_band_3dims():
     return np.random.randint(10, size=(1, 4, 5))
 
 
-@pytest.fixture
-def one_band_2dims():
-    return np.random.randint(10, size=(5, 5))
-
-
 """ General functions for matplotlib elements """
 
 
@@ -105,7 +100,7 @@ def test_single_band_2dims(one_band_3dims):
 """ Colorbar Tests """
 
 
-def test_colorbar_height(one_band_2dims):
+def test_colorbar_height(basic_image):
     """Test that the colorbar ax height matches the image axis height"""
 
     f, ax = plt.subplots(figsize=(5, 5))
