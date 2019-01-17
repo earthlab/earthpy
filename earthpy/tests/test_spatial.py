@@ -8,7 +8,7 @@ import geopandas as gpd
 import rasterio as rio
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
-
+import os
 
 @pytest.fixture
 def b1_b2_arrs():
