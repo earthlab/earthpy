@@ -166,17 +166,12 @@ def test_stack_invalid_out_paths_raise_errors():
                              out_path="nonexistent_directory/output.tif")
 
                              
-def test_stack_raster():
+def test_stack_raster(basic_image_tif):
     """Unit tests for raster stacking with es.stack()."""
     
-    # Create a number of files with create_tif_file
-    band_files = ["dummy{}.tif".format(i) for i in range(4)]
-    arr = np.ones((5, 5, 1))
-
-    test_files = []
-    for bfi in band_files:    
-        code, fi = create_tif_file(arr, bfi)
-        test_files.append(fi)
+    # create list of 4 basic_image_tif files (filepaths)
+    test_files = [basic_image_tif]*4
+    band_files = [basic_image_tif]*4
     
     # Test output path is valid when write_raster is True
     with pytest.raises(ValueError, message="Please specify a valid file name for output."):
@@ -214,12 +209,7 @@ def test_stack_raster():
     assert stack_prof['count'] == len(test_files)
     
     # Clean up files
-    for tfi in test_files:
-        os.remove(tfi)
-        es.stack_raster_tifs(
-            band_paths=["fname1.tif", "fname2.tif"],
-            out_path="nonexistent_directory/output.tif",
-        )
+    #os.remove(basic_image_tif)
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
