@@ -1002,11 +1002,6 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
                 return _stack(sources, dest)
 
 
-# Function to be submitted to rasterio
-# TODO: add unit tests - some are here:
-# https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
-# This function doesn't stand alone because it writes to an open object called
-# in the other function
 # @deprecate
 def _stack(sources, dest):
     """Stack a set of bands into a single file.

@@ -205,13 +205,17 @@ def test_stack_raster(basic_image_tif):
             band_files, out_path=out_fi, write_raster=True
         )
 
+    # Test that out_path needs a file extension to be valid
+    out_fi = "test_stack.tif"
+    with pytest.raises(ValueError, match="The list of*"):
+        stack_arr, stack_prof = es.stack(
+            [], out_path=out_fi, write_raster=True
+        )
+
     # Test that the output file format is same as inputs
-    # THIS CAN BE FLEXIBLE BUT FOR NOW FORCING SAME FORMAT
+    # This can be flexible but for now forcing the same format
     out_fi = "test_stack.jp2"
-    with pytest.raises(
-        ValueError,
-        match="Source data is GTiff. Please specify corresponding output extension.",
-    ):
+    with pytest.raises(ValueError, match="Source data is*"):
         stack_arr, stack_prof = es.stack(
             band_files, out_path=out_fi, write_raster=True
         )
@@ -232,9 +236,6 @@ def test_stack_raster(basic_image_tif):
 
     assert stack_arr.shape[0] == len(test_files)
     assert stack_prof["count"] == len(test_files)
-
-    # Clean up files
-    # os.remove(basic_image_tif)
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
