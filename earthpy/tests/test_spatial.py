@@ -117,19 +117,19 @@ def test_bytescale_high_low_val():
 
     # Bad high value
     with pytest.raises(
-        ValueError, message="`high` should be less than or equal to 255."
+        ValueError, match="`high` should be less than or equal to 255."
     ):
         es.bytescale(arr, high=300)
 
     # Bad low value
     with pytest.raises(
-        ValueError, message="`low` should be greater than or equal to 0."
+        ValueError, match="`low` should be greater than or equal to 0."
     ):
         es.bytescale(arr, low=-100)
 
     # High value is less than low value
     with pytest.raises(
-        ValueError, message="`high` should be greater than or equal to `low`."
+        ValueError, match="`high` should be greater than or equal to `low`."
     ):
         es.bytescale(arr, high=100, low=150)
 
@@ -141,14 +141,14 @@ def test_bytescale_high_low_val():
 
     # Test scale value max is less than min
     with pytest.raises(
-        ValueError, message="`cmax` should be larger than `cmin`."
+        ValueError, match="`cmax` should be larger than `cmin`."
     ):
         es.bytescale(arr, cmin=100, cmax=50)
 
     # Test scale value max is less equal to min. Commented out for now because it breaks stuff somehow.
     with pytest.raises(
         ValueError,
-        message="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
+        match="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
     ):
         es.bytescale(arr, cmin=100, cmax=100)
 
