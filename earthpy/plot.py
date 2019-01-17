@@ -11,6 +11,7 @@ from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import rasterio as rio
 from skimage import exposure
+import earthpy.spatial as es
 
 
 def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
@@ -144,7 +145,7 @@ def plot_bands(
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i + 1
-            ax.imshow(bytescale(arr[i]), cmap=cmap)
+            ax.imshow(es.bytescale(arr[i]), cmap=cmap)
             if title:
                 ax.set(title=title[i])
             else:
@@ -164,7 +165,7 @@ def plot_bands(
         arr = np.squeeze(arr)
 
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(bytescale(arr), cmap=cmap, extent=extent)
+        ax.imshow(es.bytescale(arr), cmap=cmap, extent=extent)
         if title:
             ax.set(title=title)
         ax.set(xticks=[], yticks=[])
@@ -253,11 +254,11 @@ def plot_rgb(
         # Add the mask to the array & swap the axes order from (bands,
         # rows, columns) to (rows, columns, bands) for plotting
         rgb_bands = np.vstack(
-            (bytescale(rgb_bands), np.expand_dims(mask, axis=0))
+            (es.bytescale(rgb_bands), np.expand_dims(mask, axis=0))
         ).transpose([1, 2, 0])
     else:
         # Index bands for plotting and clean up data for matplotlib
-        rgb_bands = bytescale(rgb_bands).transpose([1, 2, 0])
+        rgb_bands = es.bytescale(rgb_bands).transpose([1, 2, 0])
 
     # Then plot. Define ax if it's default to none
     if ax is None:
