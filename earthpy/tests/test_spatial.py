@@ -10,6 +10,7 @@ from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
 import os
 
+
 @pytest.fixture
 def b1_b2_arrs():
     b1 = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
@@ -162,54 +163,78 @@ def test_bytescale_high_low_val():
 def test_stack_invalid_out_paths_raise_errors():
     """ If users provide an output path that doesn't exist, raise error. """
     with pytest.raises(ValueError, match="not exist"):
-        es.stack(band_paths=['fname1.tif', 'fname2.tif'],
-                             out_path="nonexistent_directory/output.tif")
+        es.stack(
+            band_paths=["fname1.tif", "fname2.tif"],
+            out_path="nonexistent_directory/output.tif",
+        )
 
-                             
+
 def test_stack_raster(basic_image_tif):
     """Unit tests for raster stacking with es.stack()."""
-    
+
     # create list of 4 basic_image_tif files (filepaths)
-    test_files = [basic_image_tif]*4
-    band_files = [basic_image_tif]*4
-    
+    test_files = [basic_image_tif] * 4
+    band_files = [basic_image_tif] * 4
+
     # Test output path is valid when write_raster is True
-    with pytest.raises(ValueError, match="Please specify a valid file name for output."):
-        stack_arr, stack_prof = es.stack(band_files, out_path='', write_raster=True)
-        
+    with pytest.raises(
+        ValueError, match="Please specify a valid file name for output."
+    ):
+        stack_arr, stack_prof = es.stack(
+            band_files, out_path="", write_raster=True
+        )
+
     # Test write_raster flag needs to be True if out_path is valid and specified
-    out_fi = 'test_stack.tif'
-    with pytest.raises(ValueError, match="Please specify write_raster==True to generate output file {}".format(out_fi)):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=False)
-        
+    out_fi = "test_stack.tif"
+    with pytest.raises(
+        ValueError,
+        match="Please specify write_raster==True to generate output file {}".format(
+            out_fi
+        ),
+    ):
+        stack_arr, stack_prof = es.stack(
+            band_files, out_path=out_fi, write_raster=False
+        )
+
     # Test that out_path needs a file extension to be valid
-    out_fi = 'test_stack'
-    with pytest.raises(ValueError, match="Please specify a valid file name for output."):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True) 
+    out_fi = "test_stack"
+    with pytest.raises(
+        ValueError, match="Please specify a valid file name for output."
+    ):
+        stack_arr, stack_prof = es.stack(
+            band_files, out_path=out_fi, write_raster=True
+        )
 
     # Test that the output file format is same as inputs
     # THIS CAN BE FLEXIBLE BUT FOR NOW FORCING SAME FORMAT
-    out_fi = 'test_stack.jp2'
-    with pytest.raises(ValueError, match="Source data is GTiff. Please specify corresponding output extension."):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True)
-        
-    # Test valid use case specifying output file. 
+    out_fi = "test_stack.jp2"
+    with pytest.raises(
+        ValueError,
+        match="Source data is GTiff. Please specify corresponding output extension.",
+    ):
+        stack_arr, stack_prof = es.stack(
+            band_files, out_path=out_fi, write_raster=True
+        )
+
+    # Test valid use case specifying output file.
     # Make sure the output file exists and then clean it up
-    out_fi = 'test_stack.tif'
-    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True)
-    
+    out_fi = "test_stack.tif"
+    stack_arr, stack_prof = es.stack(
+        band_files, out_path=out_fi, write_raster=True
+    )
+
     assert os.path.exists(out_fi)
     if os.path.exists(out_fi):
         os.remove(out_fi)
-        
-    # Test valid use case of just getting back the array. 
+
+    # Test valid use case of just getting back the array.
     stack_arr, stack_prof = es.stack(test_files)
-    
+
     assert stack_arr.shape[0] == len(test_files)
-    assert stack_prof['count'] == len(test_files)
-    
+    assert stack_prof["count"] == len(test_files)
+
     # Clean up files
-    #os.remove(basic_image_tif)
+    # os.remove(basic_image_tif)
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
@@ -294,4 +319,3 @@ def test_crop_image_fails_empty_list(basic_image_tif, basic_geometry):
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError):
             es.crop_image(src, list())
-

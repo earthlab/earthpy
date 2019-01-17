@@ -121,7 +121,7 @@ def normalized_diff(b1, b2):
 
 
 # TODO: include a no data value here if provided
-def stack(band_paths, out_path='', write_raster=False):
+def stack(band_paths, out_path="", write_raster=False):
 
     """Take a list of raster paths and turn into an output raster stack
     numpy array. Note that this function depends upon the stack_bands() function.
@@ -162,7 +162,7 @@ def stack(band_paths, out_path='', write_raster=False):
         >>> # optionally, clean up example output
         >>> os.remove(destfile)
     """
-        
+
     # Set default import to read
     kwds = {"mode": "r"}
 
@@ -177,17 +177,21 @@ def stack(band_paths, out_path='', write_raster=False):
         raise ValueError(
             "The list of file paths is empty. You need at least 2 files to create a stack."
         )
-    
+
     # Invalid filename specified and write_raster == True.
     # Tell user to specify valid filename
-    if (len(os.path.basename(out_path).split('.')) < 2) and write_raster:
+    if (len(os.path.basename(out_path).split(".")) < 2) and write_raster:
         raise ValueError("Please specify a valid file name for output.")
-    
+
     # Valid filename specified and write_raster == False.
     # Tell user to specify write_raster == True
-    if (len(os.path.basename(out_path).split('.')) == 2) and not write_raster:
-         raise ValueError("Please specify write_raster==True to generate output file {}".format(out_path))
-         
+    if (len(os.path.basename(out_path).split(".")) == 2) and not write_raster:
+        raise ValueError(
+            "Please specify write_raster==True to generate output file {}".format(
+                out_path
+            )
+        )
+
     with contextlib.ExitStack() as context:
         sources = [
             context.enter_context(rio.open(path, **kwds))
@@ -200,30 +204,34 @@ def stack(band_paths, out_path='', write_raster=False):
         dest_kwargs["count"] = dest_count
 
         # Stack the bands and return an array, but don't write to disk
-        if not write_raster: 
-            
+        if not write_raster:
+
             arr, prof = _stack_bands(sources)
             return arr, prof
-        
-        # Write out the stacked array and return a numpy array    
+
+        # Write out the stacked array and return a numpy array
         else:
             # Valid output path checked above
-            file_fmt = os.path.basename(out_path).split('.')[-1]
-            
+            file_fmt = os.path.basename(out_path).split(".")[-1]
+
             # Check if the file format for output is the same as the source driver
-            rio_driver = sources[0].profile['driver']
+            rio_driver = sources[0].profile["driver"]
             if not file_fmt in rio_driver.lower():
-                raise ValueError("Source data is {}. Please specify corresponding output extension.".format(rio_driver))
-            
+                raise ValueError(
+                    "Source data is {}. Please specify corresponding output extension.".format(
+                        rio_driver
+                    )
+                )
+
             # Write stacked gtif file
             with rio.open(out_path, "w", **dest_kwargs) as dest:
                 _stack_bands(sources, dest, write_raster)
-            
+
             # Read and return array
             with rio.open(out_path, "r") as src:
                 return src.read(), src.profile
-        
-                
+
+
 def _stack_bands(sources, dest=None, write_raster=False):
     """Stack a set of bands into a single file.
 
@@ -254,7 +262,7 @@ def _stack_bands(sources, dest=None, write_raster=False):
                 bands = bands[np.newaxis, ...]
             for band in bands:
                 dest.write(band, ii + 1)
-                
+
     else:
         stacked_arr = []
         for ii, ifile in enumerate(sources):
@@ -262,12 +270,13 @@ def _stack_bands(sources, dest=None, write_raster=False):
             if bands.shape[0] == 1:
                 bands = np.squeeze(bands)
             stacked_arr.append(bands)
-        
+
         # update the profile to have count==number of bands
         ret_prof = sources[0].profile.copy()
-        ret_prof['count'] = len(stacked_arr)
-        
+        ret_prof["count"] = len(stacked_arr)
+
         return np.array(stacked_arr), ret_prof
+
 
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
@@ -301,12 +310,11 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
 
     
     """
-    
+
     # Throw warning and exit
     raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
     sys.exit()
-    
-    
+
     # Set default import to read
     kwds = {"mode": "r"}
 
@@ -366,7 +374,7 @@ def _stack(sources, dest):
     # Throw warning and exit
     raise Warning("_stack is deprecated. Exiting...")
     sys.exit()
-    
+
     try:
         for src in sources:
             src.profile
