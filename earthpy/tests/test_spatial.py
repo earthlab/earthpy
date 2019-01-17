@@ -1,80 +1,20 @@
 """ Tests for the spatial module. """
 
 import numpy as np
+import numpy.ma as ma
 import pandas as pd
 import pytest
-from shapely.geometry import Polygon, Point
 import geopandas as gpd
-import earthpy.spatial as es
-from osgeo import gdal
-from osgeo import osr
 import rasterio as rio
-import os
-
-# A helper function to write a 3D array of data to disk as a GeoTIFF
-# The result will have no spatial info or relevance
-def create_tif_file(arr, destfile):
-    """Writes a tif file to a specified location using an array.
-    Parameters
-    ----------
-    arr : numpy ndarray
-        The array should have 3 dimensions, arranged such that
-        a the result of arr.shape is in the form [rows, columns, channels].
-
-    destfile : filepath string
-        The filepath for where the GeoTIFF file will be written.
-    """
-    # Make sure the array is 3 dimensional, assuming last dimension is number of bands
-    assert len(arr.shape) == 3
-
-    try:
-        geotrans = (0, 1, 0, 0, 0, -1)
-
-        # Get the dimensions of the array
-        y_pixels, x_pixels, n_channels = arr.shape
-
-        # Create the GeoTIFF file
-        driver = gdal.GetDriverByName("GTiff")
-        dataset = driver.Create(
-            destfile, x_pixels, y_pixels, int(n_channels), gdal.GDT_Float32
-        )
-
-        # Write the bands to the GeoTIFF
-        for i in range(n_channels):
-            dataset.GetRasterBand(i + 1).WriteArray(arr[:, :, i])
-
-        # Define the Unknown projection
-        srs = osr.SpatialReference()
-        srs.ImportFromEPSG(0)
-        proj = srs.ExportToWkt()
-
-        # Set the spatial properties of the GeoTIFF file
-        dataset.SetGeoTransform(geotrans)
-        dataset.SetProjection(proj)
-
-        dataset.FlushCache()
-
-        # Remove the dataset from memory
-        dataset = None
-
-        return (0, destfile)
-
-    except Exception as e:
-        return (e, None)
+from shapely.geometry import Polygon, Point, LineString
+import earthpy.spatial as es
 
 
-def test_create_tif_file():
-    """ Testing dummy_tif_writer."""
-    destfile = "dummy.tif"
-    arr = np.ones((5, 5, 1))
-    code, fi = create_tif_file(arr, destfile)
-
-    assert code == 0
-    assert os.path.exists(destfile) is True
-
-    # Clean up the file
-    if os.path.exists(destfile):
-        os.remove(destfile)
+@pytest.fixture
+def b1_b2_arrs():
+    b1 = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
+    b2 = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
+    return b1, b2
 
 
 def test_extent_to_json():
@@ -108,25 +48,88 @@ def test_extent_to_json():
         es.extent_to_json([0, 1, 1, 0])
 
 
+def test_normalized_diff_shapes(b1_b2_arrs):
+    """Test that two arrays with different shapes returns a ValueError."""
+
+    # Test data
+    b1, b2 = b1_b2_arrs
+    b2 = b2[0]
+
+    # Check ValueError
+    with pytest.raises(
+        ValueError, match="Both arrays should have the same dimensions"
+    ):
+        es.normalized_diff(b1=b1, b2=b2)
+
+
+def test_normalized_diff_no_mask(b1_b2_arrs):
+    """Test that if result does not include nan values,
+    the array is returned as unmasked."""
+
+    # Test data
+    b1, b2 = b1_b2_arrs
+
+    n_diff = es.normalized_diff(b1=b1, b2=b2)
+
+    # Output array unmasked
+    assert not ma.is_masked(n_diff)
+
+
+def test_normalized_diff_inf(b1_b2_arrs):
+    """Test that inf values in result are set to nan and
+    that array is returned as masked."""
+
+    # Test data
+    b1, b2 = b1_b2_arrs
+    b2[1:, 4:] = -20
+
+    # Check warning
+    with pytest.warns(
+        Warning, match="Divide by zero produced infinity values"
+    ):
+        n_diff = es.normalized_diff(b1=b1, b2=b2)
+
+    # Inf values set to nan
+    assert not np.isinf(n_diff).any()
+
+    # Output array masked
+    assert ma.is_masked(n_diff)
+
+
+def test_normalized_diff_mask(b1_b2_arrs):
+    """Test that if result does include nan values,
+    the array is returned as masked."""
+
+    # Test data
+    b1, b2 = b1_b2_arrs
+    b2 = b2.astype(float)
+    b2[1:, 4:] = np.nan
+
+    n_diff = es.normalized_diff(b1=b1, b2=b2)
+
+    # Output array masked
+    assert ma.is_masked(n_diff)
+
+
 def test_bytescale_high_low_val():
     """"Unit tests for earthpy.spatial.bytescale """
     arr = np.random.randint(300, size=(10, 10))
 
     # Bad high value
     with pytest.raises(
-        ValueError, message="`high` should be less than or equal to 255."
+        ValueError, match="`high` should be less than or equal to 255."
     ):
         es.bytescale(arr, high=300)
 
     # Bad low value
     with pytest.raises(
-        ValueError, message="`low` should be greater than or equal to 0."
+        ValueError, match="`low` should be greater than or equal to 0."
     ):
         es.bytescale(arr, low=-100)
 
     # High value is less than low value
     with pytest.raises(
-        ValueError, message="`high` should be greater than or equal to `low`."
+        ValueError, match="`high` should be greater than or equal to `low`."
     ):
         es.bytescale(arr, high=100, low=150)
 
@@ -138,14 +141,14 @@ def test_bytescale_high_low_val():
 
     # Test scale value max is less than min
     with pytest.raises(
-        ValueError, message="`cmax` should be larger than `cmin`."
+        ValueError, match="`cmax` should be larger than `cmin`."
     ):
         es.bytescale(arr, cmin=100, cmax=50)
 
     # Test scale value max is less equal to min. Commented out for now because it breaks stuff somehow.
     with pytest.raises(
         ValueError,
-        message="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
+        match="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
     ):
         es.bytescale(arr, cmin=100, cmax=100)
 
@@ -213,3 +216,92 @@ def test_stack_raster():
     # Clean up files
     for tfi in test_files:
         os.remove(tfi)
+        es.stack_raster_tifs(
+            band_paths=["fname1.tif", "fname2.tif"],
+            out_path="nonexistent_directory/output.tif",
+        )
+
+
+def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
+    """ Cropping with a GeoDataFrame works when all_touched=True.
+
+    Cropping basic_image_tif file with the basic geometry fixture returns
+    all of the cells that have the value 1 in the basic_image_tif fixture
+
+    These fixtures are described in conftest.py
+    """
+    with rio.open(basic_image_tif) as src:
+        img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=True)
+    assert np.sum(img) == 9
+
+
+def test_crop_image_with_gdf_touch_false(basic_image_tif, basic_geometry_gdf):
+    """ Cropping with a GeoDataFrame works when all_touched=False. """
+    with rio.open(basic_image_tif) as src:
+        img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=False)
+    assert np.sum(img) == 4
+
+
+def test_crop_image_with_geometry(basic_image_tif, basic_geometry):
+    """ Cropping with a geometry works with all_touched=True. """
+    with rio.open(basic_image_tif) as src:
+        img, meta = es.crop_image(src, [basic_geometry], all_touched=True)
+    assert np.sum(img) == 9
+
+
+def test_crop_image_with_geojson_touch_false(basic_image_tif, basic_geometry):
+    """ Cropping with GeoJSON works when all_touched=False. """
+    geojson = basic_geometry.__geo_interface__
+    with rio.open(basic_image_tif) as src:
+        img, meta = es.crop_image(src, [geojson], all_touched=False)
+    assert np.sum(img) == 4
+
+
+def test_crop_image_when_poly_bounds_image_extent(basic_image_tif):
+    """ When an image is fully contained in a larger polygon, dont crop. """
+    big_polygon = Polygon([(-1, -1), (11, -1), (11, 11), (-1, 11), (-1, -1)])
+    with rio.open(basic_image_tif) as src:
+        img, meta = es.crop_image(src, [big_polygon])
+        src_array = src.read()
+    assert np.array_equal(img, src_array)
+
+
+def test_crop_image_with_one_point_raises_error(basic_image_tif):
+    """ Cropping an image with one point should raise an error. """
+    point = Point([(1, 1)])
+    with rio.open(basic_image_tif) as src:
+        with pytest.raises(ValueError, match="width and height must be > 0"):
+            es.crop_image(src, [point])
+
+
+def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
+    """ Cropping with a horizontal or vertical line raises an error. """
+    line = LineString([(1, 1), (2, 1), (3, 1)])
+    with rio.open(basic_image_tif) as src:
+        with pytest.raises(ValueError, match="width and height must be > 0"):
+            es.crop_image(src, [line])
+
+
+def test_crop_image_fails_two_rasters(basic_image_tif, basic_geometry):
+    """ crop_image should raise an error if provided two rasters. """
+    with rio.open(basic_image_tif) as src:
+        with pytest.raises(TypeError):
+            es.crop_image(src, src)
+
+
+def test_crop_image_swapped_args(basic_image_tif, basic_geometry):
+    """ If users provide a polygon instead of raster raise an error. """
+    with pytest.raises(AttributeError):
+        es.crop_image(basic_geometry, basic_image_tif)
+    with pytest.raises(AttributeError):
+        es.crop_image(basic_geometry, basic_geometry)
+
+
+def test_crop_image_fails_empty_list(basic_image_tif, basic_geometry):
+    """ If users provide empty list as arg, crop_image fails. """
+    with pytest.raises(AttributeError):
+        es.crop_image(list(), basic_geometry)
+    with rio.open(basic_image_tif) as src:
+        with pytest.raises(ValueError):
+            es.crop_image(src, list())
+
