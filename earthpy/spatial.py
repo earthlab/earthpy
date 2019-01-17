@@ -154,7 +154,7 @@ def stack(band_paths, out_path='', write_raster=False):
         >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
         >>> band_paths = [path_to_example(fname) for fname in band_fnames]
         >>> destfile = "./stack_result.tif"
-        >>> arr, arr_meta = es.stack(band_paths, destfile)
+        >>> arr, arr_meta = es.stack(band_paths, destfile, write_raster=True)
         >>> arr.shape
         (3, 373, 485)
         >>> os.path.isfile(destfile)
