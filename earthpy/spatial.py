@@ -271,127 +271,11 @@ def _stack_bands(sources, dest=None, write_raster=False):
                 bands = np.squeeze(bands)
             stacked_arr.append(bands)
 
-        # update the profile to have count==number of bands
+        # Update the profile to have count==number of bands
         ret_prof = sources[0].profile.copy()
         ret_prof["count"] = len(stacked_arr)
 
         return np.array(stacked_arr), ret_prof
-
-
-# @deprecate
-def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """Take a list of raster paths and turn into an output raster stack
-    numpy array. Note that this function depends upon the stack() function.
-
-    TODO: Instead of returning a file path when arr_out=False, consider
-        returning None since the out_path is already
-        an input given by the user. This will make the output type consistent.
-
-    Parameters
-    ----------
-    band_paths : list of file paths
-        A list with paths to the bands you wish to stack. Bands
-        will be stacked in the order given in this list.
-    out_path : string
-        A path with a file name for the output stacked raster
-         tif file.
-    arr_out : boolean
-        A boolean argument to designate what is returned in the stacked
-        raster tif output.
-
-    Returns
-    -------
-    If arr_out keyword is True:
-        tuple: The first value representing the result of src.read() of the
-        stacked array and the second value
-        representing the result of src.profile of the stacked array.
-    If arr_out keyword is False:
-        str : A path with a file name for the output stacked raster tif file.
-
-    
-    """
-
-    # Throw warning and exit
-    raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
-    sys.exit()
-
-    # Set default import to read
-    kwds = {"mode": "r"}
-
-    out_dir = os.path.dirname(out_path)
-    writing_to_cwd = out_dir == ""
-    if not os.path.exists(out_dir) and not writing_to_cwd:
-        raise ValueError(
-            "The output directory path that you provided does not exist"
-        )
-
-    if len(band_paths) < 2:
-        raise ValueError(
-            """The list of file paths is empty. You need at least
-                            2 files to create a stack."""
-        )
-    with contextlib.ExitStack() as context:
-        sources = [
-            context.enter_context(rio.open(path, **kwds))
-            for path in band_paths
-        ]
-
-        # TODO: Check that the CRS and TRANSFORM are the same
-        dest_kwargs = sources[0].meta
-        dest_count = sum(src.count for src in sources)
-        dest_kwargs["count"] = dest_count
-
-        if arr_out:
-            # Write stacked gtif file
-            with rio.open(out_path, "w", **dest_kwargs) as dest:
-                _stack(sources, dest)
-            # Read and return array
-            with rio.open(out_path, "r") as src:
-                return src.read(), src.profile
-        else:
-            # Write stacked gtif file
-            with rio.open(out_path, "w", **dest_kwargs) as dest:
-                return _stack(sources, dest)
-
-
-# Function to be submitted to rasterio
-# TODO: add unit tests - some are here:
-# https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
-# This function doesn't stand alone because it writes to an open object called
-# in the other function
-# @deprecate
-def _stack(sources, dest):
-    """Stack a set of bands into a single file.
-
-    Parameters
-    ----------
-    sources : list of rasterio dataset objects
-        A list with paths to the bands you wish to stack. Objects
-        will be stacked in the order provided in this list.
-    dest : a rio.open writable object that will store raster data.
-    """
-
-    # Throw warning and exit
-    raise Warning("_stack is deprecated. Exiting...")
-    sys.exit()
-
-    try:
-        for src in sources:
-            src.profile
-
-    except ValueError as ve:
-        raise ValueError("The sources object should be Dataset Reader")
-        sys.exit()
-
-    else:
-        pass
-
-    for ii, ifile in enumerate(sources):
-        bands = sources[ii].read()
-        if bands.ndim != 3:
-            bands = bands[np.newaxis, ...]
-        for band in bands:
-            dest.write(band, ii + 1)
 
 
 def crop_image(raster, geoms, all_touched=True):
@@ -1040,3 +924,119 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
         borderaxespad=0.0,
         prop={"size": 13},
     )
+
+
+# @deprecate
+def stack_raster_tifs(band_paths, out_path, arr_out=True):
+    """Take a list of raster paths and turn into an output raster stack
+    numpy array. Note that this function depends upon the stack() function.
+
+    TODO: Instead of returning a file path when arr_out=False, consider
+        returning None since the out_path is already
+        an input given by the user. This will make the output type consistent.
+
+    Parameters
+    ----------
+    band_paths : list of file paths
+        A list with paths to the bands you wish to stack. Bands
+        will be stacked in the order given in this list.
+    out_path : string
+        A path with a file name for the output stacked raster
+         tif file.
+    arr_out : boolean
+        A boolean argument to designate what is returned in the stacked
+        raster tif output.
+
+    Returns
+    -------
+    If arr_out keyword is True:
+        tuple: The first value representing the result of src.read() of the
+        stacked array and the second value
+        representing the result of src.profile of the stacked array.
+    If arr_out keyword is False:
+        str : A path with a file name for the output stacked raster tif file.
+
+    
+    """
+
+    # Throw warning and exit
+    raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
+    sys.exit()
+
+    # Set default import to read
+    kwds = {"mode": "r"}
+
+    out_dir = os.path.dirname(out_path)
+    writing_to_cwd = out_dir == ""
+    if not os.path.exists(out_dir) and not writing_to_cwd:
+        raise ValueError(
+            "The output directory path that you provided does not exist"
+        )
+
+    if len(band_paths) < 2:
+        raise ValueError(
+            """The list of file paths is empty. You need at least
+                            2 files to create a stack."""
+        )
+    with contextlib.ExitStack() as context:
+        sources = [
+            context.enter_context(rio.open(path, **kwds))
+            for path in band_paths
+        ]
+
+        # TODO: Check that the CRS and TRANSFORM are the same
+        dest_kwargs = sources[0].meta
+        dest_count = sum(src.count for src in sources)
+        dest_kwargs["count"] = dest_count
+
+        if arr_out:
+            # Write stacked gtif file
+            with rio.open(out_path, "w", **dest_kwargs) as dest:
+                _stack(sources, dest)
+            # Read and return array
+            with rio.open(out_path, "r") as src:
+                return src.read(), src.profile
+        else:
+            # Write stacked gtif file
+            with rio.open(out_path, "w", **dest_kwargs) as dest:
+                return _stack(sources, dest)
+
+
+# Function to be submitted to rasterio
+# TODO: add unit tests - some are here:
+# https://github.com/mapbox/rasterio/blob/master/rasterio/mask.py
+# This function doesn't stand alone because it writes to an open object called
+# in the other function
+# @deprecate
+def _stack(sources, dest):
+    """Stack a set of bands into a single file.
+
+    Parameters
+    ----------
+    sources : list of rasterio dataset objects
+        A list with paths to the bands you wish to stack. Objects
+        will be stacked in the order provided in this list.
+    dest : a rio.open writable object that will store raster data.
+    """
+
+    # Throw warning and exit
+    raise Warning("_stack is deprecated. Exiting...")
+    sys.exit()
+
+    try:
+        for src in sources:
+            src.profile
+
+    except ValueError as ve:
+        raise ValueError("The sources object should be Dataset Reader")
+        sys.exit()
+
+    else:
+        pass
+
+    for ii, ifile in enumerate(sources):
+        bands = sources[ii].read()
+        if bands.ndim != 3:
+            bands = bands[np.newaxis, ...]
+        for band in bands:
+            dest.write(band, ii + 1)
