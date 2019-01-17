@@ -282,21 +282,7 @@ def stack_raster_tifs(band_paths, out_path, arr_out=True):
     If arr_out keyword is False:
         str : A path with a file name for the output stacked raster tif file.
 
-    Example
-    -------
-        >>> import os
-        >>> import earthpy.spatial as es
-        >>> from earthpy.io import path_to_example
-        >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
-        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
-        >>> destfile = "./stack_result.tif"
-        >>> arr, arr_meta = es.stack_raster_tifs(band_paths, destfile)
-        >>> arr.shape
-        (3, 373, 485)
-        >>> os.path.isfile(destfile)
-        True
-        >>> # optionally, clean up example output
-        >>> os.remove(destfile)
+    
     """
     
     # Throw warning and exit

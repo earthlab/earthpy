@@ -174,23 +174,23 @@ def test_stack_raster(basic_image_tif):
     band_files = [basic_image_tif]*4
     
     # Test output path is valid when write_raster is True
-    with pytest.raises(ValueError, message="Please specify a valid file name for output."):
+    with pytest.raises(ValueError, match="Please specify a valid file name for output."):
         stack_arr, stack_prof = es.stack(band_files, out_path='', write_raster=True)
         
     # Test write_raster flag needs to be True if out_path is valid and specified
     out_fi = 'test_stack.tif'
-    with pytest.raises(ValueError, message="Please specify write_raster==True to generate output file {}".format(out_fi)):
+    with pytest.raises(ValueError, match="Please specify write_raster==True to generate output file {}".format(out_fi)):
         stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=False)
         
     # Test that out_path needs a file extension to be valid
     out_fi = 'test_stack'
-    with pytest.raises(ValueError, message="Please specify a valid file name for output."):
+    with pytest.raises(ValueError, match="Please specify a valid file name for output."):
         stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True) 
 
     # Test that the output file format is same as inputs
     # THIS CAN BE FLEXIBLE BUT FOR NOW FORCING SAME FORMAT
     out_fi = 'test_stack.jp2'
-    with pytest.raises(ValueError, message="Source data is GTiff. Please specify corresponding output extension."):
+    with pytest.raises(ValueError, match="Source data is GTiff. Please specify corresponding output extension."):
         stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, write_raster=True)
         
     # Test valid use case specifying output file. 
