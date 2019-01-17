@@ -144,7 +144,24 @@ def stack(band_paths, out_path='', write_raster=False):
         and the second value representing the result of src.profile of the stacked array.
         NOTE: the 'count' key of the profile is updated to match the length of the input list.
     If write_raster keyword is True:
-        a file will be written from the stacked array to the path specified in out_path."""
+        a file will be written from the stacked array to the path specified in out_path.
+        
+    Example
+    -------
+        >>> import os
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
+        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
+        >>> destfile = "./stack_result.tif"
+        >>> arr, arr_meta = es.stack(band_paths, destfile)
+        >>> arr.shape
+        (3, 373, 485)
+        >>> os.path.isfile(destfile)
+        True
+        >>> # optionally, clean up example output
+        >>> os.remove(destfile)
+    """
         
     # Set default import to read
     kwds = {"mode": "r"}
