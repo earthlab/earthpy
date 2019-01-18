@@ -211,7 +211,6 @@ def stack(band_paths, out_path=""):
 
             # Check if the file format for output is the same as the source driver
             rio_driver = sources[0].profile["driver"]
-            print(rio_driver)
             if not file_fmt in rio_driver.lower():
                 raise ValueError(
                     "Source data is {}. Please specify corresponding output extension.".format(
