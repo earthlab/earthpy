@@ -241,7 +241,7 @@ def _stack_bands(sources, dest=None, write_raster=False):
         A list with paths to the bands you wish to stack. Objects
         will be stacked in the order provided in this list.
     dest : a rio.open writable object that will store raster data.
-    write_raster: a flag to decide to write out the raster. 
+    write_raster : a flag to decide to write out the raster. 
     """
 
     try:
@@ -928,35 +928,9 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
 
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """Take a list of raster paths and turn into an output raster stack
-    numpy array. Note that this function depends upon the stack() function.
+    """This function has been deprecated from earthpy. Please use
+    the stack() function instead.
 
-    TODO: Instead of returning a file path when arr_out=False, consider
-        returning None since the out_path is already
-        an input given by the user. This will make the output type consistent.
-
-    Parameters
-    ----------
-    band_paths : list of file paths
-        A list with paths to the bands you wish to stack. Bands
-        will be stacked in the order given in this list.
-    out_path : string
-        A path with a file name for the output stacked raster
-         tif file.
-    arr_out : boolean
-        A boolean argument to designate what is returned in the stacked
-        raster tif output.
-
-    Returns
-    -------
-    If arr_out keyword is True:
-        tuple: The first value representing the result of src.read() of the
-        stacked array and the second value
-        representing the result of src.profile of the stacked array.
-    If arr_out keyword is False:
-        str : A path with a file name for the output stacked raster tif file.
-
-    
     """
 
     # Throw warning and exit
