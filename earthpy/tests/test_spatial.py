@@ -179,52 +179,30 @@ def test_stack_raster(basic_image_tif):
     with pytest.raises(
         ValueError, match="Please specify a valid file name for output."
     ):
-        stack_arr, stack_prof = es.stack(
-            band_files, out_path="", write_raster=True
-        )
-
-    # Test write_raster flag needs to be True if out_path is valid and specified
-    out_fi = "test_stack.tif"
-    with pytest.raises(
-        ValueError,
-        match="Please specify write_raster==True to generate output file {}".format(
-            out_fi
-        ),
-    ):
-        stack_arr, stack_prof = es.stack(
-            band_files, out_path=out_fi, write_raster=False
-        )
+        stack_arr, stack_prof = es.stack(band_files, out_path="")
 
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack"
     with pytest.raises(
         ValueError, match="Please specify a valid file name for output."
     ):
-        stack_arr, stack_prof = es.stack(
-            band_files, out_path=out_fi, write_raster=True
-        )
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
 
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack.tif"
     with pytest.raises(ValueError, match="The list of*"):
-        stack_arr, stack_prof = es.stack(
-            [], out_path=out_fi, write_raster=True
-        )
+        stack_arr, stack_prof = es.stack([], out_path=out_fi)
 
     # Test that the output file format is same as inputs
     # This can be flexible but for now forcing the same format
     out_fi = "test_stack.jp2"
     with pytest.raises(ValueError, match="Source data is*"):
-        stack_arr, stack_prof = es.stack(
-            band_files, out_path=out_fi, write_raster=True
-        )
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
 
     # Test valid use case specifying output file.
     # Make sure the output file exists and then clean it up
     out_fi = "test_stack.tif"
-    stack_arr, stack_prof = es.stack(
-        band_files, out_path=out_fi, write_raster=True
-    )
+    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
 
     assert os.path.exists(out_fi)
     if os.path.exists(out_fi):

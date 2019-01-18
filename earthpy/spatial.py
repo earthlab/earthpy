@@ -121,7 +121,7 @@ def normalized_diff(b1, b2):
 
 
 # TODO: include a no data value here if provided
-def stack(band_paths, out_path="", write_raster=False):
+def stack(band_paths, out_path=""):
 
     """Take a list of raster paths and turn into an output raster stack
     numpy array. Note that this function depends upon the stack_bands() function.
@@ -180,17 +180,12 @@ def stack(band_paths, out_path="", write_raster=False):
 
     # Invalid filename specified and write_raster == True.
     # Tell user to specify valid filename
-    if (len(os.path.basename(out_path).split(".")) < 2) and write_raster:
+    if len(os.path.basename(out_path).split(".")) < 2:
         raise ValueError("Please specify a valid file name for output.")
 
-    # Valid filename specified and write_raster == False.
-    # Tell user to specify write_raster == True
-    if (len(os.path.basename(out_path).split(".")) == 2) and not write_raster:
-        raise ValueError(
-            "Please specify write_raster==True to generate output file {}".format(
-                out_path
-            )
-        )
+    # Set write_raster flag if valid filename provided
+    if os.path.basename(out_path).split(".") == 2:
+        write_raster = True
 
     with contextlib.ExitStack() as context:
         sources = [
