@@ -104,7 +104,7 @@ def test_colorbar_height(basic_image):
     """Test that the colorbar ax height matches the image axis height"""
 
     f, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(one_band_2dims, cmap="RdYlGn")
+    im = ax.imshow(basic_image, cmap="RdYlGn")
     cb = ep.colorbar(im)
 
     assert cb.ax.get_position().height == im.axes.get_position().height
