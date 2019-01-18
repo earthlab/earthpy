@@ -181,6 +181,7 @@ def stack(band_paths, out_path=""):
         raise ValueError("Please specify a valid file name for output.")
 
     # Set write_raster flag if valid filename provided
+    write_raster = False
     if os.path.basename(out_path).split(".") == 2:
         write_raster = True
 
