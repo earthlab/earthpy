@@ -40,8 +40,8 @@ the package yet you can still use the ``--upgrade argument``.
 
 Then import it into python.
 
-``import earthpy as et``
+    >>> import earthpy as et
 
 To import the spatial module use:
 
-``import earthpy.spatial as es``
+    >>> import earthpy.spatial as es

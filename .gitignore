@@ -102,6 +102,7 @@ ENV/
 
 # Pycharm
 .idea/
+.idea/*
 
 # Testing files
 earthpy/deprecated.py

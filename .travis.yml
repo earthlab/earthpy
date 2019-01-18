@@ -5,6 +5,11 @@ python:
 
 cache: pip
 
+before_script: # configure a headless display to test plot generation
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
+
 install:
   - sudo apt-get update
   # https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
@@ -17,14 +22,16 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   - conda env create -f environment.yml
-  - source activate earth-analytics-python
+  - source activate earthpy-dev
+  - conda list
   - python setup.py install
   - pip install -r dev-requirements.txt
+  - pip install black
 
 script:
-  - pytest --cov=earthpy
-  # Build documentation
-  - pushd docs && make html && popd
+  - pytest --doctest-modules --cov=earthpy --rootdir earthpy
+  - make docs
+  - black --check --verbose .
 
 after_success:
   - codecov
