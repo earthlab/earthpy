@@ -137,9 +137,10 @@ def stack(band_paths, out_path=""):
 
     Returns
     ----------
-    tuple: The first value representing the numpy array resulting from stacking the files in the input list
+    tuple : The first value representing the numpy array resulting from stacking the files in the input list
         and the second value representing the result of src.profile of the stacked array.
         NOTE: the 'count' key of the profile is updated to match the length of the input list.
+    output .tif file : (optional) stack will write a geotiff file if out_path is provided with a path that exists on your machine. 
     
         
     Example
