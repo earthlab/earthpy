@@ -140,8 +140,7 @@ def stack(band_paths, out_path=""):
     tuple: The first value representing the numpy array resulting from stacking the files in the input list
         and the second value representing the result of src.profile of the stacked array.
         NOTE: the 'count' key of the profile is updated to match the length of the input list.
-    If write_raster keyword is True:
-        a file will be written from the stacked array to the path specified in out_path.
+    
         
     Example
     -------
