@@ -134,9 +134,6 @@ def stack(band_paths, out_path=""):
     out_path : string (optional)
         A path with a file name for the output stacked raster
          tif file.
-    write_raster : boolean (optional)
-        A boolean argument to designate what is returned in the stacked
-        raster tif output.
 
     Returns
     ----------
@@ -154,7 +151,7 @@ def stack(band_paths, out_path=""):
         >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
         >>> band_paths = [path_to_example(fname) for fname in band_fnames]
         >>> destfile = "./stack_result.tif"
-        >>> arr, arr_meta = es.stack(band_paths, destfile, write_raster=True)
+        >>> arr, arr_meta = es.stack(band_paths, destfile)
         >>> arr.shape
         (3, 373, 485)
         >>> os.path.isfile(destfile)
