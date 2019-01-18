@@ -172,8 +172,7 @@ def test_stack_invalid_out_paths_raise_errors():
 def test_stack_raster(basic_image_tif):
     """Unit tests for raster stacking with es.stack()."""
 
-    # create list of 4 basic_image_tif files (filepaths)
-    test_files = [basic_image_tif] * 4
+    # Create list of 4 basic_image_tif files (filepaths)
     band_files = [basic_image_tif] * 4
 
     # Test output path is valid when write_raster is True
@@ -232,10 +231,10 @@ def test_stack_raster(basic_image_tif):
         os.remove(out_fi)
 
     # Test valid use case of just getting back the array.
-    stack_arr, stack_prof = es.stack(test_files)
+    stack_arr, stack_prof = es.stack(band_files)
 
-    assert stack_arr.shape[0] == len(test_files)
-    assert stack_prof["count"] == len(test_files)
+    assert stack_arr.shape[0] == len(band_files)
+    assert stack_prof["count"] == len(band_files)
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
