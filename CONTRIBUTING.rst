@@ -48,10 +48,13 @@ Ready to contribute? Here's how to set up `earthpy` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that tests pass, and examples run::
+5. When you're done making changes, check that tests pass, docs build, and examples run::
 
     $ pytest --doctest-modules
     $ make docs
+
+By default ``make docs`` will only rebuild the documentation if source
+files have changed. To force a rebuild, use ``make -B docs``.
 
 6. Commit your changes and push your branch to GitHub::
 
