@@ -177,12 +177,14 @@ def stack(band_paths, out_path=""):
 
     # Invalid filename specified and write_raster == True.
     # Tell user to specify valid filename
-    if len(os.path.basename(out_path).split(".")) < 2:
+    if (len(out_path) > 0) and (
+        len(os.path.basename(out_path).split(".")) < 2
+    ):
         raise ValueError("Please specify a valid file name for output.")
 
     # Set write_raster flag if valid filename provided
     write_raster = False
-    if os.path.basename(out_path).split(".") == 2:
+    if len(os.path.basename(out_path).split(".")) == 2:
         write_raster = True
 
     with contextlib.ExitStack() as context:
@@ -209,6 +211,7 @@ def stack(band_paths, out_path=""):
 
             # Check if the file format for output is the same as the source driver
             rio_driver = sources[0].profile["driver"]
+            print(rio_driver)
             if not file_fmt in rio_driver.lower():
                 raise ValueError(
                     "Source data is {}. Please specify corresponding output extension.".format(

@@ -175,12 +175,6 @@ def test_stack_raster(basic_image_tif):
     # Create list of 4 basic_image_tif files (filepaths)
     band_files = [basic_image_tif] * 4
 
-    # Test output path is valid when write_raster is True
-    with pytest.raises(
-        ValueError, match="Please specify a valid file name for output."
-    ):
-        stack_arr, stack_prof = es.stack(band_files, out_path="")
-
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack"
     with pytest.raises(
@@ -190,13 +184,13 @@ def test_stack_raster(basic_image_tif):
 
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack.tif"
-    with pytest.raises(ValueError, match="The list of*"):
+    with pytest.raises(ValueError, match="The list of"):
         stack_arr, stack_prof = es.stack([], out_path=out_fi)
 
     # Test that the output file format is same as inputs
     # This can be flexible but for now forcing the same format
     out_fi = "test_stack.jp2"
-    with pytest.raises(ValueError, match="Source data is*"):
+    with pytest.raises(ValueError, match="Source"):
         stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
 
     # Test valid use case specifying output file.
