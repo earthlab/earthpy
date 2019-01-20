@@ -9,7 +9,6 @@ import sys
 import contextlib
 import warnings
 import numpy as np
-import matplotlib.pyplot as plt
 from shapely.geometry import mapping, box
 import geopandas as gpd
 import rasterio as rio
@@ -460,3 +459,13 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     ) * np.cos(slope) * np.cos((azimuthrad - np.pi / 2.0) - aspect)
 
     return 255 * (shaded + 1) / 2
+
+
+# @deprecate
+def stack_raster_tifs(band_paths, out_path, arr_out=True):
+    """This function has been deprecated from earthpy.
+    
+    Please use the stack() function instead.
+    """
+    raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
+    sys.exit()

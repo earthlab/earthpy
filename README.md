@@ -6,8 +6,7 @@
 
 # EarthPy
 
-A package built to support python teaching in the Earth Lab earth analytics program
-at University of Colorado, Boulder.
+A package that supports working with spatial data in python teaching.
 
 ## Install
 

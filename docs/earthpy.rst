@@ -36,6 +36,14 @@ earthpy.mask module
     :undoc-members:
     :show-inheritance:
 
+earthpy.plot module
+-------------------
+
+.. automodule:: earthpy.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 earthpy.spatial module
 ----------------------
 

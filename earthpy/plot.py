@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-import rasterio as rio
 from skimage import exposure
 import earthpy.spatial as es
 
@@ -271,22 +270,27 @@ def plot_rgb(
     return fig, ax
 
 
-def hist(arr, title=None, colors="purple", figsize=(12, 12), cols=2, bins=20):
-    """
-    Plot histogram for each layer in a numpy array.
+def hist(
+    arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20
+):
+    """Plot histogram for each layer in a numpy array.
 
     Parameters
     ----------
-    arr: a n dimension numpy array
+    arr: ndarray
+        an n-dimensional numpy array
     title: str
         A list of title values that should either equal the number of bands
         or be empty, default = none
     colors: list
         a list of color values that should either equal the number of bands
-        or be a single color, (purple = default)
-    cols: int the number of columns you want to plot in
-    bins: the number of bins to calculate for the histogram
-    figsize: tuple. the figsize if you'd like to define it. default: (12, 12)
+        or be a single color, default = purple
+    cols: int
+        the number of columns for plot arrangement
+    bins: int
+        the number of bins to calculate for the histogram
+    figsize: tuple
+        the figsize if you'd like to define it, default = (12, 12)
 
     Returns
     ----------
@@ -295,6 +299,7 @@ def hist(arr, title=None, colors="purple", figsize=(12, 12), cols=2, bins=20):
 
     Example
     -------
+
     .. plot::
 
         >>> import matplotlib.pyplot as plt
@@ -313,24 +318,21 @@ def hist(arr, title=None, colors="purple", figsize=(12, 12), cols=2, bins=20):
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
-        # Test if there are enough titles to create plots
-        if title:
-            if not (len(title) == arr.shape[0]):
-                raise ValueError(
-                    """"The number of plot titles should be the
-                                     same as the number of raster layers in
-                                      your array."""
-                )
+        n_layers = arr.shape[0]
+        if title and not len(title) == n_layers:
+            raise ValueError(
+                """"The number of plot titles should be the
+                    same as the number of raster layers in
+                    your array."""
+            )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
-        total_layers = arr.shape[0]
 
         fig, axs = plt.subplots(
             plot_rows, cols, figsize=figsize, sharex=True, sharey=True
         )
         axs_ravel = axs.ravel()
-        # TODO: write test case for just one color
-        for band, ax, i in zip(arr, axs.ravel(), range(total_layers)):
+        for band, ax, i in zip(arr, axs.ravel(), range(n_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
             else:
@@ -339,7 +341,7 @@ def hist(arr, title=None, colors="purple", figsize=(12, 12), cols=2, bins=20):
             if title:
                 ax.set_title(title[i])
         # Clear additional axis elements
-        for ax in axs_ravel[total_layers:]:
+        for ax in axs_ravel[n_layers:]:
             ax.set_axis_off()
 
         return fig, axs
