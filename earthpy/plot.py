@@ -284,7 +284,7 @@ def hist(
         or be empty, default = none
     colors: list
         a list of color values that should either equal the number of bands
-        or be a single color, default = purrple
+        or be a single color, default = purple
     cols: int
         the number of columns for plot arrangement
     bins: int
