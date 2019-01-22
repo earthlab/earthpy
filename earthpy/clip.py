@@ -11,22 +11,17 @@ def clip_points(shp, clip_obj):
     Points that intersect with the geometry of clip_obj are extracted
     and returned.
 
-
     Parameters
-    ------------------
-    shp: GeoDataFrame
+    ----------
+    shp : GeoDataFrame
         Composed of point geometry that is clipped to clip_obj
 
-    clip_obj: GeoDataFrame
-        Reference polygon for clipping points.
-        The clip_obj's geometry is dissolved into one geometric feature
-        and intersected with the points of shp.
-
+    clip_obj : GeoDataFrame
+        Reference polygon for clipping.
 
     Returns
-    -------------------
-    GeoDataFrame:
-
+    -------
+    GeoDataFrame
         The returned GeoDataFrame is a subset of shp that intersects
         with clip_obj
     """
@@ -47,20 +42,16 @@ def clip_line_poly(shp, clip_obj):
     subset is the output of the function.
 
     Parameters
-    ---------------------
-     shp: GeoDataFrame
-        Line or polygon geometry that is clipped to the reference
-        area provided by the clip_obj
+    ----------
+    shp : GeoDataFrame
+        Line or polygon geometry that is clipped to clip_obj
 
-     clip_obj: GeoDataFrame
-        Polygon geometry that provides the reference area for clipping
-        the input. The clip_obj's geometry is dissolved into one geometric
-        feature and intersected with the spatial index of the shp input.
+    clip_obj : GeoDataFrame
+        Reference polygon for clipping.
 
-     Returns
-     -----------------------
-     GeoDataFrame:
-
+    Returns
+    -------
+    GeoDataFrame
         The returned GeoDataFrame is a clipped subset of shp
         that intersects with clip_obj.
     """
@@ -77,7 +68,7 @@ def clip_line_poly(shp, clip_obj):
 
     # Clip the data - with these data
     clipped = shp_sub.copy()
-    clipped['geometry'] = shp_sub.intersection(poly)
+    clipped["geometry"] = shp_sub.intersection(poly)
 
     # Return the clipped layer with no null geometry values
     return clipped[clipped.geometry.notnull()]
@@ -104,31 +95,70 @@ def clip_shp(shp, clip_obj):
     clip_obj : GeoDataFrame
           Polygon vector layer used to clip shp.
 
+          The clip_obj's geometry is dissolved into one geometric feature
+          and intersected with shp.
+
     Returns
     -------
-    GeoDataFrame:
+    GeoDataFrame
          Vector data (points, lines, polygons) from shp clipped to
          polygon boundary from clip_obj.
+
+    Examples
+    --------
+    Clipping points (glacier locations in the state of Colorado) with
+    a polygon (the boundary of Rocky Mountain National Park):
+
+        >>> import geopandas as gpd
+        >>> import earthpy.clip as cl
+        >>> from earthpy.io import path_to_example
+        >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
+        >>> glaciers = gpd.read_file(path_to_example('colorado-glaciers.geojson'))
+        >>> glaciers.shape
+        (134, 2)
+        >>> rmnp_glaciers = cl.clip_shp(glaciers, rmnp)
+        >>> rmnp_glaciers.shape
+        (36, 2)
+
+    Clipping a line (the Continental Divide Trail) with a
+    polygon (the boundary of Rocky Mountain National Park):
+
+        >>> cdt = gpd.read_file(path_to_example('continental-div-trail.geojson'))
+        >>> rmnp_cdt_section = cl.clip_shp(cdt, rmnp)
+        >>> cdt['geometry'].length > rmnp_cdt_section['geometry'].length
+        0    True
+        dtype: bool
+
+    Clipping a polygon (Colorado counties) with another polygon
+    (the boundary of Rocky Mountain National Park):
+
+        >>> counties = gpd.read_file(path_to_example('colorado-counties.geojson'))
+        >>> counties.shape
+        (64, 13)
+        >>> rmnp_counties = cl.clip_shp(counties, rmnp)
+        >>> rmnp_counties.shape
+        (4, 13)
     """
     try:
         shp.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
-                             geometry column""")
-    try:
         clip_obj.geometry
-    except AssertionError:
-        raise AssertionError("""Please provide a geoDataFrame with a valid
-                             geometry column""")
+    except AttributeError:
+        raise AttributeError(
+            """Please make sure that your input and clip
+                             GeoDataFrames have a valid
+                             geometry column"""
+        )
 
-    if not any(shp.intersects(clip_obj)):
+    if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
 
     # Multipolys / point / line don't clip properly
     if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
-        raise ValueError("""Clip doesn't currently support multipart
+        raise ValueError(
+            """Clip doesn't currently support multipart
         geometries. Consider using .explode to create
-        unique features in your GeoDataFrame""")
+        unique features in your GeoDataFrame"""
+        )
 
     if shp["geometry"].iloc[0].type == "Point":
         return clip_points(shp, clip_obj)

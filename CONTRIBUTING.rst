@@ -12,11 +12,54 @@ trying to ensure our package is stable, operational and well documented.
 Edits & Updates
 ~~~~~~~~~~~~~~~
 
-When submitting a change to the repository, please do the following:
+When submitting a change to the repository, please first create an issue that
+covers the item that you'd like to change, update or enhance. Once a discussion
+has yielded a vote of support for that addition to the package, you are ready
+to submit a pull request.
 
-- Please first create an issue that covers the item that you'd like to
-  change, update or enhance. Once a discussion has yielded a vote of support
-  for that addition to the package, you are ready to submit a pull request.
+If you are proposing a feature:
+
+* Explain in detail how it would work.
+* Keep the scope as narrow as possible, to make it easier to implement.
+
+
+Get Started!
+------------
+
+Ready to contribute? Here's how to set up `earthpy` for local development.
+
+1. Fork the `earthpy` repo on GitHub.
+2. Clone your fork locally::
+
+    $ git clone git@github.com:your_name_here/earthpy.git
+
+3. Set up your fork for local development with conda::
+
+    $ cd earthpy/
+    $ conda env create -f environment.yml
+    $ source activate earthpy-dev
+    $ pip install -e .
+    $ pip install -r dev-requirements.txt
+    $ pre-commit install
+
+4. Create a branch for local development::
+
+    $ git checkout -b name-of-your-bugfix-or-feature
+
+   Now you can make your changes locally.
+
+5. When you're done making changes, check that tests pass, and examples run::
+
+    $ pytest --doctest-modules
+    $ make docs
+
+6. Commit your changes and push your branch to GitHub::
+
+    $ git add .
+    $ git commit -m "Your detailed description of your changes."
+    $ git push origin name-of-your-bugfix-or-feature
+
+7. Submit a pull request through the GitHub website.
 
 When submitting a pull request:
 
@@ -26,7 +69,7 @@ When submitting a pull request:
   Status on
   Travis will be visible on a pull request. If you want to enable
   Travis CI on your own fork, please read the
-  `getting started docs <http://about.travis-ci.org/docs/user/getting-started/>`_.
+  `getting started docs <https://docs.travis-ci.com/user/getting-started/>`_.
 
 - New functionality should include tests. Please write reasonable
   tests for your code and make sure that they pass on your pull request.
@@ -34,6 +77,10 @@ When submitting a pull request:
 - Classes, methods, functions, etc. should have docstrings. The first
   line of a docstring should be a standalone summary. Parameters and
   return values should be documented explicitly.
+
+- The API documentation is automatically generated from docstrings, which
+  should conform to NumpPy styling. For examples, see the `Napoleon docs
+  <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html>`_.
 
 - Please note that tests are also run via Travis-CI on our documentation.
   So be sure that any ``.rst`` file submissions are properly formatted and
@@ -55,6 +102,11 @@ Style
 - ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally
   in Python 3 when possible (all supported versions will be automatically
   tested on Travis CI).
+
+- ``Earthpy`` uses a pre-commit hook that runs the black code autoformatter.
+  Be sure to execute `pre-commit install` as described above, which will cause
+  black to autoformat code prior to commits. If this step is skipped, black
+  may cause build failures on Travis CI due to formatting issues.
 
 - Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ when possible.
   Some standards that we follow include:
