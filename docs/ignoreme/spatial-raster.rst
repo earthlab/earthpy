@@ -6,14 +6,14 @@ The ``earthpy`` spatial module provides functions that wrap around the
 
 Stack Raster Files
 ~~~~~~~~~~~~~~~~~~
-The ``stack_raster_tifs`` function turns a list of raster paths into:
+The ``stack`` function turns a list of raster paths into:
 1. a stacked geotiff on your hard drive and
 2. (optional) an output raster stack in numpy format with associated metadata.
 
 All files in the list must be in the same Coordinate Reference System (CRS) and
 must have the same spatial extent for this to work properly.
 
-``stack_raster_tifs`` takes 3 input parameters:
+``stack`` takes 3 input parameters:
 
 ``band_paths``: list of file paths
       A list with paths to the bands you wish to stack. Bands
@@ -45,7 +45,7 @@ Example:
     >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
     >>> band_paths = [path_to_example(fname) for fname in band_fnames]
     >>> destfile = "./stack_result.tif"
-    >>> arr, arr_meta = es.stack_raster_tifs(band_paths, destfile)
+    >>> arr, arr_meta = es.stack(band_paths, out_path=destfile, write_raster=True)
     >>> arr.shape
     (3, 373, 485)
     >>> os.path.isfile(destfile)
