@@ -12,14 +12,6 @@ earthpy.clip module
     :undoc-members:
     :show-inheritance:
 
-earthpy.deprecated module
--------------------------
-
-.. automodule:: earthpy.deprecated
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 earthpy.io module
 -----------------
 
@@ -48,14 +40,6 @@ earthpy.spatial module
 ----------------------
 
 .. automodule:: earthpy.spatial
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-earthpy.testing module
-----------------------
-
-.. automodule:: earthpy.testing
     :members:
     :undoc-members:
     :show-inheritance:
