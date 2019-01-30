@@ -20,11 +20,12 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
     Parameters
     ----------
-    mapobj : the matplotlib axes element.
-    size : char
-        The percent width of the colorbar relative to the plot. default = 3%
-    pad : int
-        The space between the plot and the color bar. Default = .09
+    mapobj : matplotlib axis object
+        The image that the colorbar will be representing as a matplotlib axis object.
+    size : char (optional)
+        The percent width of the colorbar relative to the plot.
+    pad : int (optional)
+        The space between the plot and the color bar.
 
     Returns
     -------
@@ -70,33 +71,34 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     return fig.colorbar(mapobj, cax=cax)
 
 
-# Function to plot all layers in a stack
 def plot_bands(
     arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
 ):
-    """Plot each layer in a raster stack read from rasterio in
-    (band, row , col) order as a numpy array. plot_bands will create an
-    individual plot for each band in a grid.
+    """Plot each layer in a raster stack read from rasterio as a numpy array.
+    plot_bands will create an individual plot for each band in a grid.
 
     Parameters
     ----------
     arr: numpy array
-        An n-dimensional numpy array with the order and numpy shape: (nbands, nrows, ncols)
-    title: str or list
-        Title of one band, or list of titles with one title per band
-    cmap: str
-        Colormap name ("greys" by default)
-    cols: int
-        Number of columns for plot grid (default: 3)
-    figsize: tuple - optional
+        An n-dimensional numpy array to plot.
+    title: str or list (optional)
+        Title of one band or list of titles with one title per band.
+    cmap: str (optional)
+        Colormap name for plots.
+    cols: int (optional)
+        Number of columns for plot grid.
+    figsize: tuple (optional)
         Figure size in inches ((12, 12) by default)
-    extent: tuple - optional
-        Bounding box that the data will fill: (minx, miny, maxx, maxy)
+    extent: tuple (optional)
+        Bounding box that the data will fill: (minx, miny, maxx, maxy).
 
     Returns
     ----------
-    fig, ax or axs : figure object, axes object
-        The figure and axes object(s) associated with the plot.
+    tuple
+        fig: figure object
+            The figure of the plotted band(s).
+        ax or axs: axes object(s)
+            The axes object(s) associated with the plot.
 
     Example
     -------
@@ -185,30 +187,31 @@ def plot_rgb(
 
     Parameters
     ----------
-    arr: numpy ndarray
-        N-dimensional array in rasterio band order (bands, rows, columns)
-    rgb: list
-        Indices of the three bands to be plotted (default = 0,1,2)
-    extent: tuple
-        The extent object that matplotlib expects (left, right, bottom, top)
+    arr: numpy array
+        An n-dimensional array containing the layers to plot.
+    rgb: list (optional)
+        Indices of the three bands to be plotted.
+    extent: tuple (optional)
+        The extent object that matplotlib expects (left, right, bottom, top).
     title: string (optional)
-        String representing the title of the plot
-    ax: object
-        The axes object where the ax element should be plotted. Default = none
+        The intended title of the plot.
+    ax: object (optional)
+        The axes object where the ax element should be plotted.
     figsize: tuple (optional)
-        The x and y integer dimensions of the output plot if preferred to set.
-    stretch: Boolean
-        If True a linear stretch will be applied
+        The x and y integer dimensions of the output plot.
+    stretch: Boolean (optional)
+        Application of a linear stretch. If set to True, a linear stretch will be applied.
     str_clip: int (optional)
-        The % of clip to apply to the stretch. Default = 2 (2 and 98)
+        The percentage of clip to apply to the stretch. Default = 2 (2 and 98)
 
     Returns
     ----------
-    fig, ax : figure object, axes object
-        The figure and axes object associated with the 3 band image. If the
-        ax keyword is specified,
-        the figure return will be None.
-
+    tuple
+        fig: figure object
+            The figure object associated with the 3 band image. If the
+            ax keyword is specified, the figure return will be None.
+        ax : axes object
+            The axes object associated with the 3 band image.
     Example
     -------
 
@@ -277,25 +280,29 @@ def hist(
 
     Parameters
     ----------
-    arr: ndarray
-        an n-dimensional numpy array
-    title: str
+    arr: numpy array
+        An n-dimensional numpy array from which n histograms will be plotted.
+    title: list (optional)
         A list of title values that should either equal the number of bands
-        or be empty, default = none
-    colors: list
-        a list of color values that should either equal the number of bands
-        or be a single color, default = purple
-    cols: int
-        the number of columns for plot arrangement
-    bins: int
-        the number of bins to calculate for the histogram
-    figsize: tuple
-        the figsize if you'd like to define it, default = (12, 12)
+        or be empty.
+    colors: list (optional)
+        A list of color values that should either equal the number of bands
+        or be a single color.
+    figsize: tuple (optional)
+        The x and y integer dimensions of the output plot.
+    cols: int (optional)
+        The number of columns for plot grid.
+    bins: int (optional)
+        The number of bins to generate for the histogram.
 
     Returns
     ----------
-    fig, ax or axs : figure object, axes object
-        The figure and axes object(s) associated with the histogram.
+    tuple
+
+        fig : figure object
+            The figure object associated with the histogram.
+        ax or axs : ax or axes object
+            The axes object(s) associated with the histogram.
 
     Example
     -------
@@ -364,6 +371,20 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     Take a defined matplotlib colormap, and create a list of colors based on
     a set of values. This is useful when you need to plot a series of
     classified numpy arrays that are missing some of the sequential classes.
+
+    Parameters
+    ----------
+    unique_vals :
+
+    nclasses : int (optional)
+        The number of classes.
+    cmap : str (optional)
+        Colormap name used to create output list.
+
+    Returns
+    -------
+    list
+        A list of colors based on the given set of values.
     """
     if not nclasses:
         nclasses = len(unique_vals)
@@ -386,14 +407,16 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
 
     Parameters
     ----------
-    im : matplotlib image object created using imshow()
+    im : matplotlib image object
         This is the image returned from a call to imshow().
-    classes : list (optional)
-        A list of unique values found in the numpy array that you wish to plot.
     titles : list (optional)
         A list of a title or category for each unique value in your raster.
         This is the label that will go next to each box in your legend. If
         nothing is provided, a generic "Category x" will be populated.
+    cmap : str (optional)
+        Colormap name to be used for legend items.
+    classes : list (optional)
+        A list of unique values found in the numpy array that you wish to plot.
     bbox : tuple (optional)
         This is the bbox_to_anchor argument that will place the legend
         anywhere on or around your plot.
