@@ -14,7 +14,7 @@ def _clip_points(shp, clip_obj):
     Parameters
     ----------
     shp : GeoDataFrame
-        Composed of point geometry that is clipped to clip_obj
+        Composed of point geometry that is clipped to clip_obj.
 
     clip_obj : GeoDataFrame
         Reference polygon for clipping.
@@ -23,7 +23,7 @@ def _clip_points(shp, clip_obj):
     -------
     GeoDataFrame
         The returned GeoDataFrame is a subset of shp that intersects
-        with clip_obj
+        with clip_obj.
     """
     poly = clip_obj.geometry.unary_union
     return shp[shp.geometry.intersects(poly)]
@@ -31,9 +31,6 @@ def _clip_points(shp, clip_obj):
 
 def _clip_line_poly(shp, clip_obj):
     """A function to clip line and polygon data using geopandas.
-
-    Takes an input GeoDataFrame that is used as the clipped data, and a second
-    GeoDataFrame that is used as the clipping object or reference area.
 
     A spatial index is created around the shp input and is then intersected
     with the bounding box of the clip_obj.
@@ -44,7 +41,7 @@ def _clip_line_poly(shp, clip_obj):
     Parameters
     ----------
     shp : GeoDataFrame
-        Line or polygon geometry that is clipped to clip_obj
+        Line or polygon geometry that is clipped to clip_obj.
 
     clip_obj : GeoDataFrame
         Reference polygon for clipping.
@@ -110,7 +107,6 @@ def clip_shp(shp, clip_obj):
     Clipping points (glacier locations in the state of Colorado) with
     a polygon (the boundary of Rocky Mountain National Park):
 
-        >>> import matplotlib.pyplot as plt
         >>> import geopandas as gpd
         >>> import earthpy.clip as cl
         >>> from earthpy.io import path_to_example
