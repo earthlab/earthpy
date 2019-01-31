@@ -226,7 +226,7 @@ def plot_rgb(
     """
 
     if len(arr.shape) != 3:
-        raise Exception(
+        raise ValueError(
             """Input needs to be 3 dimensions and in rasterio
                            order with bands first"""
         )

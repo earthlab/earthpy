@@ -52,7 +52,7 @@ def test_1band(rgb_image):
     a_rgb_image, _ = rgb_image
 
     with pytest.raises(
-        Exception,
+        ValueError,
         match="""Input needs to be 3 dimensions and in rasterio
                            order with bands first""",
     ):
