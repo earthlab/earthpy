@@ -22,9 +22,10 @@ install:
 - pip install -r dev-requirements.txt
 - pip install black
 script:
-- pytest --doctest-modules --cov=earthpy
-- make docs
-- black --check --verbose .
+  - pytest --doctest-modules --cov=earthpy --rootdir earthpy
+  - make docs
+  - black --check --verbose .
+
 after_success:
 - codecov
 deploy:

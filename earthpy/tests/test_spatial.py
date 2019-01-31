@@ -8,6 +8,7 @@ import geopandas as gpd
 import rasterio as rio
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
+import os
 
 
 @pytest.fixture
@@ -117,19 +118,19 @@ def test_bytescale_high_low_val():
 
     # Bad high value
     with pytest.raises(
-        ValueError, message="`high` should be less than or equal to 255."
+        ValueError, match="`high` should be less than or equal to 255."
     ):
         es.bytescale(arr, high=300)
 
     # Bad low value
     with pytest.raises(
-        ValueError, message="`low` should be greater than or equal to 0."
+        ValueError, match="`low` should be greater than or equal to 0."
     ):
         es.bytescale(arr, low=-100)
 
     # High value is less than low value
     with pytest.raises(
-        ValueError, message="`high` should be greater than or equal to `low`."
+        ValueError, match="`high` should be greater than or equal to `low`."
     ):
         es.bytescale(arr, high=100, low=150)
 
@@ -141,14 +142,14 @@ def test_bytescale_high_low_val():
 
     # Test scale value max is less than min
     with pytest.raises(
-        ValueError, message="`cmax` should be larger than `cmin`."
+        ValueError, match="`cmax` should be larger than `cmin`."
     ):
         es.bytescale(arr, cmin=100, cmax=50)
 
     # Test scale value max is less equal to min. Commented out for now because it breaks stuff somehow.
     with pytest.raises(
         ValueError,
-        message="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
+        match="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
     ):
         es.bytescale(arr, cmin=100, cmax=100)
 
@@ -162,10 +163,50 @@ def test_bytescale_high_low_val():
 def test_stack_invalid_out_paths_raise_errors():
     """ If users provide an output path that doesn't exist, raise error. """
     with pytest.raises(ValueError, match="not exist"):
-        es.stack_raster_tifs(
+        es.stack(
             band_paths=["fname1.tif", "fname2.tif"],
             out_path="nonexistent_directory/output.tif",
         )
+
+
+def test_stack_raster(basic_image_tif):
+    """Unit tests for raster stacking with es.stack()."""
+
+    # Create list of 4 basic_image_tif files (filepaths)
+    band_files = [basic_image_tif] * 4
+
+    # Test that out_path needs a file extension to be valid
+    out_fi = "test_stack"
+    with pytest.raises(
+        ValueError, match="Please specify a valid file name for output."
+    ):
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+
+    # Test that out_path needs a file extension to be valid
+    out_fi = "test_stack.tif"
+    with pytest.raises(ValueError, match="The list of"):
+        stack_arr, stack_prof = es.stack([], out_path=out_fi)
+
+    # Test that the output file format is same as inputs
+    # This can be flexible but for now forcing the same format
+    out_fi = "test_stack.jp2"
+    with pytest.raises(ValueError, match="Source"):
+        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+
+    # Test valid use case specifying output file.
+    # Make sure the output file exists and then clean it up
+    out_fi = "test_stack.tif"
+    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+
+    assert os.path.exists(out_fi)
+    if os.path.exists(out_fi):
+        os.remove(out_fi)
+
+    # Test valid use case of just getting back the array.
+    stack_arr, stack_prof = es.stack(band_files)
+
+    assert stack_arr.shape[0] == len(band_files)
+    assert stack_prof["count"] == len(band_files)
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
