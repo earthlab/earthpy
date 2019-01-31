@@ -109,14 +109,6 @@ def test_stretch_image_clip(rgb_image):
     plt.close(f)
 
 
-im, _ = rgb_image
-stretch_vals = list(range(10))
-axs = [plot_rgb(im, stretch=True, str_clip=v)[1] for v in stretch_vals]
-means = np.array([ax.get_images()[0].get_array().mean() for ax in axs])
-n_unique_means = np.unique(mean_vals).shape[0]
-assert n_unique_means == len(stretch_clip_vals)
-
-
 def test_masked_im(rgb_image):
     """Test that a masked image will be plotted using an alpha channel.
     Thus it should return an array that has a 4th dimension representing
