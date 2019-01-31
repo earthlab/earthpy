@@ -18,6 +18,19 @@ def b1_b2_arrs():
     return b1, b2
 
 
+@pytest.fixture
+def hillshade_arr():
+    arr = np.array(
+        [
+            [
+                [1100, 1500, 1200, 1000, 800, 700],
+                [1000, 1400, 1300, 1200, 1000, 900],
+            ]
+        ]
+    )
+    return arr
+
+
 def test_extent_to_json():
     """"Unit tests for extent_to_json()."""
     # Giving a list [minx, miny, maxx, maxy] makes a polygon
@@ -290,4 +303,51 @@ def test_crop_image_fails_empty_list(basic_image_tif, basic_geometry):
         es.crop_image(list(), basic_geometry)
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError):
+
             es.crop_image(src, list())
+
+
+def test_hillshade_shape(hillshade_arr):
+    """If provided with input array not of shape (rows, columns),
+    ValueError returned."""
+
+    # Test data
+    arr = hillshade_arr
+
+    # Check ValueError
+    with pytest.raises(
+        ValueError, match="Input array should be of shape: rows, columns"
+    ):
+        es.hillshade(arr, azimuth=315, angle_altitude=45)
+
+
+def test_hillshade_altitude(hillshade_arr):
+    """If provided with altitude value greater than 90,
+    ValueError returned."""
+
+    # Test data
+    arr = hillshade_arr
+    squeezed_arr = arr.squeeze()
+
+    # Check ValueError
+    with pytest.raises(
+        ValueError,
+        match="Altitude value should be less than or equal to 90 degrees",
+    ):
+        es.hillshade(squeezed_arr, azimuth=315, angle_altitude=100)
+
+
+def test_hillshade_azimuth(hillshade_arr):
+    """If provided with azimuth value greater than 360,
+    ValueError returned."""
+
+    # Test data
+    arr = hillshade_arr
+    squeezed_arr = arr.squeeze()
+
+    # Check ValueError
+    with pytest.raises(
+        ValueError,
+        match="Azimuth value should be less than or equal to 360 degrees",
+    ):
+        es.hillshade(squeezed_arr, azimuth=375, angle_altitude=45)

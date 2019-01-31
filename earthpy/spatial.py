@@ -427,15 +427,15 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr: a numpy ndarray of shape (rows, columns) containing elevation values
-    azimuth:  default (30)
+    arr: numpy ndarray of shape (rows, columns) containing elevation values
+    azimuth: default (30)
+        Value should be less than or equal to 360 degrees
     angle_altitude: default (30)
+        Value should be less than or equal to 90 degrees
 
     Returns
     -------
-    numpy array
-
-        A numpy array containing hillshade values.
+    numpy ndarray of shape (rows, columns) containing hillshade values
 
     Example
     -------
@@ -456,13 +456,28 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         >>> plt.imshow(shade) #doctest: +ELLIPSIS
         <matplotlib.image.AxesImage object at 0x...>
     """
-    azimuth = 360.0 - azimuth
+    try:
+        x, y = np.gradient(arr)
+    except:
+        raise ValueError("Input array should be of shape: rows, columns")
 
-    x, y = np.gradient(arr)
+    if azimuth <= 360.0:
+        azimuth = 360.0 - azimuth
+        azimuthrad = azimuth * np.pi / 180.0
+    else:
+        raise ValueError(
+            "Azimuth value should be less than or equal to 360 degrees"
+        )
+
+    if angle_altitude <= 90.0:
+        altituderad = angle_altitude * np.pi / 180.0
+    else:
+        raise ValueError(
+            "Altitude value should be less than or equal to 90 degrees"
+        )
+
     slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
     aspect = np.arctan2(-x, y)
-    azimuthrad = azimuth * np.pi / 180.0
-    altituderad = angle_altitude * np.pi / 180.0
 
     shaded = np.sin(altituderad) * np.sin(slope) + np.cos(
         altituderad
