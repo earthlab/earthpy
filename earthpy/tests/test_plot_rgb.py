@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pytest
 import rasterio as rio
 from rasterio.plot import plotting_extent
-from earthpy.plot import plot_rgb
+from earthpy.plot import plot_rgb, _stretch_im
 from earthpy.io import path_to_example
 
 plt.show = lambda: None
@@ -44,6 +44,7 @@ def test_rgb_extent(rgb_image):
     assert ax.get_title() == "My Title"
     assert np.array_equal(plt_array[0], a_rgb_image.transpose([1, 2, 0])[1])
     assert ext == plt_ext
+    plt.close(f)
 
 
 def test_1band(rgb_image):
@@ -80,11 +81,12 @@ def test_ax_not_provided(rgb_image):
     rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
     the_plot_im_shape = ax.get_images()[0].get_array().shape
     assert rgb_im_shape == the_plot_im_shape
+    plt.close(f)
 
 
 def test_stretch_image(rgb_image):
     """Test that running stretch actually stretches the data
-    to a max value of 255."""
+    to a max value of 255 within the plot_rb fun."""
 
     im, _ = rgb_image
     np.place(im, im > 150, [0])
@@ -92,20 +94,6 @@ def test_stretch_image(rgb_image):
     f, ax = plot_rgb(im, stretch=True)
     max_val = ax.get_images()[0].get_array().max()
     assert max_val == 255
-    plt.close(f)
-
-
-def test_stretch_image_clip(rgb_image):
-    """Test that if you run clip with a different stretch than the default,
-     you get a different mean value given the change in the range of values
-     stretched."""
-
-    im, _ = rgb_image
-    np.place(im, im > 150, [0])
-
-    f, ax = plot_rgb(im, stretch=True, str_clip=1)
-    mean_val = ax.get_images()[0].get_array().mean()
-    assert mean_val == 110.23530766608626
     plt.close(f)
 
 
@@ -133,3 +121,31 @@ def test_ticks_off(rgb_image):
     assert len(ax.get_xticks()) == 0
     assert len(ax.get_yticks()) == 0
     plt.close(f)
+
+
+def test_stretch_output_default(image_array_1band_stretch):
+    """Test to ensure that an array provided is stretched between 0 and 255"""
+
+    arr = image_array_1band_stretch
+    # Stretch using the default value of 2%
+    arr_stretch = _stretch_im(arr.astype(np.uint8), str_clip=2)
+
+    assert arr_stretch.max() == 255
+    assert arr_stretch.min() == 0
+
+
+def test_stretch_output_scaled(rgb_image):
+    """Test that stretch changes the array mean
+
+    For n unique str_clip values, we expect n unique array means.
+    """
+    arr, _ = rgb_image
+    stretch_vals = list(range(10))
+    axs = [plot_rgb(arr, stretch=True, str_clip=v)[1] for v in stretch_vals]
+    mean_vals = np.array([ax.get_images()[0].get_array().mean() for ax in axs])
+    n_unique_means = np.unique(mean_vals).shape[0]
+    assert n_unique_means == len(stretch_vals)
+    try:
+        axs
+    finally:
+        del axs
