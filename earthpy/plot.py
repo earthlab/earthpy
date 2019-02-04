@@ -79,25 +79,25 @@ def plot_bands(
 
     Parameters
     ----------
-    arr: numpy array
+    arr : numpy array
         An n-dimensional numpy array to plot.
-    title: str or list (optional)
+    title : str or list (optional)
         Title of one band or list of titles with one title per band.
-    cmap: str (optional)
+    cmap : str (optional)
         Colormap name for plots.
-    cols: int (optional)
+    cols : int (optional)
         Number of columns for plot grid.
-    figsize: tuple (optional)
+    figsize : tuple (optional)
         Figure size in inches ((12, 12) by default)
-    extent: tuple (optional)
+    extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
 
     Returns
     ----------
     tuple
-        fig: figure object
+        fig : figure object
             The figure of the plotted band(s).
-        ax or axs: axes object(s)
+        ax or axs : axes object(s)
             The axes object(s) associated with the plot.
 
     Example
@@ -187,19 +187,19 @@ def plot_rgb(
 
     Parameters
     ----------
-    arr: numpy array
+    arr : numpy array
         An n-dimensional array containing the layers to plot.
-    rgb: list (optional)
+    rgb : list (optional)
         Indices of the three bands to be plotted.
-    extent: tuple (optional)
+    extent : tuple (optional)
         The extent object that matplotlib expects (left, right, bottom, top).
-    title: string (optional)
+    title : string (optional)
         The intended title of the plot.
-    ax: object (optional)
+    ax : object (optional)
         The axes object where the ax element should be plotted.
-    figsize: tuple (optional)
+    figsize : tuple (optional)
         The x and y integer dimensions of the output plot.
-    stretch: Boolean (optional)
+    stretch : Boolean (optional)
         Application of a linear stretch. If set to True, a linear stretch will be applied.
     str_clip: int (optional)
         The percentage of clip to apply to the stretch. Default = 2 (2 and 98)
@@ -207,7 +207,7 @@ def plot_rgb(
     Returns
     ----------
     tuple
-        fig: figure object
+        fig : figure object
             The figure object associated with the 3 band image. If the
             ax keyword is specified, the figure return will be None.
         ax : axes object
@@ -280,19 +280,19 @@ def hist(
 
     Parameters
     ----------
-    arr: numpy array
+    arr : numpy array
         An n-dimensional numpy array from which n histograms will be plotted.
-    title: list (optional)
+    title : list (optional)
         A list of title values that should either equal the number of bands
         or be empty.
-    colors: list (optional)
+    colors : list (optional)
         A list of color values that should either equal the number of bands
         or be a single color.
-    figsize: tuple (optional)
+    figsize : tuple (optional)
         The x and y integer dimensions of the output plot.
-    cols: int (optional)
+    cols : int (optional)
         The number of columns for plot grid.
-    bins: int (optional)
+    bins : int (optional)
         The number of bins to generate for the histogram.
 
     Returns
@@ -374,8 +374,8 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
     Parameters
     ----------
-    unique_vals :
-
+    unique_vals : list
+        A list of values to make a color list from.
     nclasses : int (optional)
         The number of classes.
     cmap : str (optional)
@@ -397,6 +397,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
     # Create cmap list of colors
     cm = plt.cm.get_cmap(cmap)
+    print(cm)
 
     return [cm(c) for c in col_index]
 
@@ -425,7 +426,7 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
     ----------
     matplotlib.pyplot.legend
 
-        matplotlib legend object to be placed on our plot.
+        A matplotlib legend object to be placed on the plot.
     """
 
     try:
