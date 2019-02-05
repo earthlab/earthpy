@@ -110,7 +110,6 @@ def clip_shp(shp, clip_obj):
     Clipping points (glacier locations in the state of Colorado) with
     a polygon (the boundary of Rocky Mountain National Park):
 
-        >>> import matplotlib.pyplot as plt
         >>> import geopandas as gpd
         >>> import earthpy.clip as cl
         >>> from earthpy.io import path_to_example
