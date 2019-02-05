@@ -77,8 +77,8 @@ def clip_shp(shp, clip_obj):
 
     Both layers must be in the same Coordinate Reference System (CRS).
 
-    Depending on the geometry type, input data will be clipped to the full
-    extent of clip_obj using either _clip_points or _clip_line_poly.
+    Point, line, or polygon data in geopandas geodataframe format will
+    be clipped to the full extent of the clip object.
 
     If there are multiple polygons in clip_obj,
     data from shp will be clipped to the total boundary of
@@ -136,45 +136,6 @@ def clip_shp(shp, clip_obj):
         >>> rmnp_counties = cl.clip_shp(counties, rmnp)
         >>> rmnp_counties.shape
         (4, 13)
-
-    Plotting the clipped sections of the points, lines, and polygons.
-
-    .. plot::
-
-        >>> import matplotlib.pyplot as plt
-        >>> import geopandas as gpd
-        >>> import earthpy.clip as cl
-        >>> from earthpy.io import path_to_example
-        >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
-        >>> glaciers = gpd.read_file(path_to_example('colorado-glaciers.geojson'))
-        >>> rmnp_glaciers = cl.clip_shp(glaciers, rmnp)
-        >>> cdt = gpd.read_file(path_to_example('continental-div-trail.geojson'))
-        >>> rmnp_cdt_section = cl.clip_shp(cdt, rmnp)
-        >>> counties = gpd.read_file(path_to_example('colorado-counties.geojson'))
-        >>> rmnp_counties = cl.clip_shp(counties, rmnp)
-        >>> fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(8, 3))
-        >>> ax1.set_axis_off()
-        >>> ax2.set_axis_off()
-        >>> ax3.set_axis_off()
-        >>> rmnp_glaciers.plot(ax=ax1) #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> rmnp.boundary.plot(ax=ax1, color='red') #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> ax1.set_title('Clipped Points') #doctest: +ELLIPSIS
-        Text(...'Clipped Points')
-        >>> rmnp_cdt_section.plot(ax=ax2) #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> rmnp.boundary.plot(ax=ax2, color='red') #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> ax2.set_title('Clipped Lines') #doctest: +ELLIPSIS
-        Text(...'Clipped Lines')
-        >>> rmnp_counties.plot(ax=ax3) #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> rmnp.boundary.plot(ax=ax3, color='red') #doctest: +ELLIPSIS
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...>
-        >>> ax3.set_title('Clipped Polygon') #doctest: +ELLIPSIS
-        Text(...'Clipped Polygon')
-        >>> plt.show()
     """
     try:
         shp.geometry
