@@ -126,3 +126,15 @@ Style
   standards. Within each grouping, imports should be alphabetized. Always use
   absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
+
+Deploying
+~~~~~~~~~
+
+A reminder for the maintainers on how to deploy.
+Make sure all your changes are committed, then run:
+
+$ bumpversion patch # possible: major / minor / patch
+$ git push
+$ git push --tags
+
+Travis will then deploy to PyPI if tests pass.
