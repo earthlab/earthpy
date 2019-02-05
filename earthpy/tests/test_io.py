@@ -32,7 +32,7 @@ def test_rgb():
         rgb = src.read()
         rgb_crs = src.crs
     assert rgb.shape == (3, 373, 485)
-    assert str(rgb_crs) == "+init=epsg:4326"
+    assert str(rgb_crs) == rio.crs.CRS.from_epsg(4326)
 
 
 def test_rgb_single_channels():
@@ -42,7 +42,7 @@ def test_rgb_single_channels():
     for f in fnames:
         with rio.open(f) as src:
             rgb_parts.append(src.read())
-            assert str(src.crs) == "+init=epsg:4326"
+            assert str(src.crs) == rio.crs.CRS.from_epsg(4326)
 
     with rio.open(path_to_example("rmnp-rgb.tif")) as src:
         assert np.array_equal(src.read(), np.concatenate(rgb_parts))
