@@ -22,9 +22,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     ----------
     mapobj : matplotlib axis object
         The image that the colorbar will be representing as a matplotlib axis object.
-    size : char (optional)
+    size : char (default = "3%")
         The percent width of the colorbar relative to the plot.
-    pad : int (optional)
+    pad : int (default = 0.09)
         The space between the plot and the color bar.
 
     Returns
@@ -74,8 +74,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 def plot_bands(
     arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
 ):
-    """Plot each layer in a raster stack read from rasterio as a numpy array.
-    plot_bands will create an individual plot for each band in a grid.
+    """Plot each layer in a raster stack read from rasterio in
+    (band, row , col) order as a numpy array. plot_bands will create an
+    individual plot for each band in a grid.
 
     Parameters
     ----------
@@ -83,12 +84,12 @@ def plot_bands(
         An n-dimensional numpy array to plot.
     title : str or list (optional)
         Title of one band or list of titles with one title per band.
-    cmap : str (optional)
+    cmap : str (default = "Greys_r")
         Colormap name for plots.
-    cols : int (optional)
+    figsize : tuple (default = (12, 12))
+        Figure size in inches.
+    cols : int (default = 3)
         Number of columns for plot grid.
-    figsize : tuple (optional)
-        Figure size in inches ((12, 12) by default)
     extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
 
@@ -188,21 +189,22 @@ def plot_rgb(
     Parameters
     ----------
     arr : numpy array
-        An n-dimensional array containing the layers to plot.
-    rgb : list (optional)
+        An n-dimensional array in rasterio band order (bands, rows, columns)
+        containing the layers to plot.
+    rgb : list (default = (0, 1, 2))
         Indices of the three bands to be plotted.
+    ax : object (optional)
+        The axes object where the ax element should be plotted.
     extent : tuple (optional)
         The extent object that matplotlib expects (left, right, bottom, top).
     title : string (optional)
         The intended title of the plot.
-    ax : object (optional)
-        The axes object where the ax element should be plotted.
-    figsize : tuple (optional)
+    figsize : tuple (default = (10, 10)
         The x and y integer dimensions of the output plot.
     stretch : Boolean (optional)
         Application of a linear stretch. If set to True, a linear stretch will be applied.
-    str_clip: int (optional)
-        The percentage of clip to apply to the stretch. Default = 2 (2 and 98)
+    str_clip: int (default = 2)
+        The percentage of clip to apply to the stretch. Default = 2 (2 and 98).
 
     Returns
     ----------
@@ -285,14 +287,14 @@ def hist(
     title : list (optional)
         A list of title values that should either equal the number of bands
         or be empty.
-    colors : list (optional)
+    colors : list (default = ["purple"])
         A list of color values that should either equal the number of bands
         or be a single color.
-    figsize : tuple (optional)
+    figsize : tuple (default = (12, 12))
         The x and y integer dimensions of the output plot.
-    cols : int (optional)
+    cols : int (default = 2)
         The number of columns for plot grid.
-    bins : int (optional)
+    bins : int (default = 20)
         The number of bins to generate for the histogram.
 
     Returns
@@ -384,7 +386,8 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     Returns
     -------
     list
-        A list of colors based on the given set of values.
+        A list of colors based on the given set of values in matplotlib
+        format.
     """
     if not nclasses:
         nclasses = len(unique_vals)
@@ -397,7 +400,6 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
     # Create cmap list of colors
     cm = plt.cm.get_cmap(cmap)
-    print(cm)
 
     return [cm(c) for c in col_index]
 
@@ -408,7 +410,7 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
 
     Parameters
     ----------
-    im : matplotlib image object
+    im_ax : matplotlib image object
         This is the image returned from a call to imshow().
     titles : list (optional)
         A list of a title or category for each unique value in your raster.
@@ -418,7 +420,7 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
         Colormap name to be used for legend items.
     classes : list (optional)
         A list of unique values found in the numpy array that you wish to plot.
-    bbox : tuple (optional)
+    bbox : tuple (default = (1.05, 1))
         This is the bbox_to_anchor argument that will place the legend
         anywhere on or around your plot.
 
