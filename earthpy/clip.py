@@ -88,10 +88,8 @@ def clip_shp(shp, clip_obj):
     ----------
     shp : GeoDataFrame
           Vector layer (point, line, polygon) to be clipped to clip_obj.
-
     clip_obj : GeoDataFrame
           Polygon vector layer used to clip shp.
-
           The clip_obj's geometry is dissolved into one geometric feature
           and intersected with shp.
 
@@ -103,7 +101,6 @@ def clip_shp(shp, clip_obj):
 
     Examples
     --------
-
     Clipping points (glacier locations in the state of Colorado) with
     a polygon (the boundary of Rocky Mountain National Park):
 

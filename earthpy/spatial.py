@@ -19,6 +19,7 @@ def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
     This format is what shapely uses. The output object can be used
     to crop a raster image.
+
     Parameters
     ----------
     ext_obj: list or geopandas geodataframe
@@ -38,7 +39,7 @@ def extent_to_json(ext_obj):
     >>> import earthpy.spatial as es
     >>> from earthpy.io import path_to_example
     >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
-    >>> es.extent_to_json(rmnp)   #doctest: +ELLIPSIS
+    >>> es.extent_to_json(rmnp) #doctest: +ELLIPSIS
     {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
