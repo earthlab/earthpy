@@ -72,7 +72,7 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
 
 
 def plot_bands(
-    arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
+    arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
 ):
     """Plot each layer in a raster stack read from rasterio in
     (band, row , col) order as a numpy array. plot_bands will create an
@@ -82,14 +82,14 @@ def plot_bands(
     ----------
     arr : numpy array
         An n-dimensional numpy array to plot.
-    title : str or list (optional)
-        Title of one band or list of titles with one title per band.
     cmap : str (default = "Greys_r")
         Colormap name for plots.
     figsize : tuple (default = (12, 12))
         Figure size in inches.
     cols : int (default = 3)
         Number of columns for plot grid.
+    title : str or list (optional)
+        Title of one band or list of titles with one title per band.
     extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
 
@@ -177,12 +177,12 @@ def plot_bands(
 def plot_rgb(
     arr,
     rgb=(0, 1, 2),
+    figsize=(10, 10),
+    str_clip=2,
     ax=None,
     extent=None,
     title="",
-    figsize=(10, 10),
     stretch=None,
-    str_clip=2,
 ):
     """Plot three bands in a numpy array as a composite RGB image.
 
@@ -193,19 +193,18 @@ def plot_rgb(
         containing the layers to plot.
     rgb : list (default = (0, 1, 2))
         Indices of the three bands to be plotted.
+    figsize : tuple (default = (10, 10)
+        The x and y integer dimensions of the output plot.
+    str_clip: int (default = 2)
+        The percentage of clip to apply to the stretch. Default = 2 (2 and 98).
     ax : object (optional)
         The axes object where the ax element should be plotted.
     extent : tuple (optional)
         The extent object that matplotlib expects (left, right, bottom, top).
     title : string (optional)
         The intended title of the plot.
-    figsize : tuple (default = (10, 10)
-        The x and y integer dimensions of the output plot.
     stretch : Boolean (optional)
         Application of a linear stretch. If set to True, a linear stretch will be applied.
-    str_clip: int (default = 2)
-        The percentage of clip to apply to the stretch. Default = 2 (2 and 98).
-
     Returns
     ----------
     tuple
@@ -276,7 +275,7 @@ def plot_rgb(
 
 
 def hist(
-    arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20
+    arr, colors=["purple"], figsize=(12, 12), cols=2, bins=20, title=None
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -284,9 +283,6 @@ def hist(
     ----------
     arr : numpy array
         An n-dimensional numpy array from which n histograms will be plotted.
-    title : list (optional)
-        A list of title values that should either equal the number of bands
-        or be empty.
     colors : list (default = ["purple"])
         A list of color values that should either equal the number of bands
         or be a single color.
@@ -296,7 +292,9 @@ def hist(
         The number of columns for plot grid.
     bins : int (default = 20)
         The number of bins to generate for the histogram.
-
+    title : list (optional)
+        A list of title values that should either equal the number of bands
+        or be empty.
     Returns
     ----------
     tuple
@@ -404,7 +402,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     return [cm(c) for c in col_index]
 
 
-def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
+def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     """Create a custom legend with a box for each class in a raster using the
        image object, the unique classes in the image and titles for each class.
 
@@ -412,6 +410,9 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
     ----------
     im_ax : matplotlib image object
         This is the image returned from a call to imshow().
+    bbox : tuple (default = (1.05, 1))
+        This is the bbox_to_anchor argument that will place the legend
+        anywhere on or around your plot.
     titles : list (optional)
         A list of a title or category for each unique value in your raster.
         This is the label that will go next to each box in your legend. If
@@ -420,9 +421,7 @@ def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
         Colormap name to be used for legend items.
     classes : list (optional)
         A list of unique values found in the numpy array that you wish to plot.
-    bbox : tuple (default = (1.05, 1))
-        This is the bbox_to_anchor argument that will place the legend
-        anywhere on or around your plot.
+
 
     Returns
     ----------
