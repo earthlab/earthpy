@@ -29,9 +29,10 @@ def extent_to_json(ext_obj):
 
     Return
     ------
-    extent_json: GeoJSON dictionary
-        A GeoJSON style dictionary of corner coordinates for the extent
-        of the provided object.
+    extent_json: A GeoJSON style dictionary of corner coordinates
+    for the extent
+        A GeoJSON style dictionary of corner coordinates representing
+        the spatial extent of the provided spatial object.
 
     Example
     -------
@@ -58,12 +59,13 @@ def extent_to_json(ext_obj):
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference.
     Math will be calculated (b1-b2) / (b1+b2). The arrays must be of the
-    same size.
+    same shape.
 
     Parameters
     ----------
     b1, b2 : numpy arrays
-        Two bands that the difference raster will be produced from.
+        Two numpy arrays that will be used to calculate the normalized difference.
+        Math will be calculated (b1-b2) / (b1+b2).
 
     Returns
     ----------
@@ -133,11 +135,10 @@ def stack(band_paths, out_path=""):
     tuple :
 
         numpy array
-            Array resulting from stacking the files in the input list.
-        rasterio profile
-            A rasterio profile of the numpy array metadata.
-            NOTE: the 'count' key of the .profile object is updated to match
-            the length of the input list.
+            N-dimensional array created by stacking the raster files provided.
+        rasterio profile object
+            A rasterio profile object containing the updated spatial metadata for
+            the stacked numpy array.
 
     Example
     -------
@@ -234,7 +235,7 @@ def _stack_bands(sources, dest=None, write_raster=False):
     dest : string (optional)
         Path to the where the output raster containing the stacked
         layers will be stored.
-    write_raster : bool (optional)
+    write_raster : bool (default=False)
         Boolean to determine whether or not to write out the raster.
 
     Returns
@@ -290,10 +291,10 @@ def crop_image(raster, geoms, all_touched=True):
     raster : rasterio object
         The rasterio object to be cropped.
     geoms : geopandas geodataframe or list of polygons
-        The boundaries to be used for the cropped image. If it's a geopandas
-        geodataframe, the extent of that objects will be used. All data outside
-        of specified polygons will be set to nodata.
-    all_touched : bool (optional)
+        The spatial polygon boundaries in GeoJSON-like dict format
+        to be used to crop the image. All data outside of the polygon
+        boundaries will be set to nodata and/or removed from the image.
+    all_touched : bool (default=True)
         Include a pixel in the mask if it touches any of the
         shapes. If False, include a pixel only if its center is within one of
         the shapes, or if it is selected by Bresenham's line algorithm.
@@ -345,7 +346,7 @@ def crop_image(raster, geoms, all_touched=True):
     return out_image, out_meta
 
 
-def bytescale(data, cmin=None, cmax=None, high=255, low=0):
+def bytescale(data, high=255, low=0, cmin=None, cmax=None):
     """Byte scales an array (image).
 
     Byte scaling converts the input image to uint8 dtype, and rescales
@@ -357,14 +358,14 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
     ----------
     data : numpy array
         image data array.
+    high : int (default=255)
+        Scale max value to `high`.
+    low : int (default=0)
+        Scale min value to `low`.
     cmin : int (optional)
         Bias scaling of small values. Default is ``data.min()``.
     cmax : int (optional)
         Bias scaling of large values. Default is ``data.max()``.
-    high : int (optional)
-        Scale max value to `high`.
-    low : int (optional)
-        Scale min value to `low`.
 
     Returns
     -------
@@ -431,9 +432,9 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     ----------
     arr : numpy array
         Numpy array containing elevation values to be used to created hillshade.
-    azimuth : float (optional)
+    azimuth : float (default=30)
         The desired azimuth for the hillshade.
-    angle_altitude : float (optional)
+    angle_altitude : float (default=30)
         The desired sun angle altitude for the hillshade.
 
     Returns
