@@ -430,7 +430,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr : numpy array
+    arr : numpy array of shape (rows, columns)
         Numpy array containing elevation values to be used to created hillshade.
     azimuth : float (default=30)
         The desired azimuth for the hillshade.
