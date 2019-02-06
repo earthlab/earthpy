@@ -187,7 +187,7 @@ def mask_pixels(arr, mask_arr, vals=None):
     Example
     -------
     >>> import numpy as np
-    >>> from earthpy.mask import make_apply_mask
+    >>> from earthpy.mask import mask_pixels
     >>> im = np.arange(9).reshape((3, 3))
     >>> im
     array([[0, 1, 2],
