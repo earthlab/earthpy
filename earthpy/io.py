@@ -230,8 +230,7 @@ def path_to_example(dataset):
     """ Construct a file path to an example dataset.
 
     This file defines helper functions to access data files in this directory,
-    to support examples. Adapted from:
-    https://github.com/pysal/pysal/blob/master/pysal/examples/__init__.py
+    to support examples. Adapted from the PySAL package.
 
     Parameters
     ----------
