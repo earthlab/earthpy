@@ -217,14 +217,14 @@ def stack(band_paths, out_path=""):
 
             # Write stacked gtif file
             with rio.open(out_path, "w", **dest_kwargs) as dest:
-                _stack_bands(sources, dest, write_raster)
+                _stack_bands(sources, write_raster, dest)
 
             # Read and return array
             with rio.open(out_path, "r") as src:
                 return src.read(), src.profile
 
 
-def _stack_bands(sources, dest=None, write_raster=False):
+def _stack_bands(sources, write_raster=False, dest=None):
     """Stack a set of bands into a single file.
 
     Parameters
