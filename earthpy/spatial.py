@@ -246,7 +246,8 @@ def _stack_bands(sources, write_raster=False, dest=None):
             Numpy array generated from the stacked array combining all
             bands that were provided in the list.
         ret_prof : rasterio profile
-            Updated rasterio profile with the correct number of bands.
+            Updated rasterio spatial metadata object updated to represent 
+            the number of layers in the stack
     """
 
     try:
