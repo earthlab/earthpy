@@ -3,7 +3,7 @@
 # TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
 
-def clip_points(shp, clip_obj):
+def _clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
     input point GeoDataFrame that will be clipped to the clip_obj
     GeoDataFrame.
@@ -29,7 +29,7 @@ def clip_points(shp, clip_obj):
     return shp[shp.geometry.intersects(poly)]
 
 
-def clip_line_poly(shp, clip_obj):
+def _clip_line_poly(shp, clip_obj):
     """A function to clip line and polygon data using geopandas.
 
     Takes an input GeoDataFrame that is used as the clipped data, and a second
@@ -80,8 +80,8 @@ def clip_shp(shp, clip_obj):
 
     Both layers must be in the same Coordinate Reference System (CRS).
 
-    Depending on the geometry type, input data will be clipped to the full
-    extent of clip_obj using either clip_points or clip_line_poly.
+    Point, line, or polygon data in geopandas geodataframe format will
+    be clipped to the full extent of the clip object.
 
     If there are multiple polygons in clip_obj,
     data from shp will be clipped to the total boundary of
@@ -106,6 +106,7 @@ def clip_shp(shp, clip_obj):
 
     Examples
     --------
+
     Clipping points (glacier locations in the state of Colorado) with
     a polygon (the boundary of Rocky Mountain National Park):
 
@@ -161,6 +162,6 @@ def clip_shp(shp, clip_obj):
         )
 
     if shp["geometry"].iloc[0].type == "Point":
-        return clip_points(shp, clip_obj)
+        return _clip_points(shp, clip_obj)
     else:
-        return clip_line_poly(shp, clip_obj)
+        return _clip_line_poly(shp, clip_obj)
