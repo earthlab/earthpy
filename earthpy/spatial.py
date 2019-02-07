@@ -124,7 +124,7 @@ def stack(band_paths, out_path=""):
     Parameters
     ----------
     band_paths : list of file paths
-        A list with paths to the bands you wish to stack. Bands
+        A list with paths to the bands to be stacked. Bands
         will be stacked in the order given in this list.
     out_path : string (optional)
         A path with a file name for the output stacked raster
