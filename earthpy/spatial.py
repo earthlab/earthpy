@@ -17,20 +17,22 @@ from rasterio.mask import mask
 
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
-    Helper function
     This format is what shapely uses. The output object can be used
     to crop a raster image.
 
     Parameters
     ----------
     ext_obj: list or geopandas geodataframe
-        Extent values should be in the order: minx, miny, maxx, maxy
+        If provided with a geopandas geodataframe, the extent
+        will be generated from that. Otherwise, extent values
+        should be in the order: minx, miny, maxx, maxy.
 
     Return
     ------
-    dict
-
-        A GeoJSON style dictionary of corner coordinates for the new extent.
+    extent_json: A GeoJSON style dictionary of corner coordinates
+    for the extent
+        A GeoJSON style dictionary of corner coordinates representing
+        the spatial extent of the provided spatial object.
 
     Example
     -------
@@ -38,7 +40,7 @@ def extent_to_json(ext_obj):
     >>> import earthpy.spatial as es
     >>> from earthpy.io import path_to_example
     >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
-    >>> es.extent_to_json(rmnp)   #doctest: +ELLIPSIS
+    >>> es.extent_to_json(rmnp) #doctest: +ELLIPSIS
     {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
@@ -54,23 +56,21 @@ def extent_to_json(ext_obj):
     return extent_json
 
 
-# Calculate normalized difference between two arrays
-# Both arrays must be of the same size
-
-
 def normalized_diff(b1, b2):
     """Take two numpy arrays and calculate the normalized difference.
-    Math will be calculated (b1-b2) / (b1+b2).
+    Math will be calculated (b1-b2) / (b1+b2). The arrays must be of the
+    same shape.
 
     Parameters
     ----------
-    b1, b2 : arrays with the same shape
+    b1, b2 : numpy arrays
+        Two numpy arrays that will be used to calculate the normalized difference.
         Math will be calculated (b1-b2) / (b1+b2).
 
     Returns
     ----------
-    n_diff : ndarray with the same shape as inputs
-        The element-wise result of (b1-b2) / (b1+b2). Inf values are set
+    n_diff : numpy array
+        The element-wise result of (b1-b2) / (b1+b2) calculation. Inf values are set
         to nan. Array returned as masked if result includes nan values.
 
     Examples
@@ -118,13 +118,13 @@ def normalized_diff(b1, b2):
 # TODO: include a no data value here if provided
 def stack(band_paths, out_path=""):
 
-    """Take a list of raster paths and turn into an output raster stack
-    numpy array. Note that this function depends upon the stack_bands() function.
+    """Take a list of raster paths and turn it into an output raster stack
+    numpy array.
 
     Parameters
     ----------
     band_paths : list of file paths
-        A list with paths to the bands you wish to stack. Bands
+        A list with paths to the bands to be stacked. Bands
         will be stacked in the order given in this list.
     out_path : string (optional)
         A path with a file name for the output stacked raster
@@ -132,12 +132,13 @@ def stack(band_paths, out_path=""):
 
     Returns
     ----------
-    tuple : The first value representing the numpy array resulting from stacking the files in the input list
-        and the second value representing the result of the rasterio src.profile object (representing the metadata)
-        for the stacked array.
-        NOTE: the 'count' key of the .profile object is updated to match the length of the input list.
-    output .tif file : (optional) stack will write a geotiff file if out_path is provided with a path that exists on your machine.
+    tuple :
 
+        numpy array
+            N-dimensional array created by stacking the raster files provided.
+        rasterio profile object
+            A rasterio profile object containing the updated spatial metadata for
+            the stacked numpy array.
 
     Example
     -------
@@ -216,23 +217,37 @@ def stack(band_paths, out_path=""):
 
             # Write stacked gtif file
             with rio.open(out_path, "w", **dest_kwargs) as dest:
-                _stack_bands(sources, dest, write_raster)
+                _stack_bands(sources, write_raster, dest)
 
             # Read and return array
             with rio.open(out_path, "r") as src:
                 return src.read(), src.profile
 
 
-def _stack_bands(sources, dest=None, write_raster=False):
+def _stack_bands(sources, write_raster=False, dest=None):
     """Stack a set of bands into a single file.
 
     Parameters
     ----------
     sources : list of rasterio dataset objects
-        A list with paths to the bands you wish to stack. Objects
+        A list of rasterio dataset objects you wish to stack. Objects
         will be stacked in the order provided in this list.
-    dest : a rio.open writable object that will store raster data.
-    write_raster : a flag to decide to write out the raster.
+    dest : string (optional)
+        Path to the where the output raster containing the stacked
+        layers will be stored.
+    write_raster : bool (default=False)
+        Boolean to determine whether or not to write out the raster.
+
+    Returns
+    ----------
+    tuple
+
+        numpy array
+            Numpy array generated from the stacked array combining all
+            bands that were provided in the list.
+        ret_prof : rasterio profile
+            Updated rasterio spatial metadata object updated to represent 
+            the number of layers in the stack
     """
 
     try:
@@ -275,24 +290,23 @@ def crop_image(raster, geoms, all_touched=True):
     Parameters
     ----------
     raster : rasterio object
-        The rasterio object to be cropped. Ideally this object is opened in a
-        context manager to ensure the file is properly closed.
-    geoms : geopandas object or list of polygons
-        Polygons are GeoJSON-like dicts specifying the boundaries of features
-        in the raster to be kept. All data outside of specified polygons
-        will be set to nodata.
-    all_touched : bool
-        From rasterio: Include a pixel in the mask if it touches any of the
+        The rasterio object to be cropped.
+    geoms : geopandas geodataframe or list of polygons
+        The spatial polygon boundaries in GeoJSON-like dict format
+        to be used to crop the image. All data outside of the polygon
+        boundaries will be set to nodata and/or removed from the image.
+    all_touched : bool (default=True)
+        Include a pixel in the mask if it touches any of the
         shapes. If False, include a pixel only if its center is within one of
         the shapes, or if it is selected by Bresenham's line algorithm.
-        Default is True in this function.
+        (from rasterio)
 
     Returns
     ----------
     tuple
 
         out_image: cropped numpy array
-            A numpy ndarray that is cropped to the geoms object
+            A numpy array that is cropped to the geoms object
             extent with shape (bands, rows, columns)
         out_meta:  dict
             A dictionary containing updated metadata for the cropped raster,
@@ -333,7 +347,7 @@ def crop_image(raster, geoms, all_touched=True):
     return out_image, out_meta
 
 
-def bytescale(data, cmin=None, cmax=None, high=255, low=0):
+def bytescale(data, high=255, low=0, cmin=None, cmax=None):
     """Byte scales an array (image).
 
     Byte scaling converts the input image to uint8 dtype, and rescales
@@ -343,20 +357,20 @@ def bytescale(data, cmin=None, cmax=None, high=255, low=0):
 
     Parameters
     ----------
-    data : ndarray
+    data : numpy array
         image data array.
-    cmin : scalar, optional
+    high : int (default=255)
+        Scale max value to `high`.
+    low : int (default=0)
+        Scale min value to `low`.
+    cmin : int (optional)
         Bias scaling of small values. Default is ``data.min()``.
-    cmax : scalar, optional
+    cmax : int (optional)
         Bias scaling of large values. Default is ``data.max()``.
-    high : scalar, optional
-        Scale max value to `high`.  Default is 255.
-    low : scalar, optional
-        Scale min value to `low`.  Default is 0.
 
     Returns
     -------
-    img_array : uint8 ndarray
+    img_array : uint8 numpy array
         The byte-scaled array.
 
     Examples
@@ -417,14 +431,16 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr: a numpy ndarray of shape (rows, columns) containing elevation values
-    azimuth:  default (30)
-    angle_altitude: default (30)
+    arr : numpy array of shape (rows, columns)
+        Numpy array containing elevation values to be used to created hillshade.
+    azimuth : float (default=30)
+        The desired azimuth for the hillshade.
+    angle_altitude : float (default=30)
+        The desired sun angle altitude for the hillshade.
 
     Returns
     -------
     numpy array
-
         A numpy array containing hillshade values.
 
     Example
