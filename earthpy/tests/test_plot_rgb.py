@@ -13,6 +13,11 @@ plt.show = lambda: None
 
 
 @pytest.fixture
+def image_array_1band_stretch():
+    return np.random.randint(10, 246, size=(50, 50))
+
+
+@pytest.fixture
 def rgb_image():
     """Fixture holding an RGB image for plotting"""
     with rio.open(path_to_example("rmnp-rgb.tif")) as src:

@@ -173,8 +173,3 @@ def image_array_2bands():
 @pytest.fixture
 def one_band_3dims():
     return np.random.randint(10, size=(1, 4, 5))
-
-
-@pytest.fixture
-def image_array_1band_stretch():
-    return np.random.randint(10, 246, size=(50, 50))
