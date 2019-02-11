@@ -423,7 +423,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         The desired azimuth for the hillshade.
     angle_altitude : float (default=30)
         The desired sun angle altitude for the hillshade.
-        
+
     Returns
     -------
     numpy array
@@ -451,7 +451,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
     try:
         x, y = np.gradient(arr)
     except:
-        raise ValueError("Input array should be of shape: rows, columns")
+        raise ValueError("Input array should be two-dimensional")
 
     if azimuth <= 360.0:
         azimuth = 360.0 - azimuth
