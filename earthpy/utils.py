@@ -14,9 +14,9 @@ def fix_paths(path, images_folder="images"):
     Parameters
     ----------
     path : str
-        The path that needs to be modified
-    images_folder : str
-        Name of the desired folder to recieve images. Defaults to 
+        The path that needs to be modified.
+    images_folder : str (optional)
+        Directory name where images will be saved. Defaults to
         the users 'images' folder.
 
     Returns
