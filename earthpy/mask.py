@@ -209,13 +209,16 @@ def mask_pixels(arr, mask_arr, vals=None):
       fill_value=999999)
     """
     if vals:
-        cover_mask = _create_mask(mask_arr, vals)
-        # print(cover_mask)
+        mask_vals = np.unique(mask_arr)
+        if vals not in mask_vals:
+            raise ValueError("Values to mask are not in provided mask layer.")
+        else:
+            cover_mask = _create_mask(mask_arr, vals)
     else:
         # Check to make sure the mask_arr is a mask raster and not a pixel_qa layer
-        if 0 not in mask_arr:
+        if np.array_equal(mask_arr, mask_arr.astype(bool)):
             raise AttributeError(
-                "Pixel QA layer requires values to create mask."
+                "Please provide either a masked array or a Pixel QA layer with values to mask."
             )
         else:
             cover_mask = mask_arr
