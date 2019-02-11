@@ -131,7 +131,8 @@ def _apply_mask(arr, input_mask):
     Parameters
     -----------
     arr : numpy array
-        The original numpy array that needs a mask applied.
+        The original numpy array in rasterio (band, row, col) order
+        that needs a mask applied.
 
     input_mask : numpy array
         A numpy array containing O's and 1's where the 1's indicate where the
@@ -170,7 +171,7 @@ def mask_pixels(arr, mask_arr, vals=None):
     Parameters
     -----------
     arr : numpy array
-        The desired array to mask.
+        The desired array to mask in rasterio (band, row, col) order.
     mask_arr : numpy array
         An array of either the pixel_qa or mask of interest.
     vals : list of numbers either int or float (optional)
