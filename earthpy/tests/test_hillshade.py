@@ -3,7 +3,6 @@
 import numpy as np
 import pytest
 import earthpy.spatial as es
-import os
 
 
 @pytest.fixture
