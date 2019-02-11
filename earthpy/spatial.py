@@ -417,15 +417,17 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
     Parameters
     ----------
-    arr: numpy ndarray of shape (rows, columns) containing elevation values
-    azimuth: default (30)
-        Value should be less than or equal to 360 degrees
-    angle_altitude: default (30)
-        Value should be less than or equal to 90 degrees
-
+    arr : numpy array of shape (rows, columns)
+        Numpy array containing elevation values to be used to created hillshade.
+    azimuth : float (default=30)
+        The desired azimuth for the hillshade.
+    angle_altitude : float (default=30)
+        The desired sun angle altitude for the hillshade.
+        
     Returns
     -------
-    numpy ndarray of shape (rows, columns) containing hillshade values
+    numpy array
+        A numpy array containing hillshade values.
 
     Example
     -------
