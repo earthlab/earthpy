@@ -118,11 +118,19 @@ def _create_mask(mask_arr, vals):
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array")
 
-    # Mask the values
-    mask_arr[temp_mask] = 1
-    mask_arr[~temp_mask] = 0
+    unique_vals = np.unique(mask_arr).tolist()
+    if set(vals) <= set(unique_vals):
+        # Mask values from array
+        mask_arr[temp_mask] = 1
+        mask_arr[~temp_mask] = 0
 
-    return mask_arr
+        return mask_arr
+
+    else:
+        raise ValueError(
+            """List of values provided for the mask does 
+                             not exist in your mask array."""
+        )
 
 
 def _apply_mask(arr, input_mask):
@@ -209,20 +217,26 @@ def mask_pixels(arr, mask_arr, vals=None):
             [ True,  True,  True]],
       fill_value=999999)
     """
-    mask_vals = np.unique(mask_arr)
-    if vals is not None:
-        if vals not in mask_vals:
-            raise ValueError("Values to mask are not in provided mask layer.")
-        else:
-            cover_mask = _create_mask(mask_arr, vals)
+
+    try:
+        arr.ndim
+    except AttributeError:
+        raise AttributeError("Input arr should be a numpy array.")
+
+    try:
+        mask_arr.ndim
+    except AttributeError:
+        raise AttributeError("Input arr should be a numpy array.")
+
+    # Move this to the other function.
+    if vals:
+        cover_mask = _create_mask(mask_arr, vals)
     else:
-        # Check to make sure the mask_arr is a mask raster and not a pixel_qa layer
-        # if 0 <= mask_vals <= 1:
-        if (x for x in mask_vals if 0 <= x <= 1):
-            cover_mask = mask_arr
-        # np.array_equal(mask_arr, mask_arr.astype(bool)):
-        else:
-            raise AttributeError(
-                "Please provide either a masked array or a Pixel QA layer with values to mask."
+        # Check to make sure the mask_arr is a boolean
+        if np.array_equal(mask_arr, mask_arr.astype(bool)):
+            raise ValueError(
+                """You have provided a mask_array with no values to mask. Please
+                either provide a mask_array of type bool, or provide values
+                to be used to create a mask."""
             )
     return _apply_mask(arr, cover_mask)
