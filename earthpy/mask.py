@@ -239,6 +239,4 @@ def mask_pixels(arr, mask_arr, vals=None):
                 either provide a mask_array of type bool, or provide values
                 to be used to create a mask."""
             )
-        else:
-            cover_mask = mask_arr
     return _apply_mask(arr, cover_mask)
