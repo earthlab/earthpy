@@ -3,7 +3,7 @@
 # TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
 
-def clip_points(shp, clip_obj):
+def _clip_points(shp, clip_obj):
     """ A function to clip point geometry using geopandas. Takes an
     input point GeoDataFrame that will be clipped to the clip_obj
     GeoDataFrame.
@@ -14,7 +14,7 @@ def clip_points(shp, clip_obj):
     Parameters
     ----------
     shp : GeoDataFrame
-        Composed of point geometry that is clipped to clip_obj
+        Composed of point geometry that is clipped to clip_obj.
 
     clip_obj : GeoDataFrame
         Reference polygon for clipping.
@@ -23,17 +23,14 @@ def clip_points(shp, clip_obj):
     -------
     GeoDataFrame
         The returned GeoDataFrame is a subset of shp that intersects
-        with clip_obj
+        with clip_obj.
     """
     poly = clip_obj.geometry.unary_union
     return shp[shp.geometry.intersects(poly)]
 
 
-def clip_line_poly(shp, clip_obj):
+def _clip_line_poly(shp, clip_obj):
     """A function to clip line and polygon data using geopandas.
-
-    Takes an input GeoDataFrame that is used as the clipped data, and a second
-    GeoDataFrame that is used as the clipping object or reference area.
 
     A spatial index is created around the shp input and is then intersected
     with the bounding box of the clip_obj.
@@ -44,7 +41,7 @@ def clip_line_poly(shp, clip_obj):
     Parameters
     ----------
     shp : GeoDataFrame
-        Line or polygon geometry that is clipped to clip_obj
+        Line or polygon geometry that is clipped to clip_obj.
 
     clip_obj : GeoDataFrame
         Reference polygon for clipping.
@@ -80,8 +77,8 @@ def clip_shp(shp, clip_obj):
 
     Both layers must be in the same Coordinate Reference System (CRS).
 
-    Depending on the geometry type, input data will be clipped to the full
-    extent of clip_obj using either clip_points or clip_line_poly.
+    Point, line, or polygon data in geopandas geodataframe format will
+    be clipped to the full extent of the clip object.
 
     If there are multiple polygons in clip_obj,
     data from shp will be clipped to the total boundary of
@@ -91,10 +88,8 @@ def clip_shp(shp, clip_obj):
     ----------
     shp : GeoDataFrame
           Vector layer (point, line, polygon) to be clipped to clip_obj.
-
     clip_obj : GeoDataFrame
           Polygon vector layer used to clip shp.
-
           The clip_obj's geometry is dissolved into one geometric feature
           and intersected with shp.
 
@@ -161,6 +156,6 @@ def clip_shp(shp, clip_obj):
         )
 
     if shp["geometry"].iloc[0].type == "Point":
-        return clip_points(shp, clip_obj)
+        return _clip_points(shp, clip_obj)
     else:
-        return clip_line_poly(shp, clip_obj)
+        return _clip_line_poly(shp, clip_obj)
