@@ -209,7 +209,7 @@ def mask_pixels(arr, mask_arr, vals=None):
             [ True,  True,  True]],
       fill_value=999999)
     """
-    if vals:
+    if vals is not None:
         mask_vals = np.unique(mask_arr)
         if vals not in mask_vals:
             raise ValueError("Values to mask are not in provided mask layer.")
