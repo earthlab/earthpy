@@ -8,16 +8,6 @@ import earthpy.plot as ep
 plt.show = lambda: None
 
 
-@pytest.fixture
-def image_array_2bands():
-    return np.random.randint(10, size=(2, 4, 5))
-
-
-@pytest.fixture
-def one_band_3dims():
-    return np.random.randint(10, size=(1, 4, 5))
-
-
 """ plot_bands tests """
 
 

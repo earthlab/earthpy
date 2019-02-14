@@ -479,11 +479,9 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """This function has been deprecated from earthpy. Please use
-    the stack() function instead.
-
+    """This function has been deprecated from earthpy.
+    
+    Please use the stack() function instead.
     """
-
-    # Throw warning and exit
     raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
     sys.exit()
