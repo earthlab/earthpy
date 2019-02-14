@@ -25,7 +25,7 @@ if __name__ == "__main__":
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
         version=VERSION,
-        packages=['earthpy'],
+        packages=["earthpy"],
         install_requires=[
             "tqdm",
             "pandas",
