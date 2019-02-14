@@ -176,7 +176,7 @@ This will increment the version according to a major release (e.g., 0.1.0 to
 
 
 Bumpversion updates the version number throughout the
-package, and generate a git commit along with an associated git tag for the
+package, and generates a git commit along with an associated git tag for the
 new version.
 For more on bumpversion, see: https://github.com/peritus/bumpversion
 
