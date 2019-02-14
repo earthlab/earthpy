@@ -47,9 +47,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
         ...     dem = src.read()
         ...     fig, ax = plt.subplots(figsize = (10, 5))
         >>> im = ax.imshow(dem.squeeze())
-        >>> ep.colorbar(im)  #doctest: +ELLIPSIS
+        >>> ep.colorbar(im)
         <matplotlib.colorbar.Colorbar object at 0x...>
-        >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+        >>> ax.set(title="Rocky Mountain National Park DEM")
         [Text(...'Rocky Mountain National Park DEM')]
         >>> ax.set_axis_off()
         >>> plt.show()
@@ -113,7 +113,7 @@ def plot_bands(
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
-        ...                   figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...                   figsize=(8, 3))
         (<Figure size ... with 3 Axes>, ...)
     """
 
@@ -224,7 +224,7 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
-        >>> ep.plot_rgb(img_array) #doctest: +ELLIPSIS
+        >>> ep.plot_rgb(img_array)
         (<Figure size 1000x1000 with 1 Axes>, ...)
 
     """
@@ -319,7 +319,7 @@ def hist(
         ...     colors=['r', 'g', 'b'],
         ...     title=['Red', 'Green', 'Blue'],
         ...     cols=3,
-        ...     figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...     figsize=(8, 3))
         (<Figure size 800x300 with 3 Axes>, ...)
     """
 
