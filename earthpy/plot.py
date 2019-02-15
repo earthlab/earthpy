@@ -174,6 +174,32 @@ def plot_bands(
         return fig, ax
 
 
+def _stretch_im(arr, str_clip):
+    """Stretch an image array in numpy format using a specified clip value
+
+    Parameters
+    ----------
+    arr: numpy array
+        N-dimensional array in rasterio band order (bands, rows, columns)
+    str_clip: int
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
+
+    Returns
+    ----------
+    arr: numpy array with values stretched to the specified clip %
+
+    """
+    s_min = str_clip
+    s_max = 100 - str_clip
+    arr_rescaled = np.zeros_like(arr)
+    for ii, band in enumerate(arr):
+        lower, upper = np.percentile(band, (s_min, s_max))
+        arr_rescaled[ii] = exposure.rescale_intensity(
+            band, in_range=(lower, upper)
+        )
+    return arr_rescaled.copy()
+
+
 def plot_rgb(
     arr,
     rgb=(0, 1, 2),
@@ -230,7 +256,7 @@ def plot_rgb(
     """
 
     if len(arr.shape) != 3:
-        raise Exception(
+        raise ValueError(
             """Input needs to be 3 dimensions and in rasterio
                            order with bands first"""
         )
@@ -239,15 +265,7 @@ def plot_rgb(
     rgb_bands = arr[rgb, :, :]
 
     if stretch:
-        s_min = str_clip
-        s_max = 100 - str_clip
-        arr_rescaled = np.zeros_like(rgb_bands)
-        for ii, band in enumerate(rgb_bands):
-            lower, upper = np.percentile(band, (s_min, s_max))
-            arr_rescaled[ii] = exposure.rescale_intensity(
-                band, in_range=(lower, upper)
-            )
-        rgb_bands = arr_rescaled.copy()
+        rgb_bands = _stretch_im(rgb_bands, str_clip)
 
     # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
