@@ -77,12 +77,12 @@ def test_boolean_mask(im, im_mask):
     assert np.ma.is_masked(mask_pixels(im, im_mask))
 
 
-def test_for_user_mask_input(im, im_mask):
+def test_user_mask_arr(im, im_mask):
     """Test to see if user is passing in their own masked array
     instead of a pixel QA layer and values to mask."""
 
     with pytest.raises(
-        AttributeError,
+        ValueError,
         match="""You have provided a mask_array with no values to mask. Please
                  either provide a mask_array of type bool, or provide values
                  to be used to create a mask.""",

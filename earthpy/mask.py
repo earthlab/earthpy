@@ -117,8 +117,9 @@ def _create_mask(mask_arr, vals):
     if any(num in vals for num in unique_vals):
         # Mask values from array
         # This is not working right because 0s just fill in whole array
-        mask_arr[np.isin(mask_arr, vals)] = 1
-        mask_arr[~np.isin(mask_arr, vals)] = 0
+        temp_mask = np.isin(mask_arr, vals)
+        mask_arr[temp_mask] = 1
+        mask_arr[~temp_mask] = 0
 
         return mask_arr
 
