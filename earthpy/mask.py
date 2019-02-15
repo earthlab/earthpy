@@ -112,17 +112,13 @@ def _create_mask(mask_arr, vals):
     except AttributeError:
         raise AttributeError("Values should be provided as a list")
 
-    try:
-        mask_arr.ndim
-        temp_mask = np.isin(mask_arr, vals)
-    except AttributeError:
-        raise AttributeError("Input arr should be a numpy array")
-
     unique_vals = np.unique(mask_arr).tolist()
-    if set(vals) <= set(unique_vals):
+
+    if any(num in vals for num in unique_vals):
         # Mask values from array
-        mask_arr[temp_mask] = 1
-        mask_arr[~temp_mask] = 0
+        # This is not working right because 0s just fill in whole array
+        mask_arr[np.isin(mask_arr, vals)] = 1
+        mask_arr[~np.isin(mask_arr, vals)] = 0
 
         return mask_arr
 
@@ -156,11 +152,7 @@ def _apply_mask(arr, input_mask):
     if not np.any(input_mask == 1):
         raise ValueError("Mask requires values of 1 (True) to be applied.")
 
-    try:
-        # Create a mask for all bands in the landsat scene
-        cover_mask = np.broadcast_to(input_mask == 1, arr.shape)
-    except AttributeError:
-        raise AttributeError("Input arr should be a numpy array")
+    cover_mask = np.broadcast_to(input_mask == 1, arr.shape)
 
     # If the user provides a masked array, combine masks
     if isinstance(arr, np.ma.MaskedArray):
@@ -228,12 +220,13 @@ def mask_pixels(arr, mask_arr, vals=None):
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array.")
 
-    # Move this to the other function.
-    if vals:
+    if vals is not None:
         cover_mask = _create_mask(mask_arr, vals)
     else:
         # Check to make sure the mask_arr is a boolean
         if np.array_equal(mask_arr, mask_arr.astype(bool)):
+            cover_mask = mask_arr.astype(bool)
+        else:
             raise ValueError(
                 """You have provided a mask_array with no values to mask. Please
                 either provide a mask_array of type bool, or provide values
