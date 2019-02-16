@@ -13,7 +13,7 @@ from skimage import exposure
 import earthpy.spatial as es
 
 
-def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
+def colorbar(mapobj, size="3%", pad=0.09):
     """Adjusts the height of a colorbar to match the axis height. Note that
     this function will not work properly using matplotlib v 3.0.0 in Jupyter
     or when exporting an image. Be sure to update to 3.0.1.
