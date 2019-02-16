@@ -53,10 +53,6 @@ Ready to contribute? Here's how to set up `earthpy` for local development.
     $ pytest --doctest-modules
     $ make docs
 
-By default ``make docs`` will only rebuild the documentation if source
-files (e.g., .py or .rst files) have changed. To force a rebuild, use 
-``make -B docs``.
-
 6. Commit your changes and push your branch to GitHub::
 
     $ git add .
@@ -90,6 +86,7 @@ When submitting a pull request:
   So be sure that any ``.rst`` file submissions are properly formatted and
   tests are passing.
 
+
 Documentation Updates
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -100,8 +97,46 @@ that our documentation files are in
 format and format your pull request
 accordingly.
 
+To build the documentation, use the command::
+
+    $ make docs
+
+By default ``make docs`` will only rebuild the documentation if source
+files (e.g., .py or .rst files) have changed. To force a rebuild, use
+``make -B docs``.
+You can preview the generated documentation by opening
+``docs/_build/html/index.html`` in a web browser.
+
+Earthpy uses `doctest
+<https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html>`_ to test
+code in the documentation, which includes docstrings in earthpy's modules, and
+code chunks in the reStructuredText source files.
+This enables the actual output of code examples to be checked against expected
+output.
+When the output of an example is not always identical (e.g., the
+memory address of an object), use an `ellipsis
+<https://docs.python.org/3.6/library/doctest.html#doctest.ELLIPSIS>`_
+(``...``) to match any substring of the actual output, e.g.:
+
+.. code-block:: python
+
+  >>> print(list(range(20)))
+  [0, 1, ..., 18, 19]
+
+Earthpy also uses the `Matplotlib plot directive
+<https://matplotlib.org/devel/plot_directive.html>`_ in the documentation to
+generate figures.
+To include a figure in an example, prefix the example with ``.. plot::``,
+e.g.,::
+
+    .. plot::
+
+       >>> import matplotlib.pyplot as plt
+       >>> plt.plot([1, 2, 3], [4, 5, 6])
+
+
 Style
------
+~~~~~
 
 - ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally
   in Python 3 when possible (all supported versions will be automatically
@@ -131,10 +166,25 @@ Deploying
 ~~~~~~~~~
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed, then run:
+Make sure all your changes are committed, then run::
 
-$ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+    $ bumpversion patch # possible: major / minor / patch
 
-Travis will then deploy to PyPI if tests pass.
+This will increment the version according to a major release (e.g., 0.1.0 to
+1.0.0), a minor release (e.g., 0.1.0 to 0.2.0), or a patch (e.g., 0.1.0 to
+0.1.1), following the guidelines for semantic versioning: https://semver.org/.
+
+
+Bumpversion updates the version number throughout the
+package, and generates a git commit along with an associated git tag for the
+new version.
+For more on bumpversion, see: https://github.com/peritus/bumpversion
+
+To deploy earthpy, push the commit and the version tags::
+
+    $ git push
+    $ git push --tags
+
+Travis will then deploy to PyPI if the build succeeds.
+Travis will only deploy to PyPI on tagged commits, so remember to push the tags.
+Once that is done, create a release on GitHub for the new version.

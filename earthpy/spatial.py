@@ -40,7 +40,7 @@ def extent_to_json(ext_obj):
     >>> import earthpy.spatial as es
     >>> from earthpy.io import path_to_example
     >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
-    >>> es.extent_to_json(rmnp) #doctest: +ELLIPSIS
+    >>> es.extent_to_json(rmnp)
     {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
@@ -246,7 +246,7 @@ def _stack_bands(sources, write_raster=False, dest=None):
             Numpy array generated from the stacked array combining all
             bands that were provided in the list.
         ret_prof : rasterio profile
-            Updated rasterio spatial metadata object updated to represent 
+            Updated rasterio spatial metadata object updated to represent
             the number of layers in the stack
     """
 
@@ -459,7 +459,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         >>> print(squeezed_dem.shape)
         (187, 152)
         >>> shade = es.hillshade(squeezed_dem)
-        >>> plt.imshow(shade) #doctest: +ELLIPSIS
+        >>> plt.imshow(shade)
         <matplotlib.image.AxesImage object at 0x...>
     """
     azimuth = 360.0 - azimuth
