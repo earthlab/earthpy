@@ -48,6 +48,7 @@ if __name__ == "__main__":
             "geopandas",
             "matplotlib>=2.0.0",
             "rasterio",
+            "Rtree>=0.8",
             "download",
             "scikit-image",
         ],

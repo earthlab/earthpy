@@ -111,3 +111,6 @@ earthpy/testing.py
 # OS stuff
 .DS_Store
 earthpy/tests/test_ignored_script.py
+
+# Virtualenvs
+*-env/
