@@ -197,6 +197,7 @@ def make_apply_mask(arr, mask_arr, vals):
            [1, 1, 1]])
     >>> make_apply_mask(im, mask_arr=im_mask, vals=[1])
     masked_array(...)
+    
     """
     cl_mask = make_cloud_mask(mask_arr, vals)
     return apply_cloud_mask(arr, cl_mask)
