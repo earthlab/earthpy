@@ -44,7 +44,7 @@ if __name__ == "__main__":
         install_requires=[
             "tqdm",
             "pandas",
-            "numpy>=1.13.0",
+            "numpy>=1.14.0",
             "geopandas",
             "matplotlib>=2.0.0",
             "rasterio",
