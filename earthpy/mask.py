@@ -169,7 +169,7 @@ def mask_pixels(arr, mask_arr, vals=None):
     Parameters
     -----------
     arr : numpy array
-        The desired array to mask in rasterio (band, row, col) order.
+        The array to mask in rasterio (band, row, col) order.
     mask_arr : numpy array
         An array of either the pixel_qa or mask of interest.
     vals : list of numbers either int or float (optional)
