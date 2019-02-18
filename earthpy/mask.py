@@ -96,7 +96,7 @@ def _create_mask(mask_arr, vals):
         An array of the pixel_qa or mask raster of interest.
 
     vals : list of numbers (int or float)
-        A list of values from the pixel qa layer that will be used to create
+        A list of values from mask_arr (the qa layer) used to create
         the mask for the final return array.
 
     Returns
