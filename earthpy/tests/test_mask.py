@@ -26,15 +26,14 @@ def im_mask():
 def test_arr_provided(im, im_mask):
     """ Test that inputs are numpy arrays. """
 
-    an_arr_tup = (2, 3)
     with pytest.raises(
         AttributeError, match="Input arr should be a numpy array."
     ):
-        mask_pixels(an_arr_tup, mask_arr=im_mask, vals=[0, 4])
+        mask_pixels((2, 3), mask_arr=im_mask, vals=[0, 4])
     with pytest.raises(
         AttributeError, match="Input arr should be a numpy array."
     ):
-        mask_pixels(im, mask_arr=an_arr_tup, vals=[0, 4])
+        mask_pixels(im, mask_arr=(2, 3), vals=[0, 4])
 
 
 def test_masked_arr_returned(im, im_mask):
