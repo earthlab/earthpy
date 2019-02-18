@@ -22,19 +22,15 @@ install:
 - pip install -r dev-requirements.txt
 - pip install black
 script:
-  - pytest --doctest-modules --cov=earthpy --rootdir earthpy
-  - make docs
-  - black --check --verbose .
-
+- pytest --doctest-modules --cov=earthpy --rootdir earthpy
+- make docs
+- black --check --verbose .
 after_success:
 - codecov
 deploy:
   provider: pypi
   user: lwasser
   password:
-    secure: MSaRk5RiQFfFvZtoZ6laPZWyvCwoYx6Ev8CpfFeE5lM//sQPl3jTA7Qty1VviM9tku/7YvH/WSolEh4ruNNNkimkLdN+hb3Avoz+n9/OYm7jhmJ2eBpiHQzunBPOaoQ3IQVem85bqi0AR9Zw2he87wbLE6+ngr44RJa/Jck4pL/2LLfmmgKSDkQL3lpquYjvCanTTOA3j7yQkcY9B15Erm9ZBs7jTrkGxNuhvVv3lgwpRLmt5IiQ/LQQnSEA/6/0+/UNIdqNOwF5lfMw5jVc+i1bMTL2hx+xFiFPamXx8YAL5amNY9yBpCHfvHcOGPV7eqK4n2A8oAORdQPxfSxldhVpYuPnhmM8EJPqC3iqQvtEuZare6VhUL5Zq618OpBgC0tJRIKrTN5NgomL0ihUC6/11DLfGnZxKRCR4BbLWCj1guhVuMIMyNmimF7SC6omcxRlEYOxV0QcZTlJ0PvO5dCsxejuVQdgsk80ue0nLtSE9e8FQILSMuDIjidNW1iGLMUWlwp7DdWmGdbTfQrJ7tOWo/kzuOi9AEIPrAJWXecoFLSrqapoBpQvHTBfA5u/QRq8Z8xNdGs0LGqsyyIOISigW6DFrXbiLPpmRAbQfCAt48VuY+h3SS3qA4JGWum0myR1Se55TpXgebDNR8o5aZh6u+S0TSrbiBsjQBwL1TE=
+    secure: PZkjwwgIzvCu68ckTFjbiGaakK6bXGv48Iefbj4gLA3xEZW5JVu4Gn+c75rX0ZoJ/Ei9WwlXiRRqsFeUh8rvBkxY+2DRM8IZt8YcjdKP/O5zPyqVqDNIvlSryfbxeqcC8bBwd8ZR6iEnGysBfPuUdqLiak8t51pGjI0Eanqlh/xrTIwDqztQY5+LqOaNtJzEedX7jKbz4AKkFRUzlp35nJJ5sbWPYk+Uvr+PMx9v3IVbpxS01/iazCTAO91kUZ5pmCrDB20j8qbghmMYuSCdkO8Vyy9i6uLxWRROEnULwspucnGHygd7MGRuXOVrHHeMkcK18HI0xHiA8kQCt2kkN0Fe8COK2ZKW7u1bwo0a+SDtA2ArJY/HuUUHHs7vrotJDBHZJ1KBVuk1jZU0fAVMY0zkaPFq6LXhxSO7I7lAt0MNkEP3BkOoodOV0+AFJ8WFDvmeg3A49+H4o+qnBFZzlcy47rqDj0tX7+DxAeIKFz/9W4soCTwXNLORGKb2RcUQIprZKtEbI3VTG670SUQWHJUZOYeBlqOvh5NKN+rl1TgEK80MRmWOHl4feRkUONchdDz84T+nVuMmDBtgf+CkbM2DGbPzJfnw5w+euOaqZaniROmxRL1k2ROtvJc2xO2uYa+dqP6MFf8pWB4cnDSikUp09Rxl7F8Uj9DFdk39Qnc=
   on:
-    #tags: true
     branch: master
-    #repo: earthlab/earthpy
-    #python: 3.6
