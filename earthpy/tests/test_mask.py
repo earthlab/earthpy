@@ -38,7 +38,7 @@ def test_masked_arr_returned(im, im_mask):
     assert np.ma.is_masked(masked)
 
 
-def test_vals_not_list(im, im_mask):
+def test_vals_as_list(im, im_mask):
     """ Test for return of masked_array type. """
 
     with pytest.raises(
