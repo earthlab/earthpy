@@ -122,8 +122,8 @@ def _create_mask(mask_arr, vals):
 
     else:
         raise ValueError(
-            """List of values provided for the mask does 
-                             not exist in your mask array."""
+            """The values provided for the mask do not occur
+            in your mask array."""
         )
 
 
