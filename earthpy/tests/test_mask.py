@@ -18,7 +18,7 @@ def im_mask():
 
 
 def test_arr_provided(im, im_mask):
-    """ Test for arrays provided as image and/or mask input. """
+    """ Test that inputs are numpy arrays. """
 
     an_arr_tup = (2, 3)
     with pytest.raises(
@@ -38,8 +38,18 @@ def test_masked_arr_returned(im, im_mask):
     assert np.ma.is_masked(masked)
 
 
+def test_vals_not_list(im, im_mask):
+    """ Test for return of masked_array type. """
+
+    with pytest.raises(
+        AttributeError, match="Values should be provided as a list"
+    ):
+        mask_pixels(im, mask_arr=im_mask, vals=(4))
+
+
 def test_mask_contains_ones(im, im_mask):
     """A boolean mask without the value 1 fails gracefully."""
+
     im_mask[im_mask > 0] = 0
     with pytest.raises(ValueError, match="Mask requires values of 1"):
         mask_pixels(im, mask_arr=im_mask)
@@ -65,6 +75,7 @@ def test_masked_arr_provided(im, im_mask):
 
 
 def test_boolean_mask(im, im_mask):
+    """If boolean mask provided without vals, a masked arr is returned."""
 
     im_mask[im_mask > 1] = 1
 
@@ -72,8 +83,7 @@ def test_boolean_mask(im, im_mask):
 
 
 def test_user_mask_arr(im, im_mask):
-    """Test to see if user is passing in their own masked array
-    instead of a pixel QA layer and values to mask."""
+    """Test that vals are provided for non boolean mask."""
 
     with pytest.raises(
         ValueError,
