@@ -34,6 +34,7 @@ deploy:
   password:
     secure: MSaRk5RiQFfFvZtoZ6laPZWyvCwoYx6Ev8CpfFeE5lM//sQPl3jTA7Qty1VviM9tku/7YvH/WSolEh4ruNNNkimkLdN+hb3Avoz+n9/OYm7jhmJ2eBpiHQzunBPOaoQ3IQVem85bqi0AR9Zw2he87wbLE6+ngr44RJa/Jck4pL/2LLfmmgKSDkQL3lpquYjvCanTTOA3j7yQkcY9B15Erm9ZBs7jTrkGxNuhvVv3lgwpRLmt5IiQ/LQQnSEA/6/0+/UNIdqNOwF5lfMw5jVc+i1bMTL2hx+xFiFPamXx8YAL5amNY9yBpCHfvHcOGPV7eqK4n2A8oAORdQPxfSxldhVpYuPnhmM8EJPqC3iqQvtEuZare6VhUL5Zq618OpBgC0tJRIKrTN5NgomL0ihUC6/11DLfGnZxKRCR4BbLWCj1guhVuMIMyNmimF7SC6omcxRlEYOxV0QcZTlJ0PvO5dCsxejuVQdgsk80ue0nLtSE9e8FQILSMuDIjidNW1iGLMUWlwp7DdWmGdbTfQrJ7tOWo/kzuOi9AEIPrAJWXecoFLSrqapoBpQvHTBfA5u/QRq8Z8xNdGs0LGqsyyIOISigW6DFrXbiLPpmRAbQfCAt48VuY+h3SS3qA4JGWum0myR1Se55TpXgebDNR8o5aZh6u+S0TSrbiBsjQBwL1TE=
   on:
-    tags: true
-    repo: earthlab/earthpy
-    python: 3.6
+    #tags: true
+    branch: master
+    #repo: earthlab/earthpy
+    #python: 3.6
