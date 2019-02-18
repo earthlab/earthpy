@@ -8,14 +8,14 @@ import pytest
 @pytest.fixture
 def im():
     """Create image arr for masking"""
-    arr = np.array([[0, 1], [2, 3]])
+    arr = np.array([[0, 1, 2], [3, 4, 5]])
     return arr
 
 
 @pytest.fixture
 def im_mask():
     """Create image mask"""
-    arr = np.array([[0, 1], [2, 3]])
+    arr = np.array([[0, 0, 1], [1, 2, 2]])
     return arr
 
 
@@ -74,7 +74,7 @@ def test_masked_arr_provided(im, im_mask):
     elements_out = out.count()
 
     assert np.ma.is_masked(masked_input) and np.ma.is_masked(out)
-    assert elements_in == 3
+    assert elements_in == 4
     assert elements_out == 2
 
 
