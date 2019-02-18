@@ -115,8 +115,6 @@ def _create_mask(mask_arr, vals):
     unique_vals = np.unique(mask_arr).tolist()
 
     if any(num in vals for num in unique_vals):
-        # Mask values from array
-        # This is not working right because 0s just fill in whole array
         temp_mask = np.isin(mask_arr, vals)
         mask_arr[temp_mask] = 1
         mask_arr[~temp_mask] = 0
