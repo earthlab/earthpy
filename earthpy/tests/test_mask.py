@@ -8,13 +8,19 @@ import pytest
 @pytest.fixture
 def im():
     """Create image arr for masking"""
-    return np.random.randint(10, size=(4, 5))
+    arr = np.array(
+        [[0, 1, 8, 7, 5], [3, 8, 8, 7, 0], [3, 0, 0, 9, 9], [5, 5, 7, 4, 5]]
+    )
+    return arr
 
 
 @pytest.fixture
 def im_mask():
     """Create image mask"""
-    return np.random.randint(5, size=(4, 5))
+    arr = np.array(
+        [[0, 1, 1, 0, 2], [1, 4, 4, 0, 1], [0, 0, 3, 4, 3], [4, 1, 2, 0, 3]]
+    )
+    return arr
 
 
 def test_arr_provided(im, im_mask):
