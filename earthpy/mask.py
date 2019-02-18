@@ -95,7 +95,7 @@ def _create_mask(mask_arr, vals):
     mask_arr : numpy array
         An array of the pixel_qa or mask raster of interest.
 
-    vals : list of numbers either int or float
+    vals : list of numbers (int or float)
         A list of values from the pixel qa layer that will be used to create
         the mask for the final return array.
 
