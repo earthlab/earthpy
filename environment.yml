@@ -3,14 +3,9 @@ channels:
   - conda-forge
 dependencies:
   # Core scientific python
-  - codecov
   - numpy
   - matplotlib
   - python=3.6
-  - pyqt
-  - pytest
-  - pytest-cov
-  - seaborn
 
   # Geo stuff
   - geopy
@@ -27,5 +22,3 @@ dependencies:
       # Utilities
       - download
       - mne
-      - sklearn
-      - tqdm

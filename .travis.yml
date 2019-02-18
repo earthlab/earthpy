@@ -1,33 +1,21 @@
-language: python
-python:
-- 3.6
-cache: pip
-before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-- sleep 3
-install:
-- sudo apt-get update
-- wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-- bash miniconda.sh -b -p $HOME/miniconda
-- export PATH="$HOME/miniconda/bin:$PATH"
-- hash -r
-- conda config --set always_yes yes --set changeps1 no
-- conda update -q conda
-- conda info -a
-- conda env create -f environment.yml
-- source activate earthpy-dev
-- conda list
-- python setup.py install
-- pip install -r dev-requirements.txt
-- pip install black
-script:
-  - pytest --doctest-modules --cov=earthpy --rootdir earthpy
-  - make docs
-  - black --check --verbose .
+dist: xenial
 
-after_success:
-- codecov
+language: python
+
+python:
+- "3.5"
+- "3.6"
+- "3.7"
+
+before_install:
+  - sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable --yes
+  - sudo apt-get update
+  - sudo apt-get install -y libspatialindex-dev libgdal-dev python3-tk
+
+install: pip install -U tox-travis
+
+script: tox
+
 deploy:
   provider: pypi
   user: lwasser
