@@ -70,19 +70,20 @@ def test_masked_arr_provided(im, im_mask):
 
     masked_input = np.ma.masked_where(im_mask == 0, im)
     out = mask_pixels(masked_input, im_mask, vals=[1])
-    elements_in = masked_input.count()
-    elements_out = out.count()
+    expected_in_mask = np.array([[True, True, False], [False, False, False]])
+    expected_out_mask = np.array([[True, True, True], [True, False, False]])
 
-    assert np.ma.is_masked(masked_input) and np.ma.is_masked(out)
-    assert elements_in == 4
-    assert elements_out == 2
+    assert np.array_equal(expected_in_mask, masked_input.mask)
+    assert np.array_equal(expected_out_mask, out.mask)
 
 
 def test_boolean_mask(im, im_mask):
     """If boolean mask provided without vals, a masked arr is returned."""
 
     boolean_mask = im_mask > 1
-    assert np.ma.is_masked(mask_pixels(im, boolean_mask))
+    out = mask_pixels(im, boolean_mask)
+    expected_out_mask = np.array([[False, False, False], [False, True, True]])
+    assert np.array_equal(expected_out_mask, out.mask)
 
 
 def test_user_mask_arr(im, im_mask):
