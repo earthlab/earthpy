@@ -106,7 +106,6 @@ def _create_mask(mask_arr, vals):
         and a 0 where no masking will be done.
     """
 
-    # Make sure vals is a list
     try:
         vals.sort()
     except AttributeError:

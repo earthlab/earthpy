@@ -38,13 +38,11 @@ def test_masked_arr_returned(im, im_mask):
     assert np.ma.is_masked(masked)
 
 
-# This is not doing what i would expect it to do.
-# This test doesn't make sense as is.
-# def test_val_list_provided(im, im_mask):
-#    """ Provide a singular value to the vals keyword to raise AttributeError"""
-
-#    with pytest.raises(ValueError):
-#        mask_pixels(im, mask_arr=im_mask, vals=0)
+def test_mask_contains_ones(im, im_mask):
+    """A boolean mask without the value 1 fails gracefully."""
+    im_mask[im_mask > 0] = 0
+    with pytest.raises(ValueError, match="Mask requires values of 1"):
+        mask_pixels(im, mask_arr=im_mask)
 
 
 def test_mask_vals_in_arr(im, im_mask):
@@ -58,12 +56,12 @@ def test_mask_vals_in_arr(im, im_mask):
     ):
         mask_pixels(im, im_mask_no_ones, [3, 4])
 
-    # def test_boolean_mask_provided(im, im_mask):
+
+def test_masked_arr_provided(im, im_mask):
     """If a boolean arr is provided, mask returns masked arr"""
 
-    # im_with_mask = np.ma.masked_where(im_mask < 2, im)
-    # im_result = mask_pixels(im, im_mask)
-    # assert np.ma.is_masked(im_result)
+    masked_im = np.ma.masked_where(im_mask < 2, im)
+    assert np.ma.is_masked(mask_pixels(masked_im, im_mask, vals=[4]))
 
 
 def test_boolean_mask(im, im_mask):
