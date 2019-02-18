@@ -21,6 +21,8 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -111,3 +113,4 @@ earthpy/ignored_script.py
 
 # OS stuff
 .DS_Store
+earthpy/tests/test_ignored_script.py

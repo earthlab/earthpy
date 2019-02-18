@@ -13,7 +13,7 @@ from skimage import exposure
 import earthpy.spatial as es
 
 
-def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
+def colorbar(mapobj, size="3%", pad=0.09):
     """Adjusts the height of a colorbar to match the axis height. Note that
     this function will not work properly using matplotlib v 3.0.0 in Jupyter
     or when exporting an image. Be sure to update to 3.0.1.
@@ -47,9 +47,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
         ...     dem = src.read()
         ...     fig, ax = plt.subplots(figsize = (10, 5))
         >>> im = ax.imshow(dem.squeeze())
-        >>> ep.colorbar(im)  #doctest: +ELLIPSIS
+        >>> ep.colorbar(im)
         <matplotlib.colorbar.Colorbar object at 0x...>
-        >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+        >>> ax.set(title="Rocky Mountain National Park DEM")
         [Text(...'Rocky Mountain National Park DEM')]
         >>> ax.set_axis_off()
         >>> plt.show()
@@ -113,7 +113,7 @@ def plot_bands(
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
-        ...                   figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...                   figsize=(8, 3))
         (<Figure size ... with 3 Axes>, ...)
     """
 
@@ -174,6 +174,32 @@ def plot_bands(
         return fig, ax
 
 
+def _stretch_im(arr, str_clip):
+    """Stretch an image array in numpy format using a specified clip value
+
+    Parameters
+    ----------
+    arr: numpy array
+        N-dimensional array in rasterio band order (bands, rows, columns)
+    str_clip: int
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
+
+    Returns
+    ----------
+    arr: numpy array with values stretched to the specified clip %
+
+    """
+    s_min = str_clip
+    s_max = 100 - str_clip
+    arr_rescaled = np.zeros_like(arr)
+    for ii, band in enumerate(arr):
+        lower, upper = np.percentile(band, (s_min, s_max))
+        arr_rescaled[ii] = exposure.rescale_intensity(
+            band, in_range=(lower, upper)
+        )
+    return arr_rescaled.copy()
+
+
 def plot_rgb(
     arr,
     rgb=(0, 1, 2),
@@ -224,13 +250,13 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
-        >>> ep.plot_rgb(img_array) #doctest: +ELLIPSIS
+        >>> ep.plot_rgb(img_array)
         (<Figure size 1000x1000 with 1 Axes>, ...)
 
     """
 
     if len(arr.shape) != 3:
-        raise Exception(
+        raise ValueError(
             """Input needs to be 3 dimensions and in rasterio
                            order with bands first"""
         )
@@ -239,15 +265,7 @@ def plot_rgb(
     rgb_bands = arr[rgb, :, :]
 
     if stretch:
-        s_min = str_clip
-        s_max = 100 - str_clip
-        arr_rescaled = np.zeros_like(rgb_bands)
-        for ii, band in enumerate(rgb_bands):
-            lower, upper = np.percentile(band, (s_min, s_max))
-            arr_rescaled[ii] = exposure.rescale_intensity(
-                band, in_range=(lower, upper)
-            )
-        rgb_bands = arr_rescaled.copy()
+        rgb_bands = _stretch_im(rgb_bands, str_clip)
 
     # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
@@ -319,7 +337,7 @@ def hist(
         ...     colors=['r', 'g', 'b'],
         ...     title=['Red', 'Green', 'Blue'],
         ...     cols=3,
-        ...     figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...     figsize=(8, 3))
         (<Figure size 800x300 with 3 Axes>, ...)
     """
 
