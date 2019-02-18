@@ -221,7 +221,7 @@ def mask_pixels(arr, mask_arr, vals=None):
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array.")
 
-    if vals is not None:
+    if vals:
         cover_mask = _create_mask(mask_arr, vals)
     else:
         # Check to make sure the mask_arr is a boolean

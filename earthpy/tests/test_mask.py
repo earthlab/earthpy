@@ -48,8 +48,7 @@ def test_masked_arr_returned(im, im_mask):
 
 
 def test_mask_vals_in_arr(im, im_mask):
-    """A mask that is provided with values not in the mask arr fails
-    gracefully"""
+    """If vals are not found in mask_arr, fail gracefully"""
 
     im_mask_no_ones = im_mask * 0
     with pytest.raises(
@@ -59,15 +58,12 @@ def test_mask_vals_in_arr(im, im_mask):
     ):
         mask_pixels(im, im_mask_no_ones, [3, 4])
 
+    # def test_boolean_mask_provided(im, im_mask):
+    """If a boolean arr is provided, mask returns masked arr"""
 
-def test_im_with_mask_as_masked_array(im, im_mask):
-    """Test that a user provides an array with a mask already.
-       Does it merge properly?
-       and return a masked array with the values expected?"""
-
-    im_with_mask = np.ma.masked_where(im_mask < 2, im)
-    im_result = mask_pixels(im_with_mask, mask_arr=im_mask, vals=[0, 4])
-    assert np.ma.is_masked(im_result)
+    # im_with_mask = np.ma.masked_where(im_mask < 2, im)
+    # im_result = mask_pixels(im, im_mask)
+    # assert np.ma.is_masked(im_result)
 
 
 def test_boolean_mask(im, im_mask):
@@ -83,8 +79,6 @@ def test_user_mask_arr(im, im_mask):
 
     with pytest.raises(
         ValueError,
-        match="""You have provided a mask_array with no values to mask. Please
-                 either provide a mask_array of type bool, or provide values
-                 to be used to create a mask.""",
+        match="""You have provided a mask_array with no values to mask""",
     ):
         mask_pixels(im, im_mask)
