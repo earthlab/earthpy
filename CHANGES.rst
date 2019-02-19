@@ -1,4 +1,4 @@
-Earthpy Release notes
+# EarthPy release notes
 =====================
 
 January 2019 Updates
