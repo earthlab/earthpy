@@ -1,11 +1,11 @@
-Get Started With Earthpy
+Get Started With EarthPy
 ========================
 
-Earthpy is a python package devoted to working with spatial and remote sensing
-data. Earthpy also contains an IO module that supports downloading data for the
-earth lab earth analytics courses.
+EarthPy is a python package devoted to working with spatial and remote sensing
+data. EarthPy also contains an IO module that supports downloading data for the
+Earth Lab earth analytics courses.
 
-Earthpy Modules
+EarthPy Modules
 ---------------
 
 - Spatial: Various functions for loading, manipulating, and displaying raster data
