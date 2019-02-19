@@ -6,7 +6,6 @@ DISTNAME = "earthpy"
 DESCRIPTION = "A set of helper functions to make working with spatial data in open source tools easier. This package is maintained by Earth Lab and was originally designed to support the earth analytics education program."
 MAINTAINER = "Leah Wasser"
 MAINTAINER_EMAIL = "leah.wasser@colorado.edu"
-VERSION = "VERSION='0.6.4'"
 
 
 # read the contents of your README file
@@ -24,7 +23,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version=VERSION,
+        version="0.6.4",
         packages=["earthpy"],
         install_requires=[
             "tqdm",
