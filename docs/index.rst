@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-EarthpPy: A Python Package for Earth Data
+EarthPy: A Python Package for Earth Data
 ========================================
+
 `EarthPy` is a python package that makes it easier to plot and work with spatial
 raster and vector data using open source tools. Earthpy depends upon `geopandas`
 which has a focus on vector data and `rasterio` with facilitates input and
@@ -14,7 +15,7 @@ EarthPy's goal is to make working with spatial data easier for scientists.
 Contributions to `EarthPy` are welcome.
 
 EarthPy User Guide
-====================
+==================
 
 .. toctree::
    :maxdepth: 2

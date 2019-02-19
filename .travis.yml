@@ -23,7 +23,7 @@ install:
 - pip install black
 script:
 - pytest --doctest-modules --cov=earthpy --rootdir earthpy
-- make docs
+- make -B docs
 - black --check --verbose .
 after_success:
 - codecov
