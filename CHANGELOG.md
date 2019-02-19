@@ -17,7 +17,7 @@ all of your old code accordingly. Changes include:
     * Arguments are now provided as normalized_diff(b1, b2)
     * Math will be calculated (b1-b2) / (b1+b2)
     * Example: `ndvi = es.normalized_diff(b1=nir_band, b2=red_band)`
-- `normalized_diff` now:
+- `normalized_diff()` now:
     * returns unmasked array by default
     * returns masked array if there are nan values present
     * converts infinity values that result from division by zero to nan values
