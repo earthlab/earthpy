@@ -254,7 +254,7 @@ def _stack_bands(sources, write_raster=False, dest=None):
         for src in sources:
             src.profile
 
-    except ValueError as ve:
+    except Exception as e:
         raise ValueError("The sources object should be Dataset Reader")
         sys.exit()
 
