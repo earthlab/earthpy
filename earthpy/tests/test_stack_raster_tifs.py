@@ -19,5 +19,5 @@ def test_stack_raster_tifs(b1_b2_arrs):
     b1, b2 = b1_b2_arrs
 
     # Check Warning for Deprecation
-    with pytest.raises(Warning):
+    with pytest.raises(Warning, match="stack_raster_tifs is deprecated"):
         es.stack_raster_tifs([b1, b2], out_path="test.tif")
