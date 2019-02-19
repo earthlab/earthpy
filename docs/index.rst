@@ -24,7 +24,7 @@ Earthpy's User Guide
    contributing
    contributors
    modules
-   change-log
+   changelog
 
 Indices and Tables
 ==================
