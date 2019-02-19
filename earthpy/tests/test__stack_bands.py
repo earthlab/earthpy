@@ -1,14 +1,8 @@
 """ Tests for the _stack_bands() method """
 
 import numpy as np
-import numpy.ma as ma
-import pandas as pd
 import pytest
-import geopandas as gpd
-import rasterio as rio
-from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
-import os
 
 
 @pytest.fixture
@@ -19,13 +13,13 @@ def b1_b2_arrs():
 
 
 def test__stack_bands(b1_b2_arrs):
-    """Unit test for _stack_bands()."""
+    """_stack_bands input should be of type DatasetReader."""
 
     # Test data
     b1, b2 = b1_b2_arrs
 
     # Check ValueError for Dataset Reader
     with pytest.raises(
-        ValueError, match="The sources object should be Dataset Reader"
+        AttributeError, match="The sources object should be Dataset Reader"
     ):
         es._stack_bands([b1, b2])
