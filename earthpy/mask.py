@@ -87,8 +87,7 @@ pixel_flags = {
 
 
 def _create_mask(mask_arr, vals):
-    """Take an input single band mask layer such as a pixel_qa
-    layer for MODIS or Landsat and apply a mask given a range of values to mask.
+    """Take an single band mask layer and create a mask given a range of values.
 
     Parameters
     -----------
@@ -128,7 +127,7 @@ def _create_mask(mask_arr, vals):
 
 
 def _apply_mask(arr, input_mask):
-    """Applies a single dimension mask to the provided array.
+    """Apply a single dimension mask to the provided array.
 
     Parameters
     -----------
@@ -161,10 +160,14 @@ def _apply_mask(arr, input_mask):
 
 
 def mask_pixels(arr, mask_arr, vals=None):
-    """Take an input array to be masked, single band mask layer such as a
-    pixel_qa layer for MODIS or Landsat, and apply a mask given a range of
-    values to mask. This function can also be passed a previously created
-    mask in place of a qa layer and a list of values.
+    """Apply a mask to an input array.
+
+    For three parameters, input an input array to be masked,
+    a single band mask layer (e.g. pixel_qa layer for MODIS or Landsat),
+    and a range of values to mask. Function creates mask from value list
+    that are present in the band mask layer. For two parameters, input an
+    array to be masked and a previously created mask. This option uses
+    the second parameter as the mask.
 
     Parameters
     -----------

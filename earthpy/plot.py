@@ -14,8 +14,9 @@ import earthpy.spatial as es
 
 
 def colorbar(mapobj, size="3%", pad=0.09):
-    """Adjusts the height of a colorbar to match the axis height. Note that
-    this function will not work properly using matplotlib v 3.0.0 in Jupyter
+    """Adjust colorbar height to match the axis height.
+
+    Note: this function will not work properly using matplotlib v 3.0.0 in Jupyter
     or when exporting an image. Be sure to update to 3.0.1.
 
     Parameters
@@ -74,9 +75,7 @@ def colorbar(mapobj, size="3%", pad=0.09):
 def plot_bands(
     arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
 ):
-    """Plot each layer in a raster stack read from rasterio in
-    (band, row , col) order as a numpy array. plot_bands will create an
-    individual plot for each band in a grid.
+    """Individually plot each band from rasterio order(band, row , col) stack.
 
     Parameters
     ----------
@@ -175,7 +174,7 @@ def plot_bands(
 
 
 def _stretch_im(arr, str_clip):
-    """Stretch an image array in numpy format using a specified clip value
+    """Stretch an image array using a specified clip value.
 
     Parameters
     ----------
@@ -386,9 +385,10 @@ def hist(
 
 def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
-    Take a defined matplotlib colormap, and create a list of colors based on
-    a set of values. This is useful when you need to plot a series of
-    classified numpy arrays that are missing some of the sequential classes.
+    Take a matplotlib colormap and create a list of colors.
+
+    Useful when you need to plot a series of classified numpy arrays that are
+    missing some of the sequential classes.
 
     Parameters
     ----------
@@ -421,8 +421,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
 
 def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
-    """Create a custom legend with a box for each class in a raster using the
-       image object, the unique classes in the image and titles for each class.
+    """Create a custom legend with a box for each class in a raster.
 
     Parameters
     ----------
