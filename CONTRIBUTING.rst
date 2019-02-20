@@ -88,7 +88,7 @@ Ensure that the tests pass, and the documentation builds successfully::
 
 To test against multiple versions of python, you can use tox.
 Note that if you are using conda - even with virtualenv - you may need to
-install tox-conda (via ``pip install tox-conda``) for tox to work correctly.
+install tox-conda via ``pip install tox-conda``.
 Otherwise, you may get ``InterpreterNotFound`` errors when running tox.
 
 Running tox is as simple as::
