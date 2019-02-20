@@ -33,4 +33,4 @@ install:
 
 test_script:
   - conda list
-- pytest
+  - pytest
