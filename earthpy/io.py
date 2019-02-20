@@ -60,6 +60,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+        "california-rim-fire": (
+        "https://ndownloader.figshare.com/files/14419310",
+        ".",
+        "zip",
+    ),
 }
 
 ALLOWED_FILE_TYPES = ["zip", "tar", "tar.gz", "file"]
