@@ -1,5 +1,6 @@
 bumpversion
 codecov
+m2r
 pre-commit
 pytest
 pytest-cov
