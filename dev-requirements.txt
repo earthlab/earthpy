@@ -1,4 +1,5 @@
 bumpversion
+m2r
 pre-commit
 sphinx==1.8.0
 sphinx-autobuild==0.7.1
