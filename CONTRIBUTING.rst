@@ -2,8 +2,9 @@
 Contributing Guidelines
 =======================
 
-We welcome contributions to EarthPy. They are more likely to
-be accepted if they follow the guidelines below.
+We welcome contributions of many kinds to EarthPy.
+When contributing, please follow the guidelines below and adhere to the
+`EarthPy Code of Conduct <code-of-conduct.html>`_.
 
 At this stage of development, we are developing a set of
 usable wrapper functions that help make working with earth
