@@ -51,20 +51,20 @@ Create an environment
 
 Using conda, there are two options.
 
-1. The first and easiest option is to create an environment from the
+1. The easiest option is to create an environment from the
 ``environment.yml`` file.
 Note that this will only allow you to test against one version of python
-locally, but this is the recommended option on Windows::
+locally, but this is the recommended option on Windows and MacOS::
 
     $ conda env create -f environment.yml
-    $ source activate earthpy-dev
+    $ conda activate earthpy-dev
 
 2. If you are comfortable debugging local system library installations, and
 want to be able to test against multiple versions of python locally, you can
 create an empty conda environment::
 
     $ conda create -n earthpy-dev python=3.7
-    $ source activate earthpy-dev
+    $ conda activate earthpy-dev
 
 Or, if you prefer to use virtualenv rather than conda::
 
