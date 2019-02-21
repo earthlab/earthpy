@@ -48,12 +48,24 @@ local filesystem::
 Create an environment
 ^^^^^^^^^^^^^^^^^^^^^
 
-Using conda::
+Using conda, there are two options.
+
+1. The first and easiest option is to create an environment from the
+``environment.yml`` file.
+Note that this will only allow you to test against one version of python
+locally, but this is the recommended option on Windows::
+
+    $ conda env create -f environment.yml
+    $ source activate earthpy-dev
+
+2. If you are comfortable debugging local system library installations, and
+want to be able to test against multiple versions of python locally, you can
+create an empty conda environment::
 
     $ conda create -n earthpy-dev python=3.7
     $ source activate earthpy-dev
 
-Or, using virtualenv::
+Or, if you prefer to use virtualenv rather than conda::
 
     $ virtualenv earthpy-dev
     $ source earthpy-dev/bin/activate
@@ -61,7 +73,7 @@ Or, using virtualenv::
 Install the package
 ^^^^^^^^^^^^^^^^^^^
 
-Once the environment is activated, install EarthPy in editable
+Once your earthpy-dev environment is activated, install EarthPy in editable
 mode, along with the development requirements and pre-commit hooks::
 
     $ pip install -e .
@@ -86,14 +98,28 @@ Ensure that the tests pass, and the documentation builds successfully::
     $ pytest
     $ make docs
 
+**Note to Windows users**
+
+To use ``make`` you will need to install and configure GNU Make for Windows.
+
+Optional: testing multiple python versions locally
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 To test against multiple versions of python, you can use tox.
-Note that if you are using conda - even with virtualenv - you may need to
-install tox-conda via ``pip install tox-conda``.
-Otherwise, you may get ``InterpreterNotFound`` errors when running tox.
+This step is optional, as tox will test against multiple versions as part of
+EarthPy's continuous integration pipeline.
+To use tox, you must be able to install EarthPy's dependencies without
+using the ``environment.yml`` file, i.e., you must be able to install EarthPy
+and its dependencies with pip.
 
 Running tox is as simple as::
 
     $ tox
+
+If you are using conda and you get get
+``InterpreterNotFound`` errors when running tox, you may need to
+``pip install tox-conda``.
+
 
 6. Commit and push your changes
 -------------------------------
