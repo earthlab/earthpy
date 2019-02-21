@@ -101,7 +101,8 @@ Ensure that the tests pass, and the documentation builds successfully::
 
 **Note to Windows users**
 
-To use ``make`` you will need to install and configure GNU Make for Windows.
+To use ``make`` you will need to install and configure GNU Make for Windows,
+e.g., using chocolatey: https://chocolatey.org/packages/make
 
 Optional: testing multiple python versions locally
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
