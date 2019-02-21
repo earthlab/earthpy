@@ -18,7 +18,6 @@ if __name__ == "__main__":
     setup(
         name=DISTNAME,
         maintainer=MAINTAINER,
-        include_package_data=True,
         maintainer_email=MAINTAINER_EMAIL,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
