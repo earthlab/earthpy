@@ -402,6 +402,13 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     list
         A list of colors based on the given set of values in matplotlib
         format.
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+
+
     """
     if not nclasses:
         nclasses = len(unique_vals)
@@ -441,8 +448,25 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     Returns
     ----------
     matplotlib.pyplot.legend
-
         A matplotlib legend object to be placed on the plot.
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+    >>> import matplotlib.pyplot as plt
+    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+    >>> bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
+    >>> im_arr_bin = np.digitize(im_arr, bins)
+    >>> cat_names = ["Enhanced Regrowth",
+                  "Unburned",
+                  "Low Severity",
+                  "Moderate Severity",
+                  "High Severity"]
+    >>> f, ax = plt.subplots()
+    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+    >>> im_ax = ax.imshow(im_arr_bin)
+    >>>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
     """
 
     try:
