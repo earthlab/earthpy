@@ -87,7 +87,7 @@ pixel_flags = {
 
 
 def _create_mask(mask_arr, vals):
-    """Take an single band mask layer and create a mask given a range of values.
+    """Mask specific values in a 1-dimensional numpy array.
 
     Parameters
     -----------
@@ -127,7 +127,7 @@ def _create_mask(mask_arr, vals):
 
 
 def _apply_mask(arr, input_mask):
-    """Apply a single dimension mask to the provided array.
+    """Apply a mask to each band in the provided array.
 
     Parameters
     -----------
@@ -162,12 +162,13 @@ def _apply_mask(arr, input_mask):
 def mask_pixels(arr, mask_arr, vals=None):
     """Apply a mask to an input array.
 
-    For three parameters, input an input array to be masked,
-    a single band mask layer (e.g. pixel_qa layer for MODIS or Landsat),
-    and a range of values to mask. Function creates mask from value list
-    that are present in the band mask layer. For two parameters, input an
-    array to be masked and a previously created mask. This option uses
-    the second parameter as the mask.
+    Masks values in an n-dimensional input array (arr) based on input 1-dimensional
+    array (mask_arr). If mask_arr is provided in a boolean format, it is used as a mask.
+    If mask_arr is provided as a non-boolean format and values to mask (vals) are provided,
+    a Boolean masked array is created from the mask_arr and the indicated vals to mask, and
+    then this new 1-dimensional masked array is used to mask the input arr.
+
+    This function is useful when masking cloud and other unwanted pixels.
 
     Parameters
     -----------

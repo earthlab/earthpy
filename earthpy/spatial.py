@@ -58,7 +58,9 @@ def extent_to_json(ext_obj):
 
 
 def normalized_diff(b1, b2):
-    """Take two same shaped numpy arrays and calculate the normalized difference.
+    """Take two n-dimensional numpy arrays and calculate the normalized difference.
+
+    Math will be calculated (b1-b2) / (b1 + b2).
 
     Parameters
     ----------
@@ -116,7 +118,7 @@ def normalized_diff(b1, b2):
 
 # TODO: include a no data value here if provided
 def stack(band_paths, out_path=""):
-    """Convert a list of raster paths into a raster stack numpy array.
+    """Convert a list of raster paths into a raster stack numpy darray.
 
     Parameters
     ----------

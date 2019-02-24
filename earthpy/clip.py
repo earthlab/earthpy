@@ -4,11 +4,11 @@
 
 
 def _clip_points(shp, clip_obj):
-    """Clip point geometry using geopandas.
+    """Clip point geometry to the clip_obj GeoDataFrame extent.
 
-    Take an input point GeoDataFrame that will be clipped to the clip_obj
-    GeoDataFrame. Points that intersect with the geometry of clip_obj are extracted
-    and returned.
+    Clip an input point GeoDataFrame to the polygon extent of the clip_obj
+    parameter. Points that intersect the clip_obj geometry are extracted with
+    associated attributes and returned.
 
     Parameters
     ----------
@@ -29,11 +29,11 @@ def _clip_points(shp, clip_obj):
 
 
 def _clip_line_poly(shp, clip_obj):
-    """Clip line and polygon data using geopandas.
+    """Clip line and polygon geometry to the clip_obj GeoDataFrame extent.
 
-    A spatial index is created around the shp input and is then intersected
-    with the bounding box of the clip_obj. Data within this intersection is
-    extracted from shp and the resulting subset is the output of the function.
+    Clip an input line or polygon to the polygon extent of the clip_obj
+    parameter. Lines or Polygons that intersect the clip_obj geometry are
+    extracted with associated attributes and returned.
 
     Parameters
     ----------
@@ -69,11 +69,9 @@ def _clip_line_poly(shp, clip_obj):
 
 
 def clip_shp(shp, clip_obj):
-    """Clip points, lines, or polygon geometries.
+    """Clip points, lines, or polygon geometries to the clip_obj extent.
 
-    Both layers must be in the same Coordinate Reference System (CRS).
-
-    Point, line, or polygon data in geopandas geodataframe format will
+    Both layers must be in the same Coordinate Reference System (CRS) and will
     be clipped to the full extent of the clip object.
 
     If there are multiple polygons in clip_obj,

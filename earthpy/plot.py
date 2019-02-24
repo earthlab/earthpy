@@ -14,10 +14,9 @@ import earthpy.spatial as es
 
 
 def colorbar(mapobj, size="3%", pad=0.09):
-    """Adjust colorbar height to match the axis height.
+    """Adjust colorbar height to match the matplotlib axis height.
 
-    Note: this function will not work properly using matplotlib v 3.0.0 in Jupyter
-    or when exporting an image. Be sure to update to 3.0.1.
+    NOTE: This function requires matplotlib v 3.0.1 or greater or v 2.9 or lower to run properly.
 
     Parameters
     ----------
@@ -75,7 +74,9 @@ def colorbar(mapobj, size="3%", pad=0.09):
 def plot_bands(
     arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
 ):
-    """Individually plot each band from rasterio order(band, row , col) stack.
+    """Plot each band in a numpy array in its own axis.
+
+    Assumes band order (band, row, col).
 
     Parameters
     ----------
@@ -174,7 +175,7 @@ def plot_bands(
 
 
 def _stretch_im(arr, str_clip):
-    """Stretch an image array using a specified clip value.
+    """Stretch an image in numpy ndarray format using a specified clip value.
 
     Parameters
     ----------
@@ -385,10 +386,7 @@ def hist(
 
 def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
-    Take a matplotlib colormap and create a list of colors.
-
-    Useful when you need to plot a series of classified numpy arrays that are
-    missing some of the sequential classes.
+    Convert a matplotlib named colormap into a discrete list of n-colors in RGB format.
 
     Parameters
     ----------
