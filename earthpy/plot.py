@@ -466,7 +466,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     >>> f, ax = plt.subplots()
     >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
     >>> im_ax = ax.imshow(im_arr_bin)
-    >>>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
     """
 
     try:
