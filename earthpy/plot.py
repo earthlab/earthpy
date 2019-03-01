@@ -458,11 +458,8 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     >>> im_arr = np.random.uniform(-2, 1, (15, 15))
     >>> bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
     >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Enhanced Regrowth",
-                  "Unburned",
-                  "Low Severity",
-                  "Moderate Severity",
-                  "High Severity"]
+    >>> cat_names = ["Enhanced Regrowth", "Unburned", "Low Severity",
+    >>> "Moderate Severity", "High Severity"]
     >>> f, ax = plt.subplots()
     >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
     >>> im_ax = ax.imshow(im_arr_bin)
