@@ -456,10 +456,9 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     >>> import earthpy.plot as ep
     >>> import matplotlib.pyplot as plt
     >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-    >>> bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
+    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
     >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Enhanced Regrowth", "Unburned", "Low Severity",
-    >>> "Moderate Severity", "High Severity"]
+    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
     >>> f, ax = plt.subplots()
     >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
     >>> im_ax = ax.imshow(im_arr_bin)
