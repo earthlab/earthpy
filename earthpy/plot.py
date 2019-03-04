@@ -14,9 +14,9 @@ import earthpy.spatial as es
 
 
 def colorbar(mapobj, size="3%", pad=0.09):
-    """Adjusts the height of a colorbar to match the axis height. Note that
-    this function will not work properly using matplotlib v 3.0.0 in Jupyter
-    or when exporting an image. Be sure to update to 3.0.1.
+    """Adjust colorbar height to match the matplotlib axis height.
+
+    NOTE: This function requires matplotlib v 3.0.1 or greater or v 2.9 or lower to run properly.
 
     Parameters
     ----------
@@ -74,9 +74,9 @@ def colorbar(mapobj, size="3%", pad=0.09):
 def plot_bands(
     arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
 ):
-    """Plot each layer in a raster stack read from rasterio in
-    (band, row , col) order as a numpy array. plot_bands will create an
-    individual plot for each band in a grid.
+    """Plot each band in a numpy array in its own axis.
+
+    Assumes band order (band, row, col).
 
     Parameters
     ----------
@@ -175,7 +175,7 @@ def plot_bands(
 
 
 def _stretch_im(arr, str_clip):
-    """Stretch an image array in numpy format using a specified clip value
+    """Stretch an image in numpy ndarray format using a specified clip value.
 
     Parameters
     ----------
@@ -386,9 +386,7 @@ def hist(
 
 def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
-    Take a defined matplotlib colormap, and create a list of colors based on
-    a set of values. This is useful when you need to plot a series of
-    classified numpy arrays that are missing some of the sequential classes.
+    Convert a matplotlib named colormap into a discrete list of n-colors in RGB format.
 
     Parameters
     ----------
@@ -404,6 +402,13 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     list
         A list of colors based on the given set of values in matplotlib
         format.
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+
+
     """
     if not nclasses:
         nclasses = len(unique_vals)
@@ -421,8 +426,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
 
 
 def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
-    """Create a custom legend with a box for each class in a raster using the
-       image object, the unique classes in the image and titles for each class.
+    """Create a custom legend with a box for each class in a raster.
 
     Parameters
     ----------
@@ -444,8 +448,21 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     Returns
     ----------
     matplotlib.pyplot.legend
-
         A matplotlib legend object to be placed on the plot.
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+    >>> import matplotlib.pyplot as plt
+    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+    >>> im_arr_bin = np.digitize(im_arr, bins)
+    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+    >>> f, ax = plt.subplots()
+    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+    >>> im_ax = ax.imshow(im_arr_bin)
+    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
     """
 
     try:
