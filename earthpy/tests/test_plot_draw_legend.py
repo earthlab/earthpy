@@ -115,7 +115,7 @@ def test_colors(binned_array_3bins):
     # NOTE: Do I know for sure things are rendering in the right order?
     legend_cols = [i.get_facecolor() for i in the_legend.get_patches()]
     # Get the array and cmap from axis object
-    cmap_name = im.axes.get_images()[0].get_cmap().name
+    cmap_name = list(im.axes.get_images()[0].get_cmap().name)
     unique_vals = np.unique(im.get_array().data)
     image_colors = ep.make_col_list(unique_vals, cmap=cmap_name)
 
