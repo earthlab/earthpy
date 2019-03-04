@@ -26,6 +26,7 @@ EarthPy User Guide
    contributors
    modules
    change-log
+   code-of-conduct
 
 Indices and Tables
 ==================
