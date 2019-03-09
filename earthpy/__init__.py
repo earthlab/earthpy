@@ -1,17 +1,11 @@
 """Utility functions for the working with spatial data."""
 
-from .io import EarthlabData  # , list_files
-from download import download
+from pkg_resources import resource_string
 import json
-import os.path as op
-from . import utils, spatial
+from .io import EarthlabData
+
 
 data = EarthlabData()
-
-# This EPSG mapping converted from:
-# https://github.com/jswhit/pyproj/blob/master/lib/pyproj/data/epsg
-
-from pkg_resources import resource_string
 
 epsg = json.loads(
     resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
