@@ -77,17 +77,37 @@ class EarthlabData(object):
     """
     Data storage and retrieval functionality for Earthlab.
 
+    An object of this class is available upon importing earthpy as
+    ``earthpy.data`` that writes data files to the path:
+    ``~/earth-analytics/data/``.
+
     Parameters
     ----------
     path : string | None
-        The path where data is stored.
+        The path where data is stored. NOTE: this defaults to the directory
+        ``~/earth-analytics/data/``.
+
+    Examples
+    --------
+    List datasets that are available for download, using default object:
+
+        >>> import earthpy
+        >>> earthpy.data
+        Available Datasets: ['california-rim-fire', ...]
+
+    Specify a directory when instantiating a new object:
+
+        >>> import earthpy.io as eio
+        >>> data = eio.EarthlabData('.')
+        >>> data
+        Available Datasets: ['california-rim-fire', ...]
     """
 
     def __init__(self, path=None):
         if path is None:
             path = op.join(HOME, DATA_NAME)
         self.path = path
-        self.data_keys = list(DATA_URLS.keys())
+        self.data_keys = sorted(list(DATA_URLS.keys()))
 
     def __repr__(self):
         s = "Available Datasets: {}".format(self.data_keys)
@@ -109,6 +129,7 @@ class EarthlabData(object):
         url : str
             A URL to fetch into the data directory. Use this for ad-hoc dataset
             downloads. Note: ``key`` and ``url`` are mutually exclusive.
+            Currently this is only tested against figshare URLs.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
@@ -117,6 +138,18 @@ class EarthlabData(object):
         -------
         path_data : str
             The path to the downloaded data.
+
+        Examples
+        --------
+        Download a dataset using a key:
+
+            >>> earthpy.data.get_data('california-rim-fire') # doctest: +SKIP
+
+        Or, download a dataset using a figshare URL:
+
+            >>> url = 'https://ndownloader.figshare.com/files/12395030'
+            >>> earthpy.data.get_data(url=url) # doctest: +SKIP
+
         """
         if key is not None and url is not None:
             raise ValueError(
@@ -124,13 +157,13 @@ class EarthlabData(object):
                 "set at the same time."
             )
         if key is None and url is None:
-            print("Available datasets: {}".format(list(DATA_URLS.keys())))
+            print(self.__repr__())
             return
 
         if key is not None:
             if key not in DATA_URLS:
-                raise ValueError(
-                    "Don't understand key "
+                raise KeyError(
+                    "Key " + key + " not found in earthlab.io.DATA_URLS. "
                     "{}\nChoose one of {}".format(key, DATA_URLS.keys())
                 )
 
@@ -141,8 +174,16 @@ class EarthlabData(object):
             # try and workout the filename and file type
             fname = None
             r = requests.head(url)
-            content_disposition = r.headers["content-disposition"].split(";")
-            for c in content_disposition:
+            try:
+                content_disposition = r.headers["content-disposition"]
+            except KeyError:
+                raise KeyError(
+                    "content-disposition was not found in "
+                    "headers. The get_data method currently is only"
+                    "tested for figshare URLs. See the help for "
+                    "get_data for example usage."
+                )
+            for c in content_disposition.split(";"):
                 if c.startswith("filename="):
                     fname = c.split("=")[1]
                     break
@@ -245,6 +286,13 @@ def path_to_example(dataset):
     Returns
     -------
     A file path (string) to the dataset
+
+    Example
+    -------
+
+        >>> import earthpy.io as eio
+        >>> eio.path_to_example('rmnp-dem.tif')
+        '...rmnp-dem.tif'
     """
     earthpy_path = os.path.split(earthpy.__file__)[0]
     data_dir = os.path.join(earthpy_path, "example-data")
