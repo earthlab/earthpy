@@ -234,44 +234,6 @@ class EarthlabData(object):
         return data_paths
 
 
-# Potential functionality for website build.
-# Move to new utils package
-
-
-def list_files(path, depth=3):
-    """
-    List files in a directory up to a specified depth.
-
-    Parameters
-    ----------
-    path : str
-        A path to a folder whose contents you want to list recursively.
-    depth : int
-        The depth of files / folders you want to list inside of ``path``.
-    """
-    if not os.path.isdir(path):
-        raise ValueError("path: {} is not a directory".format(path))
-    depth_str_base = "  "
-    if not path.endswith(os.sep):
-        path = path + os.sep
-
-    for ii, (i_path, folders, files) in enumerate(os.walk(path)):
-        folder_name = op.basename(i_path)
-        path_wo_base = i_path.replace(path, "")
-        this_depth = len(path_wo_base.split("/"))
-        if this_depth > depth:
-            continue
-
-        # Define the string for this level
-        depth_str = depth_str_base * this_depth
-        print(depth_str + folder_name)
-
-        if this_depth + 1 > depth:
-            continue
-        for ifile in files:
-            print(depth_str + depth_str_base + ifile)
-
-
 def path_to_example(dataset):
     """ Construct a file path to an example dataset.
 
