@@ -178,6 +178,13 @@ def test_arbitrary_url_zip_download(eld):
     assert dir_has_contents
 
 
+@pytest.mark.vcr()
+def test_url_download_w_content_disposition(eld):
+    """ Test arbitrary URL download with content-disposition. """
+    file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
+    assert os.path.isfile(file)
+
+
 def test_invalid_data_type(eld):
     """ Raise errors for invalid data types. """
     eio.DATA_URLS["invalid-data-type"] = [
