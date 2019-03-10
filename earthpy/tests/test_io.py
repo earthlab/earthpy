@@ -143,7 +143,7 @@ def test_valid_download_zip(eld):
 
 @pytest.mark.vcr()
 def test_replace_arg_prevents_overwrite(eld):
-    """ If replace=True, existing files should not be overwritten. """
+    """ If replace=False, do not replace existing files. """
     file1 = eld.get_data("little-text-file")
     time_modified1 = os.path.getmtime(file1)
     file2 = eld.get_data("little-text-file", replace=False)
@@ -153,7 +153,7 @@ def test_replace_arg_prevents_overwrite(eld):
 
 @pytest.mark.vcr()
 def test_replace_arg_allows_overwrite(eld):
-    """ If replace=False, existing files should be overwritten. """
+    """ If replace=True, replace existing files. """
     file1 = eld.get_data("little-text-file")
     time_modified1 = os.path.getmtime(file1)
     file2 = eld.get_data("little-text-file", replace=True)
