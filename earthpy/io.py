@@ -161,7 +161,7 @@ class EarthlabData(object):
         if key is not None:
             if key not in DATA_URLS:
                 raise KeyError(
-                    "Key " + key + " not found in earthlab.io.DATA_URLS. "
+                    "Key " + key + " not found in earthpy.io.DATA_URLS. "
                     "{}\nChoose one of {}".format(key, DATA_URLS.keys())
                 )
 
