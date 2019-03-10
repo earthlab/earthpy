@@ -128,7 +128,6 @@ class EarthlabData(object):
         url : str
             A URL to fetch into the data directory. Use this for ad-hoc dataset
             downloads. Note: ``key`` and ``url`` are mutually exclusive.
-            Currently this is only tested against figshare URLs.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
