@@ -4,9 +4,8 @@
 
 import os
 import os.path as op
-
+import re
 import requests
-
 from download import download
 import earthpy
 
@@ -171,26 +170,12 @@ class EarthlabData(object):
             this_root = op.join(self.path, key)
 
         if url is not None:
-            # try and workout the filename and file type
-            fname = None
-            r = requests.head(url)
-            try:
-                content_disposition = r.headers["content-disposition"]
-            except KeyError:
-                raise KeyError(
-                    "content-disposition was not found in "
-                    "headers. The get_data method currently is only"
-                    "tested for figshare URLs. See the help for "
-                    "get_data for example usage."
-                )
-            for c in content_disposition.split(";"):
-                if c.startswith("filename="):
-                    fname = c.split("=")[1]
-                    break
-            else:
-                raise RuntimeError(
-                    "Could not deduce filename for " "{}.".format(url)
-                )
+            with requests.get(url) as r:
+                if "content-disposition" in r.headers.keys():
+                    content = r.headers["content-disposition"]
+                    fname = re.findall("filename=(.+)", content)[0]
+                else:
+                    fname = url.split("/")[-1]
 
             # try and deduce filetype
             file_type = "file"
@@ -198,11 +183,9 @@ class EarthlabData(object):
                 if fname.endswith(kind):
                     file_type = kind
 
-            # strip off the file extension so we get pretty download
-            # directories
+            # strip off file extension so we get pretty download directories
             if file_type != "file":
-                # cut off an extra character to remove the trailing dot as well
-                fname = fname[: -(len(file_type) + 1)]
+                fname = os.path.splitext(fname)[0]
 
             this_data = (url, fname, file_type)
             this_root = op.join(self.path, "unsorted")

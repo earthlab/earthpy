@@ -10,7 +10,7 @@ import earthpy.io as eio
 
 
 @pytest.fixture
-def ELD(tmpdir):
+def eld(tmpdir):
     return eio.EarthlabData(path=tmpdir)
 
 
@@ -78,7 +78,6 @@ def test_continental_divide_trail():
 
 """ Tests for the EarthlabData class. """
 
-# Add links to very small test data on figshare to the data urls
 eio.DATA_URLS["little-text-file"] = [
     ("https://ndownloader.figshare.com/files/14555681", "abc.txt", "file")
 ]
@@ -100,77 +99,96 @@ def test_urls_are_valid():
             assert r.status_code == 200
 
 
-def test_key_and_url_set_simultaneously(ELD):
+def test_key_and_url_set_simultaneously(eld):
     """ Only key or url should be set, not both. """
     with pytest.raises(ValueError, match="can not both be set at the same"):
-        ELD.get_data(key="foo", url="bar")
+        eld.get_data(key="foo", url="bar")
 
 
-def test_available_datasets_are_printed(ELD, capsys):
+def test_available_datasets_are_printed(eld, capsys):
     """ If no key or url provided, print datasets.
 
     The output that is printed should be identical to the __repr__ output.
     Using capsys in pytest provides a way to capture stdout/stderr output.
-    
+
     """
-    ELD.get_data()
+    eld.get_data()
     printed_output = capsys.readouterr().out
-    print(ELD)
+    print(eld)
     repr_output = capsys.readouterr().out
     assert printed_output == repr_output
 
 
-def test_invalid_dataset_key(ELD):
+def test_invalid_dataset_key(eld):
     """ Raise errors for unknown dataset keys. """
     with pytest.raises(KeyError, match="not found in"):
-        ELD.get_data(key="some non-existent key")
+        eld.get_data(key="some non-existent key")
 
 
 @pytest.mark.vcr()
-def test_url_download(ELD):
+def test_url_download(eld):
     """ Test arbitrary URL download. """
-    file = ELD.get_data(url="https://ndownloader.figshare.com/files/14555681")
+    file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
     assert os.path.isfile(file)
 
 
 @pytest.mark.vcr()
-def test_valid_download_file(ELD):
+def test_valid_download_file(eld):
     """ Test that single files get downloaded. """
-    file = ELD.get_data("little-text-file")
+    file = eld.get_data("little-text-file")
     assert os.path.isfile(file)
 
 
 @pytest.mark.vcr()
-def test_valid_download_zip(ELD):
+def test_valid_download_zip(eld):
     """ Test that zipped files get downloaded and extracted. """
-    dir = ELD.get_data("little-zip-file")
+    dir = eld.get_data("little-zip-file")
     assert os.path.isdir(dir)
     dir_has_contents = len(os.listdir(dir)) > 0
     assert dir_has_contents
 
 
 @pytest.mark.vcr()
-def test_replace_arg_prevents_overwrite(ELD):
+def test_replace_arg_prevents_overwrite(eld):
     """ If replace=True, existing files should not be overwritten. """
-    file1 = ELD.get_data("little-text-file")
+    file1 = eld.get_data("little-text-file")
     time_modified1 = os.path.getmtime(file1)
-    file2 = ELD.get_data("little-text-file", replace=False)
+    file2 = eld.get_data("little-text-file", replace=False)
     time_modified2 = os.path.getmtime(file2)
     assert time_modified1 == time_modified2
 
 
 @pytest.mark.vcr()
-def test_replace_arg_allows_overwrite(ELD):
+def test_replace_arg_allows_overwrite(eld):
     """ If replace=False, existing files should be overwritten. """
-    file1 = ELD.get_data("little-text-file")
+    file1 = eld.get_data("little-text-file")
     time_modified1 = os.path.getmtime(file1)
-    file2 = ELD.get_data("little-text-file", replace=True)
+    file2 = eld.get_data("little-text-file", replace=True)
     time_modified2 = os.path.getmtime(file2)
     assert time_modified1 < time_modified2
 
 
 @pytest.mark.vcr()
-def test_content_disposition_key_error(ELD):
-    """ Raise a KeyError if content-disposition is not found in headers. """
-    with pytest.raises(KeyError, match="content-disposition was not found"):
-        ELD.get_data(url="http://www.google.com/robots.txt")
+def test_arbitrary_url_file_download(eld):
+    """ Verify that arbitrary URLs work for data file downloads. """
+    file = eld.get_data(url="http://www.google.com/robots.txt")
+    assert os.path.isfile(file)
+
+
+@pytest.mark.vcr()
+def test_arbitrary_url_zip_download(eld):
+    """ Verify that aribitrary URLs work for zip file downloads. """
+    dir = eld.get_data(
+        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
+    )
+    dir_has_contents = len(os.listdir(dir)) > 0
+    assert dir_has_contents
+
+
+def test_invalid_data_type(eld):
+    """ Raise errors for invalid data types. """
+    eio.DATA_URLS["invalid-data-type"] = [
+        ("https://www.google.com", ".", "an_invalid_file_extension")
+    ]
+    with pytest.raises(ValueError, match="kind must be one of"):
+        eld.get_data("invalid-data-type")
