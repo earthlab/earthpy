@@ -126,13 +126,6 @@ def test_invalid_dataset_key(eld):
 
 
 @pytest.mark.vcr()
-def test_url_download(eld):
-    """ Test arbitrary URL download. """
-    file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
-    assert os.path.isfile(file)
-
-
-@pytest.mark.vcr()
 def test_valid_download_file(eld):
     """ Test that single files get downloaded. """
     file = eld.get_data("little-text-file")
