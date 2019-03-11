@@ -17,6 +17,7 @@ from rasterio.mask import mask
 
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
+
     This format is what shapely uses. The output object can be used
     to crop a raster image.
 
@@ -40,7 +41,7 @@ def extent_to_json(ext_obj):
     >>> import earthpy.spatial as es
     >>> from earthpy.io import path_to_example
     >>> rmnp = gpd.read_file(path_to_example('rmnp.shp'))
-    >>> es.extent_to_json(rmnp) #doctest: +ELLIPSIS
+    >>> es.extent_to_json(rmnp)
     {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
@@ -57,9 +58,9 @@ def extent_to_json(ext_obj):
 
 
 def normalized_diff(b1, b2):
-    """Take two numpy arrays and calculate the normalized difference.
-    Math will be calculated (b1-b2) / (b1+b2). The arrays must be of the
-    same shape.
+    """Take two n-dimensional numpy arrays and calculate the normalized difference.
+
+    Math will be calculated (b1-b2) / (b1 + b2).
 
     Parameters
     ----------
@@ -117,9 +118,7 @@ def normalized_diff(b1, b2):
 
 # TODO: include a no data value here if provided
 def stack(band_paths, out_path=""):
-
-    """Take a list of raster paths and turn it into an output raster stack
-    numpy array.
+    """Convert a list of raster paths into a raster stack numpy darray.
 
     Parameters
     ----------
@@ -246,7 +245,7 @@ def _stack_bands(sources, write_raster=False, dest=None):
             Numpy array generated from the stacked array combining all
             bands that were provided in the list.
         ret_prof : rasterio profile
-            Updated rasterio spatial metadata object updated to represent 
+            Updated rasterio spatial metadata object updated to represent
             the number of layers in the stack
     """
 
@@ -254,8 +253,8 @@ def _stack_bands(sources, write_raster=False, dest=None):
         for src in sources:
             src.profile
 
-    except ValueError as ve:
-        raise ValueError("The sources object should be Dataset Reader")
+    except AttributeError as ae:
+        raise AttributeError("The sources object should be Dataset Reader")
         sys.exit()
 
     else:
@@ -459,7 +458,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         >>> print(squeezed_dem.shape)
         (187, 152)
         >>> shade = es.hillshade(squeezed_dem)
-        >>> plt.imshow(shade) #doctest: +ELLIPSIS
+        >>> plt.imshow(shade)
         <matplotlib.image.AxesImage object at 0x...>
     """
     try:
@@ -494,11 +493,9 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
-    """This function has been deprecated from earthpy. Please use
-    the stack() function instead.
-
+    """This function has been deprecated from earthpy.
+    
+    Please use the stack() function instead.
     """
-
-    # Throw warning and exit
     raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
     sys.exit()

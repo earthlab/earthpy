@@ -163,3 +163,13 @@ def basic_image_tif(tmpdir, basic_image):
     with rio.open(outfilename, "w", **kwargs) as out:
         out.write(basic_image, indexes=1)
     return outfilename
+
+
+@pytest.fixture
+def image_array_2bands():
+    return np.random.randint(10, size=(2, 4, 5))
+
+
+@pytest.fixture
+def one_band_3dims():
+    return np.random.randint(10, size=(1, 4, 5))
