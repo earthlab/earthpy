@@ -17,6 +17,7 @@ from rasterio.mask import mask
 
 def extent_to_json(ext_obj):
     """Convert bounds to a shapely geojson like spatial object.
+
     This format is what shapely uses. The output object can be used
     to crop a raster image.
 
@@ -57,9 +58,9 @@ def extent_to_json(ext_obj):
 
 
 def normalized_diff(b1, b2):
-    """Take two numpy arrays and calculate the normalized difference.
-    Math will be calculated (b1-b2) / (b1+b2). The arrays must be of the
-    same shape.
+    """Take two n-dimensional numpy arrays and calculate the normalized difference.
+
+    Math will be calculated (b1-b2) / (b1 + b2).
 
     Parameters
     ----------
@@ -117,9 +118,7 @@ def normalized_diff(b1, b2):
 
 # TODO: include a no data value here if provided
 def stack(band_paths, out_path=""):
-
-    """Take a list of raster paths and turn it into an output raster stack
-    numpy array.
+    """Convert a list of raster paths into a raster stack numpy darray.
 
     Parameters
     ----------

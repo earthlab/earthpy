@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Closing plots in tests (@lwasser #257)
 * Added a code of conduct (@mbjoseph, #27)
 * Added CI testing across python versions and on Windows (@mbjoseph, #228)
 
