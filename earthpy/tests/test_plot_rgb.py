@@ -147,13 +147,15 @@ def test_stretch_output_scaled(rgb_image):
     """
     arr, _ = rgb_image
     stretch_vals = list(range(10))
-    axs = [plot_rgb(arr, stretch=True, str_clip=v)[1] for v in stretch_vals]
-    mean_vals = np.array([ax.get_images()[0].get_array().mean() for ax in axs])
-    n_unique_means = np.unique(mean_vals).shape[0]
-    assert n_unique_means == len(stretch_vals)
-    try:
-        axs
-    finally:
-        del axs
 
-    plt.close()
+    mean_vals = list()
+    for v in stretch_vals:
+        ax = plot_rgb(arr, stretch=True, str_clip=v)[1]
+        mean = ax.get_images()[0].get_array().mean()
+        mean_vals.append(mean)
+        plt.close()
+    assert len(set(mean_vals)) == len(stretch_vals)
+    try:
+        ax
+    finally:
+        del ax

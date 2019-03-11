@@ -198,4 +198,4 @@ def test_hist_number_of_columns(image_array_2bands):
     for n in number_of_columns:
         f, ax = ep.hist(image_array_2bands, cols=n)
         assert [a.numCols for a in ax] == [n] * 2
-    plt.close()
+        plt.close(f)
