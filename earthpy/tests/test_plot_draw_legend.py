@@ -58,7 +58,6 @@ def test_num_titles_classes(binned_array_3bins):
         ep.draw_legend(
             im_ax=im_ax, classes=[1, 2, 3], titles=["small", "large"]
         )
-    plt.clf()
     plt.close(f)
 
 
@@ -78,7 +77,6 @@ def test_stock_legend_titles(binned_array_3bins):
     # Legend handle titles should equal unique values in ax array
     assert len(the_legend.get_texts()) == len(np.unique(imp2.get_array().data))
     assert def_titles == [text.get_text() for text in the_legend.get_texts()]
-    plt.clf()
     plt.close(f)
 
 
@@ -96,7 +94,6 @@ def test_custom_legend_titles(binned_array_3bins):
     assert custom_titles == [
         text.get_text() for text in the_legend.get_texts()
     ]
-    plt.clf()
     plt.close(f)
 
 
@@ -106,8 +103,6 @@ def test_non_ax_obj():
 
     with pytest.raises(AttributeError):
         ep.draw_legend(im_ax=list())
-    plt.clf()
-    plt.close()
 
 
 def test_colors(binned_array_3bins):
@@ -118,7 +113,6 @@ def test_colors(binned_array_3bins):
     f, ax = plt.subplots()
     im = ax.imshow(im_arr_bin, cmap="Blues")
     the_legend = ep.draw_legend(im_ax=im)
-    # NOTE: Do I know for sure things are rendering in the right order?
     legend_cols = [i.get_facecolor() for i in the_legend.get_patches()]
     # Get the array and cmap from axis object
     cmap_name = im.axes.get_images()[0].get_cmap().name
@@ -126,7 +120,6 @@ def test_colors(binned_array_3bins):
     image_colors = ep.make_col_list(unique_vals, cmap=cmap_name)
 
     assert image_colors == legend_cols
-    plt.clf()
     plt.close(f)
 
 
@@ -140,7 +133,6 @@ def test_neg_vals(binned_array):
     leg_neg = ep.draw_legend(im_ax)
     legend_cols = [i.get_facecolor() for i in leg_neg.get_patches()]
     assert len(legend_cols) == len(bins) - 1
-    plt.clf()
     plt.close(f)
 
 
@@ -159,7 +151,6 @@ def test_listed_cmap(binned_array):
     leg = ep.draw_legend(im_plt)
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == len(bins) - 1
-    plt.clf()
     plt.close(f)
 
 
@@ -180,7 +171,6 @@ def test_noncont_listed_cmap(binned_array, listed_cmap):
 
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == len(np.unique(arr_class))
-    plt.clf()
     plt.close(f)
 
 
@@ -198,7 +188,6 @@ def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
 
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == len([1, 2, 3, 4, 5])
-    plt.clf()
     plt.close(f)
 
 
@@ -217,7 +206,6 @@ def test_masked_vals():
     leg = ep.draw_legend(im_ax)
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == len(unmasked_vals)
-    plt.clf()
     plt.close(f)
 
 
@@ -232,8 +220,4 @@ def test_subplots(binned_array):
 
     im_ax2 = ax2.imshow(arr_class)
     ep.draw_legend(im_ax2)
-    plt.clf()
     plt.close(f)
-
-
-plt.close("all")

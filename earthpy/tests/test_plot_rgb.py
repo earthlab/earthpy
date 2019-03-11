@@ -49,7 +49,6 @@ def test_rgb_extent(rgb_image):
     assert ax.get_title() == "My Title"
     assert np.array_equal(plt_array[0], a_rgb_image.transpose([1, 2, 0])[1])
     assert ext == plt_ext
-    plt.clf()
     plt.close(f)
 
 
@@ -64,7 +63,6 @@ def test_1band(rgb_image):
                            order with bands first""",
     ):
         plot_rgb(a_rgb_image[1])
-    plt.clf()
     plt.close()
 
 
@@ -77,7 +75,6 @@ def test_ax_provided(rgb_image):
     rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
     the_plot_im_shape = ax.get_images()[0].get_array().shape
     assert rgb_im_shape == the_plot_im_shape
-    plt.clf()
     plt.close(f)
 
 
@@ -90,7 +87,6 @@ def test_ax_not_provided(rgb_image):
     rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
     the_plot_im_shape = ax.get_images()[0].get_array().shape
     assert rgb_im_shape == the_plot_im_shape
-    plt.clf()
     plt.close(f)
 
 
@@ -104,7 +100,6 @@ def test_stretch_image(rgb_image):
     f, ax = plot_rgb(im, stretch=True)
     max_val = ax.get_images()[0].get_array().max()
     assert max_val == 255
-    plt.clf()
     plt.close(f)
 
 
@@ -119,7 +114,6 @@ def test_masked_im(rgb_image):
     f, ax = plot_rgb(im_ma)
     im_plot = ax.get_images()[0].get_array()
     assert im_plot.shape[2] == 4
-    plt.clf()
     plt.close(f)
 
 
@@ -132,7 +126,6 @@ def test_ticks_off(rgb_image):
     f, ax = plot_rgb(im)
     assert len(ax.get_xticks()) == 0
     assert len(ax.get_yticks()) == 0
-    plt.clf()
     plt.close(f)
 
 
@@ -163,5 +156,4 @@ def test_stretch_output_scaled(rgb_image):
     finally:
         del axs
 
-
-plt.close("all")
+    plt.close()
