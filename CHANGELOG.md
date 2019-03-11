@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Closing plots in tests (@lwasser #257)
 * Added a code of conduct (@mbjoseph, #27)
 
 ## [0.6.2] - 2019-02-19
