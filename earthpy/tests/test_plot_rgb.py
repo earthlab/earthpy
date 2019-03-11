@@ -155,7 +155,3 @@ def test_stretch_output_scaled(rgb_image):
         mean_vals.append(mean)
         plt.close()
     assert len(set(mean_vals)) == len(stretch_vals)
-    try:
-        ax
-    finally:
-        del ax
