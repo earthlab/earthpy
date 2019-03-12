@@ -90,15 +90,14 @@ class EarthlabData(object):
     --------
     List datasets that are available for download, using default object:
 
-        >>> import earthpy
-        >>> earthpy.data
+        >>> import earthpy as et
+        >>> et.data
         Available Datasets: ['california-rim-fire', ...]
 
-    Specify a directory when instantiating a new object:
+    Specify a custom directory for data downloads:
 
-        >>> import earthpy.io as eio
-        >>> data = eio.EarthlabData('.')
-        >>> data
+        >>> et.data.path = "."
+        >>> et.data
         Available Datasets: ['california-rim-fire', ...]
     """
 
@@ -141,12 +140,12 @@ class EarthlabData(object):
         --------
         Download a dataset using a key:
 
-            >>> earthpy.data.get_data('california-rim-fire') # doctest: +SKIP
+            >>> et.data.get_data('california-rim-fire') # doctest: +SKIP
 
         Or, download a dataset using a figshare URL:
 
             >>> url = 'https://ndownloader.figshare.com/files/12395030'
-            >>> earthpy.data.get_data(url=url) # doctest: +SKIP
+            >>> et.data.get_data(url=url)  # doctest: +SKIP
 
         """
         if key is not None and url is not None:
@@ -161,15 +160,15 @@ class EarthlabData(object):
         if key is not None:
             if key not in DATA_URLS:
                 raise KeyError(
-                    "Key " + key + " not found in earthpy.io.DATA_URLS. "
-                    "{}\nChoose one of {}".format(key, DATA_URLS.keys())
+                    "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
+                    "Choose one of {}".format(self.data_keys)
                 )
 
             this_data = DATA_URLS[key]
             this_root = op.join(self.path, key)
 
         if url is not None:
-            with requests.get(url) as r:
+            with requests.head(url) as r:
                 if "content-disposition" in r.headers.keys():
                     content = r.headers["content-disposition"]
                     fname = re.findall("filename=(.+)", content)[0]
