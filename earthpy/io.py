@@ -159,9 +159,10 @@ class EarthlabData(object):
 
         if key is not None:
             if key not in DATA_URLS:
+                pretty_keys = ", ".join(repr(k) for k in self.data_keys)
                 raise KeyError(
                     "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
-                    "Choose one of {}".format(self.data_keys)
+                    "Choose one of: {}".format(pretty_keys)
                 )
 
             this_data = DATA_URLS[key]
@@ -186,7 +187,7 @@ class EarthlabData(object):
                 fname = os.path.splitext(fname)[0]
 
             this_data = (url, fname, file_type)
-            this_root = op.join(self.path, "unsorted")
+            this_root = op.join(self.path, "earthpy-downloads")
 
         if not isinstance(this_data, list):
             this_data = [this_data]
