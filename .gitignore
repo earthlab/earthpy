@@ -114,3 +114,5 @@ earthpy/ignored_script.py
 # OS stuff
 .DS_Store
 earthpy/tests/test_ignored_script.py
+earthpy/tests/cassettes/
+*.ipynb
