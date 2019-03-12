@@ -458,7 +458,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         >>> print(squeezed_dem.shape)
         (187, 152)
         >>> shade = es.hillshade(squeezed_dem)
-        >>> plt.imshow(shade)
+        >>> plt.imshow(shade, cmap="Greys")
         <matplotlib.image.AxesImage object at 0x...>
     """
     try:
