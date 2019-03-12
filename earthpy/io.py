@@ -1,12 +1,10 @@
 """File Input/Output utilities."""
-## This module will move to a new module for downloading data
-## and building lessons
+
 
 import os
 import os.path as op
-
+import re
 import requests
-
 from download import download
 import earthpy
 
@@ -73,21 +71,40 @@ HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
 
 
-class EarthlabData(object):
+class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
+
+    An object of this class is available upon importing earthpy as
+    ``earthpy.data`` that writes data files to the path:
+    ``~/earth-analytics/data/``.
 
     Parameters
     ----------
     path : string | None
-        The path where data is stored.
+        The path where data is stored. NOTE: this defaults to the directory
+        ``~/earth-analytics/data/``.
+
+    Examples
+    --------
+    List datasets that are available for download, using default object:
+
+        >>> import earthpy as et
+        >>> et.data
+        Available Datasets: ['california-rim-fire', ...]
+
+    Specify a custom directory for data downloads:
+
+        >>> et.data.path = "."
+        >>> et.data
+        Available Datasets: ['california-rim-fire', ...]
     """
 
     def __init__(self, path=None):
         if path is None:
             path = op.join(HOME, DATA_NAME)
         self.path = path
-        self.data_keys = list(DATA_URLS.keys())
+        self.data_keys = sorted(list(DATA_URLS.keys()))
 
     def __repr__(self):
         s = "Available Datasets: {}".format(self.data_keys)
@@ -117,6 +134,18 @@ class EarthlabData(object):
         -------
         path_data : str
             The path to the downloaded data.
+
+        Examples
+        --------
+        Download a dataset using a key:
+
+            >>> et.data.get_data('california-rim-fire') # doctest: +SKIP
+
+        Or, download a dataset using a figshare URL:
+
+            >>> url = 'https://ndownloader.figshare.com/files/12395030'
+            >>> et.data.get_data(url=url)  # doctest: +SKIP
+
         """
         if key is not None and url is not None:
             raise ValueError(
@@ -124,32 +153,27 @@ class EarthlabData(object):
                 "set at the same time."
             )
         if key is None and url is None:
-            print("Available datasets: {}".format(list(DATA_URLS.keys())))
+            print(self.__repr__())
             return
 
         if key is not None:
             if key not in DATA_URLS:
-                raise ValueError(
-                    "Don't understand key "
-                    "{}\nChoose one of {}".format(key, DATA_URLS.keys())
+                pretty_keys = ", ".join(repr(k) for k in self.data_keys)
+                raise KeyError(
+                    "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
+                    "Choose one of: {}".format(pretty_keys)
                 )
 
             this_data = DATA_URLS[key]
             this_root = op.join(self.path, key)
 
         if url is not None:
-            # try and workout the filename and file type
-            fname = None
-            r = requests.head(url)
-            content_disposition = r.headers["content-disposition"].split(";")
-            for c in content_disposition:
-                if c.startswith("filename="):
-                    fname = c.split("=")[1]
-                    break
-            else:
-                raise RuntimeError(
-                    "Could not deduce filename for " "{}.".format(url)
-                )
+            with requests.head(url) as r:
+                if "content-disposition" in r.headers.keys():
+                    content = r.headers["content-disposition"]
+                    fname = re.findall("filename=(.+)", content)[0]
+                else:
+                    fname = url.split("/")[-1]
 
             # try and deduce filetype
             file_type = "file"
@@ -157,14 +181,12 @@ class EarthlabData(object):
                 if fname.endswith(kind):
                     file_type = kind
 
-            # strip off the file extension so we get pretty download
-            # directories
+            # strip off file extension so we get pretty download directories
             if file_type != "file":
-                # cut off an extra character to remove the trailing dot as well
-                fname = fname[: -(len(file_type) + 1)]
+                fname = os.path.splitext(fname)[0]
 
             this_data = (url, fname, file_type)
-            this_root = op.join(self.path, "unsorted")
+            this_root = op.join(self.path, "earthpy-downloads")
 
         if not isinstance(this_data, list):
             this_data = [this_data]
@@ -193,44 +215,6 @@ class EarthlabData(object):
         return data_paths
 
 
-# Potential functionality for website build.
-# Move to new utils package
-
-
-def list_files(path, depth=3):
-    """
-    List files in a directory up to a specified depth.
-
-    Parameters
-    ----------
-    path : str
-        A path to a folder whose contents you want to list recursively.
-    depth : int
-        The depth of files / folders you want to list inside of ``path``.
-    """
-    if not os.path.isdir(path):
-        raise ValueError("path: {} is not a directory".format(path))
-    depth_str_base = "  "
-    if not path.endswith(os.sep):
-        path = path + os.sep
-
-    for ii, (i_path, folders, files) in enumerate(os.walk(path)):
-        folder_name = op.basename(i_path)
-        path_wo_base = i_path.replace(path, "")
-        this_depth = len(path_wo_base.split("/"))
-        if this_depth > depth:
-            continue
-
-        # Define the string for this level
-        depth_str = depth_str_base * this_depth
-        print(depth_str + folder_name)
-
-        if this_depth + 1 > depth:
-            continue
-        for ifile in files:
-            print(depth_str + depth_str_base + ifile)
-
-
 def path_to_example(dataset):
     """ Construct a file path to an example dataset.
 
@@ -245,6 +229,13 @@ def path_to_example(dataset):
     Returns
     -------
     A file path (string) to the dataset
+
+    Example
+    -------
+
+        >>> import earthpy.io as eio
+        >>> eio.path_to_example('rmnp-dem.tif')
+        '...rmnp-dem.tif'
     """
     earthpy_path = os.path.split(earthpy.__file__)[0]
     data_dir = os.path.join(earthpy_path, "example-data")

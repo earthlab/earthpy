@@ -117,3 +117,5 @@ earthpy/tests/test_ignored_script.py
 
 pip-wheel-metadata/
 earthpy-dev/
+earthpy/tests/cassettes/
+*.ipynb

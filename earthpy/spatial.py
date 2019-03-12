@@ -458,16 +458,31 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         >>> print(squeezed_dem.shape)
         (187, 152)
         >>> shade = es.hillshade(squeezed_dem)
-        >>> plt.imshow(shade)
+        >>> plt.imshow(shade, cmap="Greys")
         <matplotlib.image.AxesImage object at 0x...>
     """
-    azimuth = 360.0 - azimuth
+    try:
+        x, y = np.gradient(arr)
+    except:
+        raise ValueError("Input array should be two-dimensional")
 
-    x, y = np.gradient(arr)
+    if azimuth <= 360.0:
+        azimuth = 360.0 - azimuth
+        azimuthrad = azimuth * np.pi / 180.0
+    else:
+        raise ValueError(
+            "Azimuth value should be less than or equal to 360 degrees"
+        )
+
+    if angle_altitude <= 90.0:
+        altituderad = angle_altitude * np.pi / 180.0
+    else:
+        raise ValueError(
+            "Altitude value should be less than or equal to 90 degrees"
+        )
+
     slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
     aspect = np.arctan2(-x, y)
-    azimuthrad = azimuth * np.pi / 180.0
-    altituderad = angle_altitude * np.pi / 180.0
 
     shaded = np.sin(altituderad) * np.sin(slope) + np.cos(
         altituderad
