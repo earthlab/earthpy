@@ -407,7 +407,15 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     -------
     >>> import numpy as np
     >>> import earthpy.plot as ep
-
+    >>> import matplotlib.pyplot as plt
+    >>> arr = np.array([[1, 2], [3, 4], [5, 4], [5, 5]])
+    >>> f, ax = plt.subplots()
+    >>> im = ax.imshow(arr, cmap="Blues")
+    >>> the_legend = ep.draw_legend(im_ax=im)
+    >>> # Get the array and cmap from axis object
+    >>> cmap_name = im.axes.get_images()[0].get_cmap().name
+    >>> unique_vals = list(np.unique(im.get_array().data))
+    >>> cmap_colors = ep.make_col_list(unique_vals, cmap=cmap_name)
 
     """
     if not nclasses:
