@@ -2,10 +2,10 @@
 
 from pkg_resources import resource_string
 import json
-from .io import EarthlabData
+from .io import Data
 
 
-data = EarthlabData()
+data = Data()
 
 epsg = json.loads(
     resource_string("earthpy", "example-data/epsg.json").decode("utf-8")

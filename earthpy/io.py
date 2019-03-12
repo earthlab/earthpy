@@ -1,6 +1,5 @@
 """File Input/Output utilities."""
-## This module will move to a new module for downloading data
-## and building lessons
+
 
 import os
 import os.path as op
@@ -72,7 +71,7 @@ HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
 
 
-class EarthlabData(object):
+class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
 

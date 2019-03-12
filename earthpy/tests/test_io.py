@@ -11,7 +11,7 @@ import earthpy.io as eio
 
 @pytest.fixture
 def eld(tmpdir):
-    return eio.EarthlabData(path=tmpdir)
+    return eio.Data(path=tmpdir)
 
 
 def test_invalid_datasets_raise_errors():
