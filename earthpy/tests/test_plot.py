@@ -39,6 +39,16 @@ def test_num_titles(image_array_2bands):
     plt.close()
 
 
+def test_str_for_title(image_array_2bands):
+    """Test that a single string title renders properly """
+
+    single_band = image_array_2bands[0]
+    f, ax = ep.plot_bands(arr=single_band, title="my title")
+    plot_title = ax.get_title()
+    assert "my title" in plot_title
+    plt.close()
+
+
 def test_num_axes(image_array_2bands):
     """Test the number of axes.
 

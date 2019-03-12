@@ -123,17 +123,23 @@ def plot_bands(
         "Input arr should be a numpy array"
 
     if title:
+        if isinstance(title, str):
+            title = [title]
+
+        # A 2-dim array should only be passed one title
         if (arr.ndim == 2) and (len(title) > 1):
             raise ValueError(
                 """Plot_bands() expects one title for a single
                              band array. You have provided more than one
                              title."""
             )
-        elif not (len(title) == arr.shape[0]):
-            raise ValueError(
-                """Plot_bands() expects the number of plot titles
+        # A 3 dim array should have the same number of titles as dims
+        if arr.ndim > 2:
+            if not (len(title) == arr.shape[0]):
+                raise ValueError(
+                    """Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers."""
-            )
+                )
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
