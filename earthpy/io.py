@@ -1,11 +1,12 @@
 """File Input/Output utilities."""
 
 
+import io
 import os
 import os.path as op
 import re
 import requests
-from download import download
+import zipfile
 import earthpy
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
@@ -65,10 +66,9 @@ DATA_URLS = {
     ),
 }
 
-ALLOWED_FILE_TYPES = ["zip", "tar", "tar.gz", "file"]
-
 HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
+ALLOWED_FILE_TYPES = ["file", "zip"]
 
 
 class Data(object):
@@ -177,12 +177,9 @@ class Data(object):
 
             # try and deduce filetype
             file_type = "file"
-            for kind in ALLOWED_FILE_TYPES:
-                if fname.endswith(kind):
-                    file_type = kind
-
-            # strip off file extension so we get pretty download directories
-            if file_type != "file":
+            if fname.endswith("zip"):
+                file_type = "zip"
+                # remove .zip extension for pretty download directories
                 fname = os.path.splitext(fname)[0]
 
             this_data = (url, fname, file_type)
@@ -200,19 +197,54 @@ class Data(object):
                     )
                 )
 
-            # If kind is not 'file' it will be un-archived to a folder w/ `name`
-            # else create a file called `name`
-            this_path = download(
-                url,
-                os.path.join(this_root, name),
-                replace=replace,
+            this_path = self._download(
+                url=url,
+                path=os.path.join(this_root, name),
                 kind=kind,
-                verbose=False,
+                replace=replace,
             )
             data_paths.append(this_path)
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
+
+    def _download(self, url, path, kind, replace=False):
+        """ Download a file.
+
+        This helper function downloads files and saves them to ``path``.
+        Zip files are unzipped to the ``path`` directory.
+        The implementation is adapted from the download library:
+        https://github.com/choldgraf/download
+
+        Parameters
+        ----------
+        url : str
+            The URL pointing to a file to download.
+        path : str
+            Destination path of downloaded file.
+        kind: str
+            Kind of file. Either 'file', or 'zip'.
+        replace : bool
+            Whether to replace the file if it already exists.
+
+        Returns
+        -------
+        output_path : str
+            Path to the downloaded file.
+        """
+        path = op.expanduser(path)
+        if replace is False and op.exists(path):
+            return path
+        r = requests.get(url)
+        if kind == "zip":
+            os.makedirs(path, exist_ok=True)
+            z = zipfile.ZipFile(io.BytesIO(r.content))
+            z.extractall(path)
+        else:
+            os.makedirs(op.dirname(path), exist_ok=True)
+            with open(path, "wb") as f:
+                f.write(r.content)
+        return path
 
 
 def path_to_example(dataset):

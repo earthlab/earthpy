@@ -31,7 +31,6 @@ if __name__ == "__main__":
             "geopandas",
             "matplotlib>=2.0.0",
             "rasterio",
-            "download",
             "scikit-image",
         ],
         zip_safe=False,  # the package can run out of an .egg file
