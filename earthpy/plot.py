@@ -521,7 +521,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     if not len(classes) == len(titles):
         raise ValueError(
-            "The number of classes should equal the number of"
+            "The number of classes should equal the number of "
             "titles. You have provided {0} classes and {1} titles.".format(
                 len(classes), len(titles)
             )
