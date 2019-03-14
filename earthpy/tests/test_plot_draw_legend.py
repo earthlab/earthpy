@@ -46,7 +46,7 @@ def test_num_titles_classes(binned_array_3bins):
     bins, im_arr_bin = binned_array_3bins
     im_arr_bin[im_arr_bin == 2] = 3
 
-    fig, ax = plt.subplots(figsize=(5, 5))
+    f, ax = plt.subplots(figsize=(5, 5))
     im_ax = ax.imshow(im_arr_bin, cmap="Blues")
 
     with pytest.raises(ValueError):
@@ -58,6 +58,7 @@ def test_num_titles_classes(binned_array_3bins):
         ep.draw_legend(
             im_ax=im_ax, classes=[1, 2, 3], titles=["small", "large"]
         )
+    plt.close(f)
 
 
 def test_stock_legend_titles(binned_array_3bins):
@@ -112,7 +113,6 @@ def test_colors(binned_array_3bins):
     f, ax = plt.subplots()
     im = ax.imshow(im_arr_bin, cmap="Blues")
     the_legend = ep.draw_legend(im_ax=im)
-    # NOTE: Do I know for sure things are rendering in the right order?
     legend_cols = [i.get_facecolor() for i in the_legend.get_patches()]
     # Get the array and cmap from axis object
     cmap_name = im.axes.get_images()[0].get_cmap().name
@@ -120,6 +120,7 @@ def test_colors(binned_array_3bins):
     image_colors = ep.make_col_list(unique_vals, cmap=cmap_name)
 
     assert image_colors == legend_cols
+    plt.close(f)
 
 
 def test_neg_vals(binned_array):

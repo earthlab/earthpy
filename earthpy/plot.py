@@ -13,18 +13,19 @@ from skimage import exposure
 import earthpy.spatial as es
 
 
-def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
-    """Adjusts the height of a colorbar to match the axis height. Note that
-    this function will not work properly using matplotlib v 3.0.0 in Jupyter
-    or when exporting an image. Be sure to update to 3.0.1.
+def colorbar(mapobj, size="3%", pad=0.09):
+    """Adjust colorbar height to match the matplotlib axis height.
+
+    NOTE: This function requires matplotlib v 3.0.1 or greater or v 2.9 or lower to run properly.
 
     Parameters
     ----------
-    mapobj : the matplotlib axes element.
-    size : char
-        The percent width of the colorbar relative to the plot. default = 3%
-    pad : int
-        The space between the plot and the color bar. Default = .09
+    mapobj : matplotlib axis object
+        The image that the colorbar will be representing as a matplotlib axis object.
+    size : char (default = "3%")
+        The percent width of the colorbar relative to the plot.
+    pad : int (default = 0.09)
+        The space between the plot and the color bar.
 
     Returns
     -------
@@ -46,9 +47,9 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
         ...     dem = src.read()
         ...     fig, ax = plt.subplots(figsize = (10, 5))
         >>> im = ax.imshow(dem.squeeze())
-        >>> ep.colorbar(im)  #doctest: +ELLIPSIS
+        >>> ep.colorbar(im)
         <matplotlib.colorbar.Colorbar object at 0x...>
-        >>> ax.set(title="Rocky Mountain National Park DEM") #doctest: +ELLIPSIS
+        >>> ax.set(title="Rocky Mountain National Park DEM")
         [Text(...'Rocky Mountain National Park DEM')]
         >>> ax.set_axis_off()
         >>> plt.show()
@@ -70,33 +71,35 @@ def colorbar(mapobj, size="3%", pad=0.09, aspect=20):
     return fig.colorbar(mapobj, cax=cax)
 
 
-# Function to plot all layers in a stack
 def plot_bands(
-    arr, title=None, cmap="Greys_r", figsize=(12, 12), cols=3, extent=None
+    arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
 ):
-    """Plot each layer in a raster stack read from rasterio in
-    (band, row , col) order as a numpy array. plot_bands will create an
-    individual plot for each band in a grid.
+    """Plot each band in a numpy array in its own axis.
+
+    Assumes band order (band, row, col).
 
     Parameters
     ----------
-    arr: numpy array
-        An n-dimensional numpy array with the order and numpy shape: (nbands, nrows, ncols)
-    title: str or list
-        Title of one band, or list of titles with one title per band
-    cmap: str
-        Colormap name ("greys" by default)
-    cols: int
-        Number of columns for plot grid (default: 3)
-    figsize: tuple - optional
-        Figure size in inches ((12, 12) by default)
-    extent: tuple - optional
-        Bounding box that the data will fill: (minx, miny, maxx, maxy)
+    arr : numpy array
+        An n-dimensional numpy array to plot.
+    cmap : str (default = "Greys_r")
+        Colormap name for plots.
+    figsize : tuple (default = (12, 12))
+        Figure size in inches.
+    cols : int (default = 3)
+        Number of columns for plot grid.
+    title : str or list (optional)
+        Title of one band or list of titles with one title per band.
+    extent : tuple (optional)
+        Bounding box that the data will fill: (minx, miny, maxx, maxy).
 
     Returns
     ----------
-    fig, ax or axs : figure object, axes object
-        The figure and axes object(s) associated with the plot.
+    tuple
+        fig : figure object
+            The figure of the plotted band(s).
+        ax or axs : axes object(s)
+            The axes object(s) associated with the plot.
 
     Example
     -------
@@ -110,7 +113,7 @@ def plot_bands(
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
-        ...                   figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...                   figsize=(8, 3))
         (<Figure size ... with 3 Axes>, ...)
     """
 
@@ -171,44 +174,71 @@ def plot_bands(
         return fig, ax
 
 
+def _stretch_im(arr, str_clip):
+    """Stretch an image in numpy ndarray format using a specified clip value.
+
+    Parameters
+    ----------
+    arr: numpy array
+        N-dimensional array in rasterio band order (bands, rows, columns)
+    str_clip: int
+        The % of clip to apply to the stretch. Default = 2 (2 and 98)
+
+    Returns
+    ----------
+    arr: numpy array with values stretched to the specified clip %
+
+    """
+    s_min = str_clip
+    s_max = 100 - str_clip
+    arr_rescaled = np.zeros_like(arr)
+    for ii, band in enumerate(arr):
+        lower, upper = np.percentile(band, (s_min, s_max))
+        arr_rescaled[ii] = exposure.rescale_intensity(
+            band, in_range=(lower, upper)
+        )
+    return arr_rescaled.copy()
+
+
 def plot_rgb(
     arr,
     rgb=(0, 1, 2),
+    figsize=(10, 10),
+    str_clip=2,
     ax=None,
     extent=None,
     title="",
-    figsize=(10, 10),
     stretch=None,
-    str_clip=2,
 ):
     """Plot three bands in a numpy array as a composite RGB image.
 
     Parameters
     ----------
-    arr: numpy ndarray
-        N-dimensional array in rasterio band order (bands, rows, columns)
-    rgb: list
-        Indices of the three bands to be plotted (default = 0,1,2)
-    extent: tuple
-        The extent object that matplotlib expects (left, right, bottom, top)
-    title: string (optional)
-        String representing the title of the plot
-    ax: object
-        The axes object where the ax element should be plotted. Default = none
-    figsize: tuple (optional)
-        The x and y integer dimensions of the output plot if preferred to set.
-    stretch: Boolean
-        If True a linear stretch will be applied
-    str_clip: int (optional)
-        The % of clip to apply to the stretch. Default = 2 (2 and 98)
-
+    arr : numpy array
+        An n-dimensional array in rasterio band order (bands, rows, columns)
+        containing the layers to plot.
+    rgb : list (default = (0, 1, 2))
+        Indices of the three bands to be plotted.
+    figsize : tuple (default = (10, 10)
+        The x and y integer dimensions of the output plot.
+    str_clip: int (default = 2)
+        The percentage of clip to apply to the stretch. Default = 2 (2 and 98).
+    ax : object (optional)
+        The axes object where the ax element should be plotted.
+    extent : tuple (optional)
+        The extent object that matplotlib expects (left, right, bottom, top).
+    title : string (optional)
+        The intended title of the plot.
+    stretch : Boolean (optional)
+        Application of a linear stretch. If set to True, a linear stretch will be applied.
     Returns
     ----------
-    fig, ax : figure object, axes object
-        The figure and axes object associated with the 3 band image. If the
-        ax keyword is specified,
-        the figure return will be None.
-
+    tuple
+        fig : figure object
+            The figure object associated with the 3 band image. If the
+            ax keyword is specified, the figure return will be None.
+        ax : axes object
+            The axes object associated with the 3 band image.
     Example
     -------
 
@@ -220,13 +250,13 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
-        >>> ep.plot_rgb(img_array) #doctest: +ELLIPSIS
+        >>> ep.plot_rgb(img_array)
         (<Figure size 1000x1000 with 1 Axes>, ...)
 
     """
 
     if len(arr.shape) != 3:
-        raise Exception(
+        raise ValueError(
             """Input needs to be 3 dimensions and in rasterio
                            order with bands first"""
         )
@@ -235,15 +265,7 @@ def plot_rgb(
     rgb_bands = arr[rgb, :, :]
 
     if stretch:
-        s_min = str_clip
-        s_max = 100 - str_clip
-        arr_rescaled = np.zeros_like(rgb_bands)
-        for ii, band in enumerate(rgb_bands):
-            lower, upper = np.percentile(band, (s_min, s_max))
-            arr_rescaled[ii] = exposure.rescale_intensity(
-                band, in_range=(lower, upper)
-            )
-        rgb_bands = arr_rescaled.copy()
+        rgb_bands = _stretch_im(rgb_bands, str_clip)
 
     # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
@@ -271,31 +293,34 @@ def plot_rgb(
 
 
 def hist(
-    arr, title=None, colors=["purple"], figsize=(12, 12), cols=2, bins=20
+    arr, colors=["purple"], figsize=(12, 12), cols=2, bins=20, title=None
 ):
     """Plot histogram for each layer in a numpy array.
 
     Parameters
     ----------
-    arr: ndarray
-        an n-dimensional numpy array
-    title: str
+    arr : numpy array
+        An n-dimensional numpy array from which n histograms will be plotted.
+    colors : list (default = ["purple"])
+        A list of color values that should either equal the number of bands
+        or be a single color.
+    figsize : tuple (default = (12, 12))
+        The x and y integer dimensions of the output plot.
+    cols : int (default = 2)
+        The number of columns for plot grid.
+    bins : int (default = 20)
+        The number of bins to generate for the histogram.
+    title : list (optional)
         A list of title values that should either equal the number of bands
-        or be empty, default = none
-    colors: list
-        a list of color values that should either equal the number of bands
-        or be a single color, default = purple
-    cols: int
-        the number of columns for plot arrangement
-    bins: int
-        the number of bins to calculate for the histogram
-    figsize: tuple
-        the figsize if you'd like to define it, default = (12, 12)
-
+        or be empty.
     Returns
     ----------
-    fig, ax or axs : figure object, axes object
-        The figure and axes object(s) associated with the histogram.
+    tuple
+
+        fig : figure object
+            The figure object associated with the histogram.
+        ax or axs : ax or axes object
+            The axes object(s) associated with the histogram.
 
     Example
     -------
@@ -312,7 +337,7 @@ def hist(
         ...     colors=['r', 'g', 'b'],
         ...     title=['Red', 'Green', 'Blue'],
         ...     cols=3,
-        ...     figsize=(8, 3)) #doctest: +ELLIPSIS
+        ...     figsize=(8, 3))
         (<Figure size 800x300 with 3 Axes>, ...)
     """
 
@@ -361,9 +386,37 @@ def hist(
 
 def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
-    Take a defined matplotlib colormap, and create a list of colors based on
-    a set of values. This is useful when you need to plot a series of
-    classified numpy arrays that are missing some of the sequential classes.
+    Convert a matplotlib named colormap into a discrete list of n-colors in RGB format.
+
+    Parameters
+    ----------
+    unique_vals : list
+        A list of values to make a color list from.
+    nclasses : int (optional)
+        The number of classes.
+    cmap : str (optional)
+        Colormap name used to create output list.
+
+    Returns
+    -------
+    list
+        A list of colors based on the given set of values in matplotlib
+        format.
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+    >>> import matplotlib.pyplot as plt
+    >>> arr = np.array([[1, 2], [3, 4], [5, 4], [5, 5]])
+    >>> f, ax = plt.subplots()
+    >>> im = ax.imshow(arr, cmap="Blues")
+    >>> the_legend = ep.draw_legend(im_ax=im)
+    >>> # Get the array and cmap from axis object
+    >>> cmap_name = im.axes.get_images()[0].get_cmap().name
+    >>> unique_vals = list(np.unique(im.get_array().data))
+    >>> cmap_colors = ep.make_col_list(unique_vals, cmap=cmap_name)
+
     """
     if not nclasses:
         nclasses = len(unique_vals)
@@ -380,29 +433,44 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     return [cm(c) for c in col_index]
 
 
-def draw_legend(im_ax, titles=None, cmap=None, classes=None, bbox=(1.05, 1)):
-    """Create a custom legend with a box for each class in a raster using the
-       image object, the unique classes in the image and titles for each class.
+def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
+    """Create a custom legend with a box for each class in a raster.
 
     Parameters
     ----------
-    im : matplotlib image object created using imshow()
+    im_ax : matplotlib image object
         This is the image returned from a call to imshow().
-    classes : list (optional)
-        A list of unique values found in the numpy array that you wish to plot.
+    bbox : tuple (default = (1.05, 1))
+        This is the bbox_to_anchor argument that will place the legend
+        anywhere on or around your plot.
     titles : list (optional)
         A list of a title or category for each unique value in your raster.
         This is the label that will go next to each box in your legend. If
         nothing is provided, a generic "Category x" will be populated.
-    bbox : tuple (optional)
-        This is the bbox_to_anchor argument that will place the legend
-        anywhere on or around your plot.
+    cmap : str (optional)
+        Colormap name to be used for legend items.
+    classes : list (optional)
+        A list of unique values found in the numpy array that you wish to plot.
+
 
     Returns
     ----------
     matplotlib.pyplot.legend
+        A matplotlib legend object to be placed on the plot.
 
-        matplotlib legend object to be placed on our plot.
+    Example
+    -------
+    >>> import numpy as np
+    >>> import earthpy.plot as ep
+    >>> import matplotlib.pyplot as plt
+    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+    >>> im_arr_bin = np.digitize(im_arr, bins)
+    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+    >>> f, ax = plt.subplots()
+    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+    >>> im_ax = ax.imshow(im_arr_bin)
+    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
     """
 
     try:
