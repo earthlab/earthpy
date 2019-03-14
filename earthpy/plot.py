@@ -486,7 +486,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
-    if classes:
+    if classes is not None:
         try:
             # Get the colormap from the mpl object
             cmap = im_ax.cmap.name
