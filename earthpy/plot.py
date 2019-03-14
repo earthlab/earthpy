@@ -127,7 +127,7 @@ def plot_bands(
             title = [title]
 
         # A 2-dim array should only be passed one title
-        if (arr.ndim == 2) and (len(title) > 1):
+        if arr.ndim == 2 and len(title) > 1:
             raise ValueError(
                 """Plot_bands() expects one title for a single
                              band array. You have provided more than one
