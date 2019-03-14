@@ -351,7 +351,7 @@ def hist(
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
             raise ValueError(
-                "The number of plot titles should be the"
+                "The number of plot titles should be the "
                 "same as the number of raster layers in your array."
             )
         # Calculate the total rows that will be required to plot each band
