@@ -479,7 +479,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     except AttributeError:
         raise AttributeError(
             "The legend function requires a matplotlib axis object to "
-            " run properly. You have provided a {}.".format(type(im_ax))
+            "run properly. You have provided a {}.".format(type(im_ax))
         )
 
     # If classes not provided, get them from the im array in the ax object
