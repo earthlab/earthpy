@@ -135,7 +135,7 @@ def plot_bands(
             )
         # A 3 dim array should have the same number of titles as dims
         if arr.ndim > 2:
-            if not (len(title) == arr.shape[0]):
+            if len(title) != arr.shape[0]:
                 raise ValueError(
                     """Plot_bands() expects the number of plot titles
                              to equal the number of array raster layers."""
