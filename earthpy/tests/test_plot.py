@@ -34,7 +34,7 @@ def test_num_titles(image_array_2bands):
 
     with pytest.raises(
         ValueError,
-        match="plot_bands() expects one title for a singleband array",
+        match="plot_bands expects one title for a single band array",
     ):
         ep.plot_bands(arr=single_band, title=["Title1", "Title2"])
     with pytest.raises(ValueError, match="plot_bands() expects the number"):

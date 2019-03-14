@@ -59,11 +59,8 @@ def colorbar(mapobj, size="3%", pad=0.09):
         ax = mapobj.axes
     except AttributeError:
         raise AttributeError(
-            """The colorbar function requires a matplotlib
-                             axis object. You have provided
-                             a {}.""".format(
-                type(mapobj)
-            )
+            "The colorbar function requires a matplotlib axis object. "
+            "You have provided a {}.".format(type(mapobj))
         )
     fig = ax.figure
     divider = make_axes_locatable(ax)
@@ -136,7 +133,7 @@ def plot_bands(
         if arr.ndim > 2:
             if len(title) != arr.shape[0]:
                 raise ValueError(
-                    "plot_bands expects the number of plot titles"
+                    "plot_bands expects the number of plot titles "
                     "to equal the number of array raster layers."
                 )
 
@@ -481,11 +478,8 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         im_ax.axes
     except AttributeError:
         raise AttributeError(
-            """Oops. The legend function requires a matplotlib
-                         axis object to run properly. You have provided
-                         a {}.""".format(
-                type(im_ax)
-            )
+            "The legend function requires a matplotlib axis object to "
+            " run properly. You have provided a {}.".format(type(im_ax))
         )
 
     # If classes not provided, get them from the im array in the ax object
