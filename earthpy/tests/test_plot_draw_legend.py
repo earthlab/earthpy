@@ -174,6 +174,21 @@ def test_noncont_listed_cmap(binned_array, listed_cmap):
     plt.close(f)
 
 
+def test_classes_provided_as_array(binned_array, listed_cmap):
+    """Test legend fun to ensure classes provided as an array still work."""
+
+    cmap, norm = listed_cmap
+    bins, arr_class = binned_array
+
+    f, ax = plt.subplots(figsize=(5, 5))
+    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
+    leg = ep.draw_legend(im, classes=np.asarray([1, 2, 3, 4, 5]))
+
+    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
+    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    plt.close(f)
+
+
 def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
     """Test legend for a non continuous listed cmap where
     the user wants all classes to be drawn in the legend. IE the classified
