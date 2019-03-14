@@ -179,13 +179,14 @@ def test_classes_provided_as_array(binned_array, listed_cmap):
 
     cmap, norm = listed_cmap
     bins, arr_class = binned_array
+    n_classes = 5
 
     f, ax = plt.subplots(figsize=(5, 5))
     im = ax.imshow(arr_class, cmap=cmap, norm=norm)
-    leg = ep.draw_legend(im, classes=np.asarray([1, 2, 3, 4, 5]))
+    leg = ep.draw_legend(im, classes=np.arange(1, n_classes + 1))
 
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
-    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    assert len(legend_cols) == n_classes
     plt.close(f)
 
 
