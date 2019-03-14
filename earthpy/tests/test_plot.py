@@ -16,7 +16,9 @@ plt.show = lambda: None
 
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
-    with pytest.raises(AttributeError):
+    with pytest.raises(
+        AttributeError, match="Input arr should be a numpy array"
+    ):
         ep.plot_bands(arr=(1, 2))
     plt.close()
 
@@ -30,12 +32,25 @@ def test_num_titles(image_array_2bands):
     """
     single_band = image_array_2bands[0]
 
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match="plot_bands expects one title for a single band array",
+    ):
         ep.plot_bands(arr=single_band, title=["Title1", "Title2"])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="plot_bands() expects the number"):
         ep.plot_bands(
             arr=image_array_2bands, title=["Title1", "Title2", "Title3"]
         )
+    plt.close()
+
+
+def test_str_for_title(image_array_2bands):
+    """Test that a single string title renders properly """
+
+    single_band = image_array_2bands[0]
+    f, ax = ep.plot_bands(arr=single_band, title="my title")
+    plot_title = ax.get_title()
+    assert "my title" in plot_title
     plt.close()
 
 

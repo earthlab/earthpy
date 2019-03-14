@@ -59,11 +59,8 @@ def colorbar(mapobj, size="3%", pad=0.09):
         ax = mapobj.axes
     except AttributeError:
         raise AttributeError(
-            """The colorbar function requires a matplotlib
-                             axis object. You have provided
-                             a {}.""".format(
-                type(mapobj)
-            )
+            "The colorbar function requires a matplotlib axis object. "
+            "You have provided a {}.".format(type(mapobj))
         )
     fig = ax.figure
     divider = make_axes_locatable(ax)
@@ -120,20 +117,25 @@ def plot_bands(
     try:
         arr.ndim
     except AttributeError:
-        "Input arr should be a numpy array"
+        raise AttributeError("Input arr should be a numpy array")
 
     if title:
-        if (arr.ndim == 2) and (len(title) > 1):
+        if isinstance(title, str):
+            title = [title]
+
+        # A 2-dim array should only be passed one title
+        if arr.ndim == 2 and len(title) > 1:
             raise ValueError(
-                """Plot_bands() expects one title for a single
-                             band array. You have provided more than one
-                             title."""
+                "plot_bands expects one title for a single "
+                "band array. You have provided more than one title."
             )
-        elif not (len(title) == arr.shape[0]):
-            raise ValueError(
-                """Plot_bands() expects the number of plot titles
-                             to equal the number of array raster layers."""
-            )
+        # A 3 dim array should have the same number of titles as dims
+        if arr.ndim > 2:
+            if len(title) != arr.shape[0]:
+                raise ValueError(
+                    "plot_bands expects the number of plot titles "
+                    "to equal the number of array raster layers."
+                )
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
@@ -257,8 +259,8 @@ def plot_rgb(
 
     if len(arr.shape) != 3:
         raise ValueError(
-            """Input needs to be 3 dimensions and in rasterio
-                           order with bands first"""
+            "Input needs to be 3 dimensions and in rasterio "
+            "order with bands first"
         )
 
     # Index bands for plotting and clean up data for matplotlib
@@ -346,9 +348,8 @@ def hist(
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
             raise ValueError(
-                """"The number of plot titles should be the
-                    same as the number of raster layers in
-                    your array."""
+                "The number of plot titles should be the "
+                "same as the number of raster layers in your array."
             )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
@@ -477,11 +478,8 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         im_ax.axes
     except AttributeError:
         raise AttributeError(
-            """Oops. The legend function requires a matplotlib
-                         axis object to run properly. You have provided
-                         a {}.""".format(
-                type(im_ax)
-            )
+            "The legend function requires a matplotlib axis object to "
+            "run properly. You have provided a {}.".format(type(im_ax))
         )
 
     # If classes not provided, get them from the im array in the ax object
@@ -492,11 +490,9 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
             cmap = im_ax.cmap.name
         except AssertionError:
             raise AssertionError(
-                """Looks like we can't find the colormap
-                                 name which means a custom colormap was likely
-                                 used. Please provide the draw_legend function
-                                  with a cmap= argument to ensure your
-                                  legend draws properly."""
+                "The colormap name provided can not be found. Please "
+                "provide the draw_legend() function with a cmap= "
+                "argument to ensure your legend draws properly."
             )
         # If the colormap is manually generated from a list
         if cmap == "from_list":
@@ -519,9 +515,8 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     if not len(classes) == len(titles):
         raise ValueError(
-            """The number of classes should equal the number of
-                                 titles. You have provided {0} classes and {1}
-                                 titles.""".format(
+            "The number of classes should equal the number of "
+            "titles. You have provided {0} classes and {1} titles.".format(
                 len(classes), len(titles)
             )
         )
