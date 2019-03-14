@@ -10,3 +10,11 @@ data = Data()
 epsg = json.loads(
     resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
 )
+
+
+def load_epsg():
+    """ A function to return a dictionary of EPSG code to Proj4 string mappings."""
+
+    return json.loads(
+        resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
+    )
