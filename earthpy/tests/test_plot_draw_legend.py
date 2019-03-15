@@ -45,6 +45,42 @@ def arr_plot_blues(binned_array_3bins):
     return ax.imshow(im_arr_bin, cmap="Blues"), binned_array_3bins[1]
 
 
+@pytest.fixture
+def arr_plot_list_cmap(binned_array, listed_cmap):
+    """Returns a plot rendered using a listed cmap """
+
+    cmap, norm = listed_cmap
+    bins, arr_class = binned_array
+
+    f, ax = plt.subplots(figsize=(5, 5))
+    return ax.imshow(arr_class, cmap=cmap), binned_array[1]
+
+
+@pytest.fixture
+def vals_missing_plot_list_cmap(binned_array, listed_cmap):
+
+    cmap, norm = listed_cmap
+    bins, arr = binned_array
+
+    arr[arr == 1] = 2
+    arr[arr == 5] = 4
+
+    f, ax = plt.subplots(figsize=(5, 5))
+    return ax.imshow(arr, cmap=cmap, norm=norm), arr
+
+
+@pytest.fixture
+def vals_missing_plot_cont_cmap(binned_array):
+
+    bins, arr = binned_array
+
+    arr[arr == 1] = 2
+    arr[arr == 5] = 4
+
+    f, ax = plt.subplots(figsize=(5, 5))
+    return ax.imshow(arr, cmap="Blues"), arr
+
+
 """ Draw legend tests """
 
 
@@ -135,8 +171,6 @@ def test_colors(arr_plot_blues):
 def test_neg_vals():
     """Test that the legend plots when positive and negative values are provided"""
 
-    # TODO should probably also do a test with a continuous cmap with negative values where some are missing
-
     arr = np.array([[-1, 0, 1], [1, 0, -1]])
     f, ax = plt.subplots()
     im_ax = ax.imshow(arr)
@@ -147,96 +181,87 @@ def test_neg_vals():
     plt.close(f)
 
 
-def test_listed_cmap(binned_array, listed_cmap):
-    """Test that the the legend generates properly when provided with a Listed
-     colormap"""
+def test_listed_cmap(arr_plot_list_cmap):
+    """Test that the the legend generates properly when provided with a ListedColormap"""
 
-    bins, arr_class = binned_array
-    cmap_list, norm = listed_cmap
+    im_ax, arr = arr_plot_list_cmap
 
-    f, ax = plt.subplots()
-    im_plt = ax.imshow(arr_class, cmap=cmap_list)
-    leg = ep.draw_legend(im_plt)
+    leg = ep.draw_legend(im_ax)
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
-    assert len(legend_cols) == len(bins) - 1
-    plt.close(f)
+    assert len(legend_cols) == len(np.unique(arr))
+    plt.close()
 
 
-def test_noncont_listed_cmap(binned_array, listed_cmap):
-    """Test that an arr with 3 classes (missing the 1, and 5) which
-     would need to be normalized, only creates a legend with x handles
-     by default"""
+def test_classes_provided_as_array(arr_plot_list_cmap):
+    """Test that draw_legend works when classes are provided as an arr (not a list)."""
 
-    cmap, norm = listed_cmap
-    bins, arr_class = binned_array
-
-    arr_class[arr_class == 1] = 2
-    arr_class[arr_class == 5] = 4
-
-    f, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
-    leg = ep.draw_legend(im)
-
-    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
-    assert len(legend_cols) == len(np.unique(arr_class))
-    plt.close(f)
-
-
-def test_classes_provided_as_array(binned_array, listed_cmap):
-    """Test legend fun to ensure classes provided as an array still work
-    and that it fails gracefully if too many classes are provided.
-    """
-
-    cmap, norm = listed_cmap
-    bins, arr_class = binned_array
+    im_ax, arr = arr_plot_list_cmap
     n_classes = 5
 
-    f, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
-    leg = ep.draw_legend(im, classes=np.arange(n_classes))
+    leg = ep.draw_legend(im_ax, classes=np.arange(n_classes))
 
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == n_classes
-    plt.close(f)
+    plt.close()
 
 
-def test_listedcmap_ncol_equals_nclasses(binned_array, listed_cmap):
+def test_noncont_listed_cmap(vals_missing_plot_list_cmap):
+    """An arr with 3 vals (missing the 1, and 5) which requires normalization
+     produces creates a legend with 3 handles."""
+
+    im_ax, arr = vals_missing_plot_list_cmap
+
+    leg = ep.draw_legend(im_ax)
+
+    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
+    assert len(legend_cols) == len(np.unique(arr))
+    plt.close()
+
+
+def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
+    """Test legend for a listed cmap where
+    the user wants all classes to be drawn in the legend. IE the classified
+    image has classes 2,3,4 and the user wants classes 1-5 to appear """
+
+    im_ax, arr = vals_missing_plot_list_cmap
+
+    leg = ep.draw_legend(im_ax, classes=[1, 2, 3, 4, 5])
+    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
+
+    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    plt.close()
+
+
+def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
+    """Test legend for a listed cmap where
+    the user wants all classes to be drawn in the legend. IE the classified
+    image has classes 2,3,4 and the user wants classes 1-5 to appear """
+
+    im_ax, arr = vals_missing_plot_cont_cmap
+
+    leg = ep.draw_legend(im_ax, classes=[1, 2, 3, 4, 5])
+    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
+
+    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    plt.close()
+
+
+def test_listedcmap_ncol_equals_nclasses(vals_missing_plot_list_cmap):
     """If a 5 color listed cmap is provided and 6 classes are specified, return value error"""
 
-    cmap, norm = listed_cmap
-    bins, arr_class = binned_array
     n_classes = 5
-    arr_class[arr_class == 1] = 2
-
-    f, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
+    im_ax, arr = vals_missing_plot_list_cmap
 
     with pytest.raises(
         ValueError, match="There are more classes than colors in your cmap"
     ):
-        ep.draw_legend(im, classes=np.arange(0, n_classes + 1))
-    plt.close(f)
-
-
-def test_noncont_listed_cmap_3_classes(binned_array, listed_cmap):
-    """Test legend for a non continuous listed cmap where
-    the user wants all classes to be drawn in the legend. IE the classified
-    image has classes 2,3,4 and the user wants classes 1-5 to appear """
-
-    cmap, norm = listed_cmap
-    bins, arr_class = binned_array
-
-    f, ax = plt.subplots(figsize=(5, 5))
-    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
-    leg = ep.draw_legend(im, classes=[1, 2, 3, 4, 5])
-
-    legend_cols = [i.get_facecolor() for i in leg.get_patches()]
-    assert len(legend_cols) == len([1, 2, 3, 4, 5])
-    plt.close(f)
+        ep.draw_legend(im_ax, classes=np.arange(0, n_classes + 1))
+    plt.close()
 
 
 def test_masked_vals():
-    """Test to ensure that a masked array plots properly"""
+    """Legend for masked array plots properly"""
+
     im_arr = np.random.uniform(-2, 1, (15, 15))
     bins = [-0.8, -0.2, 0.2, 0.8, np.Inf]
     im_arr_bin = np.digitize(im_arr, bins)
@@ -254,7 +279,7 @@ def test_masked_vals():
 
 
 def test_subplots(binned_array):
-    """Test to ensure that a plot with subplots still has a legend."""
+    """Plot with subplots still has a legend."""
 
     bins, arr_class = binned_array
 
