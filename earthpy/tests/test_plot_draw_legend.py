@@ -136,16 +136,13 @@ def test_neg_vals(binned_array):
     plt.close(f)
 
 
-def test_listed_cmap(binned_array):
+def test_listed_cmap(binned_array, listed_cmap):
     """Test that the the legend generates properly when provided with a Listed
      colormap"""
 
     bins, arr_class = binned_array
+    cmap_list, norm = listed_cmap
 
-    # TODO make the list of colors a fixture for reuse
-    cmap_list = ListedColormap(
-        ["white", "tan", "purple", "springgreen", "darkgreen"]
-    )
     f, ax = plt.subplots()
     im_plt = ax.imshow(arr_class, cmap=cmap_list)
     leg = ep.draw_legend(im_plt)
@@ -175,7 +172,9 @@ def test_noncont_listed_cmap(binned_array, listed_cmap):
 
 
 def test_classes_provided_as_array(binned_array, listed_cmap):
-    """Test legend fun to ensure classes provided as an array still work."""
+    """Test legend fun to ensure classes provided as an array still work
+    and that it fails gracefully if too many classes are provided.
+    """
 
     cmap, norm = listed_cmap
     bins, arr_class = binned_array
@@ -183,10 +182,28 @@ def test_classes_provided_as_array(binned_array, listed_cmap):
 
     f, ax = plt.subplots(figsize=(5, 5))
     im = ax.imshow(arr_class, cmap=cmap, norm=norm)
-    leg = ep.draw_legend(im, classes=np.arange(1, n_classes + 1))
+    leg = ep.draw_legend(im, classes=np.arange(n_classes))
 
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
     assert len(legend_cols) == n_classes
+    plt.close(f)
+
+
+def test_classes_provided_as_array(binned_array, listed_cmap):
+    """If a 5 color listed cmap is provided and 6 classes are specified, return value error"""
+
+    cmap, norm = listed_cmap
+    bins, arr_class = binned_array
+    n_classes = 5
+    arr_class[arr_class == 1] = 2
+
+    f, ax = plt.subplots(figsize=(5, 5))
+    im = ax.imshow(arr_class, cmap=cmap, norm=norm)
+
+    with pytest.raises(
+        ValueError, match="There are more classes than colors in your cmap"
+    ):
+        ep.draw_legend(im, classes=np.arange(0, n_classes + 1))
     plt.close(f)
 
 

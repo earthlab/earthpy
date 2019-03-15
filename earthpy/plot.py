@@ -501,6 +501,14 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         colors = make_col_list(
             nclasses=len(classes), unique_vals=classes, cmap=cmap
         )
+        # If there are more colors than classes, raise value error
+        if len(set(colors)) < len(classes):
+            raise ValueError(
+                "There are more classes than colors in your cmap. "
+                "Please provide a ListedColormap with the same number "
+                "of colors as classes."
+            )
+
     else:
         classes = list(np.unique(im_ax.axes.get_images()[0].get_array()))
         # Remove masked values, could next this list comp but keeping it simple
