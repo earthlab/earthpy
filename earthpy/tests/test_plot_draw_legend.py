@@ -189,7 +189,7 @@ def test_classes_provided_as_array(binned_array, listed_cmap):
     plt.close(f)
 
 
-def test_classes_provided_as_array(binned_array, listed_cmap):
+def test_listedcmap_ncol_equals_nclasses(binned_array, listed_cmap):
     """If a 5 color listed cmap is provided and 6 classes are specified, return value error"""
 
     cmap, norm = listed_cmap
