@@ -169,16 +169,6 @@ def test_arbitrary_url_file_download(eld):
 
 
 @pytest.mark.vcr()
-def test_arbitrary_url_zip_download(eld):
-    """ Verify that aribitrary URLs work for zip file downloads. """
-    dir = eld.get_data(
-        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
-    )
-    dir_has_contents = len(os.listdir(dir)) > 0
-    assert dir_has_contents
-
-
-@pytest.mark.vcr()
 def test_url_download_w_content_disposition(eld):
     """ Test arbitrary URL download with content-disposition. """
     file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
@@ -192,3 +182,27 @@ def test_invalid_data_type(eld):
     ]
     with pytest.raises(ValueError, match="kind must be one of"):
         eld.get_data("invalid-data-type")
+
+
+@pytest.mark.vcr()
+def test_arbitrary_url_zip_download(eld):
+    """ Verify that aribitrary URLs work for zip file downloads. """
+    dir = eld.get_data(
+        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
+    )
+    dir_has_contents = len(os.listdir(dir)) > 0
+    assert dir_has_contents
+
+
+@pytest.mark.vcr()
+def test_url_download_w_tar_file(eld):
+    """ Ensure that tar files are downloaded and extracted. """
+    dir = eld.get_data(url="https://ndownloader.figshare.com/files/14615411")
+    assert "abc.txt" in os.listdir(dir)
+
+
+@pytest.mark.vcr()
+def test_url_download_w_tar_gz_file(eld):
+    """ Ensure that tar.gz files are downloaded and extracted. """
+    dir = eld.get_data(url="https://ndownloader.figshare.com/files/14615414")
+    assert "abc.txt" in os.listdir(dir)

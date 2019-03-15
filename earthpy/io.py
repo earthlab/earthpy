@@ -6,6 +6,7 @@ import os
 import os.path as op
 import re
 import requests
+import tarfile
 import zipfile
 import earthpy
 
@@ -68,7 +69,7 @@ DATA_URLS = {
 
 HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
-ALLOWED_FILE_TYPES = ["file", "zip"]
+ALLOWED_FILE_TYPES = ["file", "zip", "tar", "tar.gz"]
 
 
 class Data(object):
@@ -177,10 +178,11 @@ class Data(object):
 
             # try and deduce filetype
             file_type = "file"
-            if fname.endswith("zip"):
-                file_type = "zip"
-                # remove .zip extension for pretty download directories
-                fname = os.path.splitext(fname)[0]
+            for type in ALLOWED_FILE_TYPES:
+                if fname.endswith(type):
+                    file_type = type
+                    # remove extension for pretty download directories
+                    fname = re.sub("\\.{}$".format(type), "", fname)
 
             this_data = (url, fname, file_type)
             this_root = op.join(self.path, "earthpy-downloads")
@@ -190,6 +192,7 @@ class Data(object):
 
         data_paths = []
         for url, name, kind in this_data:
+
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
                     "kind must be one of {}, got {}".format(
@@ -212,7 +215,7 @@ class Data(object):
         """ Download a file.
 
         This helper function downloads files and saves them to ``path``.
-        Zip files are unzipped to the ``path`` directory.
+        Zip and tar files are extracted to the ``path`` directory.
         The implementation is adapted from the download library:
         https://github.com/choldgraf/download
 
@@ -236,15 +239,42 @@ class Data(object):
         if replace is False and op.exists(path):
             return path
         r = requests.get(url)
-        if kind == "zip":
-            os.makedirs(path, exist_ok=True)
-            z = zipfile.ZipFile(io.BytesIO(r.content))
-            z.extractall(path)
-        else:
+
+        if kind == "file":
             os.makedirs(op.dirname(path), exist_ok=True)
             with open(path, "wb") as f:
                 f.write(r.content)
+        else:
+            self._download_and_extract(path, r, kind)
         return path
+
+    def _download_and_extract(self, path, r, kind):
+        """ Download and extract an archive to a local directory.
+
+        Parameters
+        ----------
+        path : str
+            Destination path of downloaded file.
+        r: requests.models.Response
+            URL response that can be used to get the data.
+        kind : str
+            Kind of file. Either 'zip', 'tar', or 'tar.gz'.
+
+        Returns
+        -------
+        None
+
+        """
+        os.makedirs(path, exist_ok=True)
+        file_like_object = io.BytesIO(r.content)
+
+        if kind == "zip":
+            archive = zipfile.ZipFile(file_like_object)
+        if kind == "tar":
+            archive = tarfile.open(fileobj=file_like_object)
+        if kind == "tar.gz":
+            archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
+        archive.extractall(path)
 
 
 def path_to_example(dataset):
