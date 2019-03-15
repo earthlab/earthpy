@@ -176,13 +176,13 @@ class Data(object):
                 else:
                     fname = url.split("/")[-1]
 
-            # try and deduce filetype
+            # try and deduce filetype based on extension
             file_type = "file"
-            for type in ALLOWED_FILE_TYPES:
-                if fname.endswith(type):
-                    file_type = type
+            for ext in ALLOWED_FILE_TYPES:
+                if fname.endswith(ext):
+                    file_type = ext
                     # remove extension for pretty download directories
-                    fname = re.sub("\\.{}$".format(type), "", fname)
+                    fname = re.sub("\\.{}$".format(ext), "", fname)
 
             this_data = (url, fname, file_type)
             this_root = op.join(self.path, "earthpy-downloads")
