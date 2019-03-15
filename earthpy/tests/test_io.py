@@ -135,10 +135,9 @@ def test_valid_download_file(eld):
 @pytest.mark.vcr()
 def test_valid_download_zip(eld):
     """ Test that zipped files get downloaded and extracted. """
-    dir = eld.get_data("little-zip-file")
-    assert os.path.isdir(dir)
-    dir_has_contents = len(os.listdir(dir)) > 0
-    assert dir_has_contents
+    path = eld.get_data("little-zip-file")
+    path_has_contents = len(os.listdir(path)) > 0
+    assert path_has_contents
 
 
 @pytest.mark.vcr()
@@ -187,22 +186,22 @@ def test_invalid_data_type(eld):
 @pytest.mark.vcr()
 def test_arbitrary_url_zip_download(eld):
     """ Verify that aribitrary URLs work for zip file downloads. """
-    dir = eld.get_data(
+    path = eld.get_data(
         url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
     )
-    dir_has_contents = len(os.listdir(dir)) > 0
-    assert dir_has_contents
+    path_has_contents = len(os.listdir(path)) > 0
+    assert path_has_contents
 
 
 @pytest.mark.vcr()
 def test_url_download_w_tar_file(eld):
     """ Ensure that tar files are downloaded and extracted. """
-    dir = eld.get_data(url="https://ndownloader.figshare.com/files/14615411")
-    assert "abc.txt" in os.listdir(dir)
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14615411")
+    assert "abc.txt" in os.listdir(path)
 
 
 @pytest.mark.vcr()
 def test_url_download_w_tar_gz_file(eld):
     """ Ensure that tar.gz files are downloaded and extracted. """
-    dir = eld.get_data(url="https://ndownloader.figshare.com/files/14615414")
-    assert "abc.txt" in os.listdir(dir)
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14615414")
+    assert "abc.txt" in os.listdir(path)
