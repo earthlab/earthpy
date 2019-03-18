@@ -8,6 +8,8 @@ from .io import Data
 def load_epsg():
     """ A function to return a dictionary of EPSG code to Proj4 string mappings.
     
+    This function supports calling epsg['code-here'].
+    
     Return
     ------
     epsg: dictionary
@@ -17,7 +19,9 @@ def load_epsg():
     -------
     >>> import earthpy as et
     >>> epsg = et.load_epsg()
-    >>> epsg4326_proj4 = epsg['4326']  # extracting the Proj4 string for EPSG code 4326 
+    >>> # Get Proj4 string for EPSG code 4326 
+    >>> epsg4326_proj4 = epsg['4326']  
+    '+proj=longlat +datum=WGS84 +no_defs'
     """
 
     epsg = json.loads(
