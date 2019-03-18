@@ -25,12 +25,12 @@ if __name__ == "__main__":
         version="0.6.3",
         packages=["earthpy"],
         install_requires=[
-            "tqdm",
-            "pandas",
-            "numpy",
+            "download",
             "geopandas",
             "matplotlib>=2.0.0",
+            "numpy>=1.14.0",
             "rasterio",
+            "Rtree>=0.8",
             "scikit-image",
         ],
         zip_safe=False,  # the package can run out of an .egg file

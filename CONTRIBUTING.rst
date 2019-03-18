@@ -1,7 +1,8 @@
+=======================
 Contributing Guidelines
 =======================
 
-We welcome contributions of many kinds to ``earthpy``.
+We welcome contributions to EarthPy.
 When contributing, please follow the guidelines below and adhere to the
 `EarthPy Code of Conduct <code-of-conduct.html>`_.
 
@@ -9,9 +10,6 @@ At this stage of development, we are developing a set of
 usable wrapper functions that help make working with earth
 systems data easier. We are open to new functionality but are currently
 trying to ensure our package is stable, operational and well documented.
-
-Edits & Updates
-~~~~~~~~~~~~~~~
 
 When submitting a change to the repository, please first create an issue that
 covers the item that you'd like to change, update or enhance. Once a discussion
@@ -25,42 +23,118 @@ If you are proposing a feature:
 
 
 Get Started!
-------------
+============
 
-Ready to contribute? Here's how to set up `earthpy` for local development.
+Ready to contribute? Here's how to set up EarthPy for local development.
 
-1. Fork the `earthpy` repo on GitHub.
-2. Clone your fork locally::
+1. Fork the repository on GitHub
+--------------------------------
+
+To create your own copy of the repository on GitHub, navigate to the
+`earthlab/earthpy <https://github.com/earthlab/earthpy>`_ repository
+and click the **Fork** button in the top-right corner of the page.
+
+2. Clone your fork locally
+--------------------------
+
+Use ``git clone`` to get a local copy of your EarthPy repository on your
+local filesystem::
 
     $ git clone git@github.com:your_name_here/earthpy.git
-
-3. Set up your fork for local development with conda::
-
     $ cd earthpy/
+
+3. Set up your fork for local development
+-----------------------------------------
+
+Create an environment
+^^^^^^^^^^^^^^^^^^^^^
+
+Using conda, there are two options.
+
+1. The easiest option is to create an environment from the
+``environment.yml`` file.
+Note that this will only allow you to test against one version of python
+locally, but this is the recommended option on Windows and MacOS::
+
     $ conda env create -f environment.yml
-    $ source activate earthpy-dev
+    $ conda activate earthpy-dev
+
+2. If you are comfortable debugging local system library installations, and
+want to be able to test against multiple versions of python locally, you can
+create an empty conda environment::
+
+    $ conda create -n earthpy-dev python=3.7
+    $ conda activate earthpy-dev
+
+Or, if you prefer to use virtualenv rather than conda::
+
+    $ virtualenv earthpy-dev
+    $ source earthpy-dev/bin/activate
+
+Install the package
+^^^^^^^^^^^^^^^^^^^
+
+Once your earthpy-dev environment is activated, install EarthPy in editable
+mode, along with the development requirements and pre-commit hooks::
+
     $ pip install -e .
     $ pip install -r dev-requirements.txt
     $ pre-commit install
 
-4. Create a branch for local development::
+4. Create a branch for local development
+----------------------------------------
+
+Use the ``git checkout`` command to create your own branch, and pick a name
+that describes the changes that you are making::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
-   Now you can make your changes locally.
+Now you can make your changes locally.
 
-5. When you're done making changes, check that tests pass, docs build, and examples run::
+5. Test the package
+-------------------
 
-    $ pytest --doctest-modules
+Ensure that the tests pass, and the documentation builds successfully::
+
+    $ pytest
     $ make docs
 
-6. Commit your changes and push your branch to GitHub::
+**Note to Windows users**
+
+To use ``make`` you will need to install and configure GNU Make for Windows,
+e.g., using chocolatey: https://chocolatey.org/packages/make
+
+Optional: testing multiple python versions locally
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To test against multiple versions of python, you can use tox.
+This step is optional, as tox will test against multiple versions as part of
+EarthPy's continuous integration pipeline.
+To use tox, you must be able to install EarthPy's dependencies without
+using the ``environment.yml`` file, i.e., you must be able to install EarthPy
+and its dependencies with pip.
+
+Running tox is as simple as::
+
+    $ tox
+
+If you are using conda and you get get
+``InterpreterNotFound`` errors when running tox, you may need to
+``pip install tox-conda``.
+
+
+6. Commit and push your changes
+-------------------------------
+
+Once you are sure that all tests are passing, you can commit your changes
+and push to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+7. Submit a pull request on GitHub
+----------------------------------
 
 When submitting a pull request:
 
@@ -89,12 +163,13 @@ When submitting a pull request:
 
 
 Documentation Updates
-~~~~~~~~~~~~~~~~~~~~~
+=====================
 
-Improving the documentation and testing for code already in ``earthpy``
+Improving the documentation and testing for code already in EarthPy
 is a great way to get started if you'd like to make a contribution. Please note
 that our documentation files are in
-`ReStructuredText (.rst) <http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
+`ReStructuredText (.rst)
+<http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
 format and format your pull request
 accordingly.
 
@@ -110,7 +185,7 @@ You can preview the generated documentation by opening
 
 Earthpy uses `doctest
 <https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html>`_ to test
-code in the documentation, which includes docstrings in earthpy's modules, and
+code in the documentation, which includes docstrings in EarthPy's modules, and
 code chunks in the reStructuredText source files.
 This enables the actual output of code examples to be checked against expected
 output.
@@ -136,14 +211,14 @@ e.g.,::
        >>> plt.plot([1, 2, 3], [4, 5, 6])
 
 
-Style
-~~~~~
+Code style
+==========
 
-- ``Earthpy`` currently only supports Python 3 (3.2+). Please test code locally
+- EarthPy currently only supports Python 3 (3.5+). Please test code locally
   in Python 3 when possible (all supported versions will be automatically
   tested on Travis CI).
 
-- ``Earthpy`` uses a pre-commit hook that runs the black code autoformatter.
+- EarthPy uses a pre-commit hook that runs the black code autoformatter.
   Be sure to execute `pre-commit install` as described above, which will cause
   black to autoformat code prior to commits. If this step is skipped, black
   may cause build failures on Travis CI due to formatting issues.
@@ -158,13 +233,14 @@ Style
     - Class definitions should use camel case - example: ``ClassNameHere`` .
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and ``earthpy`` imports third following PEP 8
+  3rd-party libraries next, and EarthPy imports third following PEP 8
   standards. Within each grouping, imports should be alphabetized. Always use
   absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
 
+
 Deploying
-~~~~~~~~~
+=========
 
 A reminder for the maintainers on how to deploy.
 Make sure all your changes are committed, then run::
@@ -181,7 +257,7 @@ package, and generates a git commit along with an associated git tag for the
 new version.
 For more on bumpversion, see: https://github.com/peritus/bumpversion
 
-To deploy earthpy, push the commit and the version tags::
+To deploy EarthPy, push the commit and the version tags::
 
     $ git push
     $ git push --tags
