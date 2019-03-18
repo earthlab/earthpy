@@ -69,7 +69,15 @@ def colorbar(mapobj, size="3%", pad=0.09):
 
 
 def plot_bands(
-    arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
+    arr,
+    cmap="Greys_r",
+    figsize=(12, 12),
+    cols=3,
+    title=None,
+    extent=None,
+    cbar=True,
+    scale=True,
+    vmin_vmax=(),
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -149,11 +157,22 @@ def plot_bands(
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i + 1
-            ax.imshow(es.bytescale(arr[i]), cmap=cmap)
+            if scale:
+                arr_im = es.bytescale(arr[i])
+            else:
+                arr_im = arr[i]
+            if len(vmin_vmax) == 2:
+                im = ax.imshow(
+                    arr_im, cmap=cmap, vmin=vmin_vmax[0], vmax=vmin_vmax[1]
+                )
+            else:
+                im = ax.imshow(arr_im, cmap=cmap)
             if title:
                 ax.set(title=title[i])
             else:
                 ax.set(title="Band %i" % band)
+            if cbar:
+                colorbar(im)
             ax.set(xticks=[], yticks=[])
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -170,10 +189,27 @@ def plot_bands(
         arr = np.squeeze(arr)
 
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(es.bytescale(arr), cmap=cmap, extent=extent)
+        if scale:
+            arr_im = es.bytescale(arr)
+        else:
+            arr_im = arr
+
+        if len(vmin_vmax) == 2:
+            im = ax.imshow(
+                arr_im,
+                cmap=cmap,
+                vmin=vmin_vmax[0],
+                vmax=vmin_vmax[1],
+                extent=extent,
+            )
+        else:
+            im = ax.imshow(arr_im, cmap=cmap, extent=extent)
+        # im = ax.imshow(arr_im, cmap=cmap, extent=extent)
         if title:
             ax.set(title=title[0])
         ax.set(xticks=[], yticks=[])
+        if cbar:
+            colorbar(im)
         plt.show()
         return ax
 
