@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adding tests for `hillshade()` and improved docs (@jpalomino #260)
 * Closing plots in tests (@lwasser #257)
 * Added a code of conduct (@mbjoseph, #27)
+* Added CI testing across python versions and on Windows (@mbjoseph, #228)
 * Added tests for `EarthlabData` class (@mbjoseph, #37)
 
 ## [0.6.2] - 2019-02-19

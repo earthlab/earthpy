@@ -165,7 +165,7 @@ class Data(object):
                 )
 
             this_data = DATA_URLS[key]
-            this_root = op.join(self.path, key)
+            this_root = op.join(str(self.path), key)
 
         if url is not None:
             with requests.head(url) as r:
@@ -186,7 +186,7 @@ class Data(object):
                 fname = os.path.splitext(fname)[0]
 
             this_data = (url, fname, file_type)
-            this_root = op.join(self.path, "earthpy-downloads")
+            this_root = op.join(str(self.path), "earthpy-downloads")
 
         if not isinstance(this_data, list):
             this_data = [this_data]
