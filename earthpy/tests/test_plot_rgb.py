@@ -143,7 +143,6 @@ def test_stretch_output_scaled(rgb_image):
     """
     arr, _ = rgb_image
     stretch_vals = list(range(10))
-
     mean_vals = list()
     for v in stretch_vals:
         ax = plot_rgb(arr, stretch=True, str_clip=v)[1]
