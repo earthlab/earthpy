@@ -18,9 +18,8 @@ def load_epsg():
     Example
     -------
     >>> import earthpy as et
-    >>> epsg = et.load_epsg()
     >>> # Get Proj4 string for EPSG code 4326 
-    >>> epsg4326_proj4 = epsg['4326']  
+    >>> et.epsg['4326']  
     '+proj=longlat +datum=WGS84 +no_defs'
     """
 
