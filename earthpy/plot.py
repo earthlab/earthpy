@@ -162,7 +162,8 @@ def plot_bands(
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        return fig, axs
+        plt.show()
+        return axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
         # If it's a 2 dimensional array with a 3rd dimension
@@ -173,7 +174,8 @@ def plot_bands(
         if title:
             ax.set(title=title[0])
         ax.set(xticks=[], yticks=[])
-        return fig, ax
+        plt.show()
+        return ax
 
 
 def _stretch_im(arr, str_clip):

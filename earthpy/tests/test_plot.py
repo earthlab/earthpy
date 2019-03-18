@@ -48,7 +48,7 @@ def test_str_for_title(image_array_2bands):
     """Test that a single string title renders properly """
 
     single_band = image_array_2bands[0]
-    f, ax = ep.plot_bands(arr=single_band, title="my title")
+    ax = ep.plot_bands(arr=single_band, title="my title")
     plot_title = ax.get_title()
     assert "my title" in plot_title
     plt.close()
@@ -59,30 +59,28 @@ def test_num_axes(image_array_2bands):
 
     If provided with a 2 band array, plot_bands should return 3 axes.
     """
-    f, ax = ep.plot_bands(image_array_2bands)
-    assert len(f.axes) == 3
-    plt.close(f)
+    ax = ep.plot_bands(image_array_2bands)
+    assert len(ax) == 3
+    plt.close()
 
 
 def test_two_plot_title(image_array_2bands):
     """Test that the default title is provided for a 2 band array plot."""
 
-    f, ax = ep.plot_bands(image_array_2bands)
-    ax = f.axes
+    ax = ep.plot_bands(image_array_2bands)
     num_plts = image_array_2bands.shape[0]
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ["Band 1", "Band 2"]
-    plt.close(f)
+    plt.close()
 
 
 def test_custom_plot_title(image_array_2bands):
     """Test that the custom title is applied for a 2 band array plot."""
-    f, ax = ep.plot_bands(image_array_2bands, title=["Red Band", "Green Band"])
-    ax = f.axes
+    ax = ep.plot_bands(image_array_2bands, title=["Red Band", "Green Band"])
     num_plts = image_array_2bands.shape[0]
     all_titles = [ax[i].get_title() for i in range(num_plts)]
     assert all_titles == ["Red Band", "Green Band"]
-    plt.close(f)
+    plt.close()
 
 
 def test_single_band_3dims(one_band_3dims):
@@ -91,11 +89,11 @@ def test_single_band_3dims(one_band_3dims):
     If you provide a single band array with 3 dimensions (shape[0]==1
     test that it still plots and only returns a single axis.
     """
-    f, ax = ep.plot_bands(one_band_3dims)
-    arr = f.axes[0].get_images()[0].get_array()
+    ax = ep.plot_bands(one_band_3dims)
+    arr = ax.get_images()[0].get_array()
     assert arr.ndim == 2
-    assert len(f.axes[0].get_images()) == 1
-    plt.close(f)
+    assert len(ax.get_images()) == 1
+    plt.close()
 
 
 def test_single_band_2dims(one_band_3dims):
@@ -105,12 +103,12 @@ def test_single_band_2dims(one_band_3dims):
     test that it still plots and only returns a single axis.
     """
     single_band_2dims = one_band_3dims[0]
-    f, ax = ep.plot_bands(single_band_2dims)
+    ax = ep.plot_bands(single_band_2dims)
     # Get array from mpl figure
-    arr = f.axes[0].get_images()[0].get_array()
+    arr = ax.get_images()[0].get_array()
     assert arr.ndim == 2
-    assert len(f.axes[0].get_images()) == 1
-    plt.close(f)
+    assert len(ax.get_images()) == 1
+    plt.close()
 
 
 """ Colorbar Tests """
