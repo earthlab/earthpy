@@ -44,14 +44,6 @@ earthpy.spatial module
     :undoc-members:
     :show-inheritance:
 
-earthpy.utils module
---------------------
-
-.. automodule:: earthpy.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
