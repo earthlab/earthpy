@@ -42,7 +42,7 @@ def arr_plot_blues(binned_array_3bins):
     bins, im_arr_bin = binned_array_3bins
 
     f, ax = plt.subplots()
-    return ax.imshow(im_arr_bin, cmap="Blues"), binned_array_3bins[1]
+    return ax.imshow(im_arr_bin), im_arr_bin
 
 
 @pytest.fixture
@@ -52,8 +52,8 @@ def arr_plot_list_cmap(binned_array, listed_cmap):
     cmap, norm = listed_cmap
     bins, arr_class = binned_array
 
-    f, ax = plt.subplots(figsize=(5, 5))
-    return ax.imshow(arr_class, cmap=cmap), binned_array[1]
+    f, ax = plt.subplots()
+    return ax.imshow(arr_class, cmap=cmap), arr_class
 
 
 @pytest.fixture
