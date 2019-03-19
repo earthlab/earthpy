@@ -172,7 +172,7 @@ def test_vmin_vmax(image_array_2bands):
     # Get all cbars - the min and max vals for all cbars should be -10 and 10
     cb_max = [a.images[0].colorbar.vmax for a in ax if a.images]
     cb_min = [a.images[0].colorbar.vmin for a in ax if a.images]
-    # Are all vals in the list vmin?
+
     assert all(map(lambda x: x == min_max[0], cb_min))
     assert all(map(lambda x: x == min_max[1], cb_max))
     plt.close()
