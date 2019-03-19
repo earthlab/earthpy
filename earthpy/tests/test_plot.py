@@ -2,9 +2,8 @@
 
 import numpy as np
 import pytest
-import matplotlib as mpl
 
-mpl.use("TkAgg")
+# mpl.use("TkAgg")
 import matplotlib.pyplot as plt
 import earthpy.plot as ep
 
