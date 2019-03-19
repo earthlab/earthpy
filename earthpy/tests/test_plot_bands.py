@@ -124,7 +124,7 @@ def test_cbar_param(one_band_3dims):
     plt.close()
 
 
-def test_not_scaled(one_band_3dims):
+def test_not_scaled_single_band(one_band_3dims):
     """Test if the user turns off scaling and cbar the data vals should remain intact.
 
     Also if no cbar is specified it should not render.
@@ -141,6 +141,21 @@ def test_not_scaled(one_band_3dims):
     )
     # A cbar should be drawn in this plot
     assert not c_bar
+    plt.close()
+
+
+def test_not_scaled_multi_band(image_array_2bands):
+    """Test if the user turns off scaling for multi bands the data vals should remain intact.
+    """
+
+    ax = ep.plot_bands(image_array_2bands, scale=False)
+    arr = ax[0].get_images()[0].get_array()
+
+    # Return arr is unscaled for plotting
+    assert (
+        arr.min() == image_array_2bands.min()
+        and arr.max() == image_array_2bands.max()
+    )
     plt.close()
 
 
