@@ -148,14 +148,16 @@ def test_not_scaled_multi_band(image_array_2bands):
     """Test if the user turns off scaling for multi bands the data vals should remain intact.
     """
 
-    ax = ep.plot_bands(image_array_2bands, scale=False)
+    im = image_array_2bands
+    ax = ep.plot_bands(im, scale=False)
+
     arr = ax[0].get_images()[0].get_array()
+    # Get all arrays to be plotted
+    all_arrs = [a.get_images()[0].get_array() for a in ax if a.get_images()]
+    all_arrs_flat = np.concatenate(all_arrs, axis=0)
 
     # Return arr is unscaled for plotting
-    assert (
-        arr.min() == image_array_2bands.min()
-        and arr.max() == image_array_2bands.max()
-    )
+    assert all_arrs_flat.min() == im.min() and all_arrs_flat.max() == im.max()
     plt.close()
 
 
