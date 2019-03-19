@@ -42,7 +42,7 @@ def arr_plot_blues(binned_array_3bins):
     bins, im_arr_bin = binned_array_3bins
 
     f, ax = plt.subplots()
-    return ax.imshow(im_arr_bin, cmap="Blues"), binned_array_3bins[1]
+    return ax.imshow(im_arr_bin), im_arr_bin
 
 
 @pytest.fixture
