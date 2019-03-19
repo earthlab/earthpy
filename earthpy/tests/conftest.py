@@ -172,4 +172,8 @@ def image_array_2bands():
 
 @pytest.fixture
 def one_band_3dims():
-    return np.random.randint(10, size=(1, 4, 5))
+    """Return a 3-dim numpy array vals 0-9"""
+
+    return np.array(
+        [[[8, 0, 2, 6, 3], [2, 8, 2, 8, 4], [3, 9, 1, 5, 4], [5, 9, 2, 7, 7]]]
+    )

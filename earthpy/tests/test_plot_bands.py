@@ -1,6 +1,5 @@
 """Tests for the plot bands function"""
 
-import numpy as np
 import pytest
 import matplotlib as mpl
 
@@ -55,9 +54,14 @@ def test_num_axes(image_array_2bands):
     """Test the number of axes.
 
     If provided with a 2 band array, plot_bands should return 3 axes.
+    And 2 colorbars
     """
     ax = ep.plot_bands(image_array_2bands)
+    ax = list(ax)
+    cb = [a.images[0].colorbar for a in ax if a.images]
+
     assert len(ax) == 3
+    assert len(cb) == 2
     plt.close()
 
 
@@ -105,4 +109,55 @@ def test_single_band_2dims(one_band_3dims):
     arr = ax.get_images()[0].get_array()
     assert arr.ndim == 2
     assert len(ax.get_images()) == 1
+    plt.close()
+
+
+def test_cbar_param(one_band_3dims):
+    """Test that the colorbar param works for a single band arr
+    """
+    one_band_2dims = one_band_3dims[0]
+    ax = ep.plot_bands(one_band_2dims)
+    arr = ax.get_images()[0].get_array()
+    c_bar = ax.images[0].colorbar
+
+    # Return arr should be scaled by default between 0-255
+    assert arr.min() == 0 and arr.max() == 255
+    # A cbar should be drawn in this plot
+    assert c_bar
+    plt.close()
+
+
+def test_not_scaled(one_band_3dims):
+    """Test if the user turns off scaling and cbar the data vals should remain intact.
+
+    Also if no cbar is specified it should not render.
+    """
+    one_band_2dims = one_band_3dims[0]
+
+    ax = ep.plot_bands(one_band_2dims, cbar=False, scale=False)
+    arr = ax.get_images()[0].get_array()
+    c_bar = ax.images[0].colorbar
+
+    # Return arr is unscaled for plotting
+    assert (
+        arr.min() == one_band_2dims.min() and arr.max() == one_band_2dims.max()
+    )
+    # A cbar should be drawn in this plot
+    assert not c_bar
+    plt.close()
+
+
+def test_vmin_vmax(one_band_3dims):
+    """Test vmin and max apply properly
+
+    If the data are scaled between -10 and 10 the cbar vals should reflect that.
+    """
+
+    one_band_2dims = one_band_3dims[0]
+    min_max = (-10, 10)
+    ax = ep.plot_bands(one_band_2dims, vmin_vmax=min_max, scale=False)
+    c_bar = ax.images[0].colorbar
+
+    # Cbar should be scaled between the vmin and vmax vals
+    assert c_bar.vmin == min_max[0] and c_bar.vmax == min_max[1]
     plt.close()

@@ -1,5 +1,15 @@
 """ Colorbar Tests """
 
+import numpy as np
+import pytest
+import matplotlib as mpl
+
+mpl.use("TkAgg")
+import matplotlib.pyplot as plt
+import earthpy.plot as ep
+
+plt.show = lambda: None
+
 
 def test_colorbar_height(basic_image):
     """Test that the colorbar ax height matches the image axis height."""
