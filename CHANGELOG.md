@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Add cbar legend to `plot_bands()` and scaling parameters (@lwasser #274)
 * Fix bug in `plot_bands()` where single string titles don't plot + add test (@lwasser #258)
 * Remove `earthpy.utils.fix_paths()` as it is not used in the package (@lwasser #259)
 * Adding tests for `hillshade()` and improved docs (@jpalomino #260)
