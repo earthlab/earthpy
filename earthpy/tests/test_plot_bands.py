@@ -159,6 +159,25 @@ def test_not_scaled_multi_band(image_array_2bands):
     plt.close()
 
 
+def test_vmin_vmax(image_array_2bands):
+    """Test vmin and max apply properly in multi band images
+
+    If the data are scaled between -10 and 10 the cbar vals should reflect that.
+    """
+
+    one_band_2dims = image_array_2bands
+    min_max = (-10, 10)
+    ax = ep.plot_bands(one_band_2dims, vmin_vmax=min_max, scale=False)
+
+    # Get all cbars - the min and max vals for all cbars should be -10 and 10
+    cb_max = [a.images[0].colorbar.vmax for a in ax if a.images]
+    cb_min = [a.images[0].colorbar.vmin for a in ax if a.images]
+    # Are all vals in the list vmin?
+    assert all(map(lambda x: x == min_max[0], cb_min))
+    assert all(map(lambda x: x == min_max[1], cb_max))
+    plt.close()
+
+
 def test_vmin_vmax(one_band_3dims):
     """Test vmin and max apply properly
 
