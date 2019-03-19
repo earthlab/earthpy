@@ -58,6 +58,7 @@ def arr_plot_list_cmap(binned_array, listed_cmap):
 
 @pytest.fixture
 def vals_missing_plot_list_cmap(binned_array, listed_cmap):
+    """Returns a normalized imshow plot using a 3 value array w vals 2,3,4"""
 
     cmap, norm = listed_cmap
     bins, arr = binned_array
@@ -71,6 +72,7 @@ def vals_missing_plot_list_cmap(binned_array, listed_cmap):
 
 @pytest.fixture
 def vals_missing_plot_cont_cmap(binned_array):
+    """Returns a non normalized imshow plot using 3 consecutive value array"""
 
     bins, arr = binned_array
 
@@ -78,7 +80,7 @@ def vals_missing_plot_cont_cmap(binned_array):
     arr[arr == 5] = 4
 
     f, ax = plt.subplots(figsize=(5, 5))
-    return ax.imshow(arr, cmap="Blues"), arr
+    return ax.imshow(arr), arr
 
 
 """ Draw legend tests """
@@ -225,10 +227,11 @@ def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
 
     im_ax, arr = vals_missing_plot_list_cmap
 
-    leg = ep.draw_legend(im_ax, classes=[1, 2, 3, 4, 5])
+    class_list = list(range(5))
+    leg = ep.draw_legend(im_ax, classes=class_list)
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
 
-    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    assert len(legend_cols) == len(class_list)
     plt.close()
 
 
@@ -239,10 +242,11 @@ def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
 
     im_ax, arr = vals_missing_plot_cont_cmap
 
-    leg = ep.draw_legend(im_ax, classes=[1, 2, 3, 4, 5])
+    class_list = list(range(5))
+    leg = ep.draw_legend(im_ax, classes=class_list)
     legend_cols = [i.get_facecolor() for i in leg.get_patches()]
 
-    assert len(legend_cols) == len([1, 2, 3, 4, 5])
+    assert len(legend_cols) == len(class_list)
     plt.close()
 
 
