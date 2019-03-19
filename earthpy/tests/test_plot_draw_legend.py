@@ -53,7 +53,7 @@ def arr_plot_list_cmap(binned_array, listed_cmap):
     bins, arr_class = binned_array
 
     f, ax = plt.subplots()
-    return ax.imshow(arr_class, cmap=cmap), binned_array[1]
+    return ax.imshow(arr_class, cmap=cmap), arr_class
 
 
 @pytest.fixture
