@@ -3,6 +3,7 @@
 import pytest
 import matplotlib.pyplot as plt
 import earthpy.plot as ep
+import numpy as np
 
 plt.show = lambda: None
 
