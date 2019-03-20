@@ -485,15 +485,9 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
     if classes is not None:
-        try:
-            # Get the colormap from the mpl object
-            cmap = im_ax.cmap.name
-        except AssertionError:
-            raise AssertionError(
-                "The colormap name provided can not be found. Please "
-                "provide the draw_legend() function with a cmap= "
-                "argument to ensure your legend draws properly."
-            )
+        # Get the colormap from the mpl object
+        cmap = im_ax.cmap.name
+
         # If the colormap is manually generated from a list
         if cmap == "from_list":
             cmap = ListedColormap(im_ax.cmap.colors)
