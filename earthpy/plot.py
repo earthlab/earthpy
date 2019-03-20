@@ -97,6 +97,12 @@ def plot_bands(
         Title of one band or list of titles with one title per band.
     extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
+    cbar : Boolean (default = True)
+        Turn off colorbar if needed.
+    scale : Boolean (Default = True)
+        Turn off bytescale scaling if needed.
+    vmin_vmax : Tuple (Optional)
+        Specify the vmin and max to scale imshow() plots.
 
     Returns
     ----------
