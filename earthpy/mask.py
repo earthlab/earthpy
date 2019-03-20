@@ -110,14 +110,17 @@ def _create_mask(mask_arr, vals):
     except AttributeError:
         raise AttributeError("Values should be provided as a list")
 
-    unique_vals = np.unique(mask_arr).tolist()
+    # For some reason if you don't copy this here, it magically changes the input
+    # qa layer to a boolean in the main environment.
+    new_mask_arr = mask_arr.copy()
+    unique_vals = np.unique(new_mask_arr).tolist()
 
     if any(num in vals for num in unique_vals):
-        temp_mask = np.isin(mask_arr, vals)
-        mask_arr[temp_mask] = 1
-        mask_arr[~temp_mask] = 0
+        temp_mask = np.isin(new_mask_arr, vals)
+        new_mask_arr[temp_mask] = 1
+        new_mask_arr[~temp_mask] = 0
 
-        return mask_arr
+        return new_mask_arr
 
     else:
         raise ValueError(
