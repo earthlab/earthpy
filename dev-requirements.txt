@@ -5,3 +5,4 @@ pytest-vcr
 sphinx==1.8.0
 sphinx-autobuild==0.7.1
 sphinx_rtd_theme
+sphinx_gallery

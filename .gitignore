@@ -98,6 +98,8 @@ ENV/
 
 # mkdocs documentation
 /site
+doc/source/gallery
+doc/source/gallery_vignettes
 
 # mypy
 .mypy_cache/

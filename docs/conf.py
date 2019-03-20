@@ -20,11 +20,11 @@
 # -- Project information -----------------------------------------------------
 
 project = "EarthPy"
-copyright = "2018, Earth Lab"
+copyright = "2019, Earth Lab"
 author = "Earth Lab"
 
 # The short X.Y version
-version = ""
+version = "0.6.3"
 # The full version, including alpha/beta/rc tags
 release = ""
 
@@ -45,7 +45,16 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx_gallery.gen_gallery",
 ]
+
+
+sphinx_gallery_conf = {
+    # path to your examples scripts
+    "examples_dirs": "../examples",
+    # path where to save gallery generated examples
+    "gallery_dirs": "gallery_vignettes",
+}
 
 # Show the source code for any plots in the documentation by default
 plot_include_source = True
