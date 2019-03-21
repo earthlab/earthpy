@@ -140,24 +140,18 @@ def test_valid_download_zip(eld):
     assert path_has_contents
 
 
+@pytest.mark.parametrize("replace_arg_value", [True, False])
 @pytest.mark.vcr()
-def test_replace_arg_prevents_overwrite(eld):
-    """ If replace=False, do not replace existing files. """
+def test_replace_arg_controle_overwrite(eld, replace_arg_value):
+    """ If replace=False, do not replace existing files. If true, replace. """
     file1 = eld.get_data("little-text-file")
-    time_modified1 = os.path.getmtime(file1)
-    file2 = eld.get_data("little-text-file", replace=False)
-    time_modified2 = os.path.getmtime(file2)
-    assert time_modified1 == time_modified2
-
-
-@pytest.mark.vcr()
-def test_replace_arg_allows_overwrite(eld):
-    """ If replace=True, replace existing files. """
-    file1 = eld.get_data("little-text-file")
-    time_modified1 = os.path.getmtime(file1)
-    file2 = eld.get_data("little-text-file", replace=True)
-    time_modified2 = os.path.getmtime(file2)
-    assert time_modified1 < time_modified2
+    mtime1 = os.path.getmtime(file1)
+    file2 = eld.get_data("little-text-file", replace=replace_arg_value)
+    mtime2 = os.path.getmtime(file2)
+    if replace_arg_value is True:
+        assert mtime1 < mtime2
+    else:
+        assert mtime1 == mtime2
 
 
 @pytest.mark.vcr()
@@ -201,22 +195,16 @@ def test_url_download_tar_gz_file(eld):
 
 
 @pytest.mark.vcr()
-def test_url_download_gz_file(eld):
-    """ Ensure that .gz files are downloaded and extracted. """
-    path = eld.get_data(url="https://ndownloader.figshare.com/files/14653649")
-    assert path.endswith("abc.txt") and os.path.isfile(path)
-
-
-@pytest.mark.vcr()
-def test_url_download_gz_tif(eld):
-    """ Ensure that compressed GeoTIFF files are downloaded and extracted. """
-    path = eld.get_data(url="https://ndownloader.figshare.com/files/14630150")
-    assert path.endswith("MCD45monthly.A2016183.Win03.051.ba_qa.tif")
-    assert os.path.isfile(path)
-
-
-@pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(eld):
     """ Test arbitrary URL download with content-disposition. """
     path = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
     assert path.endswith("abc.txt") and os.path.isfile(path)
+
+
+@pytest.mark.parametrize("verbose_arg_value", [True, False])
+@pytest.mark.vcr()
+def test_verbose_arg_works(eld, verbose_arg_value, capsys):
+    """ Test that the verbose argument can print or suppress messages. """
+    eld.get_data("little-text-file", verbose=verbose_arg_value)
+    output_printed = capsys.readouterr().out != ""
+    assert output_printed == verbose_arg_value

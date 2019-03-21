@@ -1,12 +1,10 @@
 """File Input/Output utilities."""
 
-import gzip
 import io
 import os
 import os.path as op
 import re
 import requests
-import shutil
 import tarfile
 import zipfile
 import earthpy
@@ -70,7 +68,7 @@ DATA_URLS = {
 
 HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
-ALLOWED_FILE_TYPES = ["file", "gz", "tar", "tar.gz", "zip"]
+ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 
 class Data(object):
@@ -112,7 +110,7 @@ class Data(object):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, key=None, replace=False, url=None):
+    def get_data(self, key=None, url=None, replace=False, verbose=True):
         """
         Retrieve the data for a given week and return its path.
 
@@ -131,6 +129,8 @@ class Data(object):
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
+        verbose : bool
+            Whether to print verbose output while downloading files.
 
         Returns
         -------
@@ -207,13 +207,14 @@ class Data(object):
                 path=os.path.join(this_root, name),
                 kind=kind,
                 replace=replace,
+                verbose=verbose,
             )
             data_paths.append(this_path)
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
 
-    def _download(self, url, path, kind, replace=False):
+    def _download(self, url, path, kind, replace, verbose):
         """ Download a file.
 
         This helper function downloads files and saves them to ``path``.
@@ -228,9 +229,12 @@ class Data(object):
         path : str
             Destination path of downloaded file.
         kind: str
-            Kind of file. Either 'file', or 'zip'.
+            Kind of file. Must be one of ALLOWED_FILE_TYPES.
         replace : bool
             Whether to replace the file if it already exists.
+        verbose : bool
+            Whether to print verbose output while downloading files.
+
 
         Returns
         -------
@@ -240,6 +244,10 @@ class Data(object):
         path = op.expanduser(path)
         if replace is False and op.exists(path):
             return path
+
+        if verbose is True:
+            print("Downloading from {}".format(url))
+
         r = requests.get(url)
 
         os.makedirs(op.dirname(path), exist_ok=True)
@@ -247,10 +255,10 @@ class Data(object):
             with open(path, "wb") as f:
                 f.write(r.content)
         else:
-            self._download_and_extract(path, r, kind)
+            self._download_and_extract(path, r, kind, verbose)
         return path
 
-    def _download_and_extract(self, path, r, kind):
+    def _download_and_extract(self, path, r, kind, verbose):
         """ Download and extract a compressed archive.
 
         This function downloads and extracts compressed directories to
@@ -263,20 +271,16 @@ class Data(object):
         r: requests.models.Response
             URL response that can be used to get the data.
         kind : str
-            Kind of file. Either 'zip', 'tar', or 'tar.gz'.
+            Kind of file. Must be one of ALLOWED_FILE_TYPES.
+        verbose : bool
+            Whether to print verbose output while downloading files.
+
 
         Returns
         -------
         None
 
         """
-        if kind == "gz":
-            with open(path, "wb") as f:
-                r.raw.decode_content = True
-                gzip_file = gzip.decompress(r.raw)
-                shutil.copyfileobj(gzip_file, f)
-            return None
-
         file_like_object = io.BytesIO(r.content)
         if kind == "zip":
             archive = zipfile.ZipFile(file_like_object)
@@ -286,6 +290,8 @@ class Data(object):
             archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
         os.makedirs(path, exist_ok=True)
         archive.extractall(path)
+        if verbose is True:
+            print("Extracted output to {}".format(path))
 
 
 def path_to_example(dataset):
