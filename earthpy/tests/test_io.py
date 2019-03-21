@@ -167,13 +167,6 @@ def test_arbitrary_url_file_download(eld):
     assert os.path.isfile(file)
 
 
-@pytest.mark.vcr()
-def test_url_download_w_content_disposition(eld):
-    """ Test arbitrary URL download with content-disposition. """
-    file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
-    assert os.path.isfile(file)
-
-
 def test_invalid_data_type(eld):
     """ Raise errors for invalid data types. """
     eio.DATA_URLS["invalid-data-type"] = [
@@ -194,14 +187,28 @@ def test_arbitrary_url_zip_download(eld):
 
 
 @pytest.mark.vcr()
-def test_url_download_w_tar_file(eld):
+def test_url_download_tar_file(eld):
     """ Ensure that tar files are downloaded and extracted. """
     path = eld.get_data(url="https://ndownloader.figshare.com/files/14615411")
     assert "abc.txt" in os.listdir(path)
 
 
 @pytest.mark.vcr()
-def test_url_download_w_tar_gz_file(eld):
+def test_url_download_tar_gz_file(eld):
     """ Ensure that tar.gz files are downloaded and extracted. """
     path = eld.get_data(url="https://ndownloader.figshare.com/files/14615414")
     assert "abc.txt" in os.listdir(path)
+
+
+@pytest.mark.vcr()
+def test_url_download_gz_file(eld):
+    """ Ensure that .gz files are downloaded and extracted. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14653649")
+    assert "abc.txt" in path and os.path.isfile(path)
+
+
+@pytest.mark.vcr()
+def test_url_download_txt_file_with_content_disposition(eld):
+    """ Test arbitrary URL download with content-disposition. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
+    assert "abc.txt" in path and os.path.isfile(path)

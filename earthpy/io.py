@@ -69,7 +69,7 @@ DATA_URLS = {
 
 HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
-ALLOWED_FILE_TYPES = ["file", "zip", "tar", "tar.gz"]
+ALLOWED_FILE_TYPES = ["file", "gz", "tar", "tar.gz", "zip"]
 
 
 class Data(object):
@@ -181,8 +181,9 @@ class Data(object):
             for ext in ALLOWED_FILE_TYPES:
                 if fname.endswith(ext):
                     file_type = ext
-                    # remove extension for pretty download directories
-                    fname = re.sub("\\.{}$".format(ext), "", fname)
+
+            # remove extension for pretty download paths
+            fname = re.sub("\\.{}$".format(file_type), "", fname)
 
             this_data = (url, fname, file_type)
             this_root = op.join(str(self.path), "earthpy-downloads")
@@ -240,8 +241,8 @@ class Data(object):
             return path
         r = requests.get(url)
 
-        if kind == "file":
-            os.makedirs(op.dirname(path), exist_ok=True)
+        os.makedirs(op.dirname(path), exist_ok=True)
+        if kind in ["file", "gz"]:
             with open(path, "wb") as f:
                 f.write(r.content)
         else:
@@ -249,7 +250,10 @@ class Data(object):
         return path
 
     def _download_and_extract(self, path, r, kind):
-        """ Download and extract an archive to a local directory.
+        """ Download and extract a compressed archive.
+
+        This function downloads and extracts compressed directories to
+        a local directory.
 
         Parameters
         ----------
@@ -265,15 +269,14 @@ class Data(object):
         None
 
         """
-        os.makedirs(path, exist_ok=True)
         file_like_object = io.BytesIO(r.content)
-
         if kind == "zip":
             archive = zipfile.ZipFile(file_like_object)
         if kind == "tar":
             archive = tarfile.open(fileobj=file_like_object)
         if kind == "tar.gz":
             archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
+        os.makedirs(path, exist_ok=True)
         archive.extractall(path)
 
 
