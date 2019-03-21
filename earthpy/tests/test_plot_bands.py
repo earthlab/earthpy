@@ -162,7 +162,7 @@ def test_not_scaled_multi_band(image_array_2bands):
     plt.close()
 
 
-def test_vmin_vmax(image_array_2bands):
+def test_vmin_vmax_multi_band(image_array_2bands):
     """Test vmin and max apply properly in multi band images
 
     If the data are scaled between -10 and 10 the cbar vals should reflect that.
@@ -181,7 +181,7 @@ def test_vmin_vmax(image_array_2bands):
     plt.close()
 
 
-def test_vmin_vmax(one_band_3dims):
+def test_vmin_vmax_single_band(one_band_3dims):
     """Test vmin and max apply properly
 
     If the data are scaled between -10 and 10 the cbar vals should reflect that.
