@@ -204,11 +204,19 @@ def test_url_download_tar_gz_file(eld):
 def test_url_download_gz_file(eld):
     """ Ensure that .gz files are downloaded and extracted. """
     path = eld.get_data(url="https://ndownloader.figshare.com/files/14653649")
-    assert "abc.txt" in path and os.path.isfile(path)
+    assert path.endswith("abc.txt") and os.path.isfile(path)
+
+
+@pytest.mark.vcr()
+def test_url_download_gz_tif(eld):
+    """ Ensure that compressed GeoTIFF files are downloaded and extracted. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14630150")
+    assert path.endswith("MCD45monthly.A2016183.Win03.051.ba_qa.tif")
+    assert os.path.isfile(path)
 
 
 @pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(eld):
     """ Test arbitrary URL download with content-disposition. """
     path = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
-    assert "abc.txt" in path and os.path.isfile(path)
+    assert path.endswith("abc.txt") and os.path.isfile(path)

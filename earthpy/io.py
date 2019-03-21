@@ -1,11 +1,12 @@
 """File Input/Output utilities."""
 
-
+import gzip
 import io
 import os
 import os.path as op
 import re
 import requests
+import shutil
 import tarfile
 import zipfile
 import earthpy
@@ -242,7 +243,7 @@ class Data(object):
         r = requests.get(url)
 
         os.makedirs(op.dirname(path), exist_ok=True)
-        if kind in ["file", "gz"]:
+        if kind == "file":
             with open(path, "wb") as f:
                 f.write(r.content)
         else:
@@ -269,6 +270,13 @@ class Data(object):
         None
 
         """
+        if kind == "gz":
+            with open(path, "wb") as f:
+                r.raw.decode_content = True
+                gzip_file = gzip.decompress(r.raw)
+                shutil.copyfileobj(gzip_file, f)
+            return None
+
         file_like_object = io.BytesIO(r.content)
         if kind == "zip":
             archive = zipfile.ZipFile(file_like_object)
