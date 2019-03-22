@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Remove dependency on download library (@mbjoseph #249)
 * BUGFIX: `draw_legend()` fails when classes are provided (@lwasser #253)
 * Fix bug in `plot_bands()` where single string titles don't plot + add test (@lwasser #258)
 * Remove `earthpy.utils.fix_paths()` as it is not used in the package (@lwasser #259)
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a code of conduct (@mbjoseph, #27)
 * Added CI testing across python versions and on Windows (@mbjoseph, #228)
 * Added tests for `EarthlabData` class (@mbjoseph, #37)
+
 
 ## [0.6.2] - 2019-02-19
 We have made significant changes in preparation for a 1.0 release
