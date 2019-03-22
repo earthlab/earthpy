@@ -1,7 +1,5 @@
 language: python
 
-# python versions for osx builds are taken as the most recent from:
-# https://www.python.org/downloads/
 matrix:
     include:
         - os: linux
