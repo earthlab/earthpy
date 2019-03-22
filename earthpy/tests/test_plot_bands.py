@@ -152,7 +152,6 @@ def test_not_scaled_multi_band(image_array_2bands):
     im = image_array_2bands
     ax = ep.plot_bands(im, scale=False)
 
-    arr = ax[0].get_images()[0].get_array()
     # Get all arrays to be plotted
     all_arrs = [a.get_images()[0].get_array() for a in ax if a.get_images()]
     all_arrs_flat = np.concatenate(all_arrs, axis=0)
@@ -169,15 +168,16 @@ def test_vmin_vmax_multi_band(image_array_2bands):
     """
 
     one_band_2dims = image_array_2bands
-    min_max = (-10, 10)
-    ax = ep.plot_bands(one_band_2dims, vmin_vmax=min_max, scale=False)
+    vmin = -10
+    vmax = 10
+    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax, scale=False)
 
     # Get all cbars - the min and max vals for all cbars should be -10 and 10
     cb_max = [a.images[0].colorbar.vmax for a in ax if a.images]
     cb_min = [a.images[0].colorbar.vmin for a in ax if a.images]
 
-    assert all(map(lambda x: x == min_max[0], cb_min))
-    assert all(map(lambda x: x == min_max[1], cb_max))
+    assert all(map(lambda x: x == vmin, cb_min))
+    assert all(map(lambda x: x == vmax, cb_max))
     plt.close()
 
 
@@ -188,10 +188,30 @@ def test_vmin_vmax_single_band(one_band_3dims):
     """
 
     one_band_2dims = one_band_3dims[0]
-    min_max = (-10, 10)
-    ax = ep.plot_bands(one_band_2dims, vmin_vmax=min_max, scale=False)
+    vmin = 0
+    vmax = 10
+    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax, scale=False)
     c_bar = ax.images[0].colorbar
 
     # Cbar should be scaled between the vmin and vmax vals
-    assert c_bar.vmin == min_max[0] and c_bar.vmax == min_max[1]
+    assert c_bar.vmin == vmin and c_bar.vmax == vmax
+    plt.close()
+
+
+def test_extent(one_band_3dims):
+    """Test that extent param returns a plot with the correct extent."""
+
+    one_band_2dims = one_band_3dims[0]
+    # shift extents by 10
+    xmin = one_band_2dims.shape[1]
+    xmax = one_band_2dims.shape[1] + xmin
+    ymin = one_band_2dims.shape[0]
+    ymax = one_band_2dims.shape[0] + ymin
+    ext = [xmin, xmax, ymin, ymax]
+
+    ax = ep.plot_bands(one_band_2dims, extent=ext)
+    pl_extent = list(ax.get_xlim() + ax.get_ylim())
+
+    # Cbar should be scaled between the vmin and vmax vals
+    assert pl_extent == ext
     plt.close()

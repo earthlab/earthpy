@@ -77,7 +77,8 @@ def plot_bands(
     extent=None,
     cbar=True,
     scale=True,
-    vmin_vmax=(),
+    vmin=None,
+    vmax=None,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -101,8 +102,10 @@ def plot_bands(
         Turn off colorbar if needed.
     scale : Boolean (Default = True)
         Turn off bytescale scaling if needed.
-    vmin_vmax : Tuple (Optional)
-        Specify the vmin and max to scale imshow() plots.
+    vmin : Int (Optional)
+        Specify the vmin to scale imshow() plots.
+    vmax : Int (Optional)
+        Specify the vmax to scale imshow() plots.
 
     Returns
     ----------
@@ -167,12 +170,8 @@ def plot_bands(
                 arr_im = es.bytescale(arr[i])
             else:
                 arr_im = arr[i]
-            if len(vmin_vmax) == 2:
-                im = ax.imshow(
-                    arr_im, cmap=cmap, vmin=vmin_vmax[0], vmax=vmin_vmax[1]
-                )
-            else:
-                im = ax.imshow(arr_im, cmap=cmap)
+
+            im = ax.imshow(arr_im, cmap=cmap, vmin=vmin, vmax=vmax)
             if title:
                 ax.set(title=title[i])
             else:
@@ -196,21 +195,9 @@ def plot_bands(
 
         fig, ax = plt.subplots(figsize=figsize)
         if scale:
-            arr_im = es.bytescale(arr)
-        else:
-            arr_im = arr
+            arr = es.bytescale(arr)
 
-        if len(vmin_vmax) == 2:
-            im = ax.imshow(
-                arr_im,
-                cmap=cmap,
-                vmin=vmin_vmax[0],
-                vmax=vmin_vmax[1],
-                extent=extent,
-            )
-        else:
-            im = ax.imshow(arr_im, cmap=cmap, extent=extent)
-        # im = ax.imshow(arr_im, cmap=cmap, extent=extent)
+        im = ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
         if title:
             ax.set(title=title[0])
         ax.set(xticks=[], yticks=[])
