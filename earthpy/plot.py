@@ -166,12 +166,14 @@ def plot_bands(
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i + 1
-            if scale:
-                arr_im = es.bytescale(arr[i])
-            else:
-                arr_im = arr[i]
 
-            im = ax.imshow(arr_im, cmap=cmap, vmin=vmin, vmax=vmax)
+            arr_im = arr[i]
+            if scale:
+                arr_im = es.bytescale(arr_im)
+
+            im = ax.imshow(
+                arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent
+            )
             if title:
                 ax.set(title=title[i])
             else:
