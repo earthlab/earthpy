@@ -1,5 +1,9 @@
+version: 2
+formats: all
+conda:
+  environment: environment.yml
 python:
   version: 3
-  pip_install: true
-conda:
-  file: environment.yml
+  install:
+    - method: pip
+      path: .
