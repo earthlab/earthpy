@@ -69,7 +69,16 @@ def colorbar(mapobj, size="3%", pad=0.09):
 
 
 def plot_bands(
-    arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
+    arr,
+    cmap="Greys_r",
+    figsize=(12, 12),
+    cols=3,
+    title=None,
+    extent=None,
+    cbar=True,
+    scale=True,
+    vmin=None,
+    vmax=None,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -89,6 +98,14 @@ def plot_bands(
         Title of one band or list of titles with one title per band.
     extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
+    cbar : Boolean (default = True)
+        Turn off colorbar if needed.
+    scale : Boolean (Default = True)
+        Turn off bytescale scaling if needed.
+    vmin : Int (Optional)
+        Specify the vmin to scale imshow() plots.
+    vmax : Int (Optional)
+        Specify the vmax to scale imshow() plots.
 
     Returns
     ----------
@@ -111,7 +128,7 @@ def plot_bands(
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
         ...                   figsize=(8, 3))
-        (<Figure size ... with 3 Axes>, ...)
+        array([<matplotlib.axes._subplots.AxesSubplot object at 0x...
     """
 
     try:
@@ -149,11 +166,20 @@ def plot_bands(
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i + 1
-            ax.imshow(es.bytescale(arr[i]), cmap=cmap)
+
+            arr_im = arr[i]
+            if scale:
+                arr_im = es.bytescale(arr_im)
+
+            im = ax.imshow(
+                arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent
+            )
             if title:
                 ax.set(title=title[i])
             else:
                 ax.set(title="Band %i" % band)
+            if cbar:
+                colorbar(im)
             ax.set(xticks=[], yticks=[])
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -162,18 +188,25 @@ def plot_bands(
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        return fig, axs
+        plt.show()
+        return axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
         # If it's a 2 dimensional array with a 3rd dimension
         arr = np.squeeze(arr)
 
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(es.bytescale(arr), cmap=cmap, extent=extent)
+        if scale:
+            arr = es.bytescale(arr)
+
+        im = ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
         if title:
-            ax.set(title=title)
+            ax.set(title=title[0])
         ax.set(xticks=[], yticks=[])
-        return fig, ax
+        if cbar:
+            colorbar(im)
+        plt.show()
+        return ax
 
 
 def _stretch_im(arr, str_clip):

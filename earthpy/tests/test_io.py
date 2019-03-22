@@ -135,53 +135,29 @@ def test_valid_download_file(eld):
 @pytest.mark.vcr()
 def test_valid_download_zip(eld):
     """ Test that zipped files get downloaded and extracted. """
-    dir = eld.get_data("little-zip-file")
-    assert os.path.isdir(dir)
-    dir_has_contents = len(os.listdir(dir)) > 0
-    assert dir_has_contents
+    path = eld.get_data("little-zip-file")
+    path_has_contents = len(os.listdir(path)) > 0
+    assert path_has_contents
 
 
+@pytest.mark.parametrize("replace_arg_value", [True, False])
 @pytest.mark.vcr()
-def test_replace_arg_prevents_overwrite(eld):
-    """ If replace=False, do not replace existing files. """
+def test_replace_arg_controle_overwrite(eld, replace_arg_value):
+    """ If replace=False, do not replace existing files. If true, replace. """
     file1 = eld.get_data("little-text-file")
-    time_modified1 = os.path.getmtime(file1)
-    file2 = eld.get_data("little-text-file", replace=False)
-    time_modified2 = os.path.getmtime(file2)
-    assert time_modified1 == time_modified2
-
-
-@pytest.mark.vcr()
-def test_replace_arg_allows_overwrite(eld):
-    """ If replace=True, replace existing files. """
-    file1 = eld.get_data("little-text-file")
-    time_modified1 = os.path.getmtime(file1)
-    file2 = eld.get_data("little-text-file", replace=True)
-    time_modified2 = os.path.getmtime(file2)
-    assert time_modified1 < time_modified2
+    mtime1 = os.path.getmtime(file1)
+    file2 = eld.get_data("little-text-file", replace=replace_arg_value)
+    mtime2 = os.path.getmtime(file2)
+    if replace_arg_value is True:
+        assert mtime1 < mtime2
+    else:
+        assert mtime1 == mtime2
 
 
 @pytest.mark.vcr()
 def test_arbitrary_url_file_download(eld):
     """ Verify that arbitrary URLs work for data file downloads. """
     file = eld.get_data(url="http://www.google.com/robots.txt")
-    assert os.path.isfile(file)
-
-
-@pytest.mark.vcr()
-def test_arbitrary_url_zip_download(eld):
-    """ Verify that aribitrary URLs work for zip file downloads. """
-    dir = eld.get_data(
-        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
-    )
-    dir_has_contents = len(os.listdir(dir)) > 0
-    assert dir_has_contents
-
-
-@pytest.mark.vcr()
-def test_url_download_w_content_disposition(eld):
-    """ Test arbitrary URL download with content-disposition. """
-    file = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
     assert os.path.isfile(file)
 
 
@@ -192,3 +168,43 @@ def test_invalid_data_type(eld):
     ]
     with pytest.raises(ValueError, match="kind must be one of"):
         eld.get_data("invalid-data-type")
+
+
+@pytest.mark.vcr()
+def test_arbitrary_url_zip_download(eld):
+    """ Verify that aribitrary URLs work for zip file downloads. """
+    path = eld.get_data(
+        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
+    )
+    path_has_contents = len(os.listdir(path)) > 0
+    assert path_has_contents
+
+
+@pytest.mark.vcr()
+def test_url_download_tar_file(eld):
+    """ Ensure that tar files are downloaded and extracted. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14615411")
+    assert "abc.txt" in os.listdir(path)
+
+
+@pytest.mark.vcr()
+def test_url_download_tar_gz_file(eld):
+    """ Ensure that tar.gz files are downloaded and extracted. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14615414")
+    assert "abc.txt" in os.listdir(path)
+
+
+@pytest.mark.vcr()
+def test_url_download_txt_file_with_content_disposition(eld):
+    """ Test arbitrary URL download with content-disposition. """
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
+    assert path.endswith("abc.txt") and os.path.isfile(path)
+
+
+@pytest.mark.parametrize("verbose_arg_value", [True, False])
+@pytest.mark.vcr()
+def test_verbose_arg_works(eld, verbose_arg_value, capsys):
+    """ Test that the verbose argument can print or suppress messages. """
+    eld.get_data("little-text-file", verbose=verbose_arg_value)
+    output_printed = capsys.readouterr().out != ""
+    assert output_printed == verbose_arg_value
