@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Add continuous integration testing on osx via Travis CI (@mbjoseph #228)
 * Add cbar legend to `plot_bands()` and scaling parameters (@lwasser #274)
 * BUGFIX: `plot_bands()` doesn't plot single string titles properly + add test (@lwasser #258)
 * Remove dependency on download library (@mbjoseph #249)
