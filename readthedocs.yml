@@ -1,9 +1,10 @@
 version: 2
-formats: all
+formats: []
 conda:
   environment: environment.yml
 python:
-  version: 3
-  install:
-    - method: pip
-      path: .
+   version: 3.7
+   install:
+      - requirements: requirements.txt
+      - method: pip
+        path: .
