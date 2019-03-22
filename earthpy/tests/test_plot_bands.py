@@ -140,7 +140,7 @@ def test_not_scaled_single_band(one_band_3dims):
     assert (
         arr.min() == one_band_2dims.min() and arr.max() == one_band_2dims.max()
     )
-    # A cbar should be drawn in this plot
+    # A cbar should not be drawn in this plot
     assert not c_bar
     plt.close()
 
