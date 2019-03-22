@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "EarthPy"
-copyright = "2018, Earth Lab"
+copyright = "2019, Earth Lab"
 author = "Earth Lab"
 
 # The short X.Y version
