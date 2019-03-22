@@ -5,7 +5,7 @@ dependencies:
 - python=3.7
 - numpy
 - matplotlib=3.0.3
-- geopandas
+- geopandas=0.4.1
 - rasterio=1.0.21
 - scikit-image
 - shapely=1.6.4
