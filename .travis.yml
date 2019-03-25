@@ -1,20 +1,29 @@
-dist: xenial
-
 language: python
 
-python:
-- "3.5"
-- "3.6"
-- "3.7"
+matrix:
+    include:
+        - os: linux
+          dist: xenial
+          python: 3.5
+          env: TOXENV=py35
+        - os: linux
+          dist: xenial
+          python: 3.6
+          env: TOXENV=py36
+        - os: linux
+          dist: xenial
+          python: 3.7
+          env: TOXENV=py37,black,docs
+        - os: osx
+          language: generic
 
-before_install:
-  - sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable --yes
-  - sudo apt-get update
-  - sudo apt-get install -y libspatialindex-dev libgdal-dev python3-tk
+install:
+  - chmod +x .travis/install.sh
+  - ./.travis/install.sh
 
-install: pip install -U tox-travis
-
-script: tox
+script:
+  - chmod +x .travis/test.sh
+  - ./.travis/test.sh
 
 deploy:
   provider: pypi
