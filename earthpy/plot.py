@@ -302,6 +302,14 @@ def plot_rgb(
     if stretch:
         rgb_bands = _stretch_im(rgb_bands, str_clip)
 
+    # If max - min is less than 0, stretch / bytescale won't work.
+    # Fail gracefully.
+    if rgb_bands.max() - rgb_bands.min() < 0:
+        raise ValueError(
+            "arr.max - arr.min is less than 0. Please check that "
+            "you don't have negative nodata values in your data."
+        )
+
     # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
         # Build alpha channel
@@ -324,7 +332,8 @@ def plot_rgb(
     ax.imshow(rgb_bands, extent=extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
-    return fig, ax
+    plt.show()
+    return ax
 
 
 def hist(
