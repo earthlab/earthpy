@@ -125,6 +125,7 @@ arr_ma = em.mask_pixels(arr_st, landsat_qa, vals=all_masked_values)
 # ~~~~~~~~~~~~~~~~~~~~~
 # Now plot the masked data
 
+# sphinx_gallery_thumbnail_number = 5
 ep.plot_rgb(
     arr_ma, rgb=[4, 3, 2], title="Array with Clouds and Shadows Masked"
 )
