@@ -110,18 +110,19 @@ ep.plot_bands(
 plt.show()
 
 
+###############################################################################
+# Plot The Masked Data
+# ~~~~~~~~~~~~~~~~~~~~~
+# Now apply the mask and plot the masked data. The mask applies to every band in your data.
+
 # Generate array of all possible cloud / shadow values
 cloud_shadow = [328, 392, 840, 904, 1350]
 cloud = [352, 368, 416, 432, 480, 864, 880, 928, 944, 992]
 high_confidence_cloud = [480, 992]
 
+# Mask the data
 all_masked_values = cloud_shadow + cloud + high_confidence_cloud
 arr_ma = em.mask_pixels(arr_st, landsat_qa, vals=all_masked_values)
-
-###############################################################################
-# Plot The Masked Data
-# ~~~~~~~~~~~~~~~~~~~~~
-# Now plot the masked data. The mask applies to every band in your data.
 
 # sphinx_gallery_thumbnail_number = 5
 ep.plot_rgb(
