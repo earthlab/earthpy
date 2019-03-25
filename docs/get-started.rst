@@ -58,4 +58,5 @@ You can access these data subsets by using:
     Available Datasets: ['california-rim-fire', 'co-flood-extras', 'cold-springs-fire', 'cold-springs-modis-h5', 'colorado-flood', 'cs-test-landsat', 'cs-test-naip', 'ndvi-automation', 'spatial-vector-lidar']
     >>> # Download data subset to your `home/earth-analytics/data` directory
     >>> data = et.data.get_data('cold-springs-fire')
+    Downloading from https://ndownloader.figshare.com...
 
