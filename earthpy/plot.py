@@ -286,7 +286,7 @@ def plot_rgb(
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
         >>> ep.plot_rgb(img_array)
-        (<Figure size 1000x1000 with 1 Axes>, ...)
+        <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
     """
 
