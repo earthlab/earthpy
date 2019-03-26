@@ -160,6 +160,11 @@ def test_stack_raster(basic_image_tif):
     assert stack_arr.shape[0] == len(band_files)
     assert stack_prof["count"] == len(band_files)
 
+    # Test the nodata parameter
+    stack_arr, stack_prof = es.stack(band_files, nodata=0)
+
+    assert 0 not in stack_arr
+
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
     """ Cropping with a GeoDataFrame works when all_touched=True.
