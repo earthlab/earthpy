@@ -25,7 +25,6 @@ if __name__ == "__main__":
         version="0.6.4",
         packages=["earthpy"],
         install_requires=[
-            "download",
             "geopandas",
             "matplotlib>=2.0.0",
             "numpy>=1.14.0",
