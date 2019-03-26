@@ -204,7 +204,7 @@ def stack(band_paths, out_path="", nodata=None):
             arr, prof = _stack_bands(sources)
 
             # If user specified nodata, mask the array
-            if nodata:
+            if nodata is not None:
                 # make sure value is same data type
                 nodata = np.array([nodata]).astype(arr.dtype)[0]
 
@@ -237,7 +237,7 @@ def stack(band_paths, out_path="", nodata=None):
                 prof = src.profile
 
                 # If user specified nodata, mask the array
-                if nodata:
+                if nodata is not None:
                     # make sure value is same data type
                     nodata = np.array([nodata]).astype(arr.dtype)[0]
 
