@@ -27,14 +27,13 @@ def rgb_image():
 
 
 def test_no_data_val(rgb_image):
-    """If a user provides an array with very small NA values (eg -9999), fail
-     gracefully."""
+    """An array with a large no data value should not print nicely, but it should work."""
     a_rgb_image, _ = rgb_image
     a_rgb_image = a_rgb_image.astype("int16")
     a_rgb_image[a_rgb_image == 255] = -9999
+    im = plot_rgb(a_rgb_image, stretch=True)
 
-    with pytest.raises(ValueError, match="arr.max - arr.min is less than 0"):
-        plot_rgb(a_rgb_image, stretch=True)
+    assert len(im.get_images()) == 1
     plt.close()
 
 
