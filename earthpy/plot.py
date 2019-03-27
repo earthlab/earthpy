@@ -497,6 +497,9 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     Example
     -------
+
+    .. plot::
+
     >>> import numpy as np
     >>> import earthpy.plot as ep
     >>> import matplotlib.pyplot as plt
@@ -508,6 +511,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
     >>> im_ax = ax.imshow(im_arr_bin)
     >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+    >>> plt.show()
     """
 
     try:
