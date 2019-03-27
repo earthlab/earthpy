@@ -1,4 +1,10 @@
-"A module to clip vector data using geopandas"
+"""
+earthpy.clip
+============
+
+A module to clip vector data using GeoPandas.
+
+"""
 
 # TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
