@@ -128,6 +128,9 @@ def stack(band_paths, out_path="", nodata=None):
     out_path : string (optional)
         A path with a file name for the output stacked raster
         tif file.
+    nodata: numeric (optional)
+        A value (integer or floating point) that represents NoData in the rasters contained within band_paths. 
+        Array entries with these locations will be returned as masked values.
 
     Returns
     ----------
