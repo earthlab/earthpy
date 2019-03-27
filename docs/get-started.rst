@@ -3,21 +3,18 @@ Get Started With EarthPy
 
 EarthPy is a python package devoted to working with spatial and remote sensing
 data. EarthPy also contains an IO module that supports downloading data for the
-Earth Lab earth analytics courses.
+Earth Lab earth analytics courses and any user with a url and a zip file.
 
 EarthPy Module and Function Documentation
 -----------------------------------------
 
-All functions included in the 5 earthpy modules:
+All functions are included in the 5 earthpy modules:
 
 - spatial
 - plot
 - clip
 - mask
 - io
-
-Are documented in the XXX.
-
 
 
 Install EarthPy
