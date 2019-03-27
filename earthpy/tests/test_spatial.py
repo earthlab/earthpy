@@ -169,51 +169,6 @@ def test_stack_invalid_out_paths_raise_errors():
         )
 
 
-def test_stack_raster(basic_image_tif):
-    """Unit tests for raster stacking with es.stack()."""
-
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
-
-    # Test that out_path needs a file extension to be valid
-    out_fi = "test_stack"
-    with pytest.raises(
-        ValueError, match="Please specify a valid file name for output."
-    ):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
-
-    # Test that out_path needs a file extension to be valid
-    out_fi = "test_stack.tif"
-    with pytest.raises(ValueError, match="The list of"):
-        stack_arr, stack_prof = es.stack([], out_path=out_fi)
-
-    # Test that the output file format is same as inputs
-    # This can be flexible but for now forcing the same format
-    out_fi = "test_stack.jp2"
-    with pytest.raises(ValueError, match="Source"):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
-
-    # Test valid use case specifying output file.
-    # Make sure the output file exists and then clean it up
-    out_fi = "test_stack.tif"
-    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
-
-    assert os.path.exists(out_fi)
-    if os.path.exists(out_fi):
-        os.remove(out_fi)
-
-    # Test valid use case of just getting back the array.
-    stack_arr, stack_prof = es.stack(band_files)
-
-    assert stack_arr.shape[0] == len(band_files)
-    assert stack_prof["count"] == len(band_files)
-
-    # Test the nodata parameter
-    stack_arr, stack_prof = es.stack(band_files, nodata=0)
-
-    assert 0 not in stack_arr
-
-
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
     """ Cropping with a GeoDataFrame works when all_touched=True.
 
