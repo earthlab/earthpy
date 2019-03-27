@@ -57,12 +57,9 @@ def test_1band(rgb_image):
     If fewer than 3 bands are provided, fail gracefully."""
     a_rgb_image, _ = rgb_image
 
-    with pytest.raises(
-        ValueError,
-        match="""Input needs to be 3 dimensions and in rasterio
-                           order with bands first""",
-    ):
+    with pytest.raises(ValueError, match="Input needs to be 3 dimensions"):
         plot_rgb(a_rgb_image[1])
+    plt.close()
 
 
 def test_ax_provided(rgb_image):
@@ -146,11 +143,10 @@ def test_stretch_output_scaled(rgb_image):
     """
     arr, _ = rgb_image
     stretch_vals = list(range(10))
-    axs = [plot_rgb(arr, stretch=True, str_clip=v)[1] for v in stretch_vals]
-    mean_vals = np.array([ax.get_images()[0].get_array().mean() for ax in axs])
-    n_unique_means = np.unique(mean_vals).shape[0]
-    assert n_unique_means == len(stretch_vals)
-    try:
-        axs
-    finally:
-        del axs
+    mean_vals = list()
+    for v in stretch_vals:
+        ax = plot_rgb(arr, stretch=True, str_clip=v)[1]
+        mean = ax.get_images()[0].get_array().mean()
+        mean_vals.append(mean)
+        plt.close()
+    assert len(set(mean_vals)) == len(stretch_vals)

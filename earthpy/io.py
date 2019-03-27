@@ -1,13 +1,12 @@
 """File Input/Output utilities."""
-## This module will move to a new module for downloading data
-## and building lessons
 
+import io
 import os
 import os.path as op
-
+import re
 import requests
-
-from download import download
+import tarfile
+import zipfile
 import earthpy
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
@@ -67,33 +66,51 @@ DATA_URLS = {
     ),
 }
 
-ALLOWED_FILE_TYPES = ["zip", "tar", "tar.gz", "file"]
-
 HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
+ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 
-class EarthlabData(object):
+class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
+
+    An object of this class is available upon importing earthpy as
+    ``earthpy.data`` that writes data files to the path:
+    ``~/earth-analytics/data/``.
 
     Parameters
     ----------
     path : string | None
-        The path where data is stored.
+        The path where data is stored. NOTE: this defaults to the directory
+        ``~/earth-analytics/data/``.
+
+    Examples
+    --------
+    List datasets that are available for download, using default object:
+
+        >>> import earthpy as et
+        >>> et.data
+        Available Datasets: ['california-rim-fire', ...]
+
+    Specify a custom directory for data downloads:
+
+        >>> et.data.path = "."
+        >>> et.data
+        Available Datasets: ['california-rim-fire', ...]
     """
 
     def __init__(self, path=None):
         if path is None:
             path = op.join(HOME, DATA_NAME)
         self.path = path
-        self.data_keys = list(DATA_URLS.keys())
+        self.data_keys = sorted(list(DATA_URLS.keys()))
 
     def __repr__(self):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, key=None, replace=False, url=None):
+    def get_data(self, key=None, url=None, replace=False, verbose=True):
         """
         Retrieve the data for a given week and return its path.
 
@@ -112,11 +129,25 @@ class EarthlabData(object):
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
+        verbose : bool
+            Whether to print verbose output while downloading files.
 
         Returns
         -------
         path_data : str
             The path to the downloaded data.
+
+        Examples
+        --------
+        Download a dataset using a key:
+
+            >>> et.data.get_data('california-rim-fire') # doctest: +SKIP
+
+        Or, download a dataset using a figshare URL:
+
+            >>> url = 'https://ndownloader.figshare.com/files/12395030'
+            >>> et.data.get_data(url=url)  # doctest: +SKIP
+
         """
         if key is not None and url is not None:
             raise ValueError(
@@ -124,53 +155,46 @@ class EarthlabData(object):
                 "set at the same time."
             )
         if key is None and url is None:
-            print("Available datasets: {}".format(list(DATA_URLS.keys())))
+            print(self.__repr__())
             return
 
         if key is not None:
             if key not in DATA_URLS:
-                raise ValueError(
-                    "Don't understand key "
-                    "{}\nChoose one of {}".format(key, DATA_URLS.keys())
+                pretty_keys = ", ".join(repr(k) for k in self.data_keys)
+                raise KeyError(
+                    "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
+                    "Choose one of: {}".format(pretty_keys)
                 )
 
             this_data = DATA_URLS[key]
-            this_root = op.join(self.path, key)
+            this_root = op.join(str(self.path), key)
 
         if url is not None:
-            # try and workout the filename and file type
-            fname = None
-            r = requests.head(url)
-            content_disposition = r.headers["content-disposition"].split(";")
-            for c in content_disposition:
-                if c.startswith("filename="):
-                    fname = c.split("=")[1]
-                    break
-            else:
-                raise RuntimeError(
-                    "Could not deduce filename for " "{}.".format(url)
-                )
+            with requests.head(url) as r:
+                if "content-disposition" in r.headers.keys():
+                    content = r.headers["content-disposition"]
+                    fname = re.findall("filename=(.+)", content)[0]
+                else:
+                    fname = url.split("/")[-1]
 
-            # try and deduce filetype
+            # try and deduce filetype based on extension
             file_type = "file"
-            for kind in ALLOWED_FILE_TYPES:
-                if fname.endswith(kind):
-                    file_type = kind
+            for ext in ALLOWED_FILE_TYPES:
+                if fname.endswith(ext):
+                    file_type = ext
 
-            # strip off the file extension so we get pretty download
-            # directories
-            if file_type != "file":
-                # cut off an extra character to remove the trailing dot as well
-                fname = fname[: -(len(file_type) + 1)]
+            # remove extension for pretty download paths
+            fname = re.sub("\\.{}$".format(file_type), "", fname)
 
             this_data = (url, fname, file_type)
-            this_root = op.join(self.path, "unsorted")
+            this_root = op.join(str(self.path), "earthpy-downloads")
 
         if not isinstance(this_data, list):
             this_data = [this_data]
 
         data_paths = []
         for url, name, kind in this_data:
+
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
                     "kind must be one of {}, got {}".format(
@@ -178,57 +202,96 @@ class EarthlabData(object):
                     )
                 )
 
-            # If kind is not 'file' it will be un-archived to a folder w/ `name`
-            # else create a file called `name`
-            this_path = download(
-                url,
-                os.path.join(this_root, name),
-                replace=replace,
+            this_path = self._download(
+                url=url,
+                path=os.path.join(this_root, name),
                 kind=kind,
-                verbose=False,
+                replace=replace,
+                verbose=verbose,
             )
             data_paths.append(this_path)
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
 
+    def _download(self, url, path, kind, replace, verbose):
+        """ Download a file.
 
-# Potential functionality for website build.
-# Move to new utils package
+        This helper function downloads files and saves them to ``path``.
+        Zip and tar files are extracted to the ``path`` directory.
+        The implementation is adapted from the download library:
+        https://github.com/choldgraf/download
+
+        Parameters
+        ----------
+        url : str
+            The URL pointing to a file to download.
+        path : str
+            Destination path of downloaded file.
+        kind: str
+            Kind of file. Must be one of ALLOWED_FILE_TYPES.
+        replace : bool
+            Whether to replace the file if it already exists.
+        verbose : bool
+            Whether to print verbose output while downloading files.
 
 
-def list_files(path, depth=3):
-    """
-    List files in a directory up to a specified depth.
+        Returns
+        -------
+        output_path : str
+            Path to the downloaded file.
+        """
+        path = op.expanduser(path)
+        if replace is False and op.exists(path):
+            return path
 
-    Parameters
-    ----------
-    path : str
-        A path to a folder whose contents you want to list recursively.
-    depth : int
-        The depth of files / folders you want to list inside of ``path``.
-    """
-    if not os.path.isdir(path):
-        raise ValueError("path: {} is not a directory".format(path))
-    depth_str_base = "  "
-    if not path.endswith(os.sep):
-        path = path + os.sep
+        if verbose is True:
+            print("Downloading from {}".format(url))
 
-    for ii, (i_path, folders, files) in enumerate(os.walk(path)):
-        folder_name = op.basename(i_path)
-        path_wo_base = i_path.replace(path, "")
-        this_depth = len(path_wo_base.split("/"))
-        if this_depth > depth:
-            continue
+        r = requests.get(url)
 
-        # Define the string for this level
-        depth_str = depth_str_base * this_depth
-        print(depth_str + folder_name)
+        os.makedirs(op.dirname(path), exist_ok=True)
+        if kind == "file":
+            with open(path, "wb") as f:
+                f.write(r.content)
+        else:
+            self._download_and_extract(path, r, kind, verbose)
+        return path
 
-        if this_depth + 1 > depth:
-            continue
-        for ifile in files:
-            print(depth_str + depth_str_base + ifile)
+    def _download_and_extract(self, path, r, kind, verbose):
+        """ Download and extract a compressed archive.
+
+        This function downloads and extracts compressed directories to
+        a local directory.
+
+        Parameters
+        ----------
+        path : str
+            Destination path of downloaded file.
+        r: requests.models.Response
+            URL response that can be used to get the data.
+        kind : str
+            Kind of file. Must be one of ALLOWED_FILE_TYPES.
+        verbose : bool
+            Whether to print verbose output while downloading files.
+
+
+        Returns
+        -------
+        None
+
+        """
+        file_like_object = io.BytesIO(r.content)
+        if kind == "zip":
+            archive = zipfile.ZipFile(file_like_object)
+        if kind == "tar":
+            archive = tarfile.open(fileobj=file_like_object)
+        if kind == "tar.gz":
+            archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
+        os.makedirs(path, exist_ok=True)
+        archive.extractall(path)
+        if verbose is True:
+            print("Extracted output to {}".format(path))
 
 
 def path_to_example(dataset):
@@ -245,6 +308,13 @@ def path_to_example(dataset):
     Returns
     -------
     A file path (string) to the dataset
+
+    Example
+    -------
+
+        >>> import earthpy.io as eio
+        >>> eio.path_to_example('rmnp-dem.tif')
+        '...rmnp-dem.tif'
     """
     earthpy_path = os.path.split(earthpy.__file__)[0]
     data_dir = os.path.join(earthpy_path, "example-data")
