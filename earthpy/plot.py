@@ -1,6 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+earthpy.plot
+============
+
+Functionality around spatial plotting.
+
 """
 
 import numpy as np

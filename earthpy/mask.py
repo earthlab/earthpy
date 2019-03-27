@@ -1,3 +1,11 @@
+"""
+earthpy.mask
+============
+
+Utilities for masking values in arrays.
+
+"""
+
 import numpy as np
 import numpy.ma as ma
 

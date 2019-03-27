@@ -24,7 +24,7 @@ EarthPy User Guide
    get-started
    contributing
    contributors
-   modules
+   api
    change-log
    code-of-conduct
 

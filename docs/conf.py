@@ -77,6 +77,7 @@ exclude_patterns = [
     ".DS_Store",
     "earthpy/tests",
     "earthpy/example-data",
+    "api/earthpy.rst",
     "ignoreme",
 ]
 

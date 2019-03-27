@@ -1,4 +1,10 @@
-"""File Input/Output utilities."""
+"""
+earthpy.io
+==========
+
+File Input/Output utilities.
+
+"""
 
 import io
 import os
