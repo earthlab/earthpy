@@ -22,7 +22,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.6.4",
+        version="0.6.5",
         packages=["earthpy"],
         install_requires=[
             "geopandas",
