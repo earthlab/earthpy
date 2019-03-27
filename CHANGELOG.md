@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-Fix bug in `bytescale()` - ensure math to calc range is floating point vals (@lwasser #xxx)
-
+Fix bug in `bytescale()` - ensure math to calc range is floating point vals (@lwasser #282)
+Fix tests for `bytescale()` to ensure the bug raised in #282 is fixed / tested; also added comment to plot_rgb docs to ensure users consider nodata values before plotting (@lwasser #282)
 
 ## [0.6.5] - 2019-03-37
 * Add continuous integration testing on osx via Travis CI (@mbjoseph #228)
