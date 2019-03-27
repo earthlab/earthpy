@@ -403,10 +403,10 @@ def bytescale(data, high=255, low=0, cmin=None, cmax=None):
         raise ValueError("`high` should be greater than or equal to `low`.")
 
     if cmin is None or (cmin < data.min()):
-        cmin = data.min()
+        cmin = float(data.min())
 
     if (cmax is None) or (cmax > data.max()):
-        cmax = data.max()
+        cmax = float(data.max())
 
     # Calculate range of values
     crange = cmax - cmin
