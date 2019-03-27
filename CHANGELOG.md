@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.6.5] - 2019-03-37
 * Add continuous integration testing on osx via Travis CI (@mbjoseph #228)
 * Add cbar legend to `plot_bands()` and scaling parameters (@lwasser #274)
 * BUGFIX: `plot_bands()` doesn't plot single string titles properly + add test (@lwasser #258)
@@ -18,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a code of conduct (@mbjoseph, #27)
 * Added CI testing across python versions and on Windows (@mbjoseph, #228)
 * Added tests for `EarthlabData` class (@mbjoseph, #37)
-
 
 ## [0.6.2] - 2019-02-19
 We have made significant changes in preparation for a 1.0 release
