@@ -1,34 +1,38 @@
-"""Utility functions for the working with spatial data."""
+"""
+
+Utility functions for the working with spatial data.
+
+"""
 
 from pkg_resources import resource_string
 import json
 from .io import Data
 
-
-def load_epsg():
-    """ A function to return a dictionary of EPSG code to Proj4 string mappings.
-    
-    This function supports calling epsg['code-here'].
-    
-    Return
-    ------
-    epsg: dictionary
-        The epsg dictionary contains mappings of EPSG integer string codes to Proj4 strings.
-    
-    Example
-    -------
-    >>> import earthpy as et
-    >>> # Get Proj4 string for EPSG code 4326 
-    >>> et.epsg['4326']  
-    '+proj=longlat +datum=WGS84 +no_defs'
-    """
-
-    epsg = json.loads(
-        resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
-    )
-    return epsg
-
-
 data = Data()
+"""
+Example datasets for EarthPy
 
-epsg = load_epsg()
+The ``earthpy.data`` object allows quick access to a variety of datasets,
+via the :class:`earthpy.io.Data` class and the
+:meth:`earthpy.io.Data.get_data` method.
+"""
+
+epsg = json.loads(
+    resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
+)
+""" A dictionary of EPSG code to Proj4 string mappings.
+
+Proj4 string values can be received via epsg['epsg-code-here'].
+
+Return
+------
+epsg: dictionary
+    Mappings of EPSG integer string keys to Proj4 strings values.
+
+Example
+-------
+>>> import earthpy as et
+>>> # Get Proj4 string for EPSG code 4326
+>>> et.epsg['4326']
+'+proj=longlat +datum=WGS84 +no_defs'
+"""

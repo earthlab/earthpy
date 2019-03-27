@@ -1,7 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to make it easier to manipulate raster raster and vector
-data in Python.
+earthpy.spatial
+===============
+
+Functions to manipulate spatial raster and vector data.
+
 """
 
 import os
@@ -494,7 +496,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """This function has been deprecated from earthpy.
-    
+
     Please use the stack() function instead.
     """
     raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")
