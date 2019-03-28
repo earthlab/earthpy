@@ -54,4 +54,5 @@ if __name__ == "__main__":
                 "example-data/*.dbf",
             ]
         },
+        url="https://github.com/earthlab/earthpy",
     )
