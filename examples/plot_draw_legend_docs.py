@@ -6,8 +6,8 @@ Custom Legends with EarthPy
 """
 
 ###############################################################################
-# Plotting with EarthPy
-# ---------------------
+# Plotting Data in Python Using EarthPy
+# -------------------------------------
 #
 # .. note:: The examples below will show you how to use the ``draw_legend()`` function for creating plots
 
@@ -79,8 +79,9 @@ plt.show()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # You can customize the color map used in your plot too. Notice that in this example,
-# 4 category colors are rendered. Yet, the image only contains three colors. However those
-# colors begin at white and end at black even tho the value of 0 which should be black
+# 4 category colors are rendered. Yet, the image only contains three values and thus will be
+# rendered using three colors. The three colors used to render the image are incorrect by default.
+# The colors begin at white and end at black even though the value of 0 which should be black
 # is missing from the data.
 
 f, ax = plt.subplots()
