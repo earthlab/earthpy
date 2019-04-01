@@ -34,7 +34,7 @@ version. If you don't have the package yet you can still use the ``--upgrade`` a
 
 ``pip install earthpy``
 
-Once earthpy is installed you can import it into python.
+Once EarthPy is installed you can import it into python.
 
     >>> import earthpy as et
 
