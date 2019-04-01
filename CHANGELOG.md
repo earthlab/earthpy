@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 * Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
+* Add two example vignettes for using EarthPy with raster data (@lwasser)
 
 
 ## [0.6.5] - 2019-03-37
