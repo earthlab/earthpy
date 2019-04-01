@@ -103,8 +103,7 @@ plt.show()
 ###############################################################################
 # Mask the Data
 # -----------------------------------------------
-
-# You can use the earthpy ``mask()`` function to handle this cloud.
+# You can use the EarthPy ``mask()`` function to handle this cloud.
 # To begin you need to have a layer that defines the pixels that
 # you wish to mask. In this case, the ``landsat_qa`` layer will be used.
 
