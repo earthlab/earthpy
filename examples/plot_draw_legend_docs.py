@@ -9,7 +9,7 @@ Custom Legends with EarthPy
 # Plotting with EarthPy
 # ---------------------
 #
-# .. note:: The examples below will show you how to make use of the draw_legend function for creating plots
+# .. note:: The examples below will show you how to use the ``draw_legend()`` function for creating plots
 
 
 ###############################################################################
