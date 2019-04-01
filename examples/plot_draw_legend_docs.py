@@ -18,7 +18,7 @@ Custom Legends with EarthPy
 #
 # Let's explore a simple plot using EarthPy. To begin, import the needed packages
 # and create an array to be plotted. Below we plot the data as continuous with a colorbar
-# using the ``plot_bands()`` function
+# using the ``plot_bands()`` function.
 
 
 import matplotlib.pyplot as plt
