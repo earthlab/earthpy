@@ -37,10 +37,10 @@ plt.show()
 # -------------------------------------------
 # If you want to create a custom categorical legend, you can use the ``ep.draw_legend()`` function.
 
-f, ax = plt.subplots(figsize=(12, 12))
+f, ax = plt.subplots(figsize=(8, 5))
 im = ax.imshow(arr)
 ep.draw_legend(im)
-plt.show()
+plt.tight_layout()
 
 ###############################################################################
 # Customize Discrete Legends
@@ -48,10 +48,10 @@ plt.show()
 # By default the draw_legend function creates a legend with default categories.
 # You can customize the legend by adding titles.
 
-f, ax = plt.subplots()
+f, ax = plt.subplots(figsize=(8, 5))
 im = ax.imshow(arr)
 ep.draw_legend(im, titles=["Small", "Bigger", "Even Bigger", "Ginormous"])
-plt.show()
+plt.tight_layout()
 
 ###############################################################################
 # Discrete Legends With Missing Values in the Array
@@ -65,14 +65,14 @@ plt.show()
 new_arr = arr.copy()
 new_arr[new_arr == 0] = 1
 
-f, ax = plt.subplots()
+f, ax = plt.subplots(figsize=(8, 5))
 im = ax.imshow(new_arr)
 ep.draw_legend(
     im,
     titles=["Small", "Bigger", "Even Bigger", "Ginormous"],
     classes=[0, 1, 2, 3],
 )
-plt.show()
+plt.tight_layout()
 
 ###############################################################################
 # Custom Colormaps and Ensuring Cmaps Apply to All Valid Classes
@@ -84,14 +84,14 @@ plt.show()
 # The colors begin at white and end at black even though the value of 0 which should be black
 # is missing from the data.
 
-f, ax = plt.subplots()
+f, ax = plt.subplots(figsize=(8, 5))
 im = ax.imshow(new_arr, cmap="Greys_r")
 ep.draw_legend(
     im,
     titles=["Small", "Bigger", "Even Bigger", "Ginormous"],
     classes=[0, 1, 2, 3],
 )
-plt.show()
+plt.tight_layout()
 
 ###############################################################################
 # Specify vmin and vmax to set the colormap range
@@ -99,11 +99,11 @@ plt.show()
 #
 # In this case, you can use the ``vmin`` and ``vmax`` arguments to set the range of values to use for the colormap.
 
-f, ax = plt.subplots()
+f, ax = plt.subplots(figsize=(8, 5))
 im = ax.imshow(new_arr, cmap="Greys_r", vmin=0, vmax=3)
 ep.draw_legend(
     im,
     titles=["Small", "Bigger", "Even Bigger", "Ginormous"],
     classes=[0, 1, 2, 3],
 )
-plt.show()
+plt.tight_layout()
