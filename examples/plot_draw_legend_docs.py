@@ -94,10 +94,10 @@ ep.draw_legend(
 plt.show()
 
 ###############################################################################
-# Specify vmin and max to ensure proper colormap application
+# Specify vmin and vmax to set the colormap range
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# In this case, you can specify the vmin and max of your ``imshow()`` plot.
+# In this case, you can use the ``vmin`` and ``vmax`` arguments to set the range of values to use for the colormap.
 
 f, ax = plt.subplots()
 im = ax.imshow(new_arr, cmap="Greys_r", vmin=0, vmax=3)
