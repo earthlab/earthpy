@@ -14,7 +14,7 @@ Custom Legends with EarthPy
 
 ###############################################################################
 # Plot Continuous Data
-# ------------------------------
+# ---------------------
 #
 # Let's explore a simple plot using EarthPy. To begin, import the needed packages
 # and create an array to be plotted. Below we plot the data as continuous with a colorbar
@@ -34,16 +34,17 @@ plt.show()
 
 ###############################################################################
 # Create Custom Discrete Legends with Earthpy
+# -------------------------------------------
 # If you want to create a custom categorical legend, you can use the ``ep.draw_legend()`` function.
 
-f, ax = plt.subplots()
+f, ax = plt.subplots(figsize=(12, 12))
 im = ax.imshow(arr)
 ep.draw_legend(im)
 plt.show()
 
 ###############################################################################
-# Discrete Legends
-# ------------------------------
+# Customize Discrete Legends
+# ---------------------------
 # By default the draw_legend function creates a legend with default categories.
 # You can customize the legend by adding titles
 
