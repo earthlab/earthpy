@@ -288,8 +288,9 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
+        >>> # Before you plot, ensure that the input array does not have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        (<Figure size 1000x1000 with 1 Axes>, ...)
+        <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
     """
 
@@ -327,7 +328,8 @@ def plot_rgb(
     ax.imshow(rgb_bands, extent=extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
-    return fig, ax
+    plt.show()
+    return ax
 
 
 def hist(
