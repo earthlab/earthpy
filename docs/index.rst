@@ -22,6 +22,7 @@ EarthPy User Guide
    :caption: Contents:
 
    get-started
+   Examples Gallery <gallery_vignettes/index>
    contributing
    contributors
    api
