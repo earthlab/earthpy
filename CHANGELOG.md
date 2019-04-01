@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 * Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
 * Add two example vignettes for using EarthPy with raster data (@lwasser)
-
+* Fix bug in `bytescale()` - ensure math to calc range is floating point vals (@lwasser #282)
+* Fix tests for `bytescale()` to ensure the bug raised in #282 is fixed / tested; also added comment to plot_rgb docs to ensure users consider nodata values before plotting (@lwasser #282)
 
 ## [0.6.5] - 2019-03-37
 * Add continuous integration testing on osx via Travis CI (@mbjoseph #228)
