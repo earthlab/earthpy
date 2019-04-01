@@ -45,7 +45,7 @@ plt.show()
 # Discrete Legends
 # ------------------------------
 # By default the draw_legend function creates a legend with default categories.
-# You can customize the legend by adding titles
+# You can customize the legend by adding titles.
 
 f, ax = plt.subplots()
 im = ax.imshow(arr)
