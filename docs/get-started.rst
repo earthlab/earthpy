@@ -24,10 +24,13 @@ Dependencies
 ~~~~~~~~~~~~
 
 Earthpy has several Python package dependencies including : ``rasterio, geopandas, numpy``.
+The easiest way to install EarthPy is to use the .. _Python: earth-analytics-python conda
+environment https://github.com/earthlab/earth-analytics-python-env . This will
+ensure that you have all of the required dependencies needed to run EarthPy.
 
-To install EarthPy, use pip. ``--upgrade`` is optional but it ensures that the package
-overwrites when you install and you have the current version. If you don't have
-the package yet you can still use the ``--upgrade argument``.
+Alternatively, to install EarthPy, use pip. ``--upgrade`` is optional but it
+ensures that the package overwrites when you install and you have the current
+version. If you don't have the package yet you can still use the ``--upgrade`` argument.
 
 ``pip install earthpy``
 
@@ -53,5 +56,5 @@ You can access these data subsets by using:
     >>> # View all available data keys
     >>> et.data.get_data()
     Available Datasets: ['california-rim-fire', 'co-flood-extras', 'cold-springs-fire', 'cold-springs-modis-h5', 'colorado-flood', 'cs-test-landsat', 'cs-test-naip', 'ndvi-automation', 'spatial-vector-lidar']
-    >>> # Download data subset to your `home/earth-analytics/data` directory
+    >>> # Download data subset to your `$HOME/earth-analytics/data` directory
     >>> data = et.data.get_data('cold-springs-fire', verbose=False)

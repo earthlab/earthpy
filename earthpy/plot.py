@@ -500,18 +500,18 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     .. plot::
 
-    >>> import numpy as np
-    >>> import earthpy.plot as ep
-    >>> import matplotlib.pyplot as plt
-    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
-    >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
-    >>> f, ax = plt.subplots()
-    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
-    >>> im_ax = ax.imshow(im_arr_bin)
-    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
-    >>> plt.show()
+        >>> import numpy as np
+        >>> import earthpy.plot as ep
+        >>> import matplotlib.pyplot as plt
+        >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> im_arr_bin = np.digitize(im_arr, bins)
+        >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+        >>> f, ax = plt.subplots()
+        >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+        >>> im_ax = ax.imshow(im_arr_bin)
+        >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+        >>> plt.show()
     """
 
     try:

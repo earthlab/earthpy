@@ -10,6 +10,11 @@ Mask and Plot Remote Sensing Data with EarthPy
 # ---------------------
 #
 # .. note:: Below we walk through a typical workflow using Landsat data with EarthPy.
+#
+# The example below uses Landsat 8 data. In the example below, the landsat_qa layer is the
+# quality assurance data layer that comes with Landsat 8 to identify pixels that may represent
+# cloud, shadow and water. The mask values used below are suggested values associated with the
+# landsat_qa layer that represent pixels with clouds and cloud shadows.
 
 
 ###############################################################################
@@ -114,6 +119,8 @@ plt.show()
 # Plot The Masked Data
 # ~~~~~~~~~~~~~~~~~~~~~
 # Now apply the mask and plot the masked data. The mask applies to every band in your data.
+# The mask values below are values documented in the Landsat 8 documentation that represent
+# clouds and cloud shadows.
 
 # Generate array of all possible cloud / shadow values
 cloud_shadow = [328, 392, 840, 904, 1350]
