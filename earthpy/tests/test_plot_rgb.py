@@ -27,7 +27,8 @@ def rgb_image():
 
 
 def test_no_data_val(rgb_image):
-    """An array with a large no data value should not print nicely, but it should work."""
+    """An array with a nodata value that is stretched should plot."""
+
     a_rgb_image, _ = rgb_image
     a_rgb_image = a_rgb_image.astype("int16")
     a_rgb_image[a_rgb_image == 255] = -9999
