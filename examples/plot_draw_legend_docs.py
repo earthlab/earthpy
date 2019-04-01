@@ -59,7 +59,7 @@ plt.show()
 # Now let's pretend that you are creating a series of classified plots. You may have a range of
 # values that are expected between 0-4. However not all of your data has all values
 # In this case, your legend won't be able to by default create 4 categories because one
-# doesn't exist in your data. In this instance, you can specify the values explicitely:
+# doesn't exist in your data. In this instance, you can specify the values explicitly:
 
 new_arr = arr.copy()
 new_arr[new_arr == 0] = 1
