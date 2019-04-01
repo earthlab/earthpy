@@ -9,12 +9,13 @@ def byte_arr():
 
 
 def test_high_val_range():
-    """A 16 bit int arr with values at the end of the range, should be scaled properly.
+    """A 16 bit int arr with values at the range end should be scaled properly.
 
-    Note that this test explicitly hits the user case of someone providing an array of a
-    dtype at the end of it's range of values. Bytescale should not fail in this case.
+    This test explicitly hits the user case of someone providing an array of a
+    dtype at the end of it's range of values. Bytescale should not fail.
     """
 
+    # The valid range of dtype int16 values is -32768 to 32767
     rgb_bands = np.array([1, 32767, 3, -32768]).astype("int16")
     arr = es.bytescale(rgb_bands)
 
@@ -22,7 +23,7 @@ def test_high_val_range():
     assert arr.max() == 255
 
 
-def test_high_val_range(byte_arr):
+def test_high_val_greater_255(byte_arr):
     """A high value >255 should fail gracefully. """
 
     with pytest.raises(
@@ -52,7 +53,7 @@ def test_high_lessthan_low(byte_arr):
 
 
 def test_low_high_vals_work(byte_arr):
-    """A proper high and low value argument should return an arr with thos vals as the min and max."""
+    """The high/low param vals determine the min and max of the output arr."""
 
     # Valid case. should also take care of if statements for cmin/cmax
     val_arr = es.bytescale(byte_arr, high=255, low=0)
@@ -74,14 +75,13 @@ def test_cmax_equals_cmin(byte_arr):
     """Fail gracefully when the cmax is smaller than the cmin."""
 
     with pytest.raises(
-        ValueError,
-        match="`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`",
+        ValueError, match="`cmax` and `cmin` should not be the same value. "
     ):
         es.bytescale(byte_arr, cmin=100, cmax=100)
 
 
 def test_cmax_cmin_work(byte_arr):
-    """"Cmax and min values should yield and arr with the same min and max values."""
+    """"Cmax and min values returns an arr with the range 0-255."""
 
     scale_arr = es.bytescale(byte_arr, cmin=10, cmax=240)
 
