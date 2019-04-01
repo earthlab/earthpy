@@ -64,7 +64,6 @@ with rio.open(
 ###############################################################################
 # Plot Histogram of Each Band in Your Data
 # ----------------------------------------
-
 # You can view a histogram for each band in your dataset by using the
 # ``hist()`` function from the ``earthpy.plot`` module.
 
