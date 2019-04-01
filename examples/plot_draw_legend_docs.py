@@ -2,7 +2,7 @@
 Custom Legends with EarthPy
 ===========================
 
-
+Learn how to create discrete legends for raster plots with classes that you define in Python using EarthPy.
 """
 
 ###############################################################################

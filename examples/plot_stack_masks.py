@@ -2,6 +2,8 @@
 Mask and Plot Remote Sensing Data with EarthPy
 ==============================================
 
+Learn how to mask out pixels in a raster dataset. This example shows how to apply a cloud mask to
+Landsat 8 data.
 
 """
 
