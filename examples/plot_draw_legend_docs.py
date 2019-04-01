@@ -92,7 +92,7 @@ ep.draw_legend(
 plt.show()
 
 ###############################################################################
-# Specify vmin and max to ensure proper colormap application
+# Specify vmin and vmax to set the colormap range
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # In this case, you can specify the vmin and max of your ``imshow()`` plot.
