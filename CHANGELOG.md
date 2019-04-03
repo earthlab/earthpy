@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a code of conduct (@mbjoseph, #27)
 * Added CI testing across python versions and on Windows (@mbjoseph, #228)
 * Added tests for `EarthlabData` class (@mbjoseph, #37)
+* Add NoData masking support for `stack()` (@joemcglinchy, #282)
 
 ## [0.6.2] - 2019-02-19
 We have made significant changes in preparation for a 1.0 release
