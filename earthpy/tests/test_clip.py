@@ -43,7 +43,6 @@ def make_donut_geom():
     return donut
 
 
-# test_clip
 @pytest.fixture
 def locs_gdf():
     """ Get a dummy point GeoDataFrame.
@@ -56,7 +55,6 @@ def locs_gdf():
     return make_locs_gdf()
 
 
-# test_clip
 @pytest.fixture
 def linez_gdf():
     """ Create Line Objects For Testing """
@@ -68,28 +66,24 @@ def linez_gdf():
     return gdf
 
 
-# test_clip
 @pytest.fixture
 def poly_in_gdf():
     """ Fixture for a bounding box polygon. """
     return make_poly_in_gdf()
 
 
-# test_clip
 @pytest.fixture
 def locs_buff():
     """ Fixture for buffered locations. """
     return make_locs_buff()
 
 
-# test_clip
 @pytest.fixture
 def donut_geom():
     """ Fixture for donut geometry objects. """
     return make_donut_geom()
 
 
-# test_clip
 @pytest.fixture
 def multi_gdf():
     """ Create a multi-polygon GeoDataFrame. """
@@ -148,9 +142,6 @@ def test_clip_poly(locs_buff, poly_in_gdf):
     clipped_poly = cl.clip_shp(locs_buff, poly_in_gdf)
     assert len(clipped_poly.geometry) == 3
     assert clipped_poly.geom_type[1] == "Polygon"
-
-
-# TODO same test for points and lines
 
 
 def test_clip_multipoly(poly_in_gdf, multi_gdf):

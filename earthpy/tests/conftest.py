@@ -5,7 +5,6 @@ from affine import Affine
 import rasterio as rio
 
 
-# used several times
 @pytest.fixture
 def basic_image():
     """
@@ -22,7 +21,6 @@ def basic_image():
     return image
 
 
-# used several times
 @pytest.fixture
 def basic_image_tif(tmpdir, basic_image):
     """
@@ -49,7 +47,6 @@ def basic_image_tif(tmpdir, basic_image):
     return outfilename
 
 
-# used several times
 @pytest.fixture
 def image_array_2bands():
     return np.random.randint(10, size=(2, 4, 5))
