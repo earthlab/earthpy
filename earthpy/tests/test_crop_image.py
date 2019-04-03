@@ -1,124 +1,40 @@
 """ Tests for the spatial module. """
 
 import numpy as np
-import numpy.ma as ma
-import pandas as pd
 import pytest
 import geopandas as gpd
 import rasterio as rio
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
-import os
 
 
 @pytest.fixture
-def b1_b2_arrs():
-    b1 = np.array([[6, 7, 8, 9, 10], [16, 17, 18, 19, 20]])
-    b2 = np.array([[1, 2, 3, 4, 5], [14, 12, 13, 14, 17]])
-    return b1, b2
+def basic_geometry():
+    """
+    A square polygon spanning (2, 2) to (4.25, 4.25) in x and y directions
+    Borrowed from rasterio/tests/conftest.py
+
+    Returns
+    -------
+    dict: GeoJSON-style geometry object.
+        Coordinates are in grid coordinates (Affine.identity()).
+    """
+    return Polygon([(2, 2), (2, 4.25), (4.25, 4.25), (4.25, 2), (2, 2)])
 
 
-def test_extent_to_json():
-    """"Unit tests for extent_to_json()."""
-    # Giving a list [minx, miny, maxx, maxy] makes a polygon
-    list_out = es.extent_to_json([0, 0, 1, 1])
-    assert list_out["type"] == "Polygon"
+@pytest.fixture
+def basic_geometry_gdf(basic_geometry):
+    """
+    A GeoDataFrame containing the basic geometry
 
-    # The polygon is the unit square
-    list_poly = Polygon(list_out["coordinates"][0])
-    assert list_poly.area == 1
-    assert list_poly.length == 4
-
-    # Providing a GeoDataFrame creates identical output
-    points_df = pd.DataFrame({"lat": [0, 1], "lon": [0, 1]})
-    points_df["coords"] = list(zip(points_df.lon, points_df.lat))
-    points_df["coords"] = points_df["coords"].apply(Point)
-    gdf = gpd.GeoDataFrame(points_df, geometry="coords")
-    gdf_out = es.extent_to_json(gdf)
-    assert gdf_out == list_out
-
-    # Giving non-list or GeoDataFrame input raises a ValueError
-    with pytest.raises(ValueError):
-        es.extent_to_json({"a": "dict"})
-
-    # Giving minima that exceed maxima raises an error for both x and y coords
-    with pytest.raises(AssertionError):
-        es.extent_to_json([1, 0, 0, 1])
-
-    with pytest.raises(AssertionError):
-        es.extent_to_json([0, 1, 1, 0])
-
-
-def test_normalized_diff_shapes(b1_b2_arrs):
-    """Test that two arrays with different shapes returns a ValueError."""
-
-    # Test data
-    b1, b2 = b1_b2_arrs
-    b2 = b2[0]
-
-    # Check ValueError
-    with pytest.raises(
-        ValueError, match="Both arrays should have the same dimensions"
-    ):
-        es.normalized_diff(b1=b1, b2=b2)
-
-
-def test_normalized_diff_no_mask(b1_b2_arrs):
-    """Test that if result does not include nan values,
-    the array is returned as unmasked."""
-
-    # Test data
-    b1, b2 = b1_b2_arrs
-
-    n_diff = es.normalized_diff(b1=b1, b2=b2)
-
-    # Output array unmasked
-    assert not ma.is_masked(n_diff)
-
-
-def test_normalized_diff_inf(b1_b2_arrs):
-    """Test that inf values in result are set to nan and
-    that array is returned as masked."""
-
-    # Test data
-    b1, b2 = b1_b2_arrs
-    b2[1:, 4:] = -20
-
-    # Check warning
-    with pytest.warns(
-        Warning, match="Divide by zero produced infinity values"
-    ):
-        n_diff = es.normalized_diff(b1=b1, b2=b2)
-
-    # Inf values set to nan
-    assert not np.isinf(n_diff).any()
-
-    # Output array masked
-    assert ma.is_masked(n_diff)
-
-
-def test_normalized_diff_mask(b1_b2_arrs):
-    """Test that if result does include nan values,
-    the array is returned as masked."""
-
-    # Test data
-    b1, b2 = b1_b2_arrs
-    b2 = b2.astype(float)
-    b2[1:, 4:] = np.nan
-
-    n_diff = es.normalized_diff(b1=b1, b2=b2)
-
-    # Output array masked
-    assert ma.is_masked(n_diff)
-
-
-def test_stack_invalid_out_paths_raise_errors():
-    """ If users provide an output path that doesn't exist, raise error. """
-    with pytest.raises(ValueError, match="not exist"):
-        es.stack(
-            band_paths=["fname1.tif", "fname2.tif"],
-            out_path="nonexistent_directory/output.tif",
-        )
+    Returns
+    -------
+    GeoDataFrame containing the basic_geometry polygon
+    """
+    gdf = gpd.GeoDataFrame(
+        geometry=[basic_geometry], crs={"init": "epsg:4326"}
+    )
+    return gdf
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):

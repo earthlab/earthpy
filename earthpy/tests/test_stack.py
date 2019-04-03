@@ -82,3 +82,13 @@ def test_stack_nodata_outfile(in_paths, out_path):
     # basic_image has 91 0 values, which should be masked
     assert 0 not in stack_arr and np.sum(stack_arr.mask) == 91 * len(in_paths)
     assert os.path.exists(out_path)
+
+
+def test_stack_invalid_out_paths_raise_errors():
+    """ If users provide an output path that doesn't exist, raise error. """
+
+    with pytest.raises(ValueError, match="not exist"):
+        es.stack(
+            band_paths=["fname1.tif", "fname2.tif"],
+            out_path="nonexistent_directory/output.tif",
+        )
