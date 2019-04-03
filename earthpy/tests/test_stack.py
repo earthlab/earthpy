@@ -6,93 +6,79 @@ import pytest
 import earthpy.spatial as es
 
 
-def test_stack_no_file_ext(basic_image_tif):
-    """Test for error raised when no file extension provided in output file."""
+@pytest.fixture
+def out_path(tmpdir):
+    """ A path for an output .tif file. """
+    return os.path.join(str(tmpdir), "out.tif")
 
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
+
+@pytest.fixture
+def in_paths(basic_image_tif):
+    """ Input file paths for tifs to stack. """
+    return [basic_image_tif] * 4
+
+
+def test_stack_no_file_ext(in_paths):
+    """Test for error raised when no file extension provided in output file."""
 
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack"
     with pytest.raises(
         ValueError, match="Please specify a valid file name for output."
     ):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+        stack_arr, stack_prof = es.stack(in_paths, out_path=out_fi)
 
 
-def test_stack_yes_file_ext(basic_image_tif):
+def test_stack_yes_file_ext(out_path):
     """Test for valid file extension."""
 
     # Test that out_path needs a file extension to be valid
-    out_fi = "test_stack.tif"
     with pytest.raises(ValueError, match="The list of"):
-        stack_arr, stack_prof = es.stack([], out_path=out_fi)
+        stack_arr, stack_prof = es.stack([], out_path=out_path)
 
 
-def test_stack_out_format(basic_image_tif):
+def test_stack_out_format(in_paths):
     """Test that output format matches input format."""
-
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
 
     # Test that the output file format is same as inputs
     # This can be flexible but for now forcing the same format
     out_fi = "test_stack.jp2"
     with pytest.raises(ValueError, match="Source"):
-        stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+        stack_arr, stack_prof = es.stack(in_paths, out_path=out_fi)
 
 
-def test_stack_outputfile(basic_image_tif):
+def test_stack_outputfile(in_paths, out_path):
     """Test successful creation of output file."""
 
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
-
     # Test valid use case specifying output file.
-    # Make sure the output file exists and then clean it up
-    out_fi = "test_stack.tif"
-    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi)
+    stack_arr, stack_prof = es.stack(in_paths, out_path)
 
-    assert os.path.exists(out_fi)
-    if os.path.exists(out_fi):
-        os.remove(out_fi)
+    assert os.path.exists(out_path)
 
 
-def test_stack_return_array(basic_image_tif):
+def test_stack_return_array(in_paths):
     """ Test returning only array."""
 
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
-
     # Test valid use case of just getting back the array.
-    stack_arr, stack_prof = es.stack(band_files)
+    n_bands = len(in_paths)
+    stack_arr, stack_prof = es.stack(in_paths)
+    assert stack_arr.shape[0] == n_bands and stack_prof["count"] == n_bands
 
-    assert stack_arr.shape[0] == len(band_files)
-    assert stack_prof["count"] == len(band_files)
 
-
-def test_stack_nodata(basic_image_tif):
+def test_stack_nodata(in_paths, out_path):
     """Test nodata parameter for masking stacked array."""
 
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
+    stack_arr, stack_prof = es.stack(in_paths, out_path, nodata=0)
 
-    # Test the nodata parameter
-    stack_arr, stack_prof = es.stack(band_files, nodata=0)
-
-    assert 0 not in stack_arr
+    # basic_image has 91 0 values, which should be masked
+    assert 0 not in stack_arr and np.sum(stack_arr.mask) == 91 * len(in_paths)
 
 
-def test_stack_nodata_outfile(basic_image_tif):
+def test_stack_nodata_outfile(in_paths, out_path):
     """Test nodata parameter for masking stacked array and writing output file."""
 
-    # Create list of 4 basic_image_tif files (filepaths)
-    band_files = [basic_image_tif] * 4
+    stack_arr, stack_prof = es.stack(in_paths, out_path, nodata=0)
 
-    out_fi = "test_stack.tif"
-    stack_arr, stack_prof = es.stack(band_files, out_path=out_fi, nodata=0)
-
-    assert 0 not in stack_arr
-    assert os.path.exists(out_fi)
-    if os.path.exists(out_fi):
-        os.remove(out_fi)
+    # basic_image has 91 0 values, which should be masked
+    assert 0 not in stack_arr and np.sum(stack_arr.mask) == 91 * len(in_paths)
+    assert os.path.exists(out_path)
