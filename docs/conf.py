@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "Earthpy"
+project = "EarthPy"
 copyright = "2018, Earth Lab"
 author = "Earth Lab"
 
@@ -39,10 +39,11 @@ release = ""
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "m2r",
+    "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
-    "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.viewcode",
 ]
 
@@ -55,8 +56,7 @@ templates_path = ["_templates"]
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = [".rst", ".md"]
 
 # The master toctree document.
 master_doc = "index"
