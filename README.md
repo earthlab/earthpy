@@ -21,21 +21,21 @@ takes advantage of functionality developed for raster data (rasterio) and vector
 code needed to :
 
 * Stack raster bands from data such as Landsat into an easy to use numpy array
-* Plot rgb and other 3 band combination images
+* [Work with masks to set bad pixels such a those covered by clouds and cloud-shadows to NA (`mask_pixels()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_stack_masks.html#sphx-glr-gallery-vignettes-plot-stack-masks-py)
+* Plot rgb (color), color infrared and other 3 band combination images (`plot_rgb()`)
 * View histograms of sets of raster 
-* Create discrete (categorical) legends
+* [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
 
 EarthPy also has an io module that allows users to 
 
 1. Quickly access pre-created datasubsets used in the earth-analytics courses hosted 
-on [earthdatascience.org](https://www.earthdatascience.org) 
+on [www.earthdatascience.org](https://www.earthdatascience.org) 
 2. Download other datasets that they may want to use in their workflows.
 
 ## View Example EarthPy Applications in Our Documentation Gallery  
 
 Check out our [vignette gallery](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/index.html) for 
 applied examples of using earthpy in common spatial workflows. 
-
 
 ## Install
 
