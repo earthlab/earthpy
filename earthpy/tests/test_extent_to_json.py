@@ -14,7 +14,7 @@ def list_out():
     return es.extent_to_json([0, 0, 1, 1])
 
 
-def test_list_format_works():
+def test_list_format_works(list_out):
     """" Giving a list [minx, miny, maxx, maxy] makes a polygon"""
     assert list_out["type"] == "Polygon"
 
