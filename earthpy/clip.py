@@ -1,4 +1,10 @@
-"A module to clip vector data using geopandas"
+"""
+earthpy.clip
+============
+
+A module to clip vector data using GeoPandas.
+
+"""
 
 # TODO: Clip poly should use OVERLAY not spatial indexing + intersects
 
@@ -133,9 +139,8 @@ def clip_shp(shp, clip_obj):
         clip_obj.geometry
     except AttributeError:
         raise AttributeError(
-            """Please make sure that your input and clip
-                             GeoDataFrames have a valid
-                             geometry column"""
+            "Please make sure that your input and clip GeoDataFrames have a"
+            " valid geometry column"
         )
 
     if not any(shp.intersects(clip_obj.unary_union)):
@@ -144,9 +149,8 @@ def clip_shp(shp, clip_obj):
     # Multipolys / point / line don't clip properly
     if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
         raise ValueError(
-            """Clip doesn't currently support multipart
-        geometries. Consider using .explode to create
-        unique features in your GeoDataFrame"""
+            "Clip doesn't currently support multipart geometries. Consider "
+            "using .explode to create unique features in your GeoDataFrame"
         )
 
     if shp["geometry"].iloc[0].type == "Point":
