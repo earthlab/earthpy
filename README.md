@@ -7,19 +7,35 @@
 
 # EarthPy
 
-A package that supports working with spatial data in python teaching.
+[![PyPI version](https://badge.fury.io/py/earthpy.svg)](https://badge.fury.io/py/earthpy)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/earthpy.svg?color=purple&label=pypi%20downloads&style=plastic)
+![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=popout)
+
+A package that makes it easier to plot, and manipulate spatial data in Python.
 
 ## Install
 
-To install, use pip. `--upgrade` is optional but it ensures that the package overwrites
-when you install and you have the current version. If you don't have the package
-yet you can still use the `--upgrade` argument.
+To install, use pip or conda-forge. We encourage you to use conda-forge. 
+
+### Install via Pip
+
+To install earthPy via pip use:
 
 ```bash
-$ pip install --upgrade git+https://github.com/earthlab/earthpy.git
+$ pip install --upgrade earthpy
 ```
 
-Then import it into python.
+### Install Using Conda / conda-forge Channel
+
+If you are working within an Anaconda environment, we suggest that you install EarthPy using 
+`conda-forge`
+
+```bash
+$ conda install -c conda-forge earthpy
+```
+
+
+Once you have successfully installed EarthPy, you can import it into python.
 
 ```python
 >>> import earthpy as et
@@ -43,9 +59,9 @@ To run tests locally, execute the command `pytest` from the command line:
 $ pytest --doctest-modules
 ```
 
-The `--doctest-modules` syntax allows pytest to check examples in
+The `--doctest-modules` syntax allows `pytest` to check examples in
 docstrings contained in modules (e.g., if a function has an example section),
-in addition to the normal tests that pytest would discover.
+in addition to the normal tests that `pytest` would discover.
 
 ### Testing example code in the `docs` directory
 
