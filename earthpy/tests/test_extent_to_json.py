@@ -14,13 +14,13 @@ def list_out():
     return es.extent_to_json([0, 0, 1, 1])
 
 
-def test_extent_to_json():
+def test_list_format_works():
     """" Giving a list [minx, miny, maxx, maxy] makes a polygon"""
     list_out = es.extent_to_json([0, 0, 1, 1])
     assert list_out["type"] == "Polygon"
 
 
-def test_extent_to_json(list_out):
+def test_polygon_is_square(list_out):
     """The polygon is the unit square"""
 
     list_poly = Polygon(list_out["coordinates"][0])
