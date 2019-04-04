@@ -10,7 +10,7 @@ import earthpy.spatial as es
 
 @pytest.fixture
 def list_out():
-
+    """ A JSON extent on the unit square spanning (0, 0), (1, 1). """
     return es.extent_to_json([0, 0, 1, 1])
 
 
