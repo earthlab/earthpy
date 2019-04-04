@@ -14,6 +14,20 @@ def list_out():
     return es.extent_to_json([0, 0, 1, 1])
 
 
+@pytest.mark.parametrize(
+    "list_input,error",
+    [
+        ([1, 0, 0, 1], "xmin must be <= xmax"),
+        ([0, 1, 1, 0], "ymin must be <= ymax"),
+    ],
+)
+def test_min_exceeds_max(list_input, error):
+    """Min value that exceeds max raises error for both x and y coords"""
+
+    with pytest.raises(AssertionError, match=error):
+        es.extent_to_json(list_input)
+
+
 def test_list_format_works(list_out):
     """" Giving a list [minx, miny, maxx, maxy] makes a polygon"""
     assert list_out["type"] == "Polygon"
@@ -43,13 +57,3 @@ def test_not_a_list():
 
     with pytest.raises(ValueError):
         es.extent_to_json({"a": "dict"})
-
-
-def test_min_exceeds_max():
-    """Giving minima that exceed maxima raises error for both x and y coords"""
-
-    with pytest.raises(AssertionError):
-        es.extent_to_json([1, 0, 0, 1])
-
-    with pytest.raises(AssertionError):
-        es.extent_to_json([0, 1, 1, 0])
