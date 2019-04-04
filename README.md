@@ -7,9 +7,10 @@
 
 # EarthPy
 
-[![PyPI version](https://badge.fury.io/py/earthpy.svg)](https://badge.fury.io/py/earthpy)
+![PyPI](https://img.shields.io/pypi/v/earthpy.svg?color=purple&style=plastic)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/earthpy.svg?color=purple&label=pypi%20downloads&style=plastic)
-![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=popout)
+![Conda](https://img.shields.io/conda/v/conda-forge/earthpy.svg?color=purple&style=plastic)
+![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=plastic)
 
 EarthPy is makes it easier to plot and manipulate spatial data in Python.
 
