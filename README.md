@@ -90,6 +90,12 @@ Below is a quick example of plotting multiple bands in a numpy array format.
 - Chris Holdgraf
 - Jenny Palomino
 
+## How to Contribute
+
+We welcome contributions to EarthPy! Please be sure to check out our 
+[contributing guidelines](https://earthpy.readthedocs.io/en/latest/contributing.html)
+for more information about submitting pull requests or changes to EarthPy. 
+
 ## License
 
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
