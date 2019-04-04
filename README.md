@@ -11,15 +11,39 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/earthpy.svg?color=purple&label=pypi%20downloads&style=plastic)
 ![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=popout)
 
-A package that makes it easier to plot, and manipulate spatial data in Python.
+EarthPy is makes it easier to plot and manipulate spatial data in Python.
+
+## Why EarthPy?
+
+Python is a generic programming language designed to support many different applications. Because of this, many commonly
+performed spatial tasks for science including plotting and working with spatial data take many steps of code. EarthPy 
+takes advantage of functionality developed for raster data (rasterio) and vector data (geopandas) and simplifies the 
+code needed to :
+
+* Stack raster bands from data such as Landsat into an easy to use numpy array
+* Plot rgb and other 3 band combination images
+* View histograms of sets of raster 
+* Create discrete (categorical) legends
+
+EarthPy also has an io module that allows users to 
+
+1. Quickly access pre-created datasubsets used in the earth-analytics courses hosted 
+on [earthdatascience.org](https://www.earthdatascience.org) 
+2. Download other datasets that they may want to use in their workflows.
+
+## View Example EarthPy Applications in Our Documentation Gallery  
+
+Check out our [vignette gallery](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/index.html) for 
+applied examples of using earthpy in common spatial workflows. 
+
 
 ## Install
 
-To install, use pip or conda-forge. We encourage you to use conda-forge. 
+To install, use `pip` or `conda-forge`. We encourage you to use `conda-forge` if you are a conda users. 
 
 ### Install via Pip
 
-To install earthPy via pip use:
+To install earthPy via `pip` use:
 
 ```bash
 $ pip install --upgrade earthpy
@@ -34,11 +58,27 @@ If you are working within an Anaconda environment, we suggest that you install E
 $ conda install -c conda-forge earthpy
 ```
 
+Note: if you want to set conda-forge as your default conda channel, you can use the following install workflow.
+We recommmend this approach. Once you have run conda config, you can install earthpy without specifying a channel.
 
-Once you have successfully installed EarthPy, you can import it into python.
+```bash
+$ conda config --add channels conda-forge
+$ conda install earthpy
+```
+
+
+Once you have successfully installed EarthPy, you can import it into Python.
 
 ```python
 >>> import earthpy as et
+```
+
+Below is a quick example of plotting multiple bands in a numpy array format.
+
+```python
+>>> arr = np.random.randint(4, size=(3, 5, 5))
+>>> ep.plot_bands(arr, titles=["Band 1", "Band 2", "Band 3"])
+>>> plt.show()
 ```
 
 ## Active Contributors
@@ -50,37 +90,7 @@ Once you have successfully installed EarthPy, you can import it into python.
 - Chris Holdgraf
 - Jenny Palomino
 
-## Testing
+## License
 
-This package uses [pytest](https://pytest.org/) for tests.
-To run tests locally, execute the command `pytest` from the command line:
+[BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
 
-```bash
-$ pytest --doctest-modules
-```
-
-The `--doctest-modules` syntax allows `pytest` to check examples in
-docstrings contained in modules (e.g., if a function has an example section),
-in addition to the normal tests that `pytest` would discover.
-
-### Testing example code in the `docs` directory
-
-To locally test examples in the `docs` directory (e.g., examples contained in
-`.rst` files), you can run the following command from the top-level
-`earthpy` directory:
-
-
-```bash
-$ make -C docs doctest
-```
-
-### Data generated for testing
-
-If a test requires a data object such as a GeoDataFrame or numpy array, and
-copies of that data object are required by multiple tests, we can use [pytest
-fixtures](https://docs.pytest.org/en/latest/fixture.html) to cleanly create
-and tear down those objects independently for each test.
-
-See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
-definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
-for example usage of fixtures in tests.
