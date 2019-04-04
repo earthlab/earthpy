@@ -44,11 +44,9 @@ stack_bands.sort()
 if os.path.isdir("data/outputs") == False:
     os.mkdir("data/outputs")
 raster = "data/outputs/raster.tiff"
-arr, rast = es.stack(stack_bands, out_path=raster)
+arr, rast = es.stack(stack_bands, out_path=raster, nodata=-9999)
 rioobject = rio.open(raster)
 boundary = gpd.read_file("data/cold-springs-fire/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp")
-
-arr = es.bytescale(arr, cmin=0)
 
 extent = plotting_extent(arr[0], rast["transform"])
 
@@ -56,7 +54,7 @@ boundary = boundary.to_crs(rast['crs'])
 
 fig, ax = plt.subplots(figsize=(12, 12))
 boundary.plot(ax=ax,color='red', zorder=10)
-ep.plot_rgb(arr, ax=ax, stretch=True, extent=extent)
+ep.plot_rgb(arr, ax=ax, stretch=True, extent=extent, str_clip=-.5)
 ax.set_title("plswork", fontsize=20)
 plt.show()
 
