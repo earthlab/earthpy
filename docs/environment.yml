@@ -1,0 +1,18 @@
+name: earthpy_docs
+channels:
+- conda-forge
+dependencies:
+- python=3.7
+- numpy
+- matplotlib=3.0.3
+- geopandas=0.4.1
+- rasterio=1.0.21
+- scikit-image
+- shapely=1.6.4
+- fiona=1.8.4
+- pyproj=1.9.6
+- rtree=0.8.3
+- sphinx=1.8.4
+- sphinx_rtd_theme=0.4.3
+- m2r=0.2.1
+- sphinx-gallery=0.2.0

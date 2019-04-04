@@ -1,7 +1,13 @@
 bumpversion
+codecov
 m2r
+pandas
 pre-commit
+pytest
+pytest-cov
 pytest-vcr
 sphinx==1.8.0
 sphinx-autobuild==0.7.1
 sphinx_rtd_theme
+sphinx_gallery
+tox

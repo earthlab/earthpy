@@ -3,29 +3,11 @@ channels:
   - conda-forge
 dependencies:
   # Core scientific python
-  - codecov
   - numpy
   - matplotlib
   - python=3.6
-  - pyqt
-  - pytest
-  - pytest-cov
-  - seaborn
 
   # Geo stuff
-  - geopy
-  - cartopy
   - geopandas
   - rasterio
-  - pysal
-  - pyproj
   - scikit-image
-  - gdal
-  - geocoder
-
-  - pip:
-      # Utilities
-      - download
-      - mne
-      - sklearn
-      - tqdm

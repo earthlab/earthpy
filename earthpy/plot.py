@@ -1,6 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+earthpy.plot
+============
+
+Functionality around spatial plotting.
+
 """
 
 import numpy as np
@@ -59,11 +62,8 @@ def colorbar(mapobj, size="3%", pad=0.09):
         ax = mapobj.axes
     except AttributeError:
         raise AttributeError(
-            """The colorbar function requires a matplotlib
-                             axis object. You have provided
-                             a {}.""".format(
-                type(mapobj)
-            )
+            "The colorbar function requires a matplotlib axis object. "
+            "You have provided a {}.".format(type(mapobj))
         )
     fig = ax.figure
     divider = make_axes_locatable(ax)
@@ -72,7 +72,16 @@ def colorbar(mapobj, size="3%", pad=0.09):
 
 
 def plot_bands(
-    arr, cmap="Greys_r", figsize=(12, 12), cols=3, title=None, extent=None
+    arr,
+    cmap="Greys_r",
+    figsize=(12, 12),
+    cols=3,
+    title=None,
+    extent=None,
+    cbar=True,
+    scale=True,
+    vmin=None,
+    vmax=None,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -92,6 +101,14 @@ def plot_bands(
         Title of one band or list of titles with one title per band.
     extent : tuple (optional)
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
+    cbar : Boolean (default = True)
+        Turn off colorbar if needed.
+    scale : Boolean (Default = True)
+        Turn off bytescale scaling if needed.
+    vmin : Int (Optional)
+        Specify the vmin to scale imshow() plots.
+    vmax : Int (Optional)
+        Specify the vmax to scale imshow() plots.
 
     Returns
     ----------
@@ -114,26 +131,31 @@ def plot_bands(
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
         ...                   figsize=(8, 3))
-        (<Figure size ... with 3 Axes>, ...)
+        array([<matplotlib.axes._subplots.AxesSubplot object at 0x...
     """
 
     try:
         arr.ndim
     except AttributeError:
-        "Input arr should be a numpy array"
+        raise AttributeError("Input arr should be a numpy array")
 
     if title:
-        if (arr.ndim == 2) and (len(title) > 1):
+        if isinstance(title, str):
+            title = [title]
+
+        # A 2-dim array should only be passed one title
+        if arr.ndim == 2 and len(title) > 1:
             raise ValueError(
-                """Plot_bands() expects one title for a single
-                             band array. You have provided more than one
-                             title."""
+                "plot_bands expects one title for a single "
+                "band array. You have provided more than one title."
             )
-        elif not (len(title) == arr.shape[0]):
-            raise ValueError(
-                """Plot_bands() expects the number of plot titles
-                             to equal the number of array raster layers."""
-            )
+        # A 3 dim array should have the same number of titles as dims
+        if arr.ndim > 2:
+            if len(title) != arr.shape[0]:
+                raise ValueError(
+                    "plot_bands expects the number of plot titles "
+                    "to equal the number of array raster layers."
+                )
 
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2 and arr.shape[0] > 1:
@@ -147,11 +169,20 @@ def plot_bands(
         axs_ravel = axs.ravel()
         for ax, i in zip(axs_ravel, range(total_layers)):
             band = i + 1
-            ax.imshow(es.bytescale(arr[i]), cmap=cmap)
+
+            arr_im = arr[i]
+            if scale:
+                arr_im = es.bytescale(arr_im)
+
+            im = ax.imshow(
+                arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent
+            )
             if title:
                 ax.set(title=title[i])
             else:
                 ax.set(title="Band %i" % band)
+            if cbar:
+                colorbar(im)
             ax.set(xticks=[], yticks=[])
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -160,18 +191,25 @@ def plot_bands(
             ax.set_axis_off()
             ax.set(xticks=[], yticks=[])
         plt.tight_layout()
-        return fig, axs
+        plt.show()
+        return axs
 
     elif arr.ndim == 2 or arr.shape[0] == 1:
         # If it's a 2 dimensional array with a 3rd dimension
         arr = np.squeeze(arr)
 
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(es.bytescale(arr), cmap=cmap, extent=extent)
+        if scale:
+            arr = es.bytescale(arr)
+
+        im = ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
         if title:
-            ax.set(title=title)
+            ax.set(title=title[0])
         ax.set(xticks=[], yticks=[])
-        return fig, ax
+        if cbar:
+            colorbar(im)
+        plt.show()
+        return ax
 
 
 def _stretch_im(arr, str_clip):
@@ -250,15 +288,16 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
+        >>> # Before you plot, ensure that the input array does not have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        (<Figure size 1000x1000 with 1 Axes>, ...)
+        <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
     """
 
     if len(arr.shape) != 3:
         raise ValueError(
-            """Input needs to be 3 dimensions and in rasterio
-                           order with bands first"""
+            "Input needs to be 3 dimensions and in rasterio "
+            "order with bands first"
         )
 
     # Index bands for plotting and clean up data for matplotlib
@@ -289,7 +328,8 @@ def plot_rgb(
     ax.imshow(rgb_bands, extent=extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
-    return fig, ax
+    plt.show()
+    return ax
 
 
 def hist(
@@ -346,9 +386,8 @@ def hist(
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
             raise ValueError(
-                """"The number of plot titles should be the
-                    same as the number of raster layers in
-                    your array."""
+                "The number of plot titles should be the "
+                "same as the number of raster layers in your array."
             )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
@@ -460,44 +499,37 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     Example
     -------
-    >>> import numpy as np
-    >>> import earthpy.plot as ep
-    >>> import matplotlib.pyplot as plt
-    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
-    >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
-    >>> f, ax = plt.subplots()
-    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
-    >>> im_ax = ax.imshow(im_arr_bin)
-    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+
+    .. plot::
+
+        >>> import numpy as np
+        >>> import earthpy.plot as ep
+        >>> import matplotlib.pyplot as plt
+        >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> im_arr_bin = np.digitize(im_arr, bins)
+        >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+        >>> f, ax = plt.subplots()
+        >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+        >>> im_ax = ax.imshow(im_arr_bin)
+        >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+        >>> plt.show()
     """
 
     try:
         im_ax.axes
     except AttributeError:
         raise AttributeError(
-            """Oops. The legend function requires a matplotlib
-                         axis object to run properly. You have provided
-                         a {}.""".format(
-                type(im_ax)
-            )
+            "The legend function requires a matplotlib axis object to "
+            "run properly. You have provided a {}.".format(type(im_ax))
         )
 
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
-    if classes:
-        try:
-            # Get the colormap from the mpl object
-            cmap = im_ax.cmap.name
-        except AssertionError:
-            raise AssertionError(
-                """Looks like we can't find the colormap
-                                 name which means a custom colormap was likely
-                                 used. Please provide the draw_legend function
-                                  with a cmap= argument to ensure your
-                                  legend draws properly."""
-            )
+    if classes is not None:
+        # Get the colormap from the mpl object
+        cmap = im_ax.cmap.name
+
         # If the colormap is manually generated from a list
         if cmap == "from_list":
             cmap = ListedColormap(im_ax.cmap.colors)
@@ -505,6 +537,14 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         colors = make_col_list(
             nclasses=len(classes), unique_vals=classes, cmap=cmap
         )
+        # If there are more colors than classes, raise value error
+        if len(set(colors)) < len(classes):
+            raise ValueError(
+                "There are more classes than colors in your cmap. "
+                "Please provide a ListedColormap with the same number "
+                "of colors as classes."
+            )
+
     else:
         classes = list(np.unique(im_ax.axes.get_images()[0].get_array()))
         # Remove masked values, could next this list comp but keeping it simple
@@ -519,9 +559,8 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     if not len(classes) == len(titles):
         raise ValueError(
-            """The number of classes should equal the number of
-                                 titles. You have provided {0} classes and {1}
-                                 titles.""".format(
+            "The number of classes should equal the number of "
+            "titles. You have provided {0} classes and {1} titles.".format(
                 len(classes), len(titles)
             )
         )

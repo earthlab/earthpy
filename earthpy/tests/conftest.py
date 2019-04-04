@@ -1,6 +1,7 @@
 """ Utility functions for tests. """
 import numpy as np
 import pytest
+<<<<<<< HEAD
 from shapely.geometry import Polygon
 from affine import Affine
 import rasterio as rio
@@ -19,6 +20,10 @@ def basic_geometry_gdf(basic_geometry):
         geometry=[basic_geometry], crs={"init": "epsg:4326"}
     )
     return gdf
+=======
+from affine import Affine
+import rasterio as rio
+>>>>>>> ac2e97f37864baa8ddef53bfdb2f26eb318e43c5
 
 @pytest.fixture
 def basic_image_tif(tmpdir, basic_image):
@@ -79,9 +84,12 @@ def basic_image():
 @pytest.fixture
 def image_array_2bands():
     return np.random.randint(10, size=(2, 4, 5))
+<<<<<<< HEAD
 
 
 @pytest.fixture
 def one_band_3dims():
     return np.random.randint(10, size=(1, 4, 5))
 >>>>>>> a6a95839909bb304403bbc27a41fe689d04a2eec
+=======
+>>>>>>> ac2e97f37864baa8ddef53bfdb2f26eb318e43c5

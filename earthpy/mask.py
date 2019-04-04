@@ -1,3 +1,11 @@
+"""
+earthpy.mask
+============
+
+Utilities for masking values in arrays.
+
+"""
+
 import numpy as np
 import numpy.ma as ma
 
@@ -110,19 +118,21 @@ def _create_mask(mask_arr, vals):
     except AttributeError:
         raise AttributeError("Values should be provided as a list")
 
-    unique_vals = np.unique(mask_arr).tolist()
+    # For some reason if you don't copy this here, it magically changes the input
+    # qa layer to a boolean in the main environment.
+    new_mask_arr = mask_arr.copy()
+    unique_vals = np.unique(new_mask_arr).tolist()
 
     if any(num in vals for num in unique_vals):
-        temp_mask = np.isin(mask_arr, vals)
-        mask_arr[temp_mask] = 1
-        mask_arr[~temp_mask] = 0
+        temp_mask = np.isin(new_mask_arr, vals)
+        new_mask_arr[temp_mask] = 1
+        new_mask_arr[~temp_mask] = 0
 
-        return mask_arr
+        return new_mask_arr
 
     else:
         raise ValueError(
-            """The values provided for the mask do not occur
-            in your mask array."""
+            "The values provided for the mask do not occur in your mask array."
         )
 
 
@@ -230,8 +240,8 @@ def mask_pixels(arr, mask_arr, vals=None):
             cover_mask = mask_arr.astype(bool)
         else:
             raise ValueError(
-                """You have provided a mask_array with no values to mask. Please
-                either provide a mask_array of type bool, or provide values
-                to be used to create a mask."""
+                "You have provided a mask_array with no values to mask. "
+                "Please either provide a mask_array of type bool, or provide "
+                "values to be used to create a mask."
             )
     return _apply_mask(arr, cover_mask)

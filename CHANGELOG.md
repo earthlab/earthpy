@@ -5,13 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.7]
+* Add NoData masking support for `stack()` (@joemcglinchy, #282)
+* Fix multiline messages to use `"` vs `"""` (@lwasser, #270)
 
-* Remove earthpy.utils.fix_paths as it is not used in the package (@lwasser #259)
-* Adding tests for hillshade and improved docs (@jpalomino #260)
+## [0.6.6]
+* Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
+* Add two example vignettes for using EarthPy with raster data (@lwasser)
+* Fix bug in `bytescale()` - ensure math to calc range is floating point vals (@lwasser #282)
+* Fix tests for `bytescale()` to ensure the bug raised in #282 is fixed / tested; also added comment to plot_rgb docs to ensure users consider nodata values before plotting (@lwasser #282)
+
+## [0.6.5] - 2019-03-37
+* Add continuous integration testing on osx via Travis CI (@mbjoseph #228)
+* Add cbar legend to `plot_bands()` and scaling parameters (@lwasser #274)
+* BUGFIX: `plot_bands()` doesn't plot single string titles properly + add test (@lwasser #258)
+* Remove dependency on download library (@mbjoseph #249)
+* BUGFIX: `draw_legend()` fails when classes are provided (@lwasser #253)
+* Remove `earthpy.utils.fix_paths()` as it is not used in the package (@lwasser #259)
+* Adding tests for `hillshade()` and improved docs (@jpalomino #260)
 * Closing plots in tests (@lwasser #257)
 * Added a code of conduct (@mbjoseph, #27)
-* Added tests for EarthlabData class (@mbjoseph, #37)
+* Added CI testing across python versions and on Windows (@mbjoseph, #228)
+* Added tests for `EarthlabData` class (@mbjoseph, #37)
 
 ## [0.6.2] - 2019-02-19
 We have made significant changes in preparation for a 1.0 release

@@ -1,32 +1,30 @@
 language: python
-python:
-- 3.6
-cache: pip
-before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-- sleep 3
+
+matrix:
+    include:
+        - os: linux
+          dist: xenial
+          python: 3.5
+          env: TOXENV=py35
+        - os: linux
+          dist: xenial
+          python: 3.6
+          env: TOXENV=py36
+        - os: linux
+          dist: xenial
+          python: 3.7
+          env: TOXENV=py37,black,docs
+        - os: osx
+          language: generic
+
 install:
-- sudo apt-get update
-- wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-- bash miniconda.sh -b -p $HOME/miniconda
-- export PATH="$HOME/miniconda/bin:$PATH"
-- hash -r
-- conda config --set always_yes yes --set changeps1 no
-- conda update -q conda
-- conda info -a
-- conda env create -f environment.yml
-- source activate earthpy-dev
-- conda list
-- python setup.py install
-- pip install -r dev-requirements.txt
-- pip install black
+  - chmod +x .travis/install.sh
+  - ./.travis/install.sh
+
 script:
-- pytest --doctest-modules --cov=earthpy --rootdir earthpy
-- make -B docs
-- black --check --verbose .
-after_success:
-- codecov
+  - chmod +x .travis/test.sh
+  - ./.travis/test.sh
+
 deploy:
   provider: pypi
   user: lwasser
@@ -34,3 +32,5 @@ deploy:
     secure: PZkjwwgIzvCu68ckTFjbiGaakK6bXGv48Iefbj4gLA3xEZW5JVu4Gn+c75rX0ZoJ/Ei9WwlXiRRqsFeUh8rvBkxY+2DRM8IZt8YcjdKP/O5zPyqVqDNIvlSryfbxeqcC8bBwd8ZR6iEnGysBfPuUdqLiak8t51pGjI0Eanqlh/xrTIwDqztQY5+LqOaNtJzEedX7jKbz4AKkFRUzlp35nJJ5sbWPYk+Uvr+PMx9v3IVbpxS01/iazCTAO91kUZ5pmCrDB20j8qbghmMYuSCdkO8Vyy9i6uLxWRROEnULwspucnGHygd7MGRuXOVrHHeMkcK18HI0xHiA8kQCt2kkN0Fe8COK2ZKW7u1bwo0a+SDtA2ArJY/HuUUHHs7vrotJDBHZJ1KBVuk1jZU0fAVMY0zkaPFq6LXhxSO7I7lAt0MNkEP3BkOoodOV0+AFJ8WFDvmeg3A49+H4o+qnBFZzlcy47rqDj0tX7+DxAeIKFz/9W4soCTwXNLORGKb2RcUQIprZKtEbI3VTG670SUQWHJUZOYeBlqOvh5NKN+rl1TgEK80MRmWOHl4feRkUONchdDz84T+nVuMmDBtgf+CkbM2DGbPzJfnw5w+euOaqZaniROmxRL1k2ROtvJc2xO2uYa+dqP6MFf8pWB4cnDSikUp09Rxl7F8Uj9DFdk39Qnc=
   on:
     tags: true
+    repo: earthlab/earthpy
+    python: 3.6
