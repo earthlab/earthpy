@@ -84,25 +84,19 @@ Below is a quick example of plotting multiple bands in a numpy array format.
 
 ## Active Contributors
 
-[![Leah Wasser](https://www.github.com/lwasser)](https://avatars.githubusercontent.com/u/7649194?size=120)
+We welcome contributions to EarthPy. Below are the current active package maintainers. Please see our
+[contributors file](https://earthpy.readthedocs.io/en/latest/contributors.html) for a complete list of all 
+of our contributors.
 
 
+<a title="Leah Wasser" href="https://www.github.com/lwasser"><img width="60" height="60" alt="Leah Wasser" class="pull-left" src="https://avatars.githubusercontent.com/u/7649194?size=120" /></a>
+<a title="Max Joseph" href="https://www.github.com/mbjoseph"><img width="60" height="60" alt="Max Joseph" class="pull-left" src="https://avatars.githubusercontent.com/u/2664564?size=120" /></a>
+<a title="Joseph McGlinchy" href="https://www.github.com/joemcglinchy"><img width="60" height="60" alt="Joseph McGlinchy" class="pull-left" src="https://avatars.githubusercontent.com/u/4762214?size=120" /></a>
+<a title="Jenny Palomino" href="https://www.github.com/jlpalomino"><img width="60" height="60" alt="Jenny Palomino" class="pull-left" src="https://avatars.githubusercontent.com/u/4017492?size=120" /></a>
+<a title="Nathan Korinek" href="https://www.github.com/nkorinek"><img width="60" height="60" alt="Nathan Korinek" class="pull-left" src="https://avatars.githubusercontent.com/u/38253680?size=120" /></a>
+<a title="Tim Head" href="https://www.github.com/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
+<a title="Michelle Roby" href="https://www.github.com/mirob9363"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/42818395?size=120" /></a>
 
-<a title="Leah Wasser" href="/github/lwasser"><img width="60" height="60" alt="Leah Wasser" class="pull-left" src="https://avatars.githubusercontent.com/u/7649194?size=120" /></a>
-<a title="Max Joseph" href="/github/mbjoseph"><img width="60" height="60" alt="Max Joseph" class="pull-left" src="https://avatars.githubusercontent.com/u/2664564?size=120" /></a>
-<a title="Nathan Korinek" href="/github/nkorinek"><img width="60" height="60" alt="Nathan Korinek" class="pull-left" src="https://avatars.githubusercontent.com/u/38253680?size=120" /></a>
-<a title="Joseph McGlinchy" href="/github/joemcglinchy"><img width="60" height="60" alt="Joseph McGlinchy" class="pull-left" src="https://avatars.githubusercontent.com/u/4762214?size=120" /></a>
-<a title="Tim Head" href="/github/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
-<a title="Michelle Roby" href="/github/mirob9363"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/42818395?size=120" /></a>
-<a title="Jenny Palomino" href="/github/jlpalomino"><img width="60" height="60" alt="Jenny Palomino" class="pull-left" src="https://avatars.githubusercontent.com/u/4017492?size=120" /></a>
-
-
-- Leah Wasser
-- Max Joseph
-- Joe McGlinchy
-- Tim Head
-- Chris Holdgraf
-- Jenny Palomino
 
 ## How to Contribute
 
