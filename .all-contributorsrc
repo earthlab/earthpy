@@ -1,0 +1,23 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mbjoseph",
+      "name": "Max Joseph",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2664564?v=4",
+      "profile": "https://mbjoseph.github.io",
+      "contributions": [
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "earthpy",
+  "projectOwner": "earthlab",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
