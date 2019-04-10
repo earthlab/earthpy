@@ -8,6 +8,15 @@ import numpy as np
 plt.show = lambda: None
 
 
+@pytest.fixture
+def one_band_3dims():
+    """Return a 3-dim numpy array vals 0-9"""
+
+    return np.array(
+        [[[8, 0, 2, 6, 3], [2, 8, 2, 8, 4], [3, 9, 1, 5, 4], [5, 9, 2, 7, 7]]]
+    )
+
+
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
     with pytest.raises(

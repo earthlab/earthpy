@@ -22,7 +22,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.6.4",
+        version="0.6.7",
         packages=["earthpy"],
         install_requires=[
             "geopandas",
@@ -54,4 +54,5 @@ if __name__ == "__main__":
                 "example-data/*.dbf",
             ]
         },
+        url="https://github.com/earthlab/earthpy",
     )

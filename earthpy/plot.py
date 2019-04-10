@@ -1,6 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+earthpy.plot
+============
+
+Functionality around spatial plotting.
+
 """
 
 import numpy as np
@@ -285,8 +288,9 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
+        >>> # Before you plot, ensure that the input array does not have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        (<Figure size 1000x1000 with 1 Axes>, ...)
+        <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
     """
 
@@ -324,7 +328,8 @@ def plot_rgb(
     ax.imshow(rgb_bands, extent=extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
-    return fig, ax
+    plt.show()
+    return ax
 
 
 def hist(
@@ -494,17 +499,21 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     Example
     -------
-    >>> import numpy as np
-    >>> import earthpy.plot as ep
-    >>> import matplotlib.pyplot as plt
-    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
-    >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
-    >>> f, ax = plt.subplots()
-    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
-    >>> im_ax = ax.imshow(im_arr_bin)
-    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+
+    .. plot::
+
+        >>> import numpy as np
+        >>> import earthpy.plot as ep
+        >>> import matplotlib.pyplot as plt
+        >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> im_arr_bin = np.digitize(im_arr, bins)
+        >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+        >>> f, ax = plt.subplots()
+        >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+        >>> im_ax = ax.imshow(im_arr_bin)
+        >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+        >>> plt.show()
     """
 
     try:

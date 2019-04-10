@@ -26,6 +26,18 @@ def rgb_image():
     return rgb, ext
 
 
+def test_no_data_val(rgb_image):
+    """An array with a nodata value that is stretched should plot."""
+
+    a_rgb_image, _ = rgb_image
+    a_rgb_image = a_rgb_image.astype("int16")
+    a_rgb_image[a_rgb_image == 255] = -9999
+    im = plot_rgb(a_rgb_image, stretch=True)
+
+    assert len(im.get_images()) == 1
+    plt.close()
+
+
 def test_rgb_extent(rgb_image):
     """Test to ensure that when the extent is provided, plot_rgb stretches
      the image or applies the proper x and y lims. Also ensure that the
@@ -33,7 +45,7 @@ def test_rgb_extent(rgb_image):
      param is called and defined. Finally test that a provided title and
      figsize created a plot with the correct title and figsize"""
     a_rgb_image, ext = rgb_image
-    f, ax = plot_rgb(
+    ax = plot_rgb(
         a_rgb_image,
         extent=ext,
         rgb=(1, 2, 0),
@@ -45,11 +57,11 @@ def test_rgb_extent(rgb_image):
 
     plt_array = ax.get_images()[0].get_array()
 
-    assert f.bbox_inches.bounds[2:4] == (5, 5)
+    assert ax.figure.bbox_inches.bounds[2:4] == (5, 5)
     assert ax.get_title() == "My Title"
     assert np.array_equal(plt_array[0], a_rgb_image.transpose([1, 2, 0])[1])
     assert ext == plt_ext
-    plt.close(f)
+    plt.close()
 
 
 def test_1band(rgb_image):
@@ -66,12 +78,12 @@ def test_ax_provided(rgb_image):
     """Test to ensure the plot works when an explicit axis is provided"""
     rgb_image, _ = rgb_image
     _, ax1 = plt.subplots()
-    f, ax = plot_rgb(rgb_image, ax=ax1)
+    ax = plot_rgb(rgb_image, ax=ax1)
 
     rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
     the_plot_im_shape = ax.get_images()[0].get_array().shape
     assert rgb_im_shape == the_plot_im_shape
-    plt.close(f)
+    plt.close()
 
 
 def test_ax_not_provided(rgb_image):
@@ -79,11 +91,11 @@ def test_ax_not_provided(rgb_image):
     not provided."""
 
     rgb_image, _ = rgb_image
-    f, ax = plot_rgb(rgb_image)
+    ax = plot_rgb(rgb_image)
     rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
     the_plot_im_shape = ax.get_images()[0].get_array().shape
     assert rgb_im_shape == the_plot_im_shape
-    plt.close(f)
+    plt.close()
 
 
 def test_stretch_image(rgb_image):
@@ -93,10 +105,10 @@ def test_stretch_image(rgb_image):
     im, _ = rgb_image
     np.place(im, im > 150, [0])
 
-    f, ax = plot_rgb(im, stretch=True)
+    ax = plot_rgb(im, stretch=True)
     max_val = ax.get_images()[0].get_array().max()
     assert max_val == 255
-    plt.close(f)
+    plt.close()
 
 
 def test_masked_im(rgb_image):
@@ -107,10 +119,10 @@ def test_masked_im(rgb_image):
     im, _ = rgb_image
     im_ma = ma.masked_where(im > 140, im)
 
-    f, ax = plot_rgb(im_ma)
+    ax = plot_rgb(im_ma)
     im_plot = ax.get_images()[0].get_array()
     assert im_plot.shape[2] == 4
-    plt.close(f)
+    plt.close()
 
 
 def test_ticks_off(rgb_image):
@@ -119,10 +131,10 @@ def test_ticks_off(rgb_image):
 
     im, _ = rgb_image
 
-    f, ax = plot_rgb(im)
+    ax = plot_rgb(im)
     assert len(ax.get_xticks()) == 0
     assert len(ax.get_yticks()) == 0
-    plt.close(f)
+    plt.close()
 
 
 def test_stretch_output_default(image_array_1band_stretch):
@@ -145,7 +157,7 @@ def test_stretch_output_scaled(rgb_image):
     stretch_vals = list(range(10))
     mean_vals = list()
     for v in stretch_vals:
-        ax = plot_rgb(arr, stretch=True, str_clip=v)[1]
+        ax = plot_rgb(arr, stretch=True, str_clip=v)
         mean = ax.get_images()[0].get_array().mean()
         mean_vals.append(mean)
         plt.close()
