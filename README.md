@@ -44,7 +44,7 @@ To install, use `pip` or `conda-forge`. We encourage you to use `conda-forge` if
 
 ### Install via Pip
 
-To install earthPy via `pip` use:
+To install EarthPy via `pip` use:
 
 ```bash
 $ pip install --upgrade earthpy
