@@ -323,12 +323,17 @@ def plot_rgb(
     # Then plot. Define ax if it's default to none
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
+        ax.imshow(rgb_bands, extent=extent)
+        ax.set_title(title)
+        ax.set(xticks=[], yticks=[])
+        # Multipanel won't work if plt.show is called prior to second plot def
+        # Thus we either have redundant code or DON"T call plt.show
+        plt.show()
     else:
-        fig = None
-    ax.imshow(rgb_bands, extent=extent)
-    ax.set_title(title)
-    ax.set(xticks=[], yticks=[])
-    plt.show()
+        # fig = None
+        ax.imshow(rgb_bands, extent=extent)
+        ax.set_title(title)
+        ax.set(xticks=[], yticks=[])
     return ax
 
 
