@@ -1,10 +1,7 @@
 """Tests for the clip module."""
 
 import pytest
-<<<<<<< HEAD
-=======
 import numpy as np
->>>>>>> ac2e97f37864baa8ddef53bfdb2f26eb318e43c5
 from shapely.geometry import Polygon, Point, LineString
 import shapely
 import geopandas as gpd
@@ -252,10 +249,6 @@ def test_clip_poly(locs_buff, poly_in_gdf):
     assert len(clipped_poly.geometry) == 3
     assert clipped_poly.geom_type[1] == "Polygon"
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ac2e97f37864baa8ddef53bfdb2f26eb318e43c5
 def test_clip_multipoly(poly_in_gdf, multi_gdf):
     """Test that multi poly returns a value error."""
     clip = cl.clip_shp(poly_in_gdf, multi_gdf)

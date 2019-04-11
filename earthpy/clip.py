@@ -148,8 +148,6 @@ def clip_shp(shp, clip_obj):
 
     if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
-
-<<<<<<< HEAD
     # Multipolys / point / line clip differently then non-multi features.
     if "Multi" in str(shp.geom_type):
         if shp["geometry"].iloc[0].type == "Point" or shp["geometry"].iloc[0].type == "MultiPoint":
@@ -158,17 +156,8 @@ def clip_shp(shp, clip_obj):
         else:
             clipped = _clip_line_poly(shp.explode().reset_index(level=[1]), clip_obj)
             return clipped.dissolve(by=[clipped.index]).drop(columns='level_1')[shp.columns.tolist()]
-=======
-    # Multipolys / point / line don't clip properly
-    if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
-        raise ValueError(
-            "Clip doesn't currently support multipart geometries. Consider "
-            "using .explode to create unique features in your GeoDataFrame"
-        )
-
-    if shp["geometry"].iloc[0].type == "Point":
+    elif shp["geometry"].iloc[0].type == "Point":
         return _clip_points(shp, clip_obj)
->>>>>>> ac2e97f37864baa8ddef53bfdb2f26eb318e43c5
     else:
         if shp["geometry"].iloc[0].type == "Point":
             return _clip_points(shp, clip_obj)
