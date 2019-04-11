@@ -89,7 +89,7 @@ ndvi = es.normalized_diff(arr_st[4], arr_st[3])
 
 titles = ["Landsat 8 - Normalized Difference Vegetation Index (NDVI)"]
 
-# Scale is turned off due to float values for NDVI
+# Turn off bytescale scaling due to float values for NDVI
 ep.plot_bands(
     ndvi, cmap="RdYlGn", cols=1, title=titles, scale=False, vmin=-1, vmax=1
 )
