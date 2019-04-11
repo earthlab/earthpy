@@ -36,7 +36,7 @@ on [www.earthdatascience.org](https://www.earthdatascience.org)
 ## View Example EarthPy Applications in Our Documentation Gallery  
 
 Check out our [vignette gallery](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/index.html) for 
-applied examples of using earthpy in common spatial workflows. 
+applied examples of using EarthPy in common spatial workflows. 
 
 ## Install
 
