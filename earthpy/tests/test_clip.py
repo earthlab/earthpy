@@ -1,7 +1,7 @@
 """Tests for the clip module."""
 
 import pytest
-    from shapely.geometry import Polygon, Point, LineString
+from shapely.geometry import Polygon, Point, LineString
 import shapely
 import geopandas as gpd
 import earthpy.clip as cl
