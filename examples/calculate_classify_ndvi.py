@@ -85,17 +85,14 @@ ndvi = es.normalized_diff(arr_st[4], arr_st[3])
 # ----------------------------------------------------
 
 # You can plot NDVI with a colorbar legend of continuous values using the
-# ``colorbar`` function from the ``earthpy.plot`` module.
+# ``plot_bands`` function from the ``earthpy.plot`` module.
 
-fig, ax = plt.subplots(figsize=(10, 10))
+titles = ["Landsat 8 - Normalized Difference Vegetation Index (NDVI)"]
 
-im = ax.imshow(ndvi, cmap="RdYlGn", vmin=-1, vmax=1)
-
-ep.colorbar(im)
-
-ax.set(title="Landsat 8 - Normalized Difference Vegetation Index (NDVI)")
-ax.set_axis_off()
-plt.show()
+# Scale is turned off due to float values for NDVI
+ep.plot_bands(
+    ndvi, cmap="RdYlGn", cols=1, title=titles, scale=False, vmin=-1, vmax=1
+)
 
 
 ###############################################################################
@@ -119,7 +116,6 @@ ndvi_cat_names = [
     "High Vegetation",
 ]
 
-
 ###############################################################################
 # Plot Classified NDVI With Categorical Legend
 # --------------------------------------------
@@ -131,7 +127,7 @@ ndvi_cat_names = [
 nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
 nbr_cmap = ListedColormap(nbr_colors)
 
-fig, ax = plt.subplots(figsize=(10, 10))
+fig, ax = plt.subplots(figsize=(12, 12))
 
 im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
 
