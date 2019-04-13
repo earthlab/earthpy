@@ -224,3 +224,21 @@ def test_extent(one_band_3dims):
     # Cbar should be scaled between the vmin and vmax vals
     assert pl_extent == ext
     plt.close()
+
+
+def test_multi_panel_single_band(one_band_3dims):
+    """Test that multi panel works with single band arr."""
+
+    f, (ax1, ax2) = plt.subplots(2, 1)
+    title1 = "Title axis one"
+    title2 = "Title axis two"
+
+    ep.plot_bands(one_band_3dims, title=title1, ax=ax1)
+    ep.plot_bands(one_band_3dims, title=title2, ax=ax2)
+
+    # get all axis subplot elements - note this returns subplots and axes
+    all_axes = f.axes
+
+    assert len(all_axes) == 4
+    assert all_axes[0].get_title() == title1
+    assert all_axes[1].get_title() == title2
