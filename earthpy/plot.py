@@ -320,20 +320,19 @@ def plot_rgb(
         # Index bands for plotting and clean up data for matplotlib
         rgb_bands = es.bytescale(rgb_bands).transpose([1, 2, 0])
 
-    # Then plot. Define ax if it's default to none
+    # Then plot. Define ax if it's undefined
+    show = False
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
-        ax.imshow(rgb_bands, extent=extent)
-        ax.set_title(title)
-        ax.set(xticks=[], yticks=[])
-        # Multipanel won't work if plt.show is called prior to second plot def
-        # Thus we either have redundant code or DON"T call plt.show
+        show = True
+
+    ax.imshow(rgb_bands, extent=extent)
+    ax.set_title(title)
+    ax.set(xticks=[], yticks=[])
+
+    # Multipanel won't work if plt.show is called prior to second plot def
+    if show:
         plt.show()
-    else:
-        # fig = None
-        ax.imshow(rgb_bands, extent=extent)
-        ax.set_title(title)
-        ax.set(xticks=[], yticks=[])
     return ax
 
 
