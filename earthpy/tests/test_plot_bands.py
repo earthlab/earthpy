@@ -229,10 +229,9 @@ def test_extent(one_band_3dims):
 def test_multi_panel_single_band(one_band_3dims):
     """Test that multi panel works with single band arr."""
 
-    f, (ax1, ax2) = plt.subplots(2, 1)
     title1 = "Title axis one"
     title2 = "Title axis two"
-
+    f, (ax1, ax2) = plt.subplots(2, 1)
     ep.plot_bands(one_band_3dims, title=title1, ax=ax1)
     ep.plot_bands(one_band_3dims, title=title2, ax=ax2)
 
