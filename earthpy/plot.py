@@ -84,8 +84,33 @@ def _plot_image(
 ):
 
     """
-    Just a test
+    Create a matplotlib figure with an image axis and associated extent.
 
+    Parameters
+    ----------
+    arr_im : numpy array
+        An n-dimensional numpy array to plot.
+    cmap : str (default = "Greys_r")
+        Colormap name for plots.
+    title : str or list (optional)
+        Title of one band or list of titles with one title per band.
+    extent : tuple (optional)
+        Bounding box that the data will fill: (minx, miny, maxx, maxy).
+    cbar : Boolean (default = True)
+        Turn off colorbar if needed.
+    scale : Boolean (Default = True)
+        Turn off bytescale scaling if needed.
+    vmin : Int (Optional)
+        Specify the vmin to scale imshow() plots.
+    vmax : Int (Optional)
+        Specify the vmax to scale imshow() plots.
+    ax : Matplotlib axes object (Optional)
+        Matplotlib axis object to plot image.
+
+    Returns
+    ----------
+    ax : axes object
+        The axes object(s) associated with the plot.
     """
 
     if scale:
@@ -143,11 +168,8 @@ def plot_bands(
 
     Returns
     ----------
-    tuple
-        fig : figure object
-            The figure of the plotted band(s).
-        ax or axs : axes object(s)
-            The axes object(s) associated with the plot.
+    ax or axs : axes object(s)
+        The axes object(s) associated with the plot.
 
     Example
     -------
@@ -313,14 +335,12 @@ def plot_rgb(
         The intended title of the plot.
     stretch : Boolean (optional)
         Application of a linear stretch. If set to True, a linear stretch will be applied.
+
     Returns
     ----------
-    tuple
-        fig : figure object
-            The figure object associated with the 3 band image. If the
-            ax keyword is specified, the figure return will be None.
-        ax : axes object
-            The axes object associated with the 3 band image.
+    ax : axes object
+        The axes object associated with the 3 band image.
+
     Example
     -------
 
