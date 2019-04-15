@@ -202,19 +202,6 @@ def plot_bands(
             band = i + 1
 
             arr_im = arr[i]
-            # if scale:
-            #     arr_im = es.bytescale(arr_im)
-
-            # im = ax.imshow(
-            #     arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent
-            # )
-            # if title:
-            #     ax.set(title=title[i])
-            # else:
-            #     ax.set(title="Band %i" % band)
-            # if cbar:
-            #     colorbar(im)
-            # ax.set(xticks=[], yticks=[])
 
             if title:
                 the_title = title[i]
@@ -249,15 +236,7 @@ def plot_bands(
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             show = True
-        # if scale:
-        #     arr = es.bytescale(arr)
-        #
-        # im = ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
-        # if title:
-        #     ax.set(title=title[0])
-        # ax.set(xticks=[], yticks=[])
-        # if cbar:
-        #     colorbar(im)
+
         if title:
             title = title[0]
 
