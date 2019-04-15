@@ -53,8 +53,8 @@ data = et.data.get_data("cold-springs-fire")
 # Import Example Data
 # -------------------
 #
-# To get started, make sure your directory is set. Create a stack from all of the
-# Landsat .tif files (one per band).
+# To get started, make sure your directory is set. Then, create a stack from all of
+# the Landsat .tif files (one per band).
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -142,4 +142,6 @@ ax.set_title(
     fontsize=14,
 )
 ax.set_axis_off()
+
+# Auto adjust subplot to fit figure size
 plt.tight_layout()
