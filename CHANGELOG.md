@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 * Fix bug in plot_rgb where multipanel plots are blank (@lwasser, #313)
+* Add example vignette for calculating and classifying NDVI with EarthPy (@jlpalomino, #266)
 
 ## [0.6.7]
 * Add NoData masking support for `stack()` (@joemcglinchy, #282)
