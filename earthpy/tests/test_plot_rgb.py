@@ -86,6 +86,27 @@ def test_ax_provided(rgb_image):
     plt.close()
 
 
+def test_two_ax_provided(rgb_image):
+    """Test to ensure the plot works when more than one axis is provided
+
+    This test is being added because it turned out that the second plot
+    was clearing given a call to plt.show and that wasn't being captured
+    in the previous tests. """
+
+    rgb_image, _ = rgb_image
+    f, (ax1, ax2) = plt.subplots(2, 1)
+    ax1_test = plot_rgb(rgb_image, ax=ax1)
+    ax2_test = plot_rgb(rgb_image, ax=ax2)
+
+    rgb_im_shape = rgb_image.transpose([1, 2, 0]).shape
+    the_plot_im_shape = ax1_test.get_images()[0].get_array().shape
+    the_plot_im_shape2 = ax2_test.get_images()[0].get_array().shape
+
+    assert rgb_im_shape == the_plot_im_shape
+    assert rgb_im_shape == the_plot_im_shape2
+    plt.close()
+
+
 def test_ax_not_provided(rgb_image):
     """Test plot_rgb produces an output image when an axis object is
     not provided."""
