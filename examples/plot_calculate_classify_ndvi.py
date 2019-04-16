@@ -70,7 +70,7 @@ arr_st, meta = es.stack(landsat_path)
 ###############################################################################
 # Calculate Normalized Difference Vegetation Index (NDVI)
 # -------------------------------------------------------
-
+#
 # You can calculate NDVI for your dataset using the
 # ``normalized_diff`` function from the ``earthpy.spatial`` module.
 # Math will be calculated (b1-b2) / (b1 + b2).
@@ -83,7 +83,7 @@ ndvi = es.normalized_diff(arr_st[4], arr_st[3])
 ###############################################################################
 # Plot NDVI With Colorbar Legend of Continuous Values
 # ----------------------------------------------------
-
+#
 # You can plot NDVI with a colorbar legend of continuous values using the
 # ``plot_bands`` function from the ``earthpy.plot`` module.
 
@@ -98,7 +98,7 @@ ep.plot_bands(
 ###############################################################################
 # Classify NDVI
 # -------------
-
+#
 # Next, you can categorize (or classify) the NDVI results into useful classes.
 # Values under 0 will be classified together as no vegetation. Additional classes
 # will be created for bare area and low, moderate, and high vegetation areas.
@@ -119,7 +119,7 @@ ndvi_cat_names = [
 ###############################################################################
 # Plot Classified NDVI With Categorical Legend
 # --------------------------------------------
-
+#
 # You can plot the classified NDVI with a categorical legend using the
 # ``draw_legend`` function from the ``earthpy.plot`` module.
 
