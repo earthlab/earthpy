@@ -168,7 +168,7 @@ def plot_bands(
 
     Returns
     ----------
-    ax or axs : axes object(s)
+    ax or axs : matplotlib.axes._subplots.AxesSubplot object(s)
         The axes object(s) associated with the plot.
 
     Example
