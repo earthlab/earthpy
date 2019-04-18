@@ -68,3 +68,16 @@ and tear down those objects independently for each test.
 See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
 definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
 for example usage of fixtures in tests.
+
+### Vignette Creation
+
+To create a vignette for an EarthPy workflow, create a .py file that shows the 
+necessary steps to complete the workflow. Make sure the file name begins with
+`plot` in order to ensure that the vignette is correctly built. Store the 
+vignette in the `examples` folder within the `earthpy` directory. To test that 
+the vignette builds properly, you can run the following command from the 
+top-level `earthpy` directory:
+
+```bash
+$ make -B docs
+```
