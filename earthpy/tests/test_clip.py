@@ -284,6 +284,7 @@ def test_clip_multipoly(multi_gdf, poly_in_gdf):
 # TODO make sure that we are testing clipping a multi object not clipping with a multi object
 # TODO make sure we test clipping objects with multiple features that may have different attributes
 # TODO: make sure clipping with a multi object works?? (do we want to support that yet or not - if not provide a message saying it's not supported).
+# TODO: cleanup multiline  & multi point and test both!
 
 
 def test_clip_multiline(poly_in_gdf, multi_line):
