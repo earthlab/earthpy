@@ -1,6 +1,6 @@
 """
-Stack and Crop Rasters with EarthPy
-====================================
+Stack and Crop Raster Data Using EarthPy
+========================================
 
 Learn how to stack and crop satellite imagery with GeoPandas objects in EarthPy
 """
