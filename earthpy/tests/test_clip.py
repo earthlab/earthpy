@@ -7,6 +7,11 @@ import geopandas as gpd
 import earthpy.clip as cl
 import numpy as np
 
+
+# TODO Make sure we are testing that attributes are returned
+# TODO make sure that we are using multiple shapes not just one
+
+
 def make_locs_gdf():
     """ Create a dummy point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
@@ -24,6 +29,7 @@ def make_poly_in_gdf():
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
     )
+    gdf["attr2"] = ["road"]
     return gdf
 
 
@@ -91,17 +97,20 @@ def multi_gdf():
         gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
+    out_df["attr"] = ["pool"]
     return out_df
 
+
 @pytest.fixture
-def multi_line():
+def multi_line(linez_gdf):
     """ Create a multi-line GeoDataFrame. """
-    multi_line = linez_gdf().unary_union
+    multi_line = linez_gdf.unary_union
     out_df = gpd.GeoDataFrame(
         gpd.GeoSeries(multi_line), crs={"init": "epsg:4326"}
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     return out_df
+
 
 @pytest.fixture
 def multi_point():
@@ -113,6 +122,7 @@ def multi_point():
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     return out_df
 
+
 def make_locs_gdf():
     """ Create a dummy point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
@@ -130,6 +140,7 @@ def make_poly_in_gdf():
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
     )
+    gdf["attribute1"] = ["roads"]
     return gdf
 
 
@@ -197,6 +208,7 @@ def multi_gdf():
         gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
+    out_df["attr1"] = "pools"
     return out_df
 
 
@@ -248,20 +260,38 @@ def test_clip_poly(locs_buff, poly_in_gdf):
     assert len(clipped_poly.geometry) == 3
     assert clipped_poly.geom_type[1] == "Polygon"
 
-def test_clip_multipoly(poly_in_gdf, multi_gdf):
-    """Test that multi poly returns a value error."""
-    clip = cl.clip_shp(poly_in_gdf, multi_gdf)
-    assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPolygon"
 
+# TODO -- this function actually clips USING a multi -- we have not coded for that I think??
+# def test_clip_multipoly(poly_in_gdf, multi_gdf):
+#     """Test that multi poly returns a value error."""
+#     clip = cl.clip_shp(poly_in_gdf, multi_gdf)
+#     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPolygon"
+
+
+def test_clip_multipoly(multi_gdf, poly_in_gdf):
+    """Test a multi poly object can be clipped properly.
+
+    Also the bounds of the object should == the bounds of the clip object
+    if they fully overlap (as they do in these fixtures). """
+    clip = cl.clip_shp(multi_gdf, poly_in_gdf)
+    assert hasattr(clip, "geometry")
+    assert np.array_equal(clip.total_bounds, poly_in_gdf.total_bounds)
+    # 2 features should be returned with an attribute column
+    assert len(clip.attr1) == 2
+
+
+# TODO make sure all of the doc strings clearly define what each of these do
 def test_clip_multiline(poly_in_gdf, multi_line):
     """Test that multi poly returns a value error."""
     clip = cl.clip_shp(poly_in_gdf, multi_line)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiLineString"
 
+
 def test_clip_multipoint(poly_in_gdf, multi_point):
     """Test that multi poly returns a value error."""
     clip = cl.clip_shp(poly_in_gdf, multi_point)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPoint"
+
 
 def test_clip_lines(linez_gdf, poly_in_gdf):
     """Test what happens when you give the clip_extent a line GDF."""
