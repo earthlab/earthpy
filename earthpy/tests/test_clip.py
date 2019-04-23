@@ -23,7 +23,7 @@ def make_locs_gdf():
     return gdf
 
 
-def make_poly_in_gdf():
+def make_single_rect_poly_gdf():
     """ Bounding box polygon. """
     poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
     gdf = gpd.GeoDataFrame(
@@ -43,7 +43,9 @@ def make_locs_buff():
 def make_donut_geom():
     """ Make a donut geometry. """
     donut = gpd.overlay(
-        make_locs_buff(), make_poly_in_gdf(), how="symmetric_difference"
+        make_locs_buff(),
+        make_single_rect_poly_gdf(),
+        how="symmetric_difference",
     )
     return donut
 
@@ -72,9 +74,9 @@ def linez_gdf():
 
 
 @pytest.fixture
-def poly_in_gdf():
+def single_rect_poly_gdf():
     """ Fixture for a bounding box polygon. """
-    return make_poly_in_gdf()
+    return make_single_rect_poly_gdf()
 
 
 @pytest.fixture
@@ -134,7 +136,7 @@ def make_locs_gdf():
     return gdf
 
 
-def make_poly_in_gdf():
+def make_single_rect_poly_gdf():
     """ Bounding box polygon. """
     poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
     gdf = gpd.GeoDataFrame(
@@ -154,7 +156,9 @@ def make_locs_buff():
 def make_donut_geom():
     """ Make a donut geometry. """
     donut = gpd.overlay(
-        make_locs_buff(), make_poly_in_gdf(), how="symmetric_difference"
+        make_locs_buff(),
+        make_single_rect_poly_gdf(),
+        how="symmetric_difference",
     )
     return donut
 
@@ -183,9 +187,9 @@ def linez_gdf():
 
 
 @pytest.fixture
-def poly_in_gdf():
+def single_rect_poly_gdf():
     """ Fixture for a bounding box polygon. """
-    return make_poly_in_gdf()
+    return make_single_rect_poly_gdf()
 
 
 @pytest.fixture
@@ -212,17 +216,17 @@ def multi_gdf():
     return out_df
 
 
-def test_not_gdf(poly_in_gdf):
+def test_not_gdf(single_rect_poly_gdf):
     """Non-GeoDataFrame inputs raise attribute errors."""
     with pytest.raises(AttributeError):
-        cl.clip_shp((2, 3), poly_in_gdf)
+        cl.clip_shp((2, 3), single_rect_poly_gdf)
     with pytest.raises(AttributeError):
-        cl.clip_shp(poly_in_gdf, (2, 3))
+        cl.clip_shp(single_rect_poly_gdf, (2, 3))
 
 
-def test_returns_gdf(locs_gdf, poly_in_gdf):
+def test_returns_gdf(locs_gdf, single_rect_poly_gdf):
     """Test that function returns a GeoDataFrame (or GDF-like) object."""
-    out = cl.clip_shp(locs_gdf, poly_in_gdf)
+    out = cl.clip_shp(locs_gdf, single_rect_poly_gdf)
     assert hasattr(out, "geometry")
 
 
@@ -240,42 +244,42 @@ def test_non_overlapping_geoms():
         cl.clip_shp(unit_gdf, non_overlapping_gdf)
 
 
-def test_input_gdfs(poly_in_gdf):
+def test_input_gdfs(single_rect_poly_gdf):
     """Test that function fails if not provided with 2 GDFs."""
     with pytest.raises(AttributeError):
-        cl.clip_shp(list(), poly_in_gdf)
+        cl.clip_shp(list(), single_rect_poly_gdf)
     with pytest.raises(AttributeError):
-        cl.clip_shp(poly_in_gdf, list())
+        cl.clip_shp(single_rect_poly_gdf, list())
 
 
-def test_clip_points(locs_gdf, poly_in_gdf):
+def test_clip_points(locs_gdf, single_rect_poly_gdf):
     """Test clipping a points GDF with a generic polygon geometry."""
-    clip_pts = cl.clip_shp(locs_gdf, poly_in_gdf)
+    clip_pts = cl.clip_shp(locs_gdf, single_rect_poly_gdf)
     assert len(clip_pts.geometry) == 3 and clip_pts.geom_type[1] == "Point"
 
 
-def test_clip_poly(locs_buff, poly_in_gdf):
+def test_clip_poly(locs_buff, single_rect_poly_gdf):
     """Test clipping a polygon GDF with a generic polygon geometry."""
-    clipped_poly = cl.clip_shp(locs_buff, poly_in_gdf)
+    clipped_poly = cl.clip_shp(locs_buff, single_rect_poly_gdf)
     assert len(clipped_poly.geometry) == 3
     assert clipped_poly.geom_type[1] == "Polygon"
 
 
 # TODO -- this function actually clips USING a multi -- we have not coded for that I think??
-# def test_clip_multipoly(poly_in_gdf, multi_gdf):
+# def test_clip_multipoly(single_rect_poly_gdf, multi_gdf):
 #     """Test that multi poly returns a value error."""
-#     clip = cl.clip_shp(poly_in_gdf, multi_gdf)
+#     clip = cl.clip_shp(single_rect_poly_gdf, multi_gdf)
 #     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPolygon"
 
 
-def test_clip_multipoly(multi_gdf, poly_in_gdf):
+def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
     """Test a multi poly object can be clipped properly.
 
     Also the bounds of the object should == the bounds of the clip object
     if they fully overlap (as they do in these fixtures). """
-    clip = cl.clip_shp(multi_gdf, poly_in_gdf)
+    clip = cl.clip_shp(multi_gdf, single_rect_poly_gdf)
     assert hasattr(clip, "geometry")
-    assert np.array_equal(clip.total_bounds, poly_in_gdf.total_bounds)
+    assert np.array_equal(clip.total_bounds, single_rect_poly_gdf.total_bounds)
     # 2 features should be returned with an attribute column
     assert len(clip.attr1) == 2
 
@@ -286,20 +290,22 @@ def test_clip_multipoly(multi_gdf, poly_in_gdf):
 # TODO: make sure clipping with a multi object works?? (do we want to support that yet or not - if not provide a message saying it's not supported).
 # TODO: cleanup multiline  & multi point and test both!
 
+# TODO: the clip is flipped in order (multi should have clipped with the other poly)
 
-def test_clip_multiline(poly_in_gdf, multi_line):
+
+def test_clip_multiline(single_rect_poly_gdf, multi_line):
     """Test that multi poly returns a value error."""
-    clip = cl.clip_shp(poly_in_gdf, multi_line)
+    clip = cl.clip_shp(single_rect_poly_gdf, multi_line)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiLineString"
 
 
-def test_clip_multipoint(poly_in_gdf, multi_point):
+def test_clip_multipoint(single_rect_poly_gdf, multi_point):
     """Test that multi poly returns a value error."""
-    clip = cl.clip_shp(poly_in_gdf, multi_point)
+    clip = cl.clip_shp(single_rect_poly_gdf, multi_point)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPoint"
 
 
-def test_clip_lines(linez_gdf, poly_in_gdf):
+def test_clip_lines(linez_gdf, single_rect_poly_gdf):
     """Test what happens when you give the clip_extent a line GDF."""
-    clip_line = cl.clip_shp(linez_gdf, poly_in_gdf)
+    clip_line = cl.clip_shp(linez_gdf, single_rect_poly_gdf)
     assert len(clip_line.geometry) == 2

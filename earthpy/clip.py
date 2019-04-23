@@ -107,6 +107,8 @@ def _clip_multi_poly_line(shp, clip_obj):
         polys = clipped[clipped.geometry.type == "Polygon"]
         lines = clipped[clipped.geometry.type == "MultiLineString"]
         # TODO be sure that all multi fixtures have more than one feature
+        # TODO can you merge lines and polys (unary_union)
+        # TODO handle -- All polys, 2) polys and lines and then 3 just lines
         # Dissolve the polys and lines back together
         poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
         line_diss = lines.dissolve(by=[polys.index]).drop(columns="level_1")
@@ -195,6 +197,7 @@ def clip_shp(shp, clip_obj):
     #     _clip_multi_poly(shp, clip_obj)
 
     # Multipolys / point / line clip differently then non-multi features.
+    # TODO turn into a multi point clip function
     if any(shp.geometry.type == "MultiPoint"):
         # if "Multi" in str(shp.geom_type):
         if (
