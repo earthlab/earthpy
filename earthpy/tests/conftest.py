@@ -4,6 +4,7 @@ import pytest
 from affine import Affine
 import rasterio as rio
 
+
 @pytest.fixture
 def basic_image():
     """
@@ -18,6 +19,7 @@ def basic_image():
     image = np.zeros((10, 10), dtype=np.uint8)
     image[2:5, 2:5] = 1
     return image
+
 
 @pytest.fixture
 def basic_image_tif(tmpdir, basic_image):
@@ -44,11 +46,12 @@ def basic_image_tif(tmpdir, basic_image):
         out.write(basic_image, indexes=1)
     return outfilename
 
+
 @pytest.fixture
 def image_array_2bands():
     return np.random.randint(10, size=(2, 4, 5))
 
+
 @pytest.fixture
 def one_band_3dims():
     return np.random.randint(10, size=(1, 4, 5))
-
