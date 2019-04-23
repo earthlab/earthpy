@@ -96,21 +96,30 @@ def multi_gdf():
     """ Create a multi-polygon GeoDataFrame. """
     multi_poly = make_donut_geom().unary_union
     out_df = gpd.GeoDataFrame(
-        gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
+        geometry=gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["pool"]
     return out_df
 
 
+# TODO -- this fixture should have more than one multi line and atleast one attribute column
+#  with several diff attribute values like line one: type: road, line two: type pool
 @pytest.fixture
 def multi_line(linez_gdf):
-    """ Create a multi-line GeoDataFrame. """
-    multi_line = linez_gdf.unary_union
+    """ Create a multi-line GeoDataFrame.
+
+    This has one multi line and another regular line.
+    """
+    # Create a single and multi line object
+    multiline_feat = linez_gdf.unary_union
+    linec = LineString([(2, 1), (3, 1), (4, 1), (5, 2)])
     out_df = gpd.GeoDataFrame(
-        gpd.GeoSeries(multi_line), crs={"init": "epsg:4326"}
+        geometry=gpd.GeoSeries([multiline_feat, linec]),
+        crs={"init": "epsg:4326"},
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
+    out_df["attr"] = ["road", "stream"]
     return out_df
 
 
@@ -294,8 +303,8 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
 
 
 def test_clip_multiline(single_rect_poly_gdf, multi_line):
-    """Test that multi poly returns a value error."""
-    clip = cl.clip_shp(single_rect_poly_gdf, multi_line)
+    """Test that clipping a multiline feature with a poly returns expected output."""
+    clip = cl.clip_shp(multi_line, single_rect_poly_gdf)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiLineString"
 
 

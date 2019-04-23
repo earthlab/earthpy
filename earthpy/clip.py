@@ -99,23 +99,46 @@ def _clip_multi_poly_line(shp, clip_obj):
         that intersects with clip_obj.
     """
 
+    # This feels super hacky
+    lines_exist = False
+    polys_exist = False
     # Clip multi polygons
     clipped = _clip_line_poly(shp.explode().reset_index(level=[1]), clip_obj)
-    # If there are lines and poly's you can't just dissolve
-    if any(clipped.geometry.type == "MultiLineString"):
+
+    # If there are lines, handle line dissolves
+    if any(clipped.geometry.type == "MultiLineString") or any(
+        clipped.geometry.type == "LineString"
+    ):
+        lines_exist = True
+        lines = clipped[
+            (clipped.geometry.type == "MultiLineString")
+            | (clipped.geometry.type == "LineString")
+        ]
+        line_diss = lines.dissolve(by=[lines.index]).drop(columns="level_1")
+
+    # If there are poly's handle polys
+    if any(clipped.geometry.type == "MultiPolygon") or any(
+        clipped.geometry.type == "Polygon"
+    ):
+        polys_exist = True
         # Just get the polygons
         polys = clipped[clipped.geometry.type == "Polygon"]
-        lines = clipped[clipped.geometry.type == "MultiLineString"]
-        # TODO be sure that all multi fixtures have more than one feature
-        # TODO can you merge lines and polys (unary_union)
-        # TODO handle -- All polys, 2) polys and lines and then 3 just lines
-        # Dissolve the polys and lines back together
         poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
-        line_diss = lines.dissolve(by=[polys.index]).drop(columns="level_1")
 
-    return gpd.GeoDataFrame(
-        pd.concat([poly_diss, line_diss], ignore_index=True)
-    )
+        # TODO if this is a poly input, can you merge lines and polys (unary_union)??
+        # TODO handle -- All polys, 2) polys and lines and then 3 just lines (do we want to do this?)
+        # Dissolve the polys and lines back together
+        # If both lines and polys exist combine and return
+        # note that this isn't ideal as we probably want to think this through
+        # this is pretty sloppy
+    if lines_exist and polys_exist:
+        return gpd.GeoDataFrame(
+            pd.concat([poly_diss, line_diss], ignore_index=True)
+        )
+    elif lines_exist:
+        return line_diss
+    elif polys_exist:
+        return poly_diss
 
 
 def clip_shp(shp, clip_obj):
