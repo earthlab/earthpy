@@ -137,7 +137,7 @@ def _clip_multi_poly_line(shp, clip_obj):
         )
     elif lines_exist:
         return line_diss
-    elif polys_exist:
+    else:
         return poly_diss
 
 
