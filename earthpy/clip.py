@@ -110,7 +110,6 @@ def _clip_multi_poly_line(shp, clip_obj):
         # Dissolve the polys and lines back together
         poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
         line_diss = lines.dissolve(by=[polys.index]).drop(columns="level_1")
-        # [shp.columns.tolist()]
 
     return gpd.GeoDataFrame(
         pd.concat([poly_diss, line_diss], ignore_index=True)
