@@ -277,6 +277,7 @@ def test_clip_poly(locs_buff, single_rect_poly_gdf):
 
 
 # TODO -- this function actually clips USING a multi -- we have not coded for that I think??
+# We should probably remove this function buf rename it if we keep it
 # def test_clip_multipoly(single_rect_poly_gdf, multi_gdf):
 #     """Test that multi poly returns a value error."""
 #     clip = cl.clip_shp(single_rect_poly_gdf, multi_gdf)
@@ -296,12 +297,10 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
 
 
 # TODO make sure all of the doc strings clearly define what each of these do
-# TODO make sure that we are testing clipping a multi object not clipping with a multi object
+# TODO make sure that we are testing clipping a multi object not clipping with a multi object (i believe this is fixed now)
 # TODO make sure we test clipping objects with multiple features that may have different attributes
 # TODO: make sure clipping with a multi object works?? (do we want to support that yet or not - if not provide a message saying it's not supported).
 # TODO: cleanup multiline  & multi point and test both!
-
-# TODO: the clip is flipped in order (multi should have clipped with the other poly)
 
 
 def test_clip_multiline(single_rect_poly_gdf, multi_line):
@@ -322,6 +321,3 @@ def test_clip_lines(linez_gdf, single_rect_poly_gdf):
     """Test what happens when you give the clip_extent a line GDF."""
     clip_line = cl.clip_shp(linez_gdf, single_rect_poly_gdf)
     assert len(clip_line.geometry) == 2
-
-
-# TODO Create a test that clips a simple set of polygons to another polygon
