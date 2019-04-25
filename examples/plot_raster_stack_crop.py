@@ -44,38 +44,41 @@ import earthpy.plot as ep
 # Create a stack from all of the Landsat .tif files (one per band) with the
 # `es.stack()` function. Make sure you output a raster with the `out_path`
 # argument, as it will be needed for the crop.
+#
+# .. note:: If you are running this script on a Windows system, there is a
+# known bug with ``.to_crs()``, which is used in this script. If an error
+# occurs, you have to reset your os environment with the command
+# ``os.environ["PROJ_LIB"] = r"path-to-share-folder-in-environment".
 
 # Get data and set your home working directory
 
-data = et.data.get_data("cs-test-landsat")
-data2 = et.data.get_data("cold-springs-fire")
+data_path_1 = et.data.get_data("cs-test-landsat")
+data_path_2 = et.data.get_data("cold-springs-fire")
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-os.environ[
-    "PROJ_LIB"
-] = r"C:\Users\Nathan\Anaconda3\envs\earth-analytics-python\Library\share"
+
 
 # Opening up boundary layer to use for the cropping
 
-boundary = gpd.read_file(
+crop_bound = gpd.read_file(
     "data/cold-springs-fire/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp"
 )
 
 # Stacking the landsat bands needed
 
-landsat_bands = "data/cs-test-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*[2-4]*.tif"
-stack_bands = glob(landsat_bands)
-stack_bands.sort()
-datafile = os.path.join("data", "outputs")
-if os.path.isdir(datafile) == False:
-    os.mkdir(datafile)
+landsat_bands_data_path = "data/cs-test-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*[2-4]*.tif"
+stack_band_paths = glob(landsat_bands_data_path)
+stack_band_paths.sort()
+output_dir = os.path.join("data", "outputs")
+if os.path.isdir(output_dir) == False:
+    os.mkdir(output_dir)
 # Creating an output path for the raster
 
-raster = os.path.join(datafile, "raster.tiff")
-arr, rast = es.stack(stack_bands, out_path=raster, nodata=-9999)
+raster_out_path = os.path.join(output_dir, "raster.tiff")
+arr, rast = es.stack(stack_band_paths, out_path=raster_out_path, nodata=-9999)
 
 # Changing the Coordinate Reference System of the boundary to match that of the raster.
 
-boundary = boundary.to_crs(rast["crs"])
+crop_bound = crop_bound.to_crs(rast["crs"])
 
 #################################
 # Create Extent Object
@@ -94,7 +97,7 @@ extent = plotting_extent(arr[0], rast["transform"])
 # You can see the boundary and the raster before the crop using `ep.plot_rgb()`
 
 fig, ax = plt.subplots(figsize=(12, 12))
-boundary.plot(ax=ax, color="red", zorder=10)
+crop_bound.plot(ax=ax, color="red", zorder=10)
 ep.plot_rgb(
     arr,
     ax=ax,
@@ -124,7 +127,7 @@ with rio.open(
 # Plotting the cropped image
 # sphinx_gallery_thumbnail_number = 5
 fig, ax = plt.subplots(figsize=(12, 12))
-boundary.boundary.plot(ax=ax, color="red", zorder=10)
+crop_bound.boundary.plot(ax=ax, color="red", zorder=10)
 ep.plot_rgb(
     crop,
     ax=ax,

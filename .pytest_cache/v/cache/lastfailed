@@ -1,0 +1,5 @@
+{
+  "earthpy/tests/test_clip.py::test_clip_donut_poly": true,
+  "earthpy/tests/test_clip.py::test_clip_multiline": true,
+  "earthpy/tests/test_clip.py::test_clip_multipoly": true
+}
