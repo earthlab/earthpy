@@ -109,9 +109,12 @@ for more information about submitting pull requests or changes to EarthPy.
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
 definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
 for example usage of fixtures in tests.
+=======
+>>>>>>> 2273ecc37f8dc0fdfa644ba2be81e099267b4663
 
 ### Vignette Creation
 
@@ -125,5 +128,8 @@ top-level `earthpy` directory:
 ```bash
 $ make -B docs
 ```
+<<<<<<< HEAD
 =======
 >>>>>>> 471093a0440af273f4b1c13e1982a46c21c5fb38
+=======
+>>>>>>> 2273ecc37f8dc0fdfa644ba2be81e099267b4663

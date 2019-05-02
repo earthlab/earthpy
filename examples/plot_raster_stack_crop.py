@@ -1,6 +1,6 @@
 """
-Stack and Crop Rasters with EarthPy
-====================================
+Stack and Crop Raster Data Using EarthPy
+========================================
 
 Learn how to stack and crop satellite imagery with GeoPandas objects in EarthPy
 """
@@ -9,13 +9,32 @@ Learn how to stack and crop satellite imagery with GeoPandas objects in EarthPy
 # Stacking and Cropping Rasters using EarthPy
 # ---------------------------------------------
 #
-# .. note:: The examples below will show you how to use the ``es.stack()`` and ``es.crop_image()`` functions.
+# .. note:: The examples below will show you how to use the ``es.stack()`` and
+# ``es.crop_image()`` functions from EarthPy.
 
-#######################################################################################
+###############################################################################
+# Stacking Multi Band Imagery
+# -----------------------------
+#
+# Some remote sensing datasets are stored with each band in a separate file. However,
+# often you want to use all of the bands together in your analysis. For example if
+# you wish to plot multiple bands together to create a color image you will need all
+# of them in the same file or "stack". EarthPy has a stack function that allows you
+# to take a set of .tif files that are all in the same spatial extent, CRS and resolution
+# and either export them together a single stacked .tif file or work with them in Python
+# directly as a stacked numpy array.
+#
+# To begin using the EarthPy stack function, import the needed packages
+# and create an array to be plotted. Below we plot the data as continuous with a colorbar
+# using the ``plot_bands()`` function.
+
+###############################################################################
 # Import Packages
 # ------------------------------
 #
-# To begin, import the needed packages. You will primarily be using the spatial module
+# You will need several packages to stack your raster. Geopandas will allow you to quickly
+# open up a shapefile that will be used later to crop your data. You will primarily be
+# using the spatial module
 # of EarthPy, but other packages will be needed as well.
 
 import os
