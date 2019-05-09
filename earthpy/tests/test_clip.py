@@ -33,6 +33,16 @@ def make_single_rect_poly_gdf():
     return gdf
 
 
+def make_smaller_clip_rect_poly_gdf():
+    """ Bounding box polygon. """
+    poly_inters = Polygon([(2, 2), (2, 8), (8, 8), (8, 2), (2, 2)])
+    gdf = gpd.GeoDataFrame(
+        [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
+    )
+    gdf["attr2"] = ["study area"]
+    return gdf
+
+
 def make_locs_buff():
     """ Buffer points to create multi poly. """
     buffered_locations = make_locs_gdf()
@@ -77,6 +87,11 @@ def linez_gdf():
 def single_rect_poly_gdf():
     """ Fixture for a bounding box polygon. """
     return make_single_rect_poly_gdf()
+
+
+@pytest.fixture
+def smaller_clip_rect_poly_gdf():
+    return make_smaller_clip_rect_poly_gdf()
 
 
 @pytest.fixture
@@ -177,7 +192,7 @@ def make_donut_geom():
 
 @pytest.fixture
 def locs_gdf():
-    """ Get a dummy point GeoDataFrame.
+    """ Get a example point GeoDataFrame.
 
     This fixture calls make_locs_gdf(), which is a function that is used in
     multiple fixtures. But, fixtures are not supposed to be used like that:
@@ -297,11 +312,10 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
     assert len(clip.attr1) == 2
 
 
-# TODO make sure all of the doc strings clearly define what each of these do
-# TODO make sure that we are testing clipping a multi object not clipping with a multi object (i believe this is fixed now)
-# TODO make sure we test clipping objects with multiple features that may have different attributes
-# TODO: make sure clipping with a multi object works?? (do we want to support that yet or not - if not provide a message saying it's not supported).
-# TODO: cleanup multiline  & multi point and test both!
+def test_clip_single_polygon(single_rect_poly_gdf, smaller_clip_rect_poly_gdf):
+    clip = cl.clip_shp(single_rect_poly_gdf, smaller_clip_rect_poly_gdf)
+
+    assert hasattr(clip, "geometry") and clip.geom_type[0] == "Polygon"
 
 
 def test_clip_multiline(multi_line, single_rect_poly_gdf):
