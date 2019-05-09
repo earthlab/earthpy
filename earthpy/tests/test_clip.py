@@ -304,7 +304,7 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
 # TODO: cleanup multiline  & multi point and test both!
 
 
-def test_clip_multiline(single_rect_poly_gdf, multi_line):
+def test_clip_multiline(multi_line, single_rect_poly_gdf):
     """Test that clipping a multiline feature with a poly returns expected output."""
 
     clip = cl.clip_shp(multi_line, single_rect_poly_gdf)
