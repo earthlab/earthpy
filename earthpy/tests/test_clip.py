@@ -35,7 +35,7 @@ def make_single_rect_poly_gdf():
 
 def make_smaller_clip_rect_poly_gdf():
     """ Bounding box polygon. """
-    poly_inters = Polygon([(2, 2), (2, 8), (8, 8), (8, 2), (2, 2)])
+    poly_inters = Polygon([(-5, -5), (-5, 15), (15, 15), (15, -5), (-5, -5)])
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
     )
@@ -47,6 +47,7 @@ def make_locs_buff():
     """ Buffer points to create multi poly. """
     buffered_locations = make_locs_gdf()
     buffered_locations["geometry"] = buffered_locations.buffer(4)
+    buffered_locations["type"] = ["plot", "plot", "plot", "plot"]
     return buffered_locations
 
 
@@ -152,42 +153,12 @@ def multi_point():
     return out_df
 
 
-def make_locs_gdf():
-    """ Create a dummy point GeoDataFrame. """
-    pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
-    gdf = gpd.GeoDataFrame(
-        [Point(xy) for xy in pts],
-        columns=["geometry"],
-        crs={"init": "epsg:4326"},
-    )
-    return gdf
-
-
-def make_single_rect_poly_gdf():
-    """ Bounding box polygon. """
-    poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
-    gdf = gpd.GeoDataFrame(
-        [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
-    )
-    gdf["attribute1"] = ["roads"]
-    return gdf
-
-
-def make_locs_buff():
-    """ Buffer points to create multi poly. """
-    buffered_locations = make_locs_gdf()
-    buffered_locations["geometry"] = buffered_locations.buffer(4)
-    return buffered_locations
-
-
-def make_donut_geom():
-    """ Make a donut geometry. """
-    donut = gpd.overlay(
-        make_locs_buff(),
-        make_single_rect_poly_gdf(),
-        how="symmetric_difference",
-    )
-    return donut
+#
+# def make_locs_buff():
+#     """ Buffer points to create multi poly. """
+#     buffered_locations = make_locs_gdf()
+#     buffered_locations["geometry"] = buffered_locations.buffer(4)
+#     return buffered_locations
 
 
 @pytest.fixture
@@ -312,8 +283,11 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
     assert len(clip.attr1) == 2
 
 
-def test_clip_single_polygon(single_rect_poly_gdf, smaller_clip_rect_poly_gdf):
-    clip = cl.clip_shp(single_rect_poly_gdf, smaller_clip_rect_poly_gdf)
+# this should be test clip SIMPLE multi polygon
+def test_clip_single_multipolygon(locs_buff, smaller_clip_rect_poly_gdf):
+
+    multi = locs_buff.dissolve(by="type").reset_index()
+    clip = cl.clip_shp(multi, smaller_clip_rect_poly_gdf)
 
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "Polygon"
 
