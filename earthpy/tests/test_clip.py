@@ -133,6 +133,7 @@ def multi_point():
         gpd.GeoSeries(multi_point), crs={"init": "epsg:4326"}
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
+    out_df["attr"] = ["tree"]
     return out_df
 
 
@@ -273,7 +274,7 @@ def test_clip_poly(locs_buff, single_rect_poly_gdf):
     """Test clipping a polygon GDF with a generic polygon geometry."""
     clipped_poly = cl.clip_shp(locs_buff, single_rect_poly_gdf)
     assert len(clipped_poly.geometry) == 3
-    assert clipped_poly.geom_type[1] == "Polygon"
+    assert all(clipped_poly.geom_type == "Polygon")
 
 
 # TODO -- this function actually clips USING a multi -- we have not coded for that I think??
@@ -315,6 +316,7 @@ def test_clip_multipoint(single_rect_poly_gdf, multi_point):
 
     clip = cl.clip_shp(multi_point, single_rect_poly_gdf)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPoint"
+    assert hasattr(clip, "attr")
 
 
 def test_clip_lines(linez_gdf, single_rect_poly_gdf):
