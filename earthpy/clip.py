@@ -36,16 +36,16 @@ def _clip_points(shp, clip_obj):
 
 
 def _clip_multi_point(shp, clip_obj):
-    """Clip multi lines and polygons to the clip_obj GeoDataFrame extent.
+    """Clip multi point features to the clip_obj GeoDataFrame extent.
 
-    Clip an input multi line or polygon to the polygon extent of the clip_obj
-    parameter. Lines or Polygons that intersect the clip_obj geometry are
-    extracted with associated attributes and returned.
+    Clip an input multi point to the polygon extent of the clip_obj
+    parameter. Points that intersect the clip_obj geometry are
+    extracted with associated attributes returned.
 
     Parameters
     ----------
     shp : GeoDataFrame
-        multiLine or multipolygon geometry that is clipped to clip_obj.
+        multipoint geometry that is clipped to clip_obj.
 
     clip_obj : GeoDataFrame
         Reference polygon for clipping.
