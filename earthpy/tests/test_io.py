@@ -14,6 +14,10 @@ if "CI" in os.environ:
     if os.environ["CI"]:
         RUNNING_ON_CI = True
 
+skip_on_ci = pytest.mark.skipif(
+    RUNNING_ON_CI, reason="Test fails intermittently on CI systems."
+)
+
 
 @pytest.fixture
 def eld(tmpdir):
@@ -93,7 +97,7 @@ eio.DATA_URLS["little-zip-file"] = [
 ]
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_urls_are_valid():
     """ Test responses for each dataset to ensure valid URLs. """
@@ -132,7 +136,7 @@ def test_invalid_dataset_key(eld):
         eld.get_data(key="some non-existent key")
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_valid_download_file(eld):
     """ Test that single files get downloaded. """
@@ -140,7 +144,7 @@ def test_valid_download_file(eld):
     assert os.path.isfile(file)
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_valid_download_zip(eld):
     """ Test that zipped files get downloaded and extracted. """
@@ -149,7 +153,7 @@ def test_valid_download_zip(eld):
     assert path_has_contents
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.parametrize("replace_arg_value", [True, False])
 @pytest.mark.vcr()
 def test_replace_arg_controle_overwrite(eld, replace_arg_value):
@@ -164,7 +168,7 @@ def test_replace_arg_controle_overwrite(eld, replace_arg_value):
         assert mtime1 == mtime2
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_arbitrary_url_file_download(eld):
     """ Verify that arbitrary URLs work for data file downloads. """
@@ -181,7 +185,7 @@ def test_invalid_data_type(eld):
         eld.get_data("invalid-data-type")
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_arbitrary_url_zip_download(eld):
     """ Verify that aribitrary URLs work for zip file downloads. """
@@ -192,7 +196,7 @@ def test_arbitrary_url_zip_download(eld):
     assert path_has_contents
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_tar_file(eld):
     """ Ensure that tar files are downloaded and extracted. """
@@ -200,7 +204,7 @@ def test_url_download_tar_file(eld):
     assert "abc.txt" in os.listdir(path)
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_tar_gz_file(eld):
     """ Ensure that tar.gz files are downloaded and extracted. """
@@ -208,7 +212,7 @@ def test_url_download_tar_gz_file(eld):
     assert "abc.txt" in os.listdir(path)
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(eld):
     """ Test arbitrary URL download with content-disposition. """
@@ -216,7 +220,7 @@ def test_url_download_txt_file_with_content_disposition(eld):
     assert path.endswith("abc.txt") and os.path.isfile(path)
 
 
-@pytest.mark.skipif(RUNNING_ON_CI, reason="Fails intermittently on CI")
+@skip_on_ci
 @pytest.mark.parametrize("verbose_arg_value", [True, False])
 @pytest.mark.vcr()
 def test_verbose_arg_works(eld, verbose_arg_value, capsys):
