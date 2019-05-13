@@ -207,7 +207,7 @@ def test_non_overlapping_geoms():
         [1], geometry=[unit_box], crs={"init": "epsg:4326"}
     )
     non_overlapping_gdf = unit_gdf.copy()
-    non_overlapping_gdf = unit_gdf.geometry.apply(
+    non_overlapping_gdf = non_overlapping_gdf.geometry.apply(
         lambda x: shapely.affinity.translate(x, xoff=20)
     )
     with pytest.raises(ValueError):
