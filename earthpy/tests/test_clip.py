@@ -145,47 +145,6 @@ def multi_point():
     return out_df
 
 
-@pytest.fixture
-def locs_gdf():
-    """ Get a example point GeoDataFrame.
-
-    This fixture calls make_locs_gdf(), which is a function that is used in
-    multiple fixtures. But, fixtures are not supposed to be used like that:
-
-    see https://github.com/pytest-dev/pytest/issues/3950 for discussion
-    """
-    return make_locs_gdf()
-
-
-@pytest.fixture
-def linez_gdf():
-    """ Create Line Objects For Testing """
-    linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
-    lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
-    gdf = gpd.GeoDataFrame(
-        [1, 2], geometry=[linea, lineb], crs={"init": "epsg:4326"}
-    )
-    return gdf
-
-
-@pytest.fixture
-def single_rect_poly_gdf():
-    """ Fixture for a bounding box polygon. """
-    return make_single_rect_poly_gdf()
-
-
-@pytest.fixture
-def locs_buff():
-    """ Fixture for buffered locations. """
-    return make_locs_buff()
-
-
-@pytest.fixture
-def donut_geom():
-    """ Fixture for donut geometry objects. """
-    return make_donut_geom()
-
-
 def test_not_gdf(single_rect_poly_gdf):
     """Non-GeoDataFrame inputs raise attribute errors."""
     with pytest.raises(AttributeError):
