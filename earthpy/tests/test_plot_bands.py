@@ -17,6 +17,11 @@ def one_band_3dims():
     )
 
 
+@pytest.fixture
+def one_band_3dims():
+    return np.random.randint(10, size=(1, 4, 5))
+
+
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
     with pytest.raises(

@@ -1,11 +1,11 @@
 """Tests for the clip module."""
 
 import pytest
+import numpy as np
 from shapely.geometry import Polygon, Point, LineString
 import shapely
 import geopandas as gpd
 import earthpy.clip as cl
-import numpy as np
 
 
 def make_locs_gdf():
