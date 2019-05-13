@@ -8,10 +8,6 @@ import earthpy.clip as cl
 import numpy as np
 
 
-# TODO Make sure we are testing that attributes are returned
-# TODO make sure that we are using multiple shapes not just one
-
-
 def make_locs_gdf():
     """ Create a dummy point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
@@ -119,10 +115,6 @@ def multi_gdf():
     return out_df
 
 
-# TODO -- this fixture should have more than one multi line and atleast one attribute column
-#  with several diff attribute values like line one: type: road, line two: type pool
-
-
 @pytest.fixture
 def multi_line(linez_gdf):
     """ Create a multi-line GeoDataFrame.
@@ -151,14 +143,6 @@ def multi_point():
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["tree"]
     return out_df
-
-
-#
-# def make_locs_buff():
-#     """ Buffer points to create multi poly. """
-#     buffered_locations = make_locs_gdf()
-#     buffered_locations["geometry"] = buffered_locations.buffer(4)
-#     return buffered_locations
 
 
 @pytest.fixture
@@ -200,18 +184,6 @@ def locs_buff():
 def donut_geom():
     """ Fixture for donut geometry objects. """
     return make_donut_geom()
-
-
-@pytest.fixture
-def multi_gdf():
-    """ Create a multi-polygon GeoDataFrame. """
-    multi_poly = make_donut_geom().unary_union
-    out_df = gpd.GeoDataFrame(
-        gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
-    )
-    out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
-    out_df["attr1"] = "pools"
-    return out_df
 
 
 def test_not_gdf(single_rect_poly_gdf):
@@ -263,14 +235,6 @@ def test_clip_poly(locs_buff, single_rect_poly_gdf):
     assert all(clipped_poly.geom_type == "Polygon")
 
 
-# TODO -- this function actually clips USING a multi -- we have not coded for that I think??
-# We should probably remove this function buf rename it if we keep it
-# def test_clip_multipoly(single_rect_poly_gdf, multi_gdf):
-#     """Test that multi poly returns a value error."""
-#     clip = cl.clip_shp(single_rect_poly_gdf, multi_gdf)
-#     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPolygon"
-
-
 def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
     """Test a multi poly object can be clipped properly.
 
@@ -280,11 +244,13 @@ def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
     assert hasattr(clip, "geometry")
     assert np.array_equal(clip.total_bounds, single_rect_poly_gdf.total_bounds)
     # 2 features should be returned with an attribute column
-    assert len(clip.attr1) == 2
+    assert len(clip.attr) == 2
 
 
-# this should be test clip SIMPLE multi polygon
 def test_clip_single_multipolygon(locs_buff, smaller_clip_rect_poly_gdf):
+    """Test clipping a multi poly with another poly that
+
+    no sliver shapes should be returned in this clip. """
 
     multi = locs_buff.dissolve(by="type").reset_index()
     clip = cl.clip_shp(multi, smaller_clip_rect_poly_gdf)
