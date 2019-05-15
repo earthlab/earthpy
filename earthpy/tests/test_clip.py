@@ -138,10 +138,13 @@ def multi_point():
     """ Create a multi-line GeoDataFrame. """
     multi_point = make_locs_gdf().unary_union
     out_df = gpd.GeoDataFrame(
-        gpd.GeoSeries(multi_point), crs={"init": "epsg:4326"}
+        gpd.GeoSeries(
+            [multi_point, Point(2, 5), Point(-11, -14), Point(-10, -12)]
+        ),
+        crs={"init": "epsg:4326"},
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
-    out_df["attr"] = ["tree"]
+    out_df["attr"] = ["tree", "another tree", "shrub", "berries"]
     return out_df
 
 
@@ -225,11 +228,16 @@ def test_clip_multiline(multi_line, single_rect_poly_gdf):
 
 
 def test_clip_multipoint(single_rect_poly_gdf, multi_point):
-    """Clipping a multipoint feature with a polygon works as expected."""
+    """Clipping a multipoint feature with a polygon works as expected.
+
+    should return a geodataframe with a single multi point feature"""
 
     clip = cl.clip_shp(multi_point, single_rect_poly_gdf)
+
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPoint"
     assert hasattr(clip, "attr")
+    # All points should intersect the clip geom
+    assert all(clip.intersects(single_rect_poly_gdf.unary_union))
 
 
 def test_clip_lines(linez_gdf, single_rect_poly_gdf):

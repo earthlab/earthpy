@@ -57,15 +57,11 @@ def _clip_multi_point(shp, clip_obj):
         containing multi-point and point features.
     """
 
-    if (
-        shp["geometry"].iloc[0].type == "Point"
-        or shp["geometry"].iloc[0].type == "MultiPoint"
-    ):
-        # This line works
-        clipped = _clip_points(shp.explode().reset_index(level=[1]), clip_obj)
-        clipped = clipped.dissolve(by=[clipped.index]).drop(columns="level_1")[
-            shp.columns.tolist()
-        ]
+    # Explode multi-point features when clipping then recreate geom
+    clipped = _clip_points(shp.explode().reset_index(level=[1]), clip_obj)
+    clipped = clipped.dissolve(by=[clipped.index]).drop(columns="level_1")[
+        shp.columns.tolist()
+    ]
 
     return clipped
 
