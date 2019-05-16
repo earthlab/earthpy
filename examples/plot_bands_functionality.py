@@ -63,9 +63,12 @@ array_stack, meta_data = es.stack(landsat_path)
 # --------------------------
 #
 # When `ep.plot_bands()` is handed a three dimensional numpy array, as is created
-# when `es.stack()` is ran, it will plot all layers of the numpy array.
+# when `es.stack()` is ran, it will plot all layers of the numpy array. To title
+# all of the images individually, a list of titles must be submitted as an argument.
+# The list must contain the same number of strings as there are bands in the stack.
 
-ep.plot_bands(array_stack)
+titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
+ep.plot_bands(array_stack, title=titles)
 plt.show()
 
 ##################################################################################
@@ -73,9 +76,10 @@ plt.show()
 # ------------------------
 #
 # When `ep.plot_bands` is handed a one dimensional numpy array, such as one layer
-# from the return of `es.stack`, it will just plot that band.
+# from the return of `es.stack`, it will just plot that band. If a colorbar is
+# not desired, it can be toggled off.
 
-ep.plot_bands(array_stack[0])
+ep.plot_bands(array_stack[4], cbar=False)
 plt.show()
 
 ##################################################################################
@@ -85,21 +89,12 @@ plt.show()
 # `ep.plot_bands()` scales the imagery to a 0-255 scale by default. This can make
 # values easier to compare between images that are scaled differently. To turn off
 # scaling, simply set the argument to false, and the original values will be
-# displayed.
+# displayed. Below is an example showing an NDVI calculation with the scaling turned
+# off, in order to display it on a scale from -1 to 1 instead of 0 to 255. Additionally,
+# since it is NDVI, a more appropriate colormap was chosen.
 
-ep.plot_bands(array_stack[0], scale=False)
-plt.show()
-
-##################################################################################
-# Assign Titles
-# --------------
-#
-# To assign titles, either a list of titles or a string can be passed to the
-# function. If you are plotting all the bands in a stack, a list must be provided.
-# If you are only plotting one band, just a string will suffice.
-
-titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
-ep.plot_bands(array_stack, title=titles)
+NDVI = es.normalized_diff(array_stack[4], array_stack[3])
+ep.plot_bands(NDVI, scale=False, cmap="RdYlGn")
 plt.show()
 
 ##################################################################################
