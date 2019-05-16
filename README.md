@@ -21,11 +21,12 @@ performed spatial tasks for science including plotting and working with spatial 
 takes advantage of functionality developed for raster data (rasterio) and vector data (geopandas) and simplifies the 
 code needed to :
 
-* Stack raster bands from data such as Landsat into an easy to use numpy array
+* [Stack raster bands from data such as Landsat into an easy to use numpy array](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html)
 * [Work with masks to set bad pixels such a those covered by clouds and cloud-shadows to NA (`mask_pixels()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_stack_masks.html#sphx-glr-gallery-vignettes-plot-stack-masks-py)
 * Plot rgb (color), color infrared and other 3 band combination images (`plot_rgb()`)
 * View histograms of sets of raster 
 * [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
+* [Crop raster bands to a study area]((https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html))
 
 EarthPy also has an io module that allows users to 
 
@@ -111,16 +112,3 @@ for more information about submitting pull requests or changes to EarthPy.
 See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
 definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
 for example usage of fixtures in tests.
-
-### Vignette Creation
-
-To create a vignette for an EarthPy workflow, create a .py file that shows the 
-necessary steps to complete the workflow. Make sure the file name begins with
-`plot` in order to ensure that the vignette is correctly built. Store the 
-vignette in the `examples` folder within the `earthpy` directory. To test that 
-the vignette builds properly, you can run the following command from the 
-top-level `earthpy` directory:
-
-```bash
-$ make -B docs
-```

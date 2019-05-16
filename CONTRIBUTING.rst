@@ -170,8 +170,13 @@ is a great way to get started if you'd like to make a contribution. Please note
 that our documentation files are in
 `ReStructuredText (.rst)
 <http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
-format and format your pull request
-accordingly.
+format and format your pull request accordingly.
+
+To create a vignette for an EarthPy workflow, create a .py file that shows the
+necessary steps to complete the workflow. Make sure the file name begins with
+``plot`` in order to ensure that the vignette is correctly built. Store the
+vignette in the ``examples`` folder within the ``earthpy`` directory.
+
 
 To build the documentation, use the command::
 
