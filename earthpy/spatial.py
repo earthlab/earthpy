@@ -1,7 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to make it easier to manipulate raster raster and vector
-data in Python.
+earthpy.spatial
+===============
+
+Functions to manipulate spatial raster and vector data.
+
 """
 
 import os
@@ -116,8 +118,7 @@ def normalized_diff(b1, b2):
     return n_diff
 
 
-# TODO: include a no data value here if provided
-def stack(band_paths, out_path=""):
+def stack(band_paths, out_path="", nodata=None):
     """Convert a list of raster paths into a raster stack numpy darray.
 
     Parameters
@@ -128,6 +129,8 @@ def stack(band_paths, out_path=""):
     out_path : string (optional)
         A path with a file name for the output stacked raster
         tif file.
+    nodata : numeric (optional)
+        A value (int or float) that represents invalid or missing values to mask in the output.
 
     Returns
     ----------
@@ -194,10 +197,20 @@ def stack(band_paths, out_path=""):
         dest_count = sum(src.count for src in sources)
         dest_kwargs["count"] = dest_count
 
+        if nodata is not None:
+            dest_kwargs["nodata"] = nodata
+
         # Stack the bands and return an array, but don't write to disk
         if not write_raster:
 
             arr, prof = _stack_bands(sources)
+
+            # If user specified nodata, mask the array
+            if nodata is not None:
+                # Mask and input data types must be identical for mask_equal()
+                nodata = np.array([nodata]).astype(arr.dtype)[0]
+                arr = np.ma.masked_equal(arr, nodata)
+
             return arr, prof
 
         # Write out the stacked array and return a numpy array
@@ -220,7 +233,18 @@ def stack(band_paths, out_path=""):
 
             # Read and return array
             with rio.open(out_path, "r") as src:
-                return src.read(), src.profile
+                arr = src.read()
+                prof = src.profile
+
+                # If user specified nodata, mask the array
+                if nodata is not None:
+                    # make sure value is same data type
+                    nodata = np.array([nodata]).astype(arr.dtype)[0]
+
+                # mask the array
+                arr = np.ma.masked_equal(arr, nodata)
+
+                return arr, prof
 
 
 def _stack_bands(sources, write_raster=False, dest=None):
@@ -403,10 +427,10 @@ def bytescale(data, high=255, low=0, cmin=None, cmax=None):
         raise ValueError("`high` should be greater than or equal to `low`.")
 
     if cmin is None or (cmin < data.min()):
-        cmin = data.min()
+        cmin = float(data.min())
 
     if (cmax is None) or (cmax > data.max()):
-        cmax = data.max()
+        cmax = float(data.max())
 
     # Calculate range of values
     crange = cmax - cmin
@@ -494,7 +518,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """This function has been deprecated from earthpy.
-    
+
     Please use the stack() function instead.
     """
     raise Warning("stack_raster_tifs is deprecated. Use stack(). Exiting...")

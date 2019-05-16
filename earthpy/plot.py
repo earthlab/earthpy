@@ -1,6 +1,9 @@
 """
-The ``earthpy`` spatial module provides functions that wrap around ``rasterio``
-and ``geopandas`` to work with raster and vector data in Python.
+earthpy.plot
+============
+
+Functionality around spatial plotting.
+
 """
 
 import numpy as np
@@ -68,6 +71,61 @@ def colorbar(mapobj, size="3%", pad=0.09):
     return fig.colorbar(mapobj, cax=cax)
 
 
+def _plot_image(
+    arr_im,
+    cmap="Greys_r",
+    title=None,
+    extent=None,
+    cbar=True,
+    scale=True,
+    vmin=None,
+    vmax=None,
+    ax=None,
+):
+
+    """
+    Create a matplotlib figure with an image axis and associated extent.
+
+    Parameters
+    ----------
+    arr_im : numpy array
+        An n-dimensional numpy array to plot.
+    cmap : str (default = "Greys_r")
+        Colormap name for plots.
+    title : str or list (optional)
+        Title of one band or list of titles with one title per band.
+    extent : tuple (optional)
+        Bounding box that the data will fill: (minx, miny, maxx, maxy).
+    cbar : Boolean (default = True)
+        Turn off colorbar if needed.
+    scale : Boolean (Default = True)
+        Turn off bytescale scaling if needed.
+    vmin : Int (Optional)
+        Specify the vmin to scale imshow() plots.
+    vmax : Int (Optional)
+        Specify the vmax to scale imshow() plots.
+    ax : Matplotlib axes object (Optional)
+        Matplotlib axis object to plot image.
+
+    Returns
+    ----------
+    ax : axes object
+        The axes object(s) associated with the plot.
+    """
+
+    if scale:
+        arr_im = es.bytescale(arr_im)
+
+    im = ax.imshow(arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
+    if title:
+        ax.set(title=title)
+    if cbar:
+        colorbar(im)
+    ax.set(xticks=[], yticks=[])
+
+    return ax
+
+
 def plot_bands(
     arr,
     cmap="Greys_r",
@@ -79,6 +137,7 @@ def plot_bands(
     scale=True,
     vmin=None,
     vmax=None,
+    ax=None,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -109,11 +168,8 @@ def plot_bands(
 
     Returns
     ----------
-    tuple
-        fig : figure object
-            The figure of the plotted band(s).
-        ax or axs : axes object(s)
-            The axes object(s) associated with the plot.
+    ax or axs : matplotlib.axes._subplots.AxesSubplot object(s)
+        The axes object(s) associated with the plot.
 
     Example
     -------
@@ -130,7 +186,7 @@ def plot_bands(
         ...                   figsize=(8, 3))
         array([<matplotlib.axes._subplots.AxesSubplot object at 0x...
     """
-
+    show = False
     try:
         arr.ndim
     except AttributeError:
@@ -168,19 +224,23 @@ def plot_bands(
             band = i + 1
 
             arr_im = arr[i]
-            if scale:
-                arr_im = es.bytescale(arr_im)
 
-            im = ax.imshow(
-                arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent
-            )
             if title:
-                ax.set(title=title[i])
+                the_title = title[i]
             else:
-                ax.set(title="Band %i" % band)
-            if cbar:
-                colorbar(im)
-            ax.set(xticks=[], yticks=[])
+                the_title = "Band {}".format(band)
+
+            _plot_image(
+                arr_im,
+                cmap=cmap,
+                cbar=cbar,
+                scale=scale,
+                vmin=vmin,
+                vmax=vmax,
+                extent=extent,
+                title=the_title,
+                ax=ax,
+            )
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
         # eg: an 8 band plot with 3 cols will always be 3 x 3
@@ -195,17 +255,26 @@ def plot_bands(
         # If it's a 2 dimensional array with a 3rd dimension
         arr = np.squeeze(arr)
 
-        fig, ax = plt.subplots(figsize=figsize)
-        if scale:
-            arr = es.bytescale(arr)
+        if ax is None:
+            fig, ax = plt.subplots(figsize=figsize)
+            show = True
 
-        im = ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
         if title:
-            ax.set(title=title[0])
-        ax.set(xticks=[], yticks=[])
-        if cbar:
-            colorbar(im)
-        plt.show()
+            title = title[0]
+
+        _plot_image(
+            arr,
+            cmap=cmap,
+            scale=scale,
+            cbar=cbar,
+            vmin=vmin,
+            vmax=vmax,
+            extent=extent,
+            title=title,
+            ax=ax,
+        )
+        if show:
+            plt.show()
         return ax
 
 
@@ -266,14 +335,12 @@ def plot_rgb(
         The intended title of the plot.
     stretch : Boolean (optional)
         Application of a linear stretch. If set to True, a linear stretch will be applied.
+
     Returns
     ----------
-    tuple
-        fig : figure object
-            The figure object associated with the 3 band image. If the
-            ax keyword is specified, the figure return will be None.
-        ax : axes object
-            The axes object associated with the 3 band image.
+    ax : axes object
+        The axes object associated with the 3 band image.
+
     Example
     -------
 
@@ -285,8 +352,9 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
+        >>> # Before you plot, ensure that the input array does not have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        (<Figure size 1000x1000 with 1 Axes>, ...)
+        <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
     """
 
@@ -316,15 +384,20 @@ def plot_rgb(
         # Index bands for plotting and clean up data for matplotlib
         rgb_bands = es.bytescale(rgb_bands).transpose([1, 2, 0])
 
-    # Then plot. Define ax if it's default to none
+    # Then plot. Define ax if it's undefined
+    show = False
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
-    else:
-        fig = None
+        show = True
+
     ax.imshow(rgb_bands, extent=extent)
     ax.set_title(title)
     ax.set(xticks=[], yticks=[])
-    return fig, ax
+
+    # Multipanel won't work if plt.show is called prior to second plot def
+    if show:
+        plt.show()
+    return ax
 
 
 def hist(
@@ -494,17 +567,21 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
 
     Example
     -------
-    >>> import numpy as np
-    >>> import earthpy.plot as ep
-    >>> import matplotlib.pyplot as plt
-    >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-    >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
-    >>> im_arr_bin = np.digitize(im_arr, bins)
-    >>> cat_names = ["Class 1", "Class 2", "Class 3"]
-    >>> f, ax = plt.subplots()
-    >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
-    >>> im_ax = ax.imshow(im_arr_bin)
-    >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+
+    .. plot::
+
+        >>> import numpy as np
+        >>> import earthpy.plot as ep
+        >>> import matplotlib.pyplot as plt
+        >>> im_arr = np.random.uniform(-2, 1, (15, 15))
+        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> im_arr_bin = np.digitize(im_arr, bins)
+        >>> cat_names = ["Class 1", "Class 2", "Class 3"]
+        >>> f, ax = plt.subplots()
+        >>> im = ax.imshow(im_arr_bin, cmap="gnuplot")
+        >>> im_ax = ax.imshow(im_arr_bin)
+        >>> leg_neg = ep.draw_legend(im_ax = im_ax, titles = cat_names)
+        >>> plt.show()
     """
 
     try:

@@ -22,9 +22,10 @@ EarthPy User Guide
    :caption: Contents:
 
    get-started
+   Examples Gallery <gallery_vignettes/index>
    contributing
    contributors
-   modules
+   api
    change-log
    code-of-conduct
 

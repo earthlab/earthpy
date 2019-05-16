@@ -1,3 +1,11 @@
+"""
+earthpy.mask
+============
+
+Utilities for masking values in arrays.
+
+"""
+
 import numpy as np
 import numpy.ma as ma
 
@@ -124,8 +132,7 @@ def _create_mask(mask_arr, vals):
 
     else:
         raise ValueError(
-            """The values provided for the mask do not occur
-            in your mask array."""
+            "The values provided for the mask do not occur in your mask array."
         )
 
 
@@ -233,8 +240,8 @@ def mask_pixels(arr, mask_arr, vals=None):
             cover_mask = mask_arr.astype(bool)
         else:
             raise ValueError(
-                """You have provided a mask_array with no values to mask. Please
-                either provide a mask_array of type bool, or provide values
-                to be used to create a mask."""
+                "You have provided a mask_array with no values to mask. "
+                "Please either provide a mask_array of type bool, or provide "
+                "values to be used to create a mask."
             )
     return _apply_mask(arr, cover_mask)

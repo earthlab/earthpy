@@ -8,6 +8,15 @@ import numpy as np
 plt.show = lambda: None
 
 
+@pytest.fixture
+def one_band_3dims():
+    """Return a 3-dim numpy array vals 0-9"""
+
+    return np.array(
+        [[[8, 0, 2, 6, 3], [2, 8, 2, 8, 4], [3, 9, 1, 5, 4], [5, 9, 2, 7, 7]]]
+    )
+
+
 def test_arr_parameter():
     """Raise an AttributeError if an array is not provided."""
     with pytest.raises(
@@ -215,3 +224,20 @@ def test_extent(one_band_3dims):
     # Cbar should be scaled between the vmin and vmax vals
     assert pl_extent == ext
     plt.close()
+
+
+def test_multi_panel_single_band(one_band_3dims):
+    """Test that multi panel works with single band arr."""
+
+    title1 = "Title axis one"
+    title2 = "Title axis two"
+    f, (ax1, ax2) = plt.subplots(2, 1)
+    ep.plot_bands(one_band_3dims, title=title1, ax=ax1)
+    ep.plot_bands(one_band_3dims, title=title2, ax=ax2)
+
+    # get all axis subplot elements - note this returns subplots and axes
+    all_axes = f.axes
+
+    assert len(all_axes) == 4
+    assert all_axes[0].get_title() == title1
+    assert all_axes[1].get_title() == title2
