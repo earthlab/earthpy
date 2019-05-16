@@ -24,6 +24,7 @@ code needed to :
 * Stack raster bands from data such as Landsat into an easy to use numpy array
 * [Work with masks to set bad pixels such a those covered by clouds and cloud-shadows to NA (`mask_pixels()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_stack_masks.html#sphx-glr-gallery-vignettes-plot-stack-masks-py)
 * Plot rgb (color), color infrared and other 3 band combination images (`plot_rgb()`)
+* [Plot individual raster bands to easily visualize the data](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_bands_functionality.html)
 * View histograms of sets of raster 
 * [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
 
