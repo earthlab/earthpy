@@ -220,7 +220,7 @@ def clip_shp(shp, clip_obj):
     # if there are multi points
     if any(shp.geometry.type == "MultiPoint"):
         return _clip_multi_point(shp, clip_obj)
-    elif shp["geometry"].iloc[0].type == "Point":
+    elif any(shp.geometry.type == "Point"):
         return _clip_points(shp, clip_obj)
     elif any(shp.geometry.type == "MultiPolygon") or any(
         shp.geometry.type == "MultiLineString"
