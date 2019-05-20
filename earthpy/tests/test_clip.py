@@ -43,7 +43,7 @@ def make_locs_buff():
     """ Buffer points to create multi poly. """
     buffered_locations = make_locs_gdf()
     buffered_locations["geometry"] = buffered_locations.buffer(4)
-    buffered_locations["type"] = ["plot", "plot", "plot", "plot"]
+    buffered_locations["type"] = "plot"
     return buffered_locations
 
 
