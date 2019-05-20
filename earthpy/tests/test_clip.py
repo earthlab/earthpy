@@ -25,7 +25,7 @@ def make_single_rect_poly_gdf():
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
     )
-    gdf["attr2"] = ["road"]
+    gdf["attr2"] = ["site-boundary"]
     return gdf
 
 

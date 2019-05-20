@@ -128,41 +128,21 @@ def _clip_multi_poly_line(shp, clip_obj):
         that intersects with clip_obj.
     """
 
-    # This feels super hacky
-    lines_exist = False
-    polys_exist = False
-
     # Clip multi polygons
     clipped = _clip_line_poly(shp.explode().reset_index(level=[1]), clip_obj)
 
-    # If there are lines, handle line dissolves
-    if any(clipped.geometry.type == "MultiLineString") or any(
-        clipped.geometry.type == "LineString"
-    ):
-        lines_exist = True
-        lines = clipped[
-            (clipped.geometry.type == "MultiLineString")
-            | (clipped.geometry.type == "LineString")
-        ]
-        line_diss = lines.dissolve(by=[lines.index]).drop(columns="level_1")
+    lines = clipped[
+        (clipped.geometry.type == "MultiLineString")
+        | (clipped.geometry.type == "LineString")
+    ]
+    line_diss = lines.dissolve(by=[lines.index]).drop(columns="level_1")
 
-    # If there are poly's handle polys
-    if any(clipped.geometry.type == "MultiPolygon") or any(
-        clipped.geometry.type == "Polygon"
-    ):
-        polys_exist = True
-        # Just get the polygons
-        polys = clipped[clipped.geometry.type == "Polygon"]
-        poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
+    polys = clipped[clipped.geometry.type == "Polygon"]
+    poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
 
-    if lines_exist and polys_exist:
-        return gpd.GeoDataFrame(
-            pd.concat([poly_diss, line_diss], ignore_index=True)
-        )
-    elif lines_exist:
-        return line_diss
-    else:
-        return poly_diss
+    return gpd.GeoDataFrame(
+        pd.concat([poly_diss, line_diss], ignore_index=True)
+    )
 
 
 def clip_shp(shp, clip_obj):
