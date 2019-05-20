@@ -66,7 +66,7 @@ DATA_URLS = {
         "zip",
     ),
     "vignette-landsat": (
-        "https://ndownloader.figshare.com/files/15197123",
+        "https://ndownloader.figshare.com/files/15197339",
         ".",
         "zip",
     ),
