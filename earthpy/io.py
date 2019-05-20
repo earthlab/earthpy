@@ -65,6 +65,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "vignette-landsat": (
+        "https://ndownloader.figshare.com/files/15197123",
+        ".",
+        "zip",
+    ),
     "california-rim-fire": (
         "https://ndownloader.figshare.com/files/14419310",
         ".",
