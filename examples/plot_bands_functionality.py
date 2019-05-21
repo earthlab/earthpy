@@ -40,7 +40,6 @@ import earthpy.plot as ep
 # Get data for example
 data = et.data.get_data("vignette-landsat")
 
-
 ###############################################################################
 # Import Example Data
 # -------------------
