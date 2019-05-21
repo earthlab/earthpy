@@ -135,7 +135,7 @@ plt.show()
 # of the image?
 
 fig, ax = plt.subplots(figsize=(12, 12))
-ep.hist(array_nodata)
+ep.hist(array)
 plt.show()
 
 ###########################################################################
