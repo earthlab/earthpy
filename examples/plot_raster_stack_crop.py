@@ -70,7 +70,7 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Preparing the landsat bands to be stacked using glob and sort
 
-landsat_bands_data_path = "data/cs-test-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*[2-4]*.tif"
+landsat_bands_data_path = "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*[2-4]*_crop.tif"
 stack_band_paths = glob(landsat_bands_data_path)
 stack_band_paths.sort()
 
@@ -176,7 +176,7 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 # Opening the boundary with GeoPandas.
 
 crop_bound = gpd.read_file(
-    "data/cold-springs-fire/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp"
+    "data/vignette-landsat/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp"
 )
 
 # If you are on windows, make sure to set your environment here!
