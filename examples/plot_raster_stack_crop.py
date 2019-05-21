@@ -17,8 +17,8 @@ Learn how to stack and crop satellite imagery using EarthPy
 # Stack Multi Band Imagery
 # -----------------------------
 # Some remote sensing datasets are stored with each band in a separate file. However,
-# often you want to use all of the bands together in your analysis. For example 
-# you need all of the bands together in the same file or "stack" in order to plot a color 
+# often you want to use all of the bands together in your analysis. For example
+# you need all of the bands together in the same file or "stack" in order to plot a color
 # RGB image. EarthPy has a ``stack()`` function that allows you
 # to take a set of ``.tif`` files that are all in the same spatial extent, CRS and resolution
 # and either export them together a single stacked ``.tif`` file or work with them in Python
@@ -32,7 +32,7 @@ Learn how to stack and crop satellite imagery using EarthPy
 # Import Packages
 # ------------------------------
 #
-# You will need several packages to stack your raster. You will use Geopandas to 
+# You will need several packages to stack your raster. You will use Geopandas to
 # open up a shapefile that will be used to crop your data. You will primarily be
 # using the EarthPy spatial module in this vignette.
 
@@ -101,7 +101,7 @@ array, raster_prof = es.stack(stack_band_paths, out_path=raster_out_path)
 # Create Extent Object
 # --------------------------------
 # To get the raster extent, use the ``plotting_extent`` function on the
-# array from ``es.stack()`` and the Rasterio profile or metadata object. The function 
+# array from ``es.stack()`` and the Rasterio profile or metadata object. The function
 # needs a single
 # layer of a numpy array, which is why we use `arr[0]`. The function also
 # needs the spatial transformation for the Rasterio object, which can be acquired by accessing
@@ -134,14 +134,13 @@ plt.show()
 # function. Do you notice any extreme values that may be impacting the stretch
 # of the image?
 
-fig, ax = plt.subplots(figsize=(12, 12))
 ep.hist(array)
 plt.show()
 
 ###########################################################################
 # No Data Option
 # ---------------
-# ``es.stack()`` can handle ``nodata`` values in a raster. To use this 
+# ``es.stack()`` can handle ``nodata`` values in a raster. To use this
 # parameter, specify ``nodata=``. This will mask every pixel that contains
 # the specified ``nodata`` value. The output will be a numpy masked array.
 
@@ -158,7 +157,7 @@ extent_nodata = plotting_extent(
 # Plot Un-cropped Data
 # ------------------------------
 # Below, the un-cropped data are plotted using earthpy's ``ep.plot_rgb()`` function
-# Notice that the data appear washed out. 
+# Notice that the data appear washed out.
 
 fig, ax = plt.subplots(figsize=(12, 12))
 ep.plot_rgb(
@@ -174,7 +173,7 @@ plt.show()
 #############################################################################
 # Crop the data
 # ------------------
-# Sometimes you have data for an area that is larger than your study area. 
+# Sometimes you have data for an area that is larger than your study area.
 # It is more efficient to first crop the data to your study area before processing
 # it in Python. The fastest and most efficient option is to crop each file
 # individually, write out the cropped raster to a new file, and then stack
@@ -196,13 +195,15 @@ crop_bound = gpd.read_file(
 # Reproject the data
 # ------------------
 # .. note::
-#       If you are on windows, make sure to set your environment here! 
+#       If you are on windows, make sure to set your environment here!
 #
 # The crop function won't work properly if the data are in different Coordinate
-# Reference Systems (CRS). To fix this, be sure to reproject the crop layer to match 
+# Reference Systems (CRS). To fix this, be sure to reproject the crop layer to match
 # the CRS of your raster data.
 # To reproject your data, first get the CRS of the raster from the rasterio profile
 # object. Then use that to reproject using geopandas `.to_crs`` method.
+
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 with rio.open(stack_band_paths[0]) as raster_crs:
     crop_raster_profile = raster_crs.profile
@@ -216,6 +217,8 @@ with rio.open(stack_band_paths[0]) as raster_crs:
 # loop that is completed, and `bands` will be the raster bands in the folder.
 # It crops the rasters one at a time and writes them to an output directory.
 
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
+
 for i, bands in enumerate(stack_band_paths):
     outpath = "data/outputs/outputraster" + str(i)
     with rio.open(bands) as currband:
@@ -227,6 +230,8 @@ for i, bands in enumerate(stack_band_paths):
 # Stack All Bands
 # ---------------
 # Once the data are cropped, you are ready to create a new stack.
+
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 stack = glob("data/outputs/outputraster*")
 cropped_array, array_raster = es.stack(stack, nodata=-9999)
