@@ -32,7 +32,7 @@ Learn how to stack and crop satellite imagery using EarthPy
 # Import Packages
 # ------------------------------
 #
-# You will need several packages to stack your raster. You will use Geopandas to
+# You will need several packages to stack your raster. You will use GeoPandas to
 # open up a shapefile that will be used to crop your data. You will primarily be
 # using the EarthPy spatial module in this vignette.
 
