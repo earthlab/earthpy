@@ -14,18 +14,18 @@ Learn how to stack and crop satellite imagery using EarthPy
 #       ``es.crop_image()`` functions from EarthPy.
 
 ###############################################################################
-# Stacking Multi Band Imagery
+# Stack Multi Band Imagery
 # -----------------------------
 # Some remote sensing datasets are stored with each band in a separate file. However,
-# often you want to use all of the bands together in your analysis. For example if
-# you wish to plot multiple bands together to create a color image you will need all
-# of them in the same file or "stack". EarthPy has a stack function that allows you
-# to take a set of .tif files that are all in the same spatial extent, CRS and resolution
-# and either export them together a single stacked .tif file or work with them in Python
+# often you want to use all of the bands together in your analysis. For example 
+# you need all of the bands together in the same file or "stack" in order to plot a color 
+# RGB image. EarthPy has a ``stack()`` function that allows you
+# to take a set of ``.tif`` files that are all in the same spatial extent, CRS and resolution
+# and either export them together a single stacked ``.tif`` file or work with them in Python
 # directly as a stacked numpy array.
 #
-# To begin using the EarthPy stack function, import the needed packages
-# and create an array to be plotted. Below we plot the data as continuous with a colorbar
+# To begin using the EarthPy ``stack()`` function, import the needed packages
+# and create an array to be plotted. Below you plot the data as continuous with a colorbar
 # using the ``plot_bands()`` function.
 
 ###############################################################################
@@ -34,8 +34,7 @@ Learn how to stack and crop satellite imagery using EarthPy
 #
 # You will need several packages to stack your raster. Geopandas will allow you to quickly
 # open up a shapefile that will be used later to crop your data. You will primarily be
-# using the spatial module
-# of EarthPy, but other packages will be needed as well.
+# using the EarthPy spatial module but other packages will be needed as well.
 
 import os
 from glob import glob
@@ -51,7 +50,7 @@ import earthpy.plot as ep
 ########################################################################################
 # Get Example Data Ready for Stack
 # ----------------------------------
-# With EarthPy we can create a stack from all of the Landsat .tif files (one per band)
+# With EarthPy you can create a stack from all of the Landsat .tif files (one per band)
 # in a folder with the `es.stack()` function.
 
 ###################################################################################
@@ -122,16 +121,16 @@ ep.plot_rgb(
     stretch=True,
     extent=extent,
     str_clip=0.5,
-    title="Un-cropped Raster",
+    title="RGB Image of Un-cropped Raster",
 )
 plt.show()
 
 ###########################################################################
 # No Data Option
 # ---------------
-# `es.stack()` has an option for how to deal with no data values in a raster.
-# If desired, a no data value can be provided to the function, which will
-# then assign every instance of that value in the raster to null data.
+# ``es.stack()`` can handle ``nodata`` values in a raster. To use this 
+# parameter, specify ``nodata=``. This will mask every pixel that contains
+# the specified ``nodata`` value. The output will be a numpy masked array.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -155,7 +154,7 @@ ep.plot_rgb(
     stretch=True,
     extent=extent,
     str_clip=0.5,
-    title="Un-cropped Raster, No Data Value Selected",
+    title="RGB image of Un-cropped Raster, No Data Value Selected",
 )
 plt.show()
 
@@ -163,17 +162,19 @@ plt.show()
 #############################################################################
 # Cropping the data
 # ------------------
-# To create the cropped raster, the fastest option is to crop each file
+# Sometimes you have data for an area that is larger than your study area. 
+# It is more efficient to first crop the data to your study area before processing
+# it in Python. The fastest and most efficient option is to crop each file
 # individually, write out the cropped raster to a new file, and then stack
 # the new files together. To do this, make sure you have a ShapeFile boundary
 # in the form of a GeoPandas object you can use as the cropping object.
 # Then, loop through every file you wish to crop and crop the image, then
 # write it out to a file. Take the rasters created and stack them like
-# we stack bands in the previous examples.
+# you stacked bands in the previous examples.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
-# Opening the boundary with GeoPandas.
+# Open the crop boundary using GeoPandas.
 
 crop_bound = gpd.read_file(
     "data/vignette-landsat/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp"
