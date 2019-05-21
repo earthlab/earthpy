@@ -6,11 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
-<<<<<<< HEAD
 * Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
-=======
 * Add URL to io.py for Landsat vignette dataset (@jpalomino, #309)
->>>>>>> 1312fd83995db676972646021fb6f77bc1dfa42d
 
 ## [0.6.8]
 * Add multi-panel plotting to plot_bands (@lwasser, #316)

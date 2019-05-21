@@ -65,7 +65,7 @@ import earthpy.plot as ep
 
 # Getting sample data from EarthPy and setting your home working directory
 
-data_path_1 = et.data.get_data("cs-test-landsat")
+data_path = et.data.get_data("vignette-landsat")
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Preparing the landsat bands to be stacked using glob and sort
@@ -172,10 +172,6 @@ plt.show()
 # we stack bands in the previous examples.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-
-# Getting data for the fire boundary we are going to clip the raster too.
-
-data_path_2 = et.data.get_data("cold-springs-fire")
 
 # Opening the boundary with GeoPandas.
 
