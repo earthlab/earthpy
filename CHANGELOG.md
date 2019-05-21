@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * A multi-point, polygon and line support to clip function (@lwasser, @nkorinek, #236)
 * Add URL to io.py for Landsat vignette dataset (@jpalomino, #309)
 
-
 ## [0.6.8]
 * Add multi-panel plotting to plot_bands (@lwasser, #316)
 * Fix bug in plot_rgb where multipanel plots are blank (@lwasser, #313)
