@@ -6,7 +6,7 @@ Learn how to stack and crop satellite imagery using EarthPy
 """
 
 ###############################################################################
-# Stacking and Cropping Rasters using EarthPy
+# Stack and Cropp Raster Data Using EarthPy
 # ---------------------------------------------
 #
 # .. note::
@@ -32,9 +32,9 @@ Learn how to stack and crop satellite imagery using EarthPy
 # Import Packages
 # ------------------------------
 #
-# You will need several packages to stack your raster. Geopandas will allow you to quickly
-# open up a shapefile that will be used later to crop your data. You will primarily be
-# using the EarthPy spatial module but other packages will be needed as well.
+# You will need several packages to stack your raster. You will use Geopandas to 
+# open up a shapefile that will be used to crop your data. You will primarily be
+# using the EarthPy spatial module in this vignette.
 
 import os
 from glob import glob
@@ -62,18 +62,18 @@ import earthpy.plot as ep
 #       occurs, you have to reset your os environment with the command
 #       ```os.environ["PROJ_LIB"] = r"path-to-share-folder-in-environment"```.
 
-# Getting sample data from EarthPy and setting your home working directory
+# Get sample data from EarthPy and setting your home working directory
 
 data_path = et.data.get_data("vignette-landsat")
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
-# Preparing the landsat bands to be stacked using glob and sort
+# Prepare the landsat bands to be stacked using glob and sort
 
 landsat_bands_data_path = "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*[2-4]*_crop.tif"
 stack_band_paths = glob(landsat_bands_data_path)
 stack_band_paths.sort()
 
-# Creating output directory and the output path
+# Create output directory and the output path
 
 output_dir = os.path.join("data", "outputs")
 if os.path.isdir(output_dir) == False:
@@ -84,7 +84,7 @@ if os.path.isdir(os.path.join(output_dir + "outputraster")) == False:
 raster_out_path = os.path.join(output_dir, "raster.tiff")
 
 ####################################################################################
-# Stacking the prepared bands
+# Stack the prepared bands
 # ---------------------------
 # The stack function has an optional output argument, where you can write the raster
 # to a tiff file in a folder. If you want to use this functionality, make sure there
@@ -92,20 +92,20 @@ raster_out_path = os.path.join(output_dir, "raster.tiff")
 # The Stack function also returns two object, an array and a RasterIO profile. Make
 # sure to be catch both in variables.
 
-# Stacking the Landsat bands
+# Stack Landsat bands
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-
 array, raster_prof = es.stack(stack_band_paths, out_path=raster_out_path)
 
 ####################################################################################
 # Create Extent Object
 # --------------------------------
-# To get the extent of the raster, use the `plotting_extent` function on the
-# array from `es.stack()` and the RasterIO profile. The function needs a single
-# layer of a numpy array, which is why we use `arr[0]`, and the function also
-# needs the extent of the RasterIO object, which can be acquired by accessing
-# the `"transform"` key within the RasterIO Profile.
+# To get the raster extent, use the ``plotting_extent`` function on the
+# array from ``es.stack()`` and the Rasterio profile or metadata object. The function 
+# needs a single
+# layer of a numpy array, which is why we use `arr[0]`. The function also
+# needs the spatial transformation for the Rasterio object, which can be acquired by accessing
+# the ``"transform"`` key within the Rasterio Profile.
 
 extent = plotting_extent(array[0], raster_prof["transform"])
 
@@ -145,7 +145,7 @@ extent_nodata = plotting_extent(
 ################################################################################
 # Plot Un-cropped Data
 # ------------------------------
-# You can see the boundary and the raster before the crop using `ep.plot_rgb()`
+# You can see the boundary and the raster before the crop using ``ep.plot_rgb()``
 
 fig, ax = plt.subplots(figsize=(12, 12))
 ep.plot_rgb(
@@ -160,7 +160,7 @@ plt.show()
 
 
 #############################################################################
-# Cropping the data
+# Crop the data
 # ------------------
 # Sometimes you have data for an area that is larger than your study area. 
 # It is more efficient to first crop the data to your study area before processing
