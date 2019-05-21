@@ -146,7 +146,6 @@ plt.show()
 # the specified ``nodata`` value. The output will be a numpy masked array.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-
 array_nodata, raster_prof_nodata = es.stack(stack_band_paths, nodata=-9999)
 
 # Recreate extent object for the No Data array
