@@ -38,7 +38,7 @@ import earthpy.spatial as es
 import earthpy.plot as ep
 
 # Get data for example
-data = et.data.get_data("cold-springs-fire")
+data = et.data.get_data("vignette-landsat")
 
 
 ###############################################################################
@@ -53,7 +53,7 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 # Stack the Landsat 8 bands
 # This creates a numpy array with each "layer" representing a single band
 landsat_path = glob(
-    "data/cold-springs-fire/landsat_collect/LC080340322016072301T1-SC20180214145802/crop/*band*.tif"
+    "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*_crop.tif"
 )
 landsat_path.sort()
 array_stack, meta_data = es.stack(landsat_path)
