@@ -8,8 +8,9 @@ import geopandas as gpd
 import earthpy.clip as cl
 
 
-def make_locs_gdf():
-    """ Create a dummy point GeoDataFrame. """
+@pytest.fixture
+def point_gdf():
+    """ Create a point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
     gdf = gpd.GeoDataFrame(
         [Point(xy) for xy in pts],
@@ -19,18 +20,24 @@ def make_locs_gdf():
     return gdf
 
 
-def make_single_rect_poly_gdf():
-    """ Bounding box polygon. """
+@pytest.fixture
+def single_rectangle_gdf():
+    """Create a single rectangle for clipping. """
     poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
     )
-    gdf["attr2"] = ["site-boundary"]
+    gdf["attr2"] = "site-boundary"
     return gdf
 
 
-def make_smaller_clip_rect_poly_gdf():
-    """ Bounding box polygon. """
+@pytest.fixture
+def larger_single_rectangle_gdf():
+    """Create a slightly larger rectangle for clipping.
+
+     The smaller single rectangle is used to test the edge case where slivers
+     are returned when you clip polygons. This fixture is larger which
+     eliminates the slivers in the clip return."""
     poly_inters = Polygon([(-5, -5), (-5, 15), (15, 15), (15, -5), (-5, -5)])
     gdf = gpd.GeoDataFrame(
         [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
@@ -39,38 +46,26 @@ def make_smaller_clip_rect_poly_gdf():
     return gdf
 
 
-def make_locs_buff():
-    """ Buffer points to create multi poly. """
-    buffered_locations = make_locs_gdf()
-    buffered_locations["geometry"] = buffered_locations.buffer(4)
-    buffered_locations["type"] = "plot"
-    return buffered_locations
+@pytest.fixture
+def buffered_locations(point_gdf):
+    """Buffer points to create a multi-polygon. """
+    buffered_locs = point_gdf
+    buffered_locs["geometry"] = buffered_locs.buffer(4)
+    buffered_locs["type"] = "plot"
+    return buffered_locs
 
 
-def make_donut_geom():
-    """ Make a donut geometry. """
+@pytest.fixture
+def donut_geometry(buffered_locations, single_rectangle_gdf):
+    """ Make a geometry with a hole in the middle (a donut). """
     donut = gpd.overlay(
-        make_locs_buff(),
-        make_single_rect_poly_gdf(),
-        how="symmetric_difference",
+        buffered_locations, single_rectangle_gdf, how="symmetric_difference"
     )
     return donut
 
 
 @pytest.fixture
-def locs_gdf():
-    """ Create a sample point GeoDataFrame.
-
-    This fixture calls make_locs_gdf(), which is a function that is used in
-    multiple fixtures. But, fixtures are not supposed to be used like that:
-
-    see https://github.com/pytest-dev/pytest/issues/3950 for discussion
-    """
-    return make_locs_gdf()
-
-
-@pytest.fixture
-def linez_gdf():
+def two_line_gdf():
     """ Create Line Objects For Testing """
     linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
     lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
@@ -81,32 +76,9 @@ def linez_gdf():
 
 
 @pytest.fixture
-def single_rect_poly_gdf():
-    """ Fixture for a bounding box polygon. """
-    return make_single_rect_poly_gdf()
-
-
-@pytest.fixture
-def smaller_clip_rect_poly_gdf():
-    return make_smaller_clip_rect_poly_gdf()
-
-
-@pytest.fixture
-def locs_buff():
-    """ Fixture for buffered locations. """
-    return make_locs_buff()
-
-
-@pytest.fixture
-def donut_geom():
-    """ Fixture for donut geometry objects. """
-    return make_donut_geom()
-
-
-@pytest.fixture
-def multi_gdf():
+def multi_poly_gdf(donut_geometry):
     """ Create a multi-polygon GeoDataFrame. """
-    multi_poly = make_donut_geom().unary_union
+    multi_poly = donut_geometry.unary_union
     out_df = gpd.GeoDataFrame(
         geometry=gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
     )
@@ -116,13 +88,13 @@ def multi_gdf():
 
 
 @pytest.fixture
-def multi_line(linez_gdf):
+def multi_line(two_line_gdf):
     """ Create a multi-line GeoDataFrame.
 
     This has one multi line and another regular line.
     """
     # Create a single and multi line object
-    multiline_feat = linez_gdf.unary_union
+    multiline_feat = two_line_gdf.unary_union
     linec = LineString([(2, 1), (3, 1), (4, 1), (5, 2)])
     out_df = gpd.GeoDataFrame(
         geometry=gpd.GeoSeries([multiline_feat, linec]),
@@ -134,9 +106,9 @@ def multi_line(linez_gdf):
 
 
 @pytest.fixture
-def multi_point():
-    """ Create a multi-line GeoDataFrame. """
-    multi_point = make_locs_gdf().unary_union
+def multi_point(point_gdf):
+    """ Create a multi-point GeoDataFrame. """
+    multi_point = point_gdf.unary_union
     out_df = gpd.GeoDataFrame(
         gpd.GeoSeries(
             [multi_point, Point(2, 5), Point(-11, -14), Point(-10, -12)]
@@ -148,17 +120,17 @@ def multi_point():
     return out_df
 
 
-def test_not_gdf(single_rect_poly_gdf):
+def test_not_gdf(single_rectangle_gdf):
     """Non-GeoDataFrame inputs raise attribute errors."""
     with pytest.raises(AttributeError):
-        cl.clip_shp((2, 3), single_rect_poly_gdf)
+        cl.clip_shp((2, 3), single_rectangle_gdf)
     with pytest.raises(AttributeError):
-        cl.clip_shp(single_rect_poly_gdf, (2, 3))
+        cl.clip_shp(single_rectangle_gdf, (2, 3))
 
 
-def test_returns_gdf(locs_gdf, single_rect_poly_gdf):
+def test_returns_gdf(point_gdf, single_rectangle_gdf):
     """Test that function returns a GeoDataFrame (or GDF-like) object."""
-    out = cl.clip_shp(locs_gdf, single_rect_poly_gdf)
+    out = cl.clip_shp(point_gdf, single_rectangle_gdf)
     assert hasattr(out, "geometry")
 
 
@@ -176,71 +148,73 @@ def test_non_overlapping_geoms():
         cl.clip_shp(unit_gdf, non_overlapping_gdf)
 
 
-def test_input_gdfs(single_rect_poly_gdf):
+def test_input_gdfs(single_rectangle_gdf):
     """Test that function fails if not provided with 2 GDFs."""
     with pytest.raises(AttributeError):
-        cl.clip_shp(list(), single_rect_poly_gdf)
+        cl.clip_shp(list(), single_rectangle_gdf)
     with pytest.raises(AttributeError):
-        cl.clip_shp(single_rect_poly_gdf, list())
+        cl.clip_shp(single_rectangle_gdf, list())
 
 
-def test_clip_points(locs_gdf, single_rect_poly_gdf):
+def test_clip_points(point_gdf, single_rectangle_gdf):
     """Test clipping a points GDF with a generic polygon geometry."""
-    clip_pts = cl.clip_shp(locs_gdf, single_rect_poly_gdf)
+    clip_pts = cl.clip_shp(point_gdf, single_rectangle_gdf)
     assert len(clip_pts.geometry) == 3 and clip_pts.geom_type[1] == "Point"
 
 
-def test_clip_poly(locs_buff, single_rect_poly_gdf):
+def test_clip_poly(buffered_locations, single_rectangle_gdf):
     """Test clipping a polygon GDF with a generic polygon geometry."""
-    clipped_poly = cl.clip_shp(locs_buff, single_rect_poly_gdf)
+    clipped_poly = cl.clip_shp(buffered_locations, single_rectangle_gdf)
     assert len(clipped_poly.geometry) == 3
     assert all(clipped_poly.geom_type == "Polygon")
 
 
-def test_clip_multipoly(multi_gdf, single_rect_poly_gdf):
+def test_clip_multipoly(multi_poly_gdf, single_rectangle_gdf):
     """Test a multi poly object can be clipped properly.
 
     Also the bounds of the object should == the bounds of the clip object
     if they fully overlap (as they do in these fixtures). """
-    clip = cl.clip_shp(multi_gdf, single_rect_poly_gdf)
+    clip = cl.clip_shp(multi_poly_gdf, single_rectangle_gdf)
     assert hasattr(clip, "geometry")
-    assert np.array_equal(clip.total_bounds, single_rect_poly_gdf.total_bounds)
+    assert np.array_equal(clip.total_bounds, single_rectangle_gdf.total_bounds)
     # 2 features should be returned with an attribute column
     assert len(clip.attr) == 2
 
 
-def test_clip_single_multipolygon(locs_buff, smaller_clip_rect_poly_gdf):
+def test_clip_single_multipolygon(
+    buffered_locations, larger_single_rectangle_gdf
+):
     """Test clipping a multi poly with another poly that
 
     no sliver shapes should be returned in this clip. """
 
-    multi = locs_buff.dissolve(by="type").reset_index()
-    clip = cl.clip_shp(multi, smaller_clip_rect_poly_gdf)
+    multi = buffered_locations.dissolve(by="type").reset_index()
+    clip = cl.clip_shp(multi, larger_single_rectangle_gdf)
 
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "Polygon"
 
 
-def test_clip_multiline(multi_line, single_rect_poly_gdf):
+def test_clip_multiline(multi_line, single_rectangle_gdf):
     """Test that clipping a multiline feature with a poly returns expected output."""
 
-    clip = cl.clip_shp(multi_line, single_rect_poly_gdf)
+    clip = cl.clip_shp(multi_line, single_rectangle_gdf)
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiLineString"
 
 
-def test_clip_multipoint(single_rect_poly_gdf, multi_point):
+def test_clip_multipoint(single_rectangle_gdf, multi_point):
     """Clipping a multipoint feature with a polygon works as expected.
 
     should return a geodataframe with a single multi point feature"""
 
-    clip = cl.clip_shp(multi_point, single_rect_poly_gdf)
+    clip = cl.clip_shp(multi_point, single_rectangle_gdf)
 
     assert hasattr(clip, "geometry") and clip.geom_type[0] == "MultiPoint"
     assert hasattr(clip, "attr")
     # All points should intersect the clip geom
-    assert all(clip.intersects(single_rect_poly_gdf.unary_union))
+    assert all(clip.intersects(single_rectangle_gdf.unary_union))
 
 
-def test_clip_lines(linez_gdf, single_rect_poly_gdf):
+def test_clip_lines(two_line_gdf, single_rectangle_gdf):
     """Test what happens when you give the clip_extent a line GDF."""
-    clip_line = cl.clip_shp(linez_gdf, single_rect_poly_gdf)
+    clip_line = cl.clip_shp(two_line_gdf, single_rectangle_gdf)
     assert len(clip_line.geometry) == 2
