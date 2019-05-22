@@ -217,7 +217,6 @@ def clip_shp(shp, clip_obj):
     if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
 
-    # if there are multi points
     if any(shp.geometry.type == "MultiPoint"):
         return _clip_multi_point(shp, clip_obj)
     elif any(shp.geometry.type == "Point"):
