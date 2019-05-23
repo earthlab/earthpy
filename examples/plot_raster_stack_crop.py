@@ -6,7 +6,7 @@ Learn how to stack and crop satellite imagery using EarthPy
 """
 
 ###############################################################################
-# Stack and Cropp Raster Data Using EarthPy
+# Stack and Crop Raster Data Using EarthPy
 # ---------------------------------------------
 #
 # .. note::
