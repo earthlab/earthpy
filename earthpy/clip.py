@@ -6,7 +6,8 @@ A module to clip vector data using GeoPandas.
 
 """
 
-# TODO: Clip poly should use OVERLAY not spatial indexing + intersects
+import pandas as pd
+import geopandas as gpd
 
 
 def _clip_points(shp, clip_obj):
@@ -32,6 +33,37 @@ def _clip_points(shp, clip_obj):
     """
     poly = clip_obj.geometry.unary_union
     return shp[shp.geometry.intersects(poly)]
+
+
+def _clip_multi_point(shp, clip_obj):
+    """Clip multi point features to the clip_obj GeoDataFrame extent.
+
+    Clip an input multi point to the polygon extent of the clip_obj
+    parameter. Points that intersect the clip_obj geometry are
+    extracted with associated attributes returned.
+
+    Parameters
+    ----------
+    shp : GeoDataFrame
+        multipoint geometry that is clipped to clip_obj.
+
+    clip_obj : GeoDataFrame
+        Reference polygon for clipping.
+
+    Returns
+    -------
+    GeoDataFrame
+        The returned GeoDataFrame is a clipped subset of shp
+        containing multi-point and point features.
+    """
+
+    # Explode multi-point features when clipping then recreate geom
+    clipped = _clip_points(shp.explode().reset_index(level=[1]), clip_obj)
+    clipped = clipped.dissolve(by=[clipped.index]).drop(columns="level_1")[
+        shp.columns.tolist()
+    ]
+
+    return clipped
 
 
 def _clip_line_poly(shp, clip_obj):
@@ -72,6 +104,45 @@ def _clip_line_poly(shp, clip_obj):
 
     # Return the clipped layer with no null geometry values
     return clipped[clipped.geometry.notnull()]
+
+
+def _clip_multi_poly_line(shp, clip_obj):
+    """Clip multi lines and polygons to the clip_obj GeoDataFrame extent.
+
+    Clip an input multi line or polygon to the polygon extent of the clip_obj
+    parameter. Lines or Polygons that intersect the clip_obj geometry are
+    extracted with associated attributes and returned.
+
+    Parameters
+    ----------
+    shp : GeoDataFrame
+        multiLine or multipolygon geometry that is clipped to clip_obj.
+
+    clip_obj : GeoDataFrame
+        Reference polygon for clipping.
+
+    Returns
+    -------
+    GeoDataFrame
+        The returned GeoDataFrame is a clipped subset of shp
+        that intersects with clip_obj.
+    """
+
+    # Clip multi polygons
+    clipped = _clip_line_poly(shp.explode().reset_index(level=[1]), clip_obj)
+
+    lines = clipped[
+        (clipped.geometry.type == "MultiLineString")
+        | (clipped.geometry.type == "LineString")
+    ]
+    line_diss = lines.dissolve(by=[lines.index]).drop(columns="level_1")
+
+    polys = clipped[clipped.geometry.type == "Polygon"]
+    poly_diss = polys.dissolve(by=[polys.index]).drop(columns="level_1")
+
+    return gpd.GeoDataFrame(
+        pd.concat([poly_diss, line_diss], ignore_index=True)
+    )
 
 
 def clip_shp(shp, clip_obj):
@@ -146,14 +217,13 @@ def clip_shp(shp, clip_obj):
     if not any(shp.intersects(clip_obj.unary_union)):
         raise ValueError("Shape and crop extent do not overlap.")
 
-    # Multipolys / point / line don't clip properly
-    if "Multi" in str(clip_obj.geom_type) or "Multi" in str(shp.geom_type):
-        raise ValueError(
-            "Clip doesn't currently support multipart geometries. Consider "
-            "using .explode to create unique features in your GeoDataFrame"
-        )
-
-    if shp["geometry"].iloc[0].type == "Point":
+    if any(shp.geometry.type == "MultiPoint"):
+        return _clip_multi_point(shp, clip_obj)
+    elif any(shp.geometry.type == "Point"):
         return _clip_points(shp, clip_obj)
+    elif any(shp.geometry.type == "MultiPolygon") or any(
+        shp.geometry.type == "MultiLineString"
+    ):
+        return _clip_multi_poly_line(shp, clip_obj)
     else:
         return _clip_line_poly(shp, clip_obj)
