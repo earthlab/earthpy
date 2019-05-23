@@ -6,3 +6,4 @@ dependencies:
 - geopandas=0.4.1
 - rasterio=1.0.21
 - scikit-image
+- m2r=0.2.1
