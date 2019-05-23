@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+* Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
+
+
 ## [0.6.9]
 * Add URL to io.py for Landsat vignette dataset (@jpalomino, #309)
 * A multi-point, polygon and line support to clip function (@lwasser, @nkorinek, #236)
