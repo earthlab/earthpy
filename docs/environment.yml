@@ -1,7 +1,7 @@
 name: earthpy_docs
 channels:
 - conda-forge
-pip:
+dependencies:
 - python=3.7
 #- numpy
 #- matplotlib=3.0.3
