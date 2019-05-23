@@ -1,7 +1,7 @@
 name: earthpy-dev
 channels:
   - conda-forge
-dependencies:
+pip:
   # Core scientific python
   - numpy
   - matplotlib
