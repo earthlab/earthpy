@@ -51,7 +51,7 @@ import earthpy.plot as ep
 # Get Example Data Ready for Stack
 # ----------------------------------
 # With EarthPy you can create a stack from all of the Landsat .tif files (one per band)
-# in a folder with the `es.stack()` function.
+# in a folder with the ``es.stack()`` function.
 
 ###################################################################################
 # Error found on Windows systems
@@ -60,7 +60,7 @@ import earthpy.plot as ep
 #       If you are running this script on a Windows system, there is a
 #       known bug with ``.to_crs()``, which is used in this script. If an error
 #       occurs, you have to reset your os environment with the command
-#       ```os.environ["PROJ_LIB"] = r"path-to-share-folder-in-environment"```.
+#       ``os.environ["PROJ_LIB"] = r"path-to-share-folder-in-environment"``.
 
 # Get sample data from EarthPy and setting your home working directory
 
@@ -103,7 +103,7 @@ array, raster_prof = es.stack(stack_band_paths, out_path=raster_out_path)
 # To get the raster extent, use the ``plotting_extent`` function on the
 # array from ``es.stack()`` and the Rasterio profile or metadata object. The function
 # needs a single
-# layer of a numpy array, which is why we use `arr[0]`. The function also
+# layer of a numpy array, which is why we use ``arr[0]``. The function also
 # needs the spatial transformation for the Rasterio object, which can be acquired by accessing
 # the ``"transform"`` key within the Rasterio Profile.
 
@@ -112,7 +112,7 @@ extent = plotting_extent(array[0], raster_prof["transform"])
 ################################################################################
 # Plot Un-cropped Data
 # ------------------------------
-# You can see the boundary and the raster before the crop using `ep.plot_rgb()`
+# You can see the boundary and the raster before the crop using ``ep.plot_rgb()``
 # Notice that the data appear washed out.
 
 fig, ax = plt.subplots(figsize=(12, 12))
@@ -201,7 +201,7 @@ crop_bound = gpd.read_file(
 # Reference Systems (CRS). To fix this, be sure to reproject the crop layer to match
 # the CRS of your raster data.
 # To reproject your data, first get the CRS of the raster from the rasterio profile
-# object. Then use that to reproject using geopandas `.to_crs`` method.
+# object. Then use that to reproject using geopandas ``.to_crs`` method.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -213,8 +213,8 @@ with rio.open(stack_band_paths[0]) as raster_crs:
 # Crop Each Band
 # --------------
 # This step crops all of the bands one by one. It uses enumerate to implement dynamic naming
-# of raster outputs. The `i` variable will be an integer that counts up one with every
-# loop that is completed, and `bands` will be the raster bands in the folder.
+# of raster outputs. The ``i`` variable will be an integer that counts up one with every
+# loop that is completed, and ``bands`` will be the raster bands in the folder.
 # It crops the rasters one at a time and writes them to an output directory.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))

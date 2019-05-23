@@ -108,7 +108,3 @@ for more information about submitting pull requests or changes to EarthPy.
 ## License
 
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
-
-See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
-definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
-for example usage of fixtures in tests.
