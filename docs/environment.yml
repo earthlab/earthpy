@@ -3,12 +3,6 @@ channels:
 - conda-forge
 dependencies:
 - python=3.7
-#- numpy
-#- matplotlib=3.0.3
 - geopandas=0.4.1
 - rasterio=1.0.21
 - scikit-image
-#- shapely=1.6.4
-#- fiona=1.8.4
-#- pyproj=1.9.6
-#- rtree=0.8.3
