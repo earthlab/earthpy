@@ -84,7 +84,7 @@ if os.path.isdir(os.path.join(output_dir + "outputraster")) == False:
 raster_out_path = os.path.join(output_dir, "raster.tiff")
 
 ####################################################################################
-# Stack the prepared bands
+# Stack the Bands
 # ---------------------------
 # The stack function has an optional output argument, where you can write the raster
 # to a tiff file in a folder. If you want to use this functionality, make sure there
@@ -134,7 +134,9 @@ plt.show()
 # function. Do you notice any extreme values that may be impacting the stretch
 # of the image?
 
-ep.hist(array)
+ep.hist(array, title=["Band 1",
+                      "Band 2",
+                      "Band 3"])
 plt.show()
 
 ###########################################################################
@@ -147,6 +149,12 @@ plt.show()
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 array_nodata, raster_prof_nodata = es.stack(stack_band_paths, nodata=-9999)
 
+# View hist of data with nodata values removed
+ep.hist(array_nodata, title=["Band 1 - No Data Values Removed",
+                      "Band 2 - No Data Values Removed",
+                      "Band 3 - No Data Values Removed"])
+plt.show()
+
 # Recreate extent object for the No Data array
 
 extent_nodata = plotting_extent(
@@ -156,8 +164,7 @@ extent_nodata = plotting_extent(
 ################################################################################
 # Plot Un-cropped Data
 # ------------------------------
-# Below, the un-cropped data are plotted using earthpy's ``ep.plot_rgb()`` function
-# Notice that the data appear washed out.
+# Plot the data again after the nodata values are removed.
 
 fig, ax = plt.subplots(figsize=(12, 12))
 ep.plot_rgb(
@@ -171,7 +178,7 @@ ep.plot_rgb(
 plt.show()
 
 #############################################################################
-# Crop the data
+# Crop the Data
 # ------------------
 # Sometimes you have data for an area that is larger than your study area.
 # It is more efficient to first crop the data to your study area before processing
@@ -239,7 +246,7 @@ crop_extent = plotting_extent(crop[0], meta["transform"])
 
 # Plotting the cropped image
 # sphinx_gallery_thumbnail_number = 5
-fig, ax = plt.subplots(figsize=(12, 12))
+fig, ax = plt.subplots(figsize=(12, 6))
 crop_bound_utm13N.boundary.plot(ax=ax, color="red", zorder=10)
 ep.plot_rgb(
     cropped_array,
