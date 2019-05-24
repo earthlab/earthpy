@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 * Add vignette for using the plot_bands() function (@nkorinek, #315)
-
+* Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
 
 ## [0.6.9]
 * Add URL to io.py for Landsat vignette dataset (@jpalomino, #309)
