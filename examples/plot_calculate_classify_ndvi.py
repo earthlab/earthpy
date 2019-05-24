@@ -46,7 +46,7 @@ import earthpy.spatial as es
 import earthpy.plot as ep
 
 # Get data and set your home working directory
-data = et.data.get_data("cold-springs-fire")
+data = et.data.get_data("vignette-landsat")
 
 
 ###############################################################################
@@ -54,17 +54,19 @@ data = et.data.get_data("cold-springs-fire")
 # -------------------
 #
 # To get started, make sure your directory is set. Then, create a stack from all of
-# the Landsat .tif files (one per band).
+# the Landsat .tif files (one per band). The nodata value for Landsat 8 is
+# ``-9999`` so you can use the ``nodata=`` parameter when you call the
+# ``stack()`` function.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Stack the Landsat 8 bands
 # This creates a numpy array with each "layer" representing a single band
 landsat_path = glob(
-    "data/cold-springs-fire/landsat_collect/LC080340322016072301T1-SC20180214145802/crop/*band*.tif"
+    "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*_crop.tif"
 )
 landsat_path.sort()
-arr_st, meta = es.stack(landsat_path)
+arr_st, meta = es.stack(landsat_path, nodata=-9999)
 
 
 ###############################################################################
@@ -94,7 +96,6 @@ ep.plot_bands(
     ndvi, cmap="RdYlGn", cols=1, title=titles, scale=False, vmin=-1, vmax=1
 )
 
-
 ###############################################################################
 # Classify NDVI
 # -------------
@@ -107,6 +108,22 @@ ep.plot_bands(
 ndvi_class_bins = [-np.inf, 0, 0.1, 0.25, 0.4, np.inf]
 ndvi_landsat_class = np.digitize(ndvi, ndvi_class_bins)
 
+# Apply the nodata mask to the newly classified NDVI data
+ndvi_landsat_class = np.ma.masked_where(np.ma.getmask(ndvi), ndvi_landsat_class)
+np.unique(ndvi_landsat_class)
+
+
+###############################################################################
+# Plot Classified NDVI With Categorical Legend - EarthPy Draw_Legend()
+# --------------------------------------------------------------------
+#
+# You can plot the classified NDVI with a categorical legend using the
+# ``draw_legend()`` function from the ``earthpy.plot`` module.
+
+# Define color map
+nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
+nbr_cmap = ListedColormap(nbr_colors)
+
 # Define class names
 ndvi_cat_names = [
     "No Vegetation",
@@ -116,27 +133,17 @@ ndvi_cat_names = [
     "High Vegetation",
 ]
 
-###############################################################################
-# Plot Classified NDVI With Categorical Legend
-# --------------------------------------------
-#
-# You can plot the classified NDVI with a categorical legend using the
-# ``draw_legend`` function from the ``earthpy.plot`` module.
-
-# Define color map
-nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
-nbr_cmap = ListedColormap(nbr_colors)
-
-fig, ax = plt.subplots(figsize=(12, 12))
-
-im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
-
 # Get list of classes
 classes = np.unique(ndvi_landsat_class)
 classes = classes.tolist()
+# The mask returns a value of none in the classes. remove that
+classes = classes[0:5]
+
+# Plot your data
+fig, ax = plt.subplots(figsize=(12, 12))
+im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
 
 ep.draw_legend(im_ax=im, classes=classes, titles=ndvi_cat_names)
-
 ax.set_title(
     "Landsat 8 - Normalized Difference Vegetation Index (NDVI) Classes",
     fontsize=14,
