@@ -147,12 +147,14 @@ ep.plot_rgb(
 plt.show()
 
 #############################################################################
-# Open and Reproject Polygon Boundary
-# ------------------------------------
+# Plot Boundary Over Composite Image
+# -----------------------------------
 # .. note::
-#       If you are on windows, you may need to set your environment here!
+#       If you are on windows, you may need to add the crs issue discussed above
+#       here!
 #
-# To overlay a polygon boundary on an image, the data need to be in the same
+# You can overlay a polygon boundary on top of an RGB plot created with EarthPy.
+# To begin, the raster data and the boundary need to be in the same
 # Coordinate Reference System (CRS). You can reproject the boundary layer to
 # match the CRS of the image by getting the CRS of the image from the Rasterio
 # profile object and passing that CRS to the ``to_crs`` method from GeoPandas.
@@ -170,12 +172,12 @@ with rio.open(stack_band_paths[0]) as raster_crs:
     bound_utm13N = bound.to_crs(raster_profile["crs"])
 
 ################################################################################
-# Plot Boundary Over Composite Image
-# -----------------------------------
+# Create a Plot With the Boundary overlayed on the RGB Image 
+# ----------------------------------------------------------
 # You can plot a polygon boundary over an image by creating a raster extent
 # for the plot using the ``plotting_extent`` function from ``rasterio.plot``.
 # The function needs the Rasterio profile of the image and a single layer of a
-# numpy array, which can be specified with ``arr_str[0]``.  The function also
+# numpy array, which can be specified with ``arr_str[0]``. The function also
 # needs the spatial transformation for the Rasterio object, which can be acquired
 # by accessing the ``"transform"`` key within the Rasterio profile.
 
@@ -201,9 +203,10 @@ ep.plot_rgb(
 plt.show()
 
 ###############################################################################
-# Create Figure with Multiple Plots
-# ---------------------------------
-# You can create figures that contain multiple plots by creating multiple ax
+# Create Figure with Multiple Axes or Subplots
+# --------------------------------------------
+# ```plot_rgb()`` has an ``ax=`` parameter which supports subplots. You can 
+# create figures that contain multiple plots by creating multiple ax
 # objects, one for each plot. You can also specify the number of rows and
 # columns in which to display the plots. In the example below, the two plots
 # will be displayed side-by-side along one row with two columns.
