@@ -26,7 +26,7 @@ code needed to :
 * [Plot rgb (color), color infrared and other 3 band combination images (`plot_rgb()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_rgb.html)
 * View histograms of sets of raster 
 * [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
-* Crop raster bands to a study area
+* [Crop raster bands to a study area]((https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html))
 * [Calculate vegetation indices such as Normalized Difference Vegetation Index (`normalized_diff()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_calculate_classify_ndvi.html)
 
 EarthPy also has an io module that allows users to 
@@ -109,4 +109,3 @@ for more information about submitting pull requests or changes to EarthPy.
 ## License
 
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
-
