@@ -54,7 +54,9 @@ data = et.data.get_data("vignette-landsat")
 # -------------------
 #
 # To get started, make sure your directory is set. Then, create a stack from all of
-# the Landsat .tif files (one per band).
+# the Landsat .tif files (one per band). The nodata value for Landsat 8 is
+# ``-9999`` so you can use the ``nodata=`` parameter when you call the
+# ``stack()`` function.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -64,7 +66,7 @@ landsat_path = glob(
     "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*_crop.tif"
 )
 landsat_path.sort()
-arr_st, meta = es.stack(landsat_path)
+arr_st, meta = es.stack(landsat_path, nodata=-9999)
 
 
 ###############################################################################
@@ -94,7 +96,6 @@ ep.plot_bands(
     ndvi, cmap="RdYlGn", cols=1, title=titles, scale=False, vmin=-1, vmax=1
 )
 
-
 ###############################################################################
 # Classify NDVI
 # -------------
@@ -117,18 +118,17 @@ ndvi_cat_names = [
 ]
 
 ###############################################################################
-# Plot Classified NDVI With Categorical Legend
-# --------------------------------------------
+# Plot Classified NDVI With Categorical Legend - EarthPy Draw_Legend()
+# --------------------------------------------------------------------
 #
 # You can plot the classified NDVI with a categorical legend using the
-# ``draw_legend`` function from the ``earthpy.plot`` module.
+# ``draw_legend()`` function from the ``earthpy.plot`` module.
 
 # Define color map
 nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
 nbr_cmap = ListedColormap(nbr_colors)
 
 fig, ax = plt.subplots(figsize=(12, 12))
-
 im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
 
 # Get list of classes
