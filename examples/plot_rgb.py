@@ -29,8 +29,9 @@ Learn how to plot different band combinations from satellite imagery using Earth
 # band combinations to create RGB (true color) and CIR (false color) composite
 # images. You will create a stack of bands using Landsat 8 data and then plot
 # the different band combinations using the ``plot_rgb()`` function. You will
-# also learn how to stretch the image values to brighten dark images and how to
-# create figures that contain multiple plots.
+# also learn how to stretch the image values to brighten dark images, how to
+# overlay polygon boundaries on the images, and how to create figures that
+# contain multiple plots.
 
 ###############################################################################
 # Import Packages
@@ -42,6 +43,9 @@ Learn how to plot different band combinations from satellite imagery using Earth
 import os
 from glob import glob
 import matplotlib.pyplot as plt
+import rasterio as rio
+from rasterio.plot import plotting_extent
+import geopandas as gpd
 import earthpy as et
 import earthpy.spatial as es
 import earthpy.plot as ep
@@ -56,7 +60,14 @@ import earthpy.plot as ep
 # Landsat .tif files (one per band) in a directory using the ``stack()`` function
 # from the ``earthpy.spatial`` module.
 
-###############################################################################
+###################################################################################
+# Error found on Windows systems
+# -------------------------------
+# .. note::
+#       If you are running this script on a Windows system, there is a
+#       known bug with ``.to_crs()``, which is used in this script. If an error
+#       occurs, you have to reset your os environment with the command
+#       ``os.environ["PROJ_LIB"] = r"path-to-share-folder-in-environment"``.
 
 # Get sample data from EarthPy and set working directory
 data_path = et.data.get_data("vignette-landsat")
@@ -73,7 +84,7 @@ arr_st, meta = es.stack(stack_band_paths, nodata=-9999)
 ###############################################################################
 # Plot RGB Composite Image
 # --------------------------
-# You can use ``plot_rgb()`` function from the ``earthpy.plot`` module to quickly
+# You can use the ``plot_rgb()`` function from the ``earthpy.plot`` module to quickly
 # plot three band composite images. For RGB composite images, you will plot the red,
 # green, and blue bands, which are bands 4, 3, and 2, respectively, in the image
 # stack you created. Python uses a zero-based index system, so you need to subtract
@@ -135,6 +146,60 @@ ep.plot_rgb(
 )
 plt.show()
 
+#############################################################################
+# Open and Reproject Polygon Boundary
+# ------------------------------------
+# .. note::
+#       If you are on windows, you may need to set your environment here!
+#
+# To overlay a polygon boundary on an image, the data need to be in the same
+# Coordinate Reference System (CRS). You can reproject the boundary layer to
+# match the CRS of the image by getting the CRS of the image from the Rasterio
+# profile object and passing that CRS to the ``to_crs`` method from GeoPandas.
+
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
+
+# Open polygon boundary using GeoPandas
+bound = gpd.read_file(
+    "data/vignette-landsat/vector_layers/fire-boundary-geomac/co_cold_springs_20160711_2200_dd83.shp"
+)
+
+# Reproject boundary to match CRS of the Landsat images
+with rio.open(stack_band_paths[0]) as raster_crs:
+    raster_profile = raster_crs.profile
+    bound_utm13N = bound.to_crs(raster_profile["crs"])
+
+################################################################################
+# Plot Boundary Over Composite Image
+# -----------------------------------
+# You can plot a polygon boundary over an image by creating a raster extent
+# for the plot using the ``plotting_extent`` function from ``rasterio.plot``.
+# The function needs the Rasterio profile of the image and a single layer of a
+# numpy array, which can be specified with ``arr_str[0]``.  The function also
+# needs the spatial transformation for the Rasterio object, which can be acquired
+# by accessing the ``"transform"`` key within the Rasterio profile.
+
+# Create raster extent for the plot
+extent = plotting_extent(arr_st[0], raster_profile["transform"])
+
+# Create figure with one plot
+fig, ax = plt.subplots(figsize=(12, 12))
+
+# Plot boundary with high zorder for contrast
+bound_utm13N.boundary.plot(ax=ax, color="black", zorder=10)
+
+# Plot CIR image using the raster extent
+ep.plot_rgb(
+    arr_st,
+    rgb=(4, 3, 2),
+    ax=ax,
+    stretch=True,
+    extent=extent,
+    str_clip=0.5,
+    title="Landsat 8 CIR Image with Polygon Boundary",
+)
+plt.show()
+
 ###############################################################################
 # Create Figure with Multiple Plots
 # ---------------------------------
@@ -144,25 +209,29 @@ plt.show()
 # will be displayed side-by-side along one row with two columns.
 
 # Create figure with two plots
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 12))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
 
-# Plot of RGB composite image
+# Plot of RGB composite image with polygon boundary
+bound_utm13N.boundary.plot(ax=ax1, color="black", zorder=10)
 ax1 = ep.plot_rgb(
     arr_st,
     rgb=(3, 2, 1),
     ax=ax1,
     stretch=True,
+    extent=extent,
     str_clip=0.5,
-    title="Landsat 8 RGB Image with Stretch Applied",
+    title="Landsat 8 RGB Image with Polygon Boundary",
 )
 
-# Plot of CIR composite image
+# Plot of CIR composite image with polygon boundary
+bound_utm13N.boundary.plot(ax=ax2, color="black", zorder=10)
 ax2 = ep.plot_rgb(
     arr_st,
     rgb=(4, 3, 2),
     ax=ax2,
     stretch=True,
+    extent=extent,
     str_clip=0.5,
-    title="Landsat 8 CIR Image with Stretch Applied",
+    title="Landsat 8 CIR Image with Polygon Boundary",
 )
 plt.show()
