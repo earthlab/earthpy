@@ -108,14 +108,10 @@ ep.plot_bands(
 ndvi_class_bins = [-np.inf, 0, 0.1, 0.25, 0.4, np.inf]
 ndvi_landsat_class = np.digitize(ndvi, ndvi_class_bins)
 
-# Define class names
-ndvi_cat_names = [
-    "No Vegetation",
-    "Bare Area",
-    "Low Vegetation",
-    "Moderate Vegetation",
-    "High Vegetation",
-]
+# Apply the nodata mask to the newly classified NDVI data
+ndvi_landsat_class = np.ma.masked_where(np.ma.getmask(ndvi), ndvi_landsat_class)
+np.unique(ndvi_landsat_class)
+
 
 ###############################################################################
 # Plot Classified NDVI With Categorical Legend - EarthPy Draw_Legend()
@@ -126,17 +122,28 @@ ndvi_cat_names = [
 
 # Define color map
 nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
-nbr_cmap = ListedColormap(nbr_colors)
+#nbr_cmap = ListedColormap(nbr_colors)
 
-fig, ax = plt.subplots(figsize=(12, 12))
-im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
+# Define class names
+ndvi_cat_names = [
+    "No Vegetation",
+    "Bare Area",
+    "Low Vegetation",
+    "Moderate Vegetation",
+    "High Vegetation",
+]
 
 # Get list of classes
 classes = np.unique(ndvi_landsat_class)
 classes = classes.tolist()
+# The mask returns a value of none in the classes. remove that
+classes = classes[0:5]
+
+# Plot your data
+fig, ax = plt.subplots(figsize=(12, 12))
+im = ax.imshow(ndvi_landsat_class, cmap=nbr_cmap)
 
 ep.draw_legend(im_ax=im, classes=classes, titles=ndvi_cat_names)
-
 ax.set_title(
     "Landsat 8 - Normalized Difference Vegetation Index (NDVI) Classes",
     fontsize=14,
