@@ -51,11 +51,12 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Stack the Landsat 8 bands
 # This creates a numpy array with each "layer" representing a single band
+# You can use the nodata= parameter to mask nodata values
 landsat_path = glob(
     "data/vignette-landsat/LC08_L1TP_034032_20160621_20170221_01_T1_sr_band*_crop.tif"
 )
 landsat_path.sort()
-array_stack, meta_data = es.stack(landsat_path)
+array_stack, meta_data = es.stack(landsat_path, nodata=-9999)
 
 ###############################################################################
 # Plot All Bands in a Stack
@@ -78,7 +79,7 @@ plt.show()
 # it will only plot that single band. You can turn off the
 # colorbar using the ``cbar`` parameter (``cbar=False``).
 
-ep.plot_bands(array_stack[4], cbar=False)
+ep.plot_bands(array_stack[4], nodata=-9999, cbar=False)
 plt.show()
 
 ##################################################################################
