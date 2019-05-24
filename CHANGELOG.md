@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+* Add vignette for using the plot_bands() function (@nkorinek, #315)
 * Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
-
 
 ## [0.6.9]
 * Add URL to io.py for Landsat vignette dataset (@jpalomino, #309)
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.7]
 * Add NoData masking support for `stack()` (@joemcglinchy, #282)
 * Fix multiline messages to use `"` vs `"""` (@lwasser, #270)
-
+    
 ## [0.6.6]
 * Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
 * Add two example vignettes for using EarthPy with raster data (@lwasser)
