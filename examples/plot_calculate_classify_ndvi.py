@@ -122,7 +122,7 @@ np.unique(ndvi_landsat_class)
 
 # Define color map
 nbr_colors = ["gray", "y", "yellowgreen", "g", "darkgreen"]
-#nbr_cmap = ListedColormap(nbr_colors)
+nbr_cmap = ListedColormap(nbr_colors)
 
 # Define class names
 ndvi_cat_names = [
