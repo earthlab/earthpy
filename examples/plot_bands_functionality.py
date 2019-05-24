@@ -3,9 +3,10 @@ Plot Bands of Satellite Imagery with EarthPy
 ==================================================================
 
 Learn how to use the EarthPy ``plot_bands()`` function to quickly plot
-a single or many raster bands of an image. ``Plot_bands()`` can also
-be used to plot single raster layers with legends. Additionally,
-learn some of the customization possible when plotting bands.
+raster bands for an image. ``Plot_bands()`` can be used to
+
+1. plot many bands with one command with custom titles and legends OR
+2. to plot a single raster layer with (or without) a legend.
 
 """
 
@@ -18,8 +19,9 @@ learn some of the customization possible when plotting bands.
 #    to plot individual raster layers in images using python. To plot rgb data,
 #    read help documentation related to ``ep.plot_rgb()``.
 #
-# In this vignette, you will use Landsat 8. To begin, you will create a stack of
-# bands using Landsat 8 data and then plot the raster layers in various ways.
+# In this vignette, you will use Landsat 8 data. To begin, you will create a 
+# stack of
+# bands using Landsat 8 data. You will then plot the raster layers.
 
 ###############################################################################
 # Import Packages
@@ -44,7 +46,7 @@ import earthpy.plot as ep
 
 # Get data for example
 data = et.data.get_data("vignette-landsat")
-# Setting home directory
+# Set working directory
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Stack the Landsat 8 bands
@@ -59,9 +61,9 @@ array_stack, meta_data = es.stack(landsat_path)
 # Plot All Bands in a Stack
 # --------------------------
 #
-# When you give ``ep.plot_bands()`` a three dimensional numpy array, as is created
-# when ``es.stack()`` is ran, it will plot all layers of the numpy array. To title
-# all of the images individually, you must submit a list of titles as an argument.
+# When you give ``ep.plot_bands()`` a three dimensional numpy array,
+# it will plot all layers in the numpy array. You can create unique titles for 
+# each image by providing a list of titles using the ``title=`` parameter.
 # The list must contain the same number of strings as there are bands in the stack.
 
 titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
@@ -72,9 +74,9 @@ plt.show()
 # Plot One Band in a Stack
 # ------------------------
 #
-# If you give ``ep.plot_bands()`` a one dimensional numpy array, such as one layer
-# from the return of es.stack, it will just plot that band. You can turn off the
-# colorbar using the cbar parameter (cbar=False).
+# If you give ``ep.plot_bands()`` a one dimensional numpy array,
+# it will only plot that single band. You can turn off the
+# colorbar using the ``cbar`` parameter (``cbar=False``).
 
 ep.plot_bands(array_stack[4], cbar=False)
 plt.show()
@@ -85,7 +87,7 @@ plt.show()
 #
 # ``ep.plot_bands()`` scales the imagery to a 0-255 scale by default. This range
 # of values makes it easier for matplotlib to plot the data. To turn off
-# scaling, simply set the scale parameter to ``False``. Below you
+# scaling, set the scale parameter to ``False``. Below you
 # plot NDVI with scaling turned off in order for the proper range of values
 # (-1 to 1) to be displayed. You can use the ``cmap=`` parameter to adjust
 # the colormap for the plot
