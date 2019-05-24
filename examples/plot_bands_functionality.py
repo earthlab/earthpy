@@ -79,7 +79,7 @@ plt.show()
 # it will only plot that single band. You can turn off the
 # colorbar using the ``cbar`` parameter (``cbar=False``).
 
-ep.plot_bands(array_stack[4], nodata=-9999, cbar=False)
+ep.plot_bands(array_stack[4], cbar=False)
 plt.show()
 
 ##################################################################################
