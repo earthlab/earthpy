@@ -3,10 +3,9 @@ Plot Bands of Satellite Imagery with EarthPy
 ==================================================================
 
 Learn how to use the EarthPy ``plot_bands()`` function to quickly plot
-raster bands for an image. ``Plot_bands()`` can be used to
-
-1. plot many bands with one command with custom titles and legends OR
-2. to plot a single raster layer with (or without) a legend.
+raster bands for an image. ``Plot_bands()`` can be used to both 
+plot many bands with one command with custom titles and legends OR
+to plot a single raster layer with (or without) a legend.
 
 """
 
