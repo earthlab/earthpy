@@ -370,6 +370,82 @@ def crop_image(raster, geoms, all_touched=True):
     return out_image, out_meta
 
 
+def crop_all(
+    band_paths,
+    output_dir,
+    geoms,
+    overwrite=False,
+    all_touched=True,
+    verbose=True,
+):
+    """Takes a list of rasters and a boundary, and crops them efficiently.
+
+    Parameters
+    ----------
+    band_paths : list of file paths
+        List of paths of bands that are to be cropped.
+    output_dir : list or string
+        If a list is provided, then the output files from this function will be written to
+        each path in the list. This allows for customization of file names.
+        If a string is provided, then the output files from the function will be written
+        to that directory with the name of the original file plus a suffix of "_crop".
+    geoms : geopandas geodataframe or list of polygons
+        The spatial polygon boundaries in GeoJSON-like dict format
+        to be used to crop the image. All data outside of the polygon
+        boundaries will be set to nodata and/or removed from the image.
+    overwrite : bool (default=False)
+        Disallows files to be overwritten if they exist already. Can be changed so that files
+        can be overwritten with each run of the function.
+    all_touched : bool (default=True)
+        Include a pixel in the mask if it touches any of the
+        shapes. If False, include a pixel only if its center is within one of
+        the shapes, or if it is selected by Bresenham's line algorithm.
+        (from rasterio)
+    verbose : bool (default=True)
+        Returns a list of file paths with the files that were created in the function. Can
+        be turned off so the user doesn't have to assign the function to a variable.
+
+    Returns
+    ----------
+    return files : list
+        List of the files created by the function.
+    """
+    if not os.path.exists(os.path.commonpath(band_paths)):
+        raise ValueError(
+            "The output directory that you provided does not exist"
+        )
+    if type(output_dir) == list and len(band_paths) != len(output_dir):
+        raise ValueError(
+            "The list of input bands does not match the length of the list of output file names."
+        )
+    if type(output_dir) != list:
+        return_files = []
+    for i, bands in enumerate(band_paths):
+        if type(output_dir) == list:
+            outpath = output_dir[i]
+        else:
+            path_name, extension = bands.split(".")
+            name = os.path.basename(os.path.normpath(path_name))
+            outpath = os.path.join(output_dir, name + "_crop." + extension)
+            return_files.append(outpath)
+        if os.path.exists(outpath) and not overwrite:
+            raise ValueError(
+                "The file "
+                + outpath
+                + " already exists. If you wish to overwrite this file, set the overwrite arguement to true."
+            )
+        with rio.open(bands) as currband:
+            crop, meta = crop_image(currband, geoms, all_touched=all_touched)
+            with rio.open(outpath, "w", **meta) as dest:
+                dest.write(crop)
+    if verbose:
+        if type(output_dir) == list:
+            return_files = output_dir
+            return return_files
+        else:
+            return return_files
+
+
 def bytescale(data, high=255, low=0, cmin=None, cmax=None):
     """Byte scales an array (image).
 
