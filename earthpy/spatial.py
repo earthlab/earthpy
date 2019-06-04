@@ -418,8 +418,7 @@ def crop_all(
         raise ValueError(
             "The list of input bands does not match the length of the list of output file names."
         )
-    if type(output_dir) != list:
-        return_files = []
+    return_files = []
     for i, bands in enumerate(band_paths):
         if type(output_dir) == list:
             outpath = output_dir[i]
@@ -440,8 +439,7 @@ def crop_all(
                 dest.write(crop)
     if verbose:
         if type(output_dir) == list:
-            return_files = output_dir
-            return return_files
+            return output_dir
         else:
             return return_files
 
