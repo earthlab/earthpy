@@ -18,6 +18,45 @@ def in_paths(basic_image_tif):
     return [basic_image_tif] * 4
 
 
+@pytest.fixture
+def in_paths_mismatch(basic_image_tif, basic_image_tif_2):
+    """ Input file paths for tifs of different sizes to stack. """
+    return [basic_image_tif] * 4 + [basic_image_tif_2]
+
+
+@pytest.fixture
+def in_paths_CRS_mismatch(basic_image_tif, basic_image_tif_CRS):
+    """ Input file paths for tifs of different sizes to stack. """
+    return [basic_image_tif] * 4 + [basic_image_tif_CRS]
+
+
+@pytest.fixture
+def in_paths_Affine_mismatch(basic_image_tif, basic_image_tif_Affine):
+    """ Input file paths for tifs of different sizes to stack. """
+    return [basic_image_tif] * 4 + [basic_image_tif_Affine]
+
+
+def test_stack_array_size_mismatch(in_paths_mismatch):
+    """ Test for error raised when array sizes are not all equal. """
+
+    with pytest.raises(ValueError, match="same rows and columns"):
+        es.stack(in_paths_mismatch)
+
+
+def test_stack_CRS_mismatch(in_paths_CRS_mismatch):
+    """ Test for error raised when raster CRS are not all equal. """
+
+    with pytest.raises(ValueError, match="same CRS"):
+        es.stack(in_paths_CRS_mismatch)
+
+
+def test_stack_Affine_mismatch(in_paths_Affine_mismatch):
+    """ Test for error raised when raster Affine transform are not all equal. """
+
+    with pytest.raises(ValueError, match="same affine transform"):
+        es.stack(in_paths_Affine_mismatch)
+
+
 def test_stack_no_file_ext(in_paths):
     """Test for error raised when no file extension provided in output file."""
 

@@ -192,7 +192,29 @@ def stack(band_paths, out_path="", nodata=None):
             for path in band_paths
         ]
 
-        # TODO: Check that the CRS and TRANSFORM are the same
+        # Check that the CRS and TRANSFORM are the same
+        dest_crs = [src.meta["crs"].to_string() for src in sources]
+        dest_aff = [src.meta["transform"] for src in sources]
+        dest_shps = [
+            (src.meta["height"], src.meta["width"]) for src in sources
+        ]
+
+        if not len(set(dest_crs)) == 1:
+            raise ValueError(
+                "Please ensure all source rasters have the same CRS."
+            )
+
+        if not len(set(dest_aff)) == 1:
+            raise ValueError(
+                "Please ensure all source rasters have same affine transform."
+            )
+
+        if not len(set(dest_shps)) == 1:
+            raise ValueError(
+                "Please ensure all source rasters have same rows and columns."
+            )
+
+        # Update band count
         dest_kwargs = sources[0].meta
         dest_count = sum(src.count for src in sources)
         dest_kwargs["count"] = dest_count
