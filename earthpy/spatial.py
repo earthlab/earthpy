@@ -409,21 +409,37 @@ def crop_all(
     ----------
     return files : list
         List of the files created by the function.
+
+    Example
+    -------
+        >>> import os
+        >>> import earthpy.spatial as es
+        >>> from earthpy.io import path_to_example
+        >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
+        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
+        >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
+        >>> output_dir = "."
+        >>> output_files = es.crop_all(band_paths, output_dir, rmnp, overwrite=True)
+        >>> len(output_files)
+        4
+        >>> os.path.isfile(output_files[0])
+        True
+
     """
     try:
         if not os.path.exists(os.path.commonpath(output_dir)):
-            raise ValueError(
+            raise TypeError(
                 "The output directory that you provided does not exist"
             )
         list_type = True
         if len(band_paths) != len(output_dir):
-            raise ValueError(
+            raise TypeError(
                 "The list of input bands does not match the length of the list of output file names."
             )
-    except (ValueError):
+    except ValueError:
         list_type = False
         if not os.path.exists(output_dir):
-            raise ValueError(
+            raise TypeError(
                 "The output directory that you provided does not exist"
             )
     return_files = []
@@ -437,9 +453,8 @@ def crop_all(
             return_files.append(outpath)
         if os.path.exists(outpath) and not overwrite:
             raise ValueError(
-                "The file "
-                + outpath
-                + " already exists. If you wish to overwrite this file, set the overwrite arguement to true."
+                "The file %s already exists. If you wish to overwrite this file, set the overwrite argument to true."
+                % outpath
             )
         with rio.open(bands) as currband:
             crop, meta = crop_image(currband, geoms, all_touched=all_touched)

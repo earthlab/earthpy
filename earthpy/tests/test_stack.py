@@ -6,18 +6,6 @@ import pytest
 import earthpy.spatial as es
 
 
-@pytest.fixture
-def out_path(tmpdir):
-    """ A path for an output .tif file. """
-    return os.path.join(str(tmpdir), "out.tif")
-
-
-@pytest.fixture
-def in_paths(basic_image_tif):
-    """ Input file paths for tifs to stack. """
-    return [basic_image_tif] * 4
-
-
 def test_stack_no_file_ext(in_paths):
     """Test for error raised when no file extension provided in output file."""
 
