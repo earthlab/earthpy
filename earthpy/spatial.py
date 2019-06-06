@@ -422,7 +422,7 @@ def crop_all(
         >>> output_dir = os.path.commonpath(band_paths)
         >>> output_files = es.crop_all(band_paths, output_dir, rmnp, overwrite=True)
         >>> len(output_files)
-        4
+        3
         >>> os.path.isfile(output_files[0])
         True
         >>> # Cleaning up example data
