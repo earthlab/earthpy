@@ -1,4 +1,4 @@
-bumpversion
+bumpversion==0.5.3
 codecov
 m2r
 pandas
