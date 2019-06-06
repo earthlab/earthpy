@@ -1,7 +1,7 @@
 bumpversion
 codecov
 m2r
-pandas
+pandas==0.24.2
 pre-commit
 pytest
 pytest-cov
