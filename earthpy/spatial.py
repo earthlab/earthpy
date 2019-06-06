@@ -410,17 +410,25 @@ def crop_all(
     return files : list
         List of the files created by the function.
     """
-    if not os.path.exists(os.path.commonpath(band_paths)):
-        raise ValueError(
-            "The output directory that you provided does not exist"
-        )
-    if type(output_dir) == list and len(band_paths) != len(output_dir):
-        raise ValueError(
-            "The list of input bands does not match the length of the list of output file names."
-        )
+    try:
+        if not os.path.exists(os.path.commonpath(output_dir)):
+            raise ValueError(
+                "The output directory that you provided does not exist"
+            )
+        list_type = True
+        if len(band_paths) != len(output_dir):
+            raise ValueError(
+                "The list of input bands does not match the length of the list of output file names."
+            )
+    except (ValueError):
+        list_type = False
+        if not os.path.exists(output_dir):
+            raise ValueError(
+                "The output directory that you provided does not exist"
+            )
     return_files = []
     for i, bands in enumerate(band_paths):
-        if type(output_dir) == list:
+        if list_type:
             outpath = output_dir[i]
         else:
             path_name, extension = bands.split(".")
@@ -438,7 +446,7 @@ def crop_all(
             with rio.open(outpath, "w", **meta) as dest:
                 dest.write(crop)
     if verbose:
-        if type(output_dir) == list:
+        if list_type:
             return output_dir
         else:
             return return_files

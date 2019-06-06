@@ -1,4 +1,5 @@
 """ Utility functions for tests. """
+import os
 import numpy as np
 import pytest
 from affine import Affine
@@ -50,3 +51,15 @@ def basic_image_tif(tmpdir, basic_image):
 @pytest.fixture
 def image_array_2bands():
     return np.random.randint(10, size=(2, 4, 5))
+
+
+@pytest.fixture
+def in_paths(basic_image_tif):
+    """ Input file paths for tifs to stack. """
+    return [basic_image_tif] * 4
+
+
+@pytest.fixture
+def out_path(tmpdir):
+    """ A path for an output .tif file. """
+    return os.path.join(str(tmpdir), "out.tif")

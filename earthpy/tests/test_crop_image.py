@@ -1,5 +1,6 @@
 """ Tests for the spatial module. """
 
+import os
 import numpy as np
 import pytest
 import geopandas as gpd
@@ -35,6 +36,21 @@ def basic_geometry_gdf(basic_geometry):
         geometry=[basic_geometry], crs={"init": "epsg:4326"}
     )
     return gdf
+
+
+@pytest.fixture
+def output_dir(out_path):
+    return out_path[:-8]
+
+
+@pytest.fixture
+def output_file_list(output_dir):
+    output_file_list = []
+    for i in range(4):
+        output_file_list.append(
+            os.path.join(output_dir, "file" + str(i) + ".tif")
+        )
+    return output_file_list
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
@@ -119,3 +135,59 @@ def test_crop_image_fails_empty_list(basic_image_tif, basic_geometry):
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError):
             es.crop_image(src, list())
+
+
+def test_crop_all_returns_list(in_paths, output_dir, basic_geometry_gdf):
+    """Test that crop all returns a list"""
+    img_list = es.crop_all(
+        in_paths, output_dir, basic_geometry_gdf, overwrite=True
+    )
+    assert type(img_list) == list
+
+
+def test_crop_all_returns_list_when_given_list(
+    in_paths, output_file_list, basic_geometry_gdf
+):
+    """Test that crop all returns a list"""
+    img_list = es.crop_all(
+        in_paths, output_file_list, basic_geometry_gdf, overwrite=True
+    )
+    assert type(img_list) == list
+
+
+def test_crop_all_returns_list(in_paths, output_dir, basic_geometry_gdf):
+    """Test that crop all returns a list"""
+    img_list = es.crop_all(
+        in_paths, output_dir, basic_geometry_gdf, overwrite=True
+    )
+    assert len(img_list) == len(in_paths)
+
+
+def test_crop_all_files_exist(in_paths, output_dir, basic_geometry_gdf):
+    """Test that crop all returns a list"""
+    img_list = es.crop_all(
+        in_paths, output_dir, basic_geometry_gdf, overwrite=True
+    )
+    for files in img_list:
+        assert os.path.exists(files)
+
+
+def test_crop_all_returns_list(in_paths, output_dir, basic_geometry_gdf):
+    """Test that crop all returns a list"""
+    with pytest.raises(ValueError):
+        es.crop_all(in_paths, output_dir, basic_geometry_gdf)
+
+
+def test_crop_all_fails_bad_dir(in_paths, basic_geometry_gdf):
+    """If user provides a bad directory path raise an error."""
+    bad_path = "Badpath"
+    with pytest.raises(ValueError):
+        es.crop_all(in_paths, bad_path, basic_geometry_gdf)
+
+
+def test_crop_all_returns_list(in_paths, output_dir, basic_geometry_gdf):
+    """Test that crop all returns a list"""
+    img_list = es.crop_all(
+        in_paths, output_dir, basic_geometry_gdf, overwrite=True
+    )
+    assert len(img_list) == len(in_paths)
