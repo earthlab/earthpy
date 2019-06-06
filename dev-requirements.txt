@@ -1,6 +1,6 @@
 bumpversion==0.5.3
 codecov
-m2r
+m2r==0.2.1
 pandas
 pre-commit
 pytest
