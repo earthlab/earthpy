@@ -55,7 +55,7 @@ data = et.data.get_data("colorado-flood")
 # Setting the home directory and getting the data for the exercise
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-dtm = "data/vignette-elevation/pre_DTM.tif"
+dtm = "data/colorado-flood/spatial/boulder-leehill-rd/pre-flood/lidar/pre_DTM.tif"
 
 # Opening the DEM with RasterIO
 
