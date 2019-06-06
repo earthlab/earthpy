@@ -2,7 +2,7 @@ bumpversion==0.5.3
 codecov
 m2r==0.2.1
 pandas
-pre-commit
+pre-commit==1.17.0
 pytest
 pytest-cov
 pytest-vcr
