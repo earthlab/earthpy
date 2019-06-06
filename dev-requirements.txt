@@ -3,7 +3,7 @@ codecov
 m2r
 pandas
 pre-commit
-pytest
+pytest==4.6.2
 pytest-cov
 pytest-vcr
 sphinx==1.8.0
