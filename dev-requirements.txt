@@ -1,7 +1,6 @@
 bumpversion==0.5.3
 codecov
 m2r==0.2.1
-pandas
 pre-commit==1.17.0
 pytest
 pytest-cov==2.7.1
