@@ -447,7 +447,7 @@ def crop_all(
         if list_type:
             outpath = output_dir[i]
         else:
-            path_name, extension = bands.split(".")
+            path_name, extension = bands.rsplit(".", 1)
             name = os.path.basename(os.path.normpath(path_name))
             outpath = os.path.join(output_dir, name + "_crop." + extension)
             return_files.append(outpath)
