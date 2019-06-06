@@ -39,7 +39,7 @@ def in_paths_Affine_mismatch(basic_image_tif, basic_image_tif_Affine):
 def test_stack_array_size_mismatch(in_paths_mismatch):
     """ Test for error raised when array dimensions (nrows, ncols) are not all equal. """
 
-    with pytest.raises(ValueError, match="same rows and columns"):
+    with pytest.raises(ValueError, match="same dimensions"):
         es.stack(in_paths_mismatch)
 
 
