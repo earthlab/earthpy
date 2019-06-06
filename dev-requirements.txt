@@ -4,7 +4,7 @@ m2r
 pandas
 pre-commit
 pytest
-pytest-cov
+pytest-cov==2.7.1
 pytest-vcr
 sphinx==1.8.0
 sphinx-autobuild==0.7.1
