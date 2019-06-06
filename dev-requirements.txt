@@ -1,5 +1,5 @@
 bumpversion
-codecov
+codecov==2.0.15
 m2r
 pandas
 pre-commit
