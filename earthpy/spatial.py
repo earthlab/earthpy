@@ -414,16 +414,20 @@ def crop_all(
     -------
         >>> import os
         >>> import earthpy.spatial as es
+        >>> import geopandas as gpd
         >>> from earthpy.io import path_to_example
         >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
         >>> band_paths = [path_to_example(fname) for fname in band_fnames]
         >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
-        >>> output_dir = "."
+        >>> output_dir = os.path.commonpath(band_paths)
         >>> output_files = es.crop_all(band_paths, output_dir, rmnp, overwrite=True)
         >>> len(output_files)
         4
         >>> os.path.isfile(output_files[0])
         True
+        >>> # Cleaning up example data
+        >>> for bands in output_files:
+        ...     os.remove(bands)
 
     """
     try:
