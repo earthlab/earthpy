@@ -211,7 +211,7 @@ def stack(band_paths, out_path="", nodata=None):
 
         if not len(set(dest_shps)) == 1:
             raise ValueError(
-                "Please ensure all source rasters have same rows and columns."
+                "Please ensure all source rasters have same dimensions (nrows, ncols)."
             )
 
         # Update band count
