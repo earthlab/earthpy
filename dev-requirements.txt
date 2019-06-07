@@ -1,8 +1,8 @@
 bumpversion==0.5.3
 codecov
 m2r==0.2.1
+pytest==4.6.2
 pre-commit==1.17.0
-pytest
 pytest-cov==2.7.1
 pytest-vcr
 sphinx==2.1.0
