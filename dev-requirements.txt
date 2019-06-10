@@ -1,6 +1,6 @@
 codecov==2.0.15
 bumpversion==0.5.3
-codecov
+codecov==2.0.15
 pre-commit==1.17.0
 sphinx==1.8.0
 m2r==0.2.1
