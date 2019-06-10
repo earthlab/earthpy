@@ -1,3 +1,4 @@
+codecov==2.0.15
 bumpversion==0.5.3
 codecov
 pre-commit==1.17.0
