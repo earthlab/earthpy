@@ -406,7 +406,7 @@ def crop_all(
     ----------
     raster_paths : list of file paths
         List of paths of rasters that will be cropped.
-    output_dir : list or string
+    output_dir : string
         Provide a single directory path if you wish to specify the
         location of the output cropped files only. _crop will be
         appended to the file name for each output cropped image.
