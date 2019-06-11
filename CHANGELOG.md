@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+<<<<<<< HEAD
 * Add example vignette for using the hillshade function (@nkorinek, #329)
+=======
+* Updated stack to ensure inputs are of same rows/cols/bands, CRS, and Affine transform (@joemcglinchy, #334) 
+>>>>>>> 123a171ddae7b101493243080c52b4871249d427
 * Add vignette for using the plot_bands() function (@nkorinek, #315)
 * Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
 * Add example vignette for plotting band combinations with EarthPy (@jlpalomino, #306)
