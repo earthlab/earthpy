@@ -393,7 +393,7 @@ def crop_image(raster, geoms, all_touched=True):
 
 
 def crop_all(
-    band_paths,
+    raster_paths,
     output_dir,
     geoms,
     overwrite=False,
@@ -404,8 +404,8 @@ def crop_all(
 
     Parameters
     ----------
-    band_paths : list of file paths
-        List of paths of bands that will be cropped.
+    raster_paths : list of file paths
+        List of paths of rasters that will be cropped.
     output_dir : list or string
         Provide a single directory path if you wish to specify the
         location of the output cropped files only. _crop will be
@@ -459,7 +459,7 @@ def crop_all(
             "The output directory that you provided does not exist"
         )
     return_files = []
-    for i, bands in enumerate(band_paths):
+    for i, bands in enumerate(raster_paths):
         path_name, extension = bands.rsplit(".", 1)
         name = os.path.basename(os.path.normpath(path_name))
         outpath = os.path.join(output_dir, name + "_crop." + extension)

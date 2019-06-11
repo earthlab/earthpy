@@ -63,7 +63,7 @@ def test_crop_all_with_geoms(in_paths, output_dir, basic_geometry):
     assert isinstance(test, list)
 
 
-def test_crop_all_with_nonoverlapping_geom(in_paths, output_dir):
+def test_crop_all_with_non_overlapping_geom(in_paths, output_dir):
     """Test crop all if extents don't overlap. """
     bad_geom = Polygon(
         [(12, 12), (12, 14.25), (14.25, 14.25), (14.25, 12), (12, 12)]
