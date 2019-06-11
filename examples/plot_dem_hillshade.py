@@ -63,7 +63,7 @@ dtm = "data/colorado-flood/spatial/boulder-leehill-rd/pre-flood/lidar/pre_DTM.ti
 # Open the DEM with RasterIO
 with rio.open(dtm) as src:
     elevation = src.read(1)
-    # Fix bad values
+    # Set masked values to np.nan
     elevation[elevation < 0] = np.nan
 
 # Plott the data
@@ -86,8 +86,9 @@ plt.show()
 ####################################################################################
 # Change the azimuth of the sun
 # -------------------------------
-# In hillshade, the angle that the light hits the DEM at will change how the output
-# layer looks. You can adjust this by setting the azimuth angle. Azimuth numbers can
+# The angle that sun light hits the landscape, impacts the shadows and highlights
+# created on the landscape. You can adjust the azimuth values to adjust highlights
+# and shadows that are created in your output hillshade. Azimuth numbers can
 # range from 0 to 360 degrees, where 0 is due North. The default value for azimuth
 # in ``es.hillshade()`` is 30 degrees.
 
