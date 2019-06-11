@@ -405,7 +405,7 @@ def crop_all(
     Parameters
     ----------
     band_paths : list of file paths
-        List of paths of bands that are to be cropped.
+        List of paths of bands that will be cropped.
     output_dir : list or string
         Provide a single directory path if you wish to specify the
         location of the output cropped files only. _crop will be
