@@ -35,7 +35,7 @@ def test_crop_all_fails_overwrite(in_paths, output_dir, basic_geometry_gdf):
 def test_crop_all_fails_bad_dir(in_paths, basic_geometry_gdf):
     """Test crop all fails if user provides a bad directory path. """
     bad_path = "Bad/Path"
-    with pytest.raises(TypeError, match="The output directo"):
+    with pytest.raises(ValueError, match="The output directo"):
         es.crop_all(in_paths, bad_path, basic_geometry_gdf, overwrite=True)
 
 
