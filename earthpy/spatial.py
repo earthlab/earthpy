@@ -410,9 +410,6 @@ def crop_all(
         Provide a single directory path if you wish to specify the
         location of the output cropped files only. _crop will be
         appended to the file name for each output cropped image.
-        To customize output file names and locations, provide a
-        list of full paths with file names. The number of paths
-        in the list must match the number of files being cropped.
     geoms : geopandas geodataframe or list of polygons
         The spatial polygon boundaries in GeoJSON-like dict format
         to be used to crop the image. All data outside of the polygon
@@ -457,34 +454,16 @@ def crop_all(
         ...     os.remove(bands)
 
     """
-    try:
-        if not os.path.exists(os.path.commonpath(output_dir)):
-            raise TypeError(
-                "The output directory that you provided does not exist"
-            )
-        list_type = True
-        if len(band_paths) != len(output_dir):
-            raise TypeError(
-                "You provided a list of {0} input rasters does which "
-                "doesn't match the {1} output file names.".format(
-                    len(band_paths), len(output_dir)
-                )
-            )
-    except ValueError:
-        list_type = False
-        if not os.path.exists(output_dir):
-            raise TypeError(
-                "The output directory that you provided does not exist"
-            )
+    if not os.path.exists(output_dir):
+        raise ValueError(
+            "The output directory that you provided does not exist"
+        )
     return_files = []
     for i, bands in enumerate(band_paths):
-        if list_type:
-            outpath = output_dir[i]
-        else:
-            path_name, extension = bands.rsplit(".", 1)
-            name = os.path.basename(os.path.normpath(path_name))
-            outpath = os.path.join(output_dir, name + "_crop." + extension)
-            return_files.append(outpath)
+        path_name, extension = bands.rsplit(".", 1)
+        name = os.path.basename(os.path.normpath(path_name))
+        outpath = os.path.join(output_dir, name + "_crop." + extension)
+        return_files.append(outpath)
         if os.path.exists(outpath) and not overwrite:
             raise ValueError(
                 "The file {0} already exists. If you wish to overwrite this "
@@ -495,10 +474,7 @@ def crop_all(
             with rio.open(outpath, "w", **meta) as dest:
                 dest.write(crop)
     if verbose:
-        if list_type:
-            return output_dir
-        else:
-            return return_files
+        return return_files
 
 
 def bytescale(data, high=255, low=0, cmin=None, cmax=None):
