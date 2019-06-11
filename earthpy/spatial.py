@@ -407,30 +407,35 @@ def crop_all(
     band_paths : list of file paths
         List of paths of bands that are to be cropped.
     output_dir : list or string
-        If a list is provided, then the output files from this function will be written to
-        each path in the list. This allows for customization of file names.
-        If a string is provided, then the output files from the function will be written
-        to that directory with the name of the original file plus a suffix of "_crop".
+        Provide a single directory path if you wish to specify the
+        location of the output cropped files only. _crop will be
+        appended to the file name for each output cropped image.
+        To customize output file names and locations, provide a
+        list of full paths with file names. The number of paths
+        in the list must match the number of files being cropped.
     geoms : geopandas geodataframe or list of polygons
         The spatial polygon boundaries in GeoJSON-like dict format
         to be used to crop the image. All data outside of the polygon
         boundaries will be set to nodata and/or removed from the image.
     overwrite : bool (default=False)
-        Disallows files to be overwritten if they exist already. Can be changed so that files
-        can be overwritten with each run of the function.
+        Disallows files to be overwritten if they exist already.
+        Can be changed so that files can be overwritten with each
+        run of the function. If False, will not overwrite existing
+        files. If true, existing files will be overwritten.
     all_touched : bool (default=True)
         Include a pixel in the mask if it touches any of the
-        shapes. If False, include a pixel only if its center is within one of
-        the shapes, or if it is selected by Bresenham's line algorithm.
+        shapes. If False, include a pixel only if its center i
+        s within one of the shapes, or if it is selected by
+        Bresenham's line algorithm.
         (from rasterio)
     verbose : bool (default=True)
-        Returns a list of file paths with the files that were created in the function. Can
-        be turned off so the user doesn't have to assign the function to a variable.
+        Returns a list of full file paths created by the function.
+         If set to false, returns nothing.
 
     Returns
     ----------
     return files : list
-        List of the files created by the function.
+        List of full file paths created by the function.
 
     Example
     -------
@@ -447,7 +452,7 @@ def crop_all(
         3
         >>> os.path.isfile(output_files[0])
         True
-        >>> # Cleaning up example data
+        >>> # Clean up example data
         >>> for bands in output_files:
         ...     os.remove(bands)
 
@@ -460,7 +465,10 @@ def crop_all(
         list_type = True
         if len(band_paths) != len(output_dir):
             raise TypeError(
-                "The list of input bands does not match the length of the list of output file names."
+                "You provided a list of {0} input rasters does which "
+                "doesn't match the {1} output file names.".format(
+                    len(band_paths), len(output_dir)
+                )
             )
     except ValueError:
         list_type = False
@@ -479,11 +487,11 @@ def crop_all(
             return_files.append(outpath)
         if os.path.exists(outpath) and not overwrite:
             raise ValueError(
-                "The file %s already exists. If you wish to overwrite this file, set the overwrite argument to true."
-                % outpath
+                "The file {0} already exists. If you wish to overwrite this "
+                "file, set the overwrite argument to true.".format(outpath)
             )
-        with rio.open(bands) as currband:
-            crop, meta = crop_image(currband, geoms, all_touched=all_touched)
+        with rio.open(bands) as a_band:
+            crop, meta = crop_image(a_band, geoms, all_touched=all_touched)
             with rio.open(outpath, "w", **meta) as dest:
                 dest.write(crop)
     if verbose:
