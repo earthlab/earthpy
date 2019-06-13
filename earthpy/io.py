@@ -75,6 +75,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "twitter-flood": (
+        "https://ndownloader.figshare.com/files/10960175",
+        ".",
+        "zip",
+    ),
 }
 
 HOME = op.join(op.expanduser("~"))
