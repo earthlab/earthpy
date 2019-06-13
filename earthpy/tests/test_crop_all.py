@@ -1,6 +1,6 @@
 import os
 import pytest
-from shapely.geometry import Polygon, Point, LineString
+from shapely.geometry import Polygon
 import earthpy.spatial as es
 
 
