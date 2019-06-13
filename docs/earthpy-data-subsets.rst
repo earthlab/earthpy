@@ -22,7 +22,7 @@ colorado-flood
 --------------
 Main dataset for the Colorado Flood exercise on earthdatascience.org. Contains precipitation,
 temperature, lidar, and clipping data for the 2013 Boulder Floods.More information
-`here<https://figshare.com/articles/Earth_Analytics_Python_Colorado_Flood_Teaching_Subset/6815945>`_.
+available `here<https://figshare.com/articles/Earth_Analytics_Python_Colorado_Flood_Teaching_Subset/6815945>`_.
 
 spatial-vector-lidar
 --------------------
@@ -36,7 +36,7 @@ cold-springs-modis-h5
 ---------------------
 
 Modis satellite data for the 2016 Cold Springs fire in h5 format. More information
-`here<https://figshare.com/articles/Earth_Analytics_Cold_Springs_Fire_Remote_Sensing_Data/6083210>`_.
+available `here<https://figshare.com/articles/Earth_Analytics_Cold_Springs_Fire_Remote_Sensing_Data/6083210>`_.
 
 cold-springs-fire
 -----------------
