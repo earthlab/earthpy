@@ -50,7 +50,7 @@ data = et.data.get_data("vignette-elevation")
 
 ####################################################################################
 # Open up the DEM layer
-# -------------------------
+# ----------------------
 # To create a hillshade layer, you first need a DEM layer opened up as a numpy array.
 # You can do this with RasterIO. You will read in the elevation data, and take out any
 # data that is bad by setting values below 0 to numpy's not a number value. You then
@@ -58,7 +58,7 @@ data = et.data.get_data("vignette-elevation")
 
 # Set the home directory and get the data for the exercise
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-dtm = "data/vignette-dem/pre_DTM.tif"
+dtm = "data/vignette-elevation/pre_DTM.tif"
 
 # Open the DEM with RasterIO
 with rio.open(dtm) as src:
