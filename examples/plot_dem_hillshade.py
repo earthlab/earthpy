@@ -46,7 +46,7 @@ import earthpy.plot as ep
 import rasterio as rio
 
 # Download the data needed for this vignette
-data = et.data.get_data("colorado-flood")
+data = et.data.get_data("vignette-dem")
 
 ####################################################################################
 # Open up the DEM layer
@@ -58,7 +58,7 @@ data = et.data.get_data("colorado-flood")
 
 # Set the home directory and get the data for the exercise
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-dtm = "data/colorado-flood/spatial/boulder-leehill-rd/pre-flood/lidar/pre_DTM.tif"
+dtm = "data/vignette-dem/pre_DTM.tif"
 
 # Open the DEM with RasterIO
 with rio.open(dtm) as src:

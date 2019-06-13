@@ -70,6 +70,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "vignette-dem": (
+        "https://ndownloader.figshare.com/files/15438224",
+        ".",
+        "zip",
+    ),
     "california-rim-fire": (
         "https://ndownloader.figshare.com/files/14419310",
         ".",
