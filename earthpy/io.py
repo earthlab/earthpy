@@ -70,7 +70,7 @@ DATA_URLS = {
         ".",
         "zip",
     ),
-    "vignette-dem": (
+    "vignette-elevation": (
         "https://ndownloader.figshare.com/files/15438224",
         ".",
         "zip",

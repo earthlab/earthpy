@@ -46,7 +46,7 @@ import earthpy.plot as ep
 import rasterio as rio
 
 # Download the data needed for this vignette
-data = et.data.get_data("vignette-dem")
+data = et.data.get_data("vignette-elevation")
 
 ####################################################################################
 # Open up the DEM layer
