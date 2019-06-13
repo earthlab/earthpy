@@ -220,10 +220,10 @@ with rio.open(stack_band_paths[0]) as raster_crs:
 #############################################################################
 # Crop Each Band
 # --------------
-# When cropping multiple bands to one boundary, it is best not to stack the
-# bands and then crop them, since involves cropping more data then necessary.
+# When you need to crop and stack a set of images, it is  most efficient to first
+# crop each image, and then stack it. 
 # `es.crop_all()` is an efficient way to crop all bands in an image quickly.
-# The function will write out smaller rasters of the cropped images to a
+# The function will write out cropped rasters to a
 # directory and return a list of file paths that can then be used with
 # `es.stack()`.
 
