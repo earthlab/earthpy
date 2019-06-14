@@ -1,40 +1,13 @@
 """ Tests for the spatial module. """
 
+import os
 import numpy as np
 import pytest
 import geopandas as gpd
 import rasterio as rio
+from affine import Affine
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
-
-
-@pytest.fixture
-def basic_geometry():
-    """
-    A square polygon spanning (2, 2) to (4.25, 4.25) in x and y directions
-    Borrowed from rasterio/tests/conftest.py
-
-    Returns
-    -------
-    dict: GeoJSON-style geometry object.
-        Coordinates are in grid coordinates (Affine.identity()).
-    """
-    return Polygon([(2, 2), (2, 4.25), (4.25, 4.25), (4.25, 2), (2, 2)])
-
-
-@pytest.fixture
-def basic_geometry_gdf(basic_geometry):
-    """
-    A GeoDataFrame containing the basic geometry
-
-    Returns
-    -------
-    GeoDataFrame containing the basic_geometry polygon
-    """
-    gdf = gpd.GeoDataFrame(
-        geometry=[basic_geometry], crs={"init": "epsg:4326"}
-    )
-    return gdf
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
