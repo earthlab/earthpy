@@ -46,7 +46,7 @@ You can also chose to import any of the individual modules as follows:
     >>> import earthpy.mask as em
 
 Data
-~~~~~
+~~~~
 
 EarthPy contains a helper class that supports downloaded sets of pre-created data subsets
 designed for the Earth Lab Earth Analytics online courses (see https://www.earthdatascience.org).
