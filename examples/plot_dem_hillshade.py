@@ -23,8 +23,8 @@ es.hillshade() function.
 # Hillshades are often used as an underlay in a map, to make the data appear
 # more 3-Dimensional and thus visually interesting. This vignette will show
 # you how to create a hillshade from a DEM using EarthPy. It will highlight
-# how to adjust the azimuth and other settings that will impact how the
-# shadows are modeled in the data.
+# how to adjust the sun's azimuth, altitude and other settings that will impact 
+# how the hillshade shadows are modeled in the data.
 #
 # The hillshade function is a part of the spatial module in EarthPy.
 
@@ -93,8 +93,8 @@ plt.show()
 # Change the Azimuth of the Sun
 # -------------------------------
 # The angle that sun light hits the landscape, impacts the shadows and highlights
-# created on the landscape. You can adjust the azimuth values to adjust highlights
-# and shadows that are created in your output hillshade. Azimuth numbers can
+# created on the landscape. You can adjust the azimuth values to adjust angle of the 
+# highlights and shadows that are created in your output hillshade. Azimuth numbers can
 # range from 0 to 360 degrees, where 0 is due North. The default value for azimuth
 # in ``es.hillshade()`` is 30 degrees.
 
@@ -114,9 +114,9 @@ plt.show()
 ####################################################################################
 # Change the Angle Altitude of the Sun
 # -------------------------------------
-# Another variable you can adjust for hillshade is what angle altitude the sun is
-# shining from. These values range from 0 to 90, with 90 being the sun shining from
-# directly above the scene. The default value for the angle altitude in
+# Another variable you can adjust for hillshade is what angle of the sun.
+# The ``angle_altitude`` parameter values range from 0 to 90. 90 represents the sun 
+# shining from directly above the scene. The default value for ``angle_altitude`` in
 # ``es.hillshade()`` is 30 degrees.
 
 # Adjust the azimuth value
