@@ -56,13 +56,13 @@ data = et.data.get_data("vignette-elevation")
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 dtm = "data/vignette-elevation/pre_DTM.tif"
 
-# Open the DEM with RasterIO
+# Open the DEM with Rasterio
 with rio.open(dtm) as src:
     elevation = src.read(1)
     # Set masked values to np.nan
     elevation[elevation < 0] = np.nan
 
-# Plott the data
+# Plot the data
 ep.plot_bands(
     elevation,
     scale=False,
