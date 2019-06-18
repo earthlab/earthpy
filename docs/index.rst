@@ -28,6 +28,7 @@ EarthPy User Guide
    api
    change-log
    code-of-conduct
+   earthpy-data-subsets
 
 Indices and Tables
 ==================
