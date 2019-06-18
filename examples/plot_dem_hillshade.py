@@ -23,7 +23,7 @@ es.hillshade() function.
 # Hillshades are often used as an underlay in a map, to make the data appear
 # more 3-Dimensional and thus visually interesting. This vignette will show
 # you how to create a hillshade from a DEM using EarthPy. It will highlight
-# how to adjust the sun's azimuth, altitude and other settings that will impact 
+# how to adjust the sun's azimuth, altitude and other settings that will impact
 # how the hillshade shadows are modeled in the data.
 #
 # The hillshade function is a part of the spatial module in EarthPy.
@@ -56,13 +56,13 @@ data = et.data.get_data("vignette-elevation")
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 dtm = "data/vignette-elevation/pre_DTM.tif"
 
-# Open the DEM with RasterIO
+# Open the DEM with Rasterio
 with rio.open(dtm) as src:
     elevation = src.read(1)
     # Set masked values to np.nan
     elevation[elevation < 0] = np.nan
 
-# Plott the data
+# Plot the data
 ep.plot_bands(
     elevation,
     scale=False,
@@ -93,7 +93,7 @@ plt.show()
 # Change the Azimuth of the Sun
 # -------------------------------
 # The angle that sun light hits the landscape, impacts the shadows and highlights
-# created on the landscape. You can adjust the azimuth values to adjust angle of the 
+# created on the landscape. You can adjust the azimuth values to adjust angle of the
 # highlights and shadows that are created in your output hillshade. Azimuth numbers can
 # range from 0 to 360 degrees, where 0 is due North. The default value for azimuth
 # in ``es.hillshade()`` is 30 degrees.
@@ -115,7 +115,7 @@ plt.show()
 # Change the Angle Altitude of the Sun
 # -------------------------------------
 # Another variable you can adjust for hillshade is what angle of the sun.
-# The ``angle_altitude`` parameter values range from 0 to 90. 90 represents the sun 
+# The ``angle_altitude`` parameter values range from 0 to 90. 90 represents the sun
 # shining from directly above the scene. The default value for ``angle_altitude`` in
 # ``es.hillshade()`` is 30 degrees.
 
