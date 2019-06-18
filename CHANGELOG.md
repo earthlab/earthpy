@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+* Add example vignette for using the hillshade function (@nkorinek, #329)
 * Modified `es.spatial()` to include a function called `crop_all()` that crops a list of images (@nkorinek, #333) 
 * Updated stack to ensure inputs are of same rows/cols/bands, CRS, and Affine transform (@joemcglinchy, #334) 
 * Add vignette for using the plot_bands() function (@nkorinek, #315)
@@ -24,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.7]
 * Add NoData masking support for `stack()` (@joemcglinchy, #282)
 * Fix multiline messages to use `"` vs `"""` (@lwasser, #270)
-    
+
 ## [0.6.6]
 * Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
 * Add two example vignettes for using EarthPy with raster data (@lwasser)
