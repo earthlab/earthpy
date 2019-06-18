@@ -40,7 +40,10 @@ import os
 from glob import glob
 import numpy as np
 import matplotlib.pyplot as plt
+import geopandas as gpd
 from matplotlib.colors import ListedColormap
+from shapely.geometry import Polygon
+import rasterio as rio
 import earthpy as et
 import earthpy.spatial as es
 import earthpy.plot as ep
@@ -109,7 +112,9 @@ ndvi_class_bins = [-np.inf, 0, 0.1, 0.25, 0.4, np.inf]
 ndvi_landsat_class = np.digitize(ndvi, ndvi_class_bins)
 
 # Apply the nodata mask to the newly classified NDVI data
-ndvi_landsat_class = np.ma.masked_where(np.ma.getmask(ndvi), ndvi_landsat_class)
+ndvi_landsat_class = np.ma.masked_where(
+    np.ma.getmask(ndvi), ndvi_landsat_class
+)
 np.unique(ndvi_landsat_class)
 
 
@@ -152,3 +157,42 @@ ax.set_axis_off()
 
 # Auto adjust subplot to fit figure size
 plt.tight_layout()
+
+###############################################################################
+# Crop Images to Get Rid of White Space - EarthPy Crop_Image()
+# ------------------------------------------------------------
+#
+# You can use ``es.crop_image()`` to get rid of white space in an image.
+# In this example, a Polygon is created that is the size of the image,
+# minus the right side of the image with the white space in the bottom
+# right. After the Polygon is made, it can be turned into a gdf and
+# be used to crop images.
+
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
+
+poly = Polygon(
+    [
+        (508500.0, 4376625.0),
+        (508500.0, 4434855.0),
+        (449085.0, 4434855.0),
+        (449085.0, 4376625.0),
+    ]
+)
+gdf_bound = gpd.GeoDataFrame(geometry=[poly], crs=meta["crs"])
+
+with rio.open(landsat_path[4]) as band5:
+    crop_band_5, meta5 = es.crop_image(band5, gdf_bound)
+with rio.open(landsat_path[3]) as band4:
+    crop_band_4, meta4 = es.crop_image(band4, gdf_bound)
+
+ndvi_crop = es.normalized_diff(crop_band_5, crop_band_4)
+
+ep.plot_bands(
+    ndvi_crop,
+    cmap="RdYlGn",
+    cols=1,
+    title=titles,
+    scale=False,
+    vmin=-1,
+    vmax=1,
+)
