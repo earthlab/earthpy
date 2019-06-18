@@ -70,6 +70,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "vignette-elevation": (
+        "https://ndownloader.figshare.com/articles/8259098/versions/2",
+        ".",
+        "zip",
+    ),
     "california-rim-fire": (
         "https://ndownloader.figshare.com/files/14419310",
         ".",

@@ -1,8 +1,11 @@
 """ Utility functions for tests. """
+import os
 import numpy as np
 import pytest
 from affine import Affine
 import rasterio as rio
+import geopandas as gpd
+from shapely.geometry import Polygon
 
 
 @pytest.fixture
@@ -144,3 +147,44 @@ def basic_image_tif_Affine(tmpdir, basic_image):
 @pytest.fixture
 def image_array_2bands():
     return np.random.randint(10, size=(2, 4, 5))
+
+
+@pytest.fixture
+def in_paths(basic_image_tif):
+    """ Input file paths for tifs to stack. """
+    return [basic_image_tif] * 4
+
+
+@pytest.fixture
+def out_path(tmpdir):
+    """ A path for an output .tif file. """
+    return os.path.join(str(tmpdir), "out.tif")
+
+
+@pytest.fixture
+def basic_geometry():
+    """
+    A square polygon spanning (2, 2) to (4.25, 4.25) in x and y directions
+    Borrowed from rasterio/tests/conftest.py
+
+    Returns
+    -------
+    dict: GeoJSON-style geometry object.
+        Coordinates are in grid coordinates (Affine.identity()).
+    """
+    return Polygon([(2, 2), (2, 4.25), (4.25, 4.25), (4.25, 2), (2, 2)])
+
+
+@pytest.fixture
+def basic_geometry_gdf(basic_geometry):
+    """
+    A GeoDataFrame containing the basic geometry
+
+    Returns
+    -------
+    GeoDataFrame containing the basic_geometry polygon
+    """
+    gdf = gpd.GeoDataFrame(
+        geometry=[basic_geometry], crs={"init": "epsg:4326"}
+    )
+    return gdf
