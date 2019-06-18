@@ -15,7 +15,7 @@ co-flood-extras
 ---------------
 
 Contains two additional csv files for the Colorado Flood exercise on earthdatascience.org.
-Includes precipitation and `temperature <https://figshare.com/articles/Week_2_earth_analytics/4502138/>`_
+Includes precipitation and `temperature <https://figshare.com/articles/Week_2_earth_analytics/4502138>`_
 data for the Boulder flood in 2013.
 
 colorado-flood
