@@ -29,6 +29,7 @@ code needed to :
 * [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
 * [Crop raster bands to a study area]((https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html))
 * [Calculate vegetation indices such as Normalized Difference Vegetation Index (`normalized_diff()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_calculate_classify_ndvi.html)
+* [Create hillshade from a DEM](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_dem_hillshade.html)
 
 EarthPy also has an io module that allows users to 
 
