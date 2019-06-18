@@ -49,7 +49,7 @@ data = et.data.get_data("vignette-elevation")
 ####################################################################################
 # Open up the DEM
 # ---------------
-# To begin, open your DEM layer as a numpy array using Rasterio. Below you set all 
+# To begin, open your DEM layer as a numpy array using Rasterio. Below you set all
 # terrain values < 0 to ``nan``. Next, plot the data using ``ep.plot_bands()``.
 
 # Set the home directory and get the data for the exercise
@@ -63,7 +63,13 @@ with rio.open(dtm) as src:
     elevation[elevation < 0] = np.nan
 
 # Plott the data
-ep.plot_bands(elevation, scale=False, cmap="gist_earth")
+ep.plot_bands(
+    elevation,
+    scale=False,
+    cmap="gist_earth",
+    title="DTM Without Hillshade",
+    figsize=(10, 6),
+)
 plt.show()
 
 ####################################################################################
@@ -74,7 +80,13 @@ plt.show()
 # Create and plot the hillshade with earthpy
 hillshade = es.hillshade(elevation)
 
-ep.plot_bands(hillshade, scale=False, cbar=False)
+ep.plot_bands(
+    hillshade,
+    scale=False,
+    cbar=False,
+    title="Hillshade made from DTM",
+    figsize=(10, 6),
+)
 plt.show()
 
 ####################################################################################
@@ -90,7 +102,13 @@ plt.show()
 hillshade_azimuth_210 = es.hillshade(elevation, azimuth=210)
 
 # Plot the hillshade layer with the modified azimuth
-ep.plot_bands(hillshade_azimuth_210, scale=False, cbar=False)
+ep.plot_bands(
+    hillshade_azimuth_210,
+    scale=False,
+    cbar=False,
+    title="Hillshade with Azimuth set to 210 Degrees",
+    figsize=(10, 6),
+)
 plt.show()
 
 ####################################################################################
@@ -105,7 +123,13 @@ plt.show()
 hillshade_angle_10 = es.hillshade(elevation, angle_altitude=10)
 
 # Plot the hillshade layer with the modified angle altitude
-ep.plot_bands(hillshade_angle_10, scale=False, cbar=False)
+ep.plot_bands(
+    hillshade_angle_10,
+    scale=False,
+    cbar=False,
+    title="Hillshade with Angle Altitude set to 10 Degrees",
+    figsize=(10, 6),
+)
 plt.show()
 
 ####################################################################################
