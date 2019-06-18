@@ -392,6 +392,91 @@ def crop_image(raster, geoms, all_touched=True):
     return out_image, out_meta
 
 
+def crop_all(
+    raster_paths,
+    output_dir,
+    geoms,
+    overwrite=False,
+    all_touched=True,
+    verbose=True,
+):
+    """Takes a list of rasters and a boundary, and crops them efficiently.
+
+    Parameters
+    ----------
+    raster_paths : list of file paths
+        List of paths of rasters that will be cropped.
+    output_dir : string
+        Provide a single directory path if you wish to specify the
+        location of the output cropped files only. _crop will be
+        appended to the file name for each output cropped image.
+    geoms : geopandas geodataframe or list of polygons
+        The spatial polygon boundaries in GeoJSON-like dict format
+        to be used to crop the image. All data outside of the polygon
+        boundaries will be set to nodata and/or removed from the image.
+    overwrite : bool (default=False)
+        Disallows files to be overwritten if they exist already.
+        Can be changed so that files can be overwritten with each
+        run of the function. If False, will not overwrite existing
+        files. If true, existing files will be overwritten.
+    all_touched : bool (default=True)
+        Include a pixel in the mask if it touches any of the
+        shapes. If False, include a pixel only if its center i
+        s within one of the shapes, or if it is selected by
+        Bresenham's line algorithm.
+        (from rasterio)
+    verbose : bool (default=True)
+        Returns a list of full file paths created by the function.
+         If set to false, returns nothing.
+
+    Returns
+    ----------
+    return files : list
+        List of full file paths created by the function.
+
+    Example
+    -------
+        >>> import os
+        >>> import earthpy.spatial as es
+        >>> import geopandas as gpd
+        >>> from earthpy.io import path_to_example
+        >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
+        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
+        >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
+        >>> output_dir = os.path.commonpath(band_paths)
+        >>> output_files = es.crop_all(band_paths, output_dir, rmnp, overwrite=True)
+        >>> len(output_files)
+        3
+        >>> os.path.isfile(output_files[0])
+        True
+        >>> # Clean up example data
+        >>> for bands in output_files:
+        ...     os.remove(bands)
+
+    """
+    if not os.path.exists(output_dir):
+        raise ValueError(
+            "The output directory that you provided does not exist"
+        )
+    return_files = []
+    for i, bands in enumerate(raster_paths):
+        path_name, extension = bands.rsplit(".", 1)
+        name = os.path.basename(os.path.normpath(path_name))
+        outpath = os.path.join(output_dir, name + "_crop." + extension)
+        return_files.append(outpath)
+        if os.path.exists(outpath) and not overwrite:
+            raise ValueError(
+                "The file {0} already exists. If you wish to overwrite this "
+                "file, set the overwrite argument to true.".format(outpath)
+            )
+        with rio.open(bands) as a_band:
+            crop, meta = crop_image(a_band, geoms, all_touched=all_touched)
+            with rio.open(outpath, "w", **meta) as dest:
+                dest.write(crop)
+    if verbose:
+        return return_files
+
+
 def bytescale(data, high=255, low=0, cmin=None, cmax=None):
     """Byte scales an array (image).
 
