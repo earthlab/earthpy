@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 * Added file explaining all of the dataset available through EarthPy (@nkorinek, #369)
 
-
 ## [0.7.0]
 * Added twitter flood dataset to `io.py` (@nkorinek, #367)
 * Add example vignette for using the hillshade function (@nkorinek, #329)
