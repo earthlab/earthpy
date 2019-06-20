@@ -221,11 +221,11 @@ with rio.open(stack_band_paths[0]) as raster_crs:
 # Crop Each Band
 # --------------
 # When you need to crop and stack a set of images, it is  most efficient to first
-# crop each image, and then stack it. 
-# `es.crop_all()` is an efficient way to crop all bands in an image quickly.
+# crop each image, and then stack it.
+# ``es.crop_all()`` is an efficient way to crop all bands in an image quickly.
 # The function will write out cropped rasters to a
 # directory and return a list of file paths that can then be used with
-# `es.stack()`.
+# ``es.stack()``.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -255,5 +255,39 @@ ep.plot_rgb(
     stretch=True,
     extent=crop_extent,
     title="Cropped Raster and Fire Boundary",
+)
+plt.show()
+
+#############################################################################
+# Crop Individual Bands
+# ---------------------
+# If you don't need to crop a whole stack of bands, but you just need to crop
+# one raster image, you can utilize EarthPy's ``es.crop_image()`` function.
+# This function takes a Rasterio object and crops is to the provided extent.
+
+# Open landsat image as a Rasterio object in order to crop it
+
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
+
+with rio.open(stack_band_paths[0]) as src:
+    single_cropped_image, single_cropped_meta = es.crop_image(
+        src, crop_bound_utm13N
+    )
+
+# Recreating the extent object
+
+single_crop_extent = plotting_extent(
+    single_cropped_image[0], single_cropped_meta["transform"]
+)
+
+# Plotting the newly cropped image
+
+fig, ax = plt.subplots(figsize=(12, 6))
+crop_bound_utm13N.boundary.plot(ax=ax, color="red", zorder=10)
+ep.plot_bands(
+    single_cropped_image,
+    ax=ax,
+    extent=single_crop_extent,
+    title="Single Cropped Raster and Fire Boundary",
 )
 plt.show()
