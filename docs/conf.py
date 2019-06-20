@@ -24,9 +24,9 @@ copyright = "2019, Earth Lab"
 author = "Earth Lab"
 
 # The short X.Y version
-version = "0.6.9"
+version = "0.7.0"
 # The full version, including alpha/beta/rc tags
-release = "0.6.9"
+release = "0.7.0"
 
 
 # -- General configuration ---------------------------------------------------
