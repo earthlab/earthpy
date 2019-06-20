@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 * Added file explaining all of the dataset available through EarthPy (@nkorinek, #369)
+
+## [0.7.0]
+* Added twitter flood dataset to `io.py` (@nkorinek, #367)
 * Add example vignette for using the hillshade function (@nkorinek, #329)
-* Modified `es.spatial()` to include a function called `crop_all()` that crops a list of images (@nkorinek, #333) 
-* Updated stack to ensure inputs are of same rows/cols/bands, CRS, and Affine transform (@joemcglinchy, #334) 
+* Modified `es.spatial()` to include a function called `crop_all()` that crops a list of images (@nkorinek, #333)
+* Updated stack to ensure inputs are of same rows/cols/bands, CRS, and Affine transform (@joemcglinchy, #334)
 * Add vignette for using the plot_bands() function (@nkorinek, #315)
 * Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
 * Add example vignette for plotting band combinations with EarthPy (@jlpalomino, #306)
