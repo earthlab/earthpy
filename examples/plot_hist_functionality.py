@@ -1,12 +1,10 @@
 """
 Plot Histograms of Pixel Values from Multi-band Imagery with EarthPy
 ====================================================================
-
 Learn how to quickly plot distributions of pixel values in Python
 using Earthpy. This examples shows you how to create histogram
 plots for each raster band in a multi-band image such as
 Landsat 8 data.
-
 """
 
 ###############################################################################
@@ -31,12 +29,12 @@ Landsat 8 data.
 # captured.
 #
 # To begin, you will create a stack of these individuals bands from
-# Landsat 8 data and then use the ``ep.hist()` function to plot the histograms
+# Landsat 8 data and then use the ``ep.hist()`` function to plot the histograms
 # for each band in the stack.
 
 ###############################################################################
 # Import Packages
-# ---------------
+# ----------------
 #
 # In order to use the ``ep.hist()`` function from EarthPy, the following
 # packages need to be imported.
@@ -64,7 +62,7 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 # Stack the Landsat 8 bands
 # This creates a numpy array with each "layer" representing a single band
 # You can use the nodata parameter to mask nodata values
-landsat_path = glob("data/vignette-landsat/*band*.tif")
+landsat_path = glob(os.path.join("data", "vignette-landsat", "*band*.tif"))
 landsat_path.sort()
 array_stack, meta_data = es.stack(landsat_path, nodata=-9999)
 
