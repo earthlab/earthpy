@@ -19,8 +19,7 @@ to plot a single raster layer with (or without) a legend.
 #    read help documentation related to ``ep.plot_rgb()``.
 #
 # In this vignette, you will use Landsat 8 data. To begin, you will create a
-# stack of
-# bands using Landsat 8 data. You will then plot the raster layers.
+# stack of bands using Landsat 8 data. You will then plot the raster layers.
 
 ###############################################################################
 # Import Packages
@@ -45,6 +44,7 @@ import earthpy.plot as ep
 
 # Get data for example
 data = et.data.get_data("vignette-landsat")
+
 # Set working directory
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
@@ -67,6 +67,7 @@ array_stack, meta_data = es.stack(landsat_path, nodata=-9999)
 # The list must contain the same number of strings as there are bands in the stack.
 
 titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
+# sphinx_gallery_thumbnail_number = 5
 ep.plot_bands(array_stack, title=titles)
 plt.show()
 
