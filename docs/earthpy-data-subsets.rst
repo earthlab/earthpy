@@ -53,7 +53,7 @@ cold-springs-modis-h5
 ---------------------
 
 This dataset contains imagery from the Moderate Resolution Imaging Spectrometer
-`(MODIS) <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-modis/modis-remote-sensing-data-in-python/>`_
+`(MODIS)    <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-modis/modis-remote-sensing-data-in-python/>`_
 maintained by NASA. `The satellite data <https://figshare.com/articles/Earth_Analytics_Cold_Springs_Fire_Remote_Sensing_Data/6083210>`_
 is for the 2016 Cold Springs fire near Nederland, CO. and is in h5 format.
 
@@ -99,7 +99,7 @@ related to the 2013 Colorado floods near Boulder, CO.
 california-rim-fire
 -------------------
 
-This directory contains vector and raster data for the `2013 Rim Fire in California <https://figshare.com/articles/Earth_Analytics_Applications_Data_for_Rim_Fire_California_2013/7749548>`_.
+This dataset contains vector and raster data for the `2013 Rim Fire in California <https://figshare.com/articles/Earth_Analytics_Applications_Data_for_Rim_Fire_California_2013/7749548>`_.
 The raster data have been cropped using the fire perimeter boundary provided
 by Monitoring Trends in Burn Severity (MTBS). The data are products from various
 sources including MTBS, Geospatial Multi-Agency Coordination (GeoMAC),
