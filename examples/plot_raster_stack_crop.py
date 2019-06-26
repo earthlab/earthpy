@@ -261,12 +261,12 @@ plt.show()
 #############################################################################
 # Crop Individual Bands
 # ---------------------
-# If you don't need to crop a whole stack of bands, but you just need to crop
-# one raster image, you can utilize EarthPy's ``es.crop_image()`` function.
-# This function takes a Rasterio object and crops is to the provided extent.
+# If you only need to crop one raster image, you can use EarthPy's 
+# ``es.crop_image()`` function.
+# This function takes a Rasterio object and crops it to the provided 
+# spatial extent.
 
-# Open landsat image as a Rasterio object in order to crop it
-
+# Open Landsat image as a Rasterio object in order to crop it
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 with rio.open(stack_band_paths[0]) as src:
@@ -274,14 +274,12 @@ with rio.open(stack_band_paths[0]) as src:
         src, crop_bound_utm13N
     )
 
-# Recreating the extent object
-
+# Create the extent object
 single_crop_extent = plotting_extent(
     single_cropped_image[0], single_cropped_meta["transform"]
 )
 
-# Plotting the newly cropped image
-
+# Plot the newly cropped image
 fig, ax = plt.subplots(figsize=(12, 6))
 crop_bound_utm13N.boundary.plot(ax=ax, color="red", zorder=10)
 ep.plot_bands(
