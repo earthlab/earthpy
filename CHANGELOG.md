@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 * Add vignette for using the hist() function (@nkorinek, #331)
+* Added `es.crop_image()` example to the stack/crop vignette (@nkorinek, #368)
 
 ## [0.7.0]
 * Added twitter flood dataset to `io.py` (@nkorinek, #367)
