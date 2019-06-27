@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+* Added `es.crop_image()` example to the stack/crop vignette (@nkorinek, #368)
+
 ## [0.7.0]
 * Added twitter flood dataset to `io.py` (@nkorinek, #367)
 * Add example vignette for using the hillshade function (@nkorinek, #329)
