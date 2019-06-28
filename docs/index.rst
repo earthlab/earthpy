@@ -23,12 +23,13 @@ EarthPy User Guide
 
    get-started
    Examples Gallery <gallery_vignettes/index>
+   earthpy-data-subsets
+   api
    contributing
    contributors
-   api
    change-log
    code-of-conduct
-   earthpy-data-subsets
+
 
 Indices and Tables
 ==================
