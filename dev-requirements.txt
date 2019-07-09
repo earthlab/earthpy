@@ -3,11 +3,11 @@ bumpversion==0.5.3
 pre-commit==1.17.0
 m2r==0.2.1
 importlib-metadata==0.18
-pytest==4.6.3
+pytest==5.0.0
 pytest-vcr==1.0.2
 pytest-cov==2.7.1
 sphinx==2.1.2
 sphinx-autobuild==0.7.1
-sphinx_gallery==0.3.1
+sphinx_gallery==0.4.0
 sphinx_rtd_theme==0.4.3
-tox==3.13.1
+tox==3.13.2
