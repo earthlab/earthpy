@@ -44,9 +44,6 @@ import earthpy.clip as ec
 # and one polygon shapefile containing the United States border.
 
 data = et.data.get_data("spatial-vector-lidar")
-os.environ[
-    "PROJ_LIB"
-] = r"C:\Users\Nathan\Anaconda3\envs\earth-analytics-python\Library\share"
 
 ###############################################################################
 # Open Files with GeoPandas and Reproject the Data
@@ -63,9 +60,11 @@ os.environ[
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
 # Open both files with GeoPandas
-roads = gpd.read_file("data/vignette-shapefile/ne_10m_n_america_roads.shp")
+roads = gpd.read_file(
+    r"data/spatial-vector-lidar/global/ne_10m_roads/ne_10m_n_america_roads.shp"
+)
 country_boundary = gpd.read_file(
-    "data/vignette-shapefile/usa-boundary-dissolved.shp"
+    r"data/spatial-vector-lidar/usa/usa-boundary-dissolved.shp"
 )
 
 # Reproject the roads layer to match the US boundary CRS
