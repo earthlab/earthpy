@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.7.1]
+* Updated colorado-flood dataset to fix file name (@lwasser, no associated issue)
 * Add vignette for using the hist() function (@nkorinek, #331)
 * Added file explaining all of the dataset available through EarthPy (@nkorinek, #369)
 * Added `es.crop_image()` example to the stack/crop vignette (@nkorinek, #368)
