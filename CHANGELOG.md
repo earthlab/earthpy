@@ -6,9 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.2]
-* Fix to the colorado-flood dataset (@lwasser, no associated issue). 
-  This is a result of some inconsistencies in our lessons. Minor changes to file names
-  have been made to address linux / mac/ windows case sensitivity issues.
+* Fix to the colorado-flood dataset which had nested folders (@lwasser, #387)
 
 ## [0.7.1]
 * Updated colorado-flood dataset to fix file name (@lwasser, no associated issue)
