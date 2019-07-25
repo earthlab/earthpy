@@ -450,6 +450,11 @@ def hist(
     """
 
     # If the array is 3 dimensional setup grid plotting
+    if np.ma.is_masked(arr):
+        arrlis = []
+        for i in range(arr.ndim):
+            arrlis.append([arr[i][~arr[i].mask].data])
+        arr = np.array(arrlis)
     if arr.ndim > 2:
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
@@ -477,11 +482,13 @@ def hist(
             ax.set_axis_off()
 
         return fig, axs
-    elif arr.ndim == 2:
+    elif arr.ndim <= 2:
         # Plot all bands
+        if arr.ndim == 2:
+            arr = arr.ravel()
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(
-            arr.ravel(),
+            arr,
             range=[np.nanmin(arr), np.nanmax(arr)],
             bins=bins,
             color=colors[0],
