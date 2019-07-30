@@ -452,7 +452,7 @@ def hist(
     # If the array is 3 dimensional setup grid plotting
     if np.ma.is_masked(arr):
         arrlis = []
-        for i in range(arr.ndim):
+        for i in range(array_stack.shape[0]):
             arrlis.append([arr[i][~arr[i].mask].data])
         arr = np.array(arrlis)
     if arr.ndim > 2:
