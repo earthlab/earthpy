@@ -135,7 +135,8 @@ def test_hist_plot_1_band_array(basic_image):
     plt.close(f)
 
 
-def test_hist_plot_2_band_array(image_array_2bands):
-    f, ax = ep.hist(image_array_2bands)
-    assert len(f.axes) == 2
+def test_hist_plot_1_dim(image_array_2bands):
+    array_1_dim = image_array_2bands.ravel()
+    f, ax = ep.hist(array_1_dim)
+    assert len(f.axes) == 1
     plt.close(f)
