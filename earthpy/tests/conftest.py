@@ -188,3 +188,8 @@ def basic_geometry_gdf(basic_geometry):
         geometry=[basic_geometry], crs={"init": "epsg:4326"}
     )
     return gdf
+
+
+@pytest.fixture
+def image_array_3bands():
+    return np.random.randint(10, size=(3, 4, 5))

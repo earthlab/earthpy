@@ -470,7 +470,7 @@ def hist(
         if np.ma.is_masked(arr):
             arrlis = []
             for i in range(arr.shape[0]):
-                # before this was a list each time ... list of array?
+                # Use compressed to flatten masked arr
                 arrlis.append(arr[i].compressed())
             arr = np.array(arrlis)
 
