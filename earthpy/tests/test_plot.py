@@ -10,6 +10,11 @@ import earthpy.plot as ep
 plt.show = lambda: None
 
 
+@pytest.fixture
+def image_array_3bands():
+    return np.random.randint(10, size=(3, 4, 5))
+
+
 def test_colorbar_height(basic_image):
     """Test that the colorbar ax height matches the image axis height."""
     f, ax = plt.subplots(figsize=(5, 5))
@@ -108,3 +113,30 @@ def test_hist_number_of_columns(image_array_2bands):
         f, ax = ep.hist(image_array_2bands, cols=n)
         assert [a.numCols for a in ax] == [n] * 2
         plt.close(f)
+
+
+def test_hist_masked_array(image_array_2bands):
+    masked_array_2_bands = np.ma.masked_array(image_array_2bands)
+    f, ax = ep.hist(masked_array_2_bands)
+    assert len(f.axes) == 2
+    plt.close(f)
+
+
+def test_hist_3d_masked_array(image_array_3bands):
+    masked_array_3_bands = np.ma.masked_array(image_array_3bands)
+    f, ax = ep.hist(masked_array_3_bands, cols=3)
+    assert len(f.axes) == 3
+    plt.close(f)
+
+
+def test_hist_plot_1_band_array(basic_image):
+    f, ax = ep.hist(basic_image)
+    assert len(f.axes) == 1
+    plt.close(f)
+
+
+def test_hist_plot_1_dim(image_array_2bands):
+    array_1_dim = image_array_2bands.ravel()
+    f, ax = ep.hist(array_1_dim)
+    assert len(f.axes) == 1
+    plt.close(f)
