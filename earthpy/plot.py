@@ -409,7 +409,6 @@ def hist(
     title=None,
     xlabel="",
     ylabel="",
-    **kwargs,
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -434,9 +433,7 @@ def hist(
         The text to print on the x axis
     ylabel : str (optional)
         The text to print on the y axis
-    **kwargs : key, value pairings optional
-        These will be passed to the matplotlib .hist call
-        See https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.hist.html
+
     Returns
     ----------
     tuple
@@ -468,7 +465,9 @@ def hist(
     if title:
         if isinstance(title, str):
             title = [title]
-
+    if colors:
+        if isinstance(colors, str):
+            colors = [colors]
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
         # Compress the arr if it's masked
