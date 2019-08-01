@@ -409,6 +409,7 @@ def hist(
     title=None,
     xlabel="",
     ylabel="",
+    **kwargs,
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -423,8 +424,9 @@ def hist(
         The x and y integer dimensions of the output plot.
     cols : int (default = 2)
         The number of columns for plot grid.
-    bins : int (default = 20)
-        The number of bins to generate for the histogram.
+    bins : int or list (default = 20)
+        The number of bins to generate for the histogram or a list of break
+        points for each bin following matplotlib ax.hist documentation.
     title : str or list (optional)
         A list of title values that should either equal the number of bands
         or be empty. A string is accepted for a single dimension array.
@@ -432,6 +434,9 @@ def hist(
         The text to print on the x axis
     ylabel : str (optional)
         The text to print on the y axis
+    **kwargs : key, value pairings optional
+        These will be passed to the matplotlib .hist call
+        See https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.hist.html
     Returns
     ----------
     tuple
@@ -492,7 +497,9 @@ def hist(
                 the_color = colors[0]
             else:
                 the_color = colors[i]
-            ax.hist(band.ravel(), bins=bins, color=the_color, alpha=0.8)
+            ax.hist(
+                band.ravel(), bins=bins, color=the_color, alpha=0.8, **kwargs
+            )
             if title:
                 ax.set_title(title[i])
         # Clear additional axis elements
@@ -521,6 +528,7 @@ def hist(
             range=[np.nanmin(arr_comp), np.nanmax(arr_comp)],
             bins=bins,
             color=colors[0],
+            **kwargs,
         )
         if title:
             ax.set(title=title[0], xlabel=xlabel, ylabel=ylabel)
