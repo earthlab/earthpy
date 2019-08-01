@@ -24,11 +24,22 @@ def test_num_axes_hist(image_array_2bands, basic_image):
 
 
 def test_single_hist_title(basic_image):
-    """Test that custom titles work for one band hists."""
+    """Test that a single custom title works for one band hists."""
     custom_title = "Great hist"
     f, ax = ep.hist(basic_image, title=[custom_title])
     assert ax.get_title() == custom_title
     plt.close(f)
+
+
+def test_single_hist_2titles(image_array_single_band):
+    """Test that a single custom title works for one band hists."""
+    custom_title = ["Great hist", "another title"]
+
+    with pytest.raises(
+        ValueError, match="You have one array to plot but more than one"
+    ):
+        ep.hist(image_array_single_band, title=custom_title)
+    plt.close()
 
 
 def test_title_string(basic_image):
@@ -116,18 +127,18 @@ def test_hist_plot_1_dim(image_array_2bands):
 
 """ Tests for masked arrays """
 
-# TODO: This should count the number of values in the output hist
-
 
 def test_hist_masked_array(image_array_2bands):
     """ Test that a masked 2 band array plots properly"""
     masked_arr = np.ma.masked_where(
         image_array_2bands == 6, image_array_2bands
     )
-    f, ax = ep.hist(masked_arr)
-    # TODO:
-    # We probably want to count the number of values in the
-    # histogram total to ensure the mask is proper
+    nbins = 6
+    f, ax = ep.hist(masked_arr, bins=nbins)
+
+    for an_axis in ax:
+        assert len(ax[0].patches) == nbins
+
     assert len(f.axes) == 2
     plt.close(f)
 
