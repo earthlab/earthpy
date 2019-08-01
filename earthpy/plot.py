@@ -407,8 +407,8 @@ def hist(
     cols=2,
     bins=20,
     title=None,
-    xlab="",
-    ylab="",
+    xlabel="",
+    ylabel="",
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -428,9 +428,9 @@ def hist(
     title : str or list (optional)
         A list of title values that should either equal the number of bands
         or be empty. A string is accepted for a single dimension array.
-    xlab : str (optional)
+    xlabel : str (optional)
         The text to print on the x axis
-    ylab : str (optional)
+    ylabel : str (optional)
         The text to print on the y axis
     Returns
     ----------
@@ -523,7 +523,7 @@ def hist(
             color=colors[0],
         )
         if title:
-            ax.set(title=title[0], xlabel=xlab, ylabel=ylab)
+            ax.set(title=title[0], xlabel=xlabel, ylabel=ylabel)
         return fig, ax
 
 
