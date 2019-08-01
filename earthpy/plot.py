@@ -409,6 +409,7 @@ def hist(
     title=None,
     xlabel="",
     ylabel="",
+    range=[],
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -430,9 +431,13 @@ def hist(
         A list of title values that should either equal the number of bands
         or be empty. A string is accepted for a single dimension array.
     xlabel : str (optional)
-        The text to print on the x axis
+        The text to print on the x axis.
     ylabel : str (optional)
-        The text to print on the y axis
+        The text to print on the y axis.
+    range : list (default = [np.nanmin(arr), np.nanmax(arr)])
+        The values over which the histogram will range. Should be
+        a list of length 2 with the minimum and maxmimum values to
+        be plotted in the histogram.
 
     Returns
     ----------
@@ -496,8 +501,14 @@ def hist(
                 the_color = colors[0]
             else:
                 the_color = colors[i]
+            if not range:
+                range = [np.nanmin(arr), np.nanmax(arr)]
             ax.hist(
-                band.ravel(), bins=bins, color=the_color, alpha=0.8, **kwargs
+                band.ravel(),
+                bins=bins,
+                color=the_color,
+                alpha=0.8,
+                range=range,
             )
             if title:
                 ax.set_title(title[i])
@@ -520,15 +531,10 @@ def hist(
             arr_comp = arr.compressed()
         else:
             arr_comp = arr.ravel()
-
+        if not range:
+            range = [np.nanmin(arr_comp), np.nanmax(arr_comp)]
         fig, ax = plt.subplots(figsize=figsize)
-        ax.hist(
-            arr_comp,
-            range=[np.nanmin(arr_comp), np.nanmax(arr_comp)],
-            bins=bins,
-            color=colors[0],
-            **kwargs,
-        )
+        ax.hist(arr_comp, range=range, bins=bins, color=colors[0])
         if title:
             ax.set(title=title[0], xlabel=xlabel, ylabel=ylabel)
         return fig, ax
