@@ -106,17 +106,29 @@ def test_hist_number_of_columns(image_array_2bands):
         plt.close(f)
 
 
-# not sure how the tests below are different...
 def test_hist_plot_1_band_array(basic_image):
+    """A 2 dim image should plot properly returning a single axis object"""
     f, ax = ep.hist(basic_image)
     assert len(f.axes) == 1
     plt.close(f)
 
 
 def test_hist_plot_1_dim(image_array_2bands):
+    """A single dimensional array should plot properly."""
     array_1_dim = image_array_2bands.ravel()
     f, ax = ep.hist(array_1_dim)
     assert len(f.axes) == 1
+    plt.close(f)
+
+
+def test_hist_plot_odd_axes(image_array_3bands):
+    """A histogram with 2 cols and 3 plots should have 4 axes total.
+    this will ensure code coverage for clearing out those axes"""
+
+    ncols = 2
+    f, ax = ep.hist(image_array_3bands, cols=ncols)
+
+    assert len(f.axes) == ncols * 2
     plt.close(f)
 
 
