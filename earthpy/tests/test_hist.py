@@ -132,11 +132,13 @@ def test_hist_masked_array(image_array_2bands):
     plt.close(f)
 
 
-# TODO: This should count the number of values in the output hist
 def test_hist_1band_masked_array(image_array_single_band):
+    """Ensure that a masked single band arr plots & the number of bins is correct"""
     masked_arr = np.ma.masked_where(
         image_array_single_band == 4, image_array_single_band
     )
-    f, ax = ep.hist(masked_arr)
+    nbins = 3
+    f, ax = ep.hist(masked_arr, title=["TITLE HERE"], bins=nbins)
     assert len(f.axes) == 1
+    assert len(ax.patches) == nbins
     plt.close(f)
