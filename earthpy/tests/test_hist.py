@@ -109,6 +109,9 @@ def test_hist_plot_1_dim(image_array_2bands):
     plt.close(f)
 
 
+# TODO: test that adding an x and y label to the plot works
+
+
 # TODO add a test for when color is provided in a single band hist as a string
 
 """ Tests for masked arrays """
