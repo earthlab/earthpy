@@ -31,6 +31,14 @@ def test_single_hist_title(basic_image):
     plt.close(f)
 
 
+def test_title_string(basic_image):
+    """Test that custom titles work for one band hists."""
+    custom_title = "Great hist"
+    f, ax = ep.hist(basic_image, title=custom_title)
+    assert ax.get_title() == custom_title
+    plt.close(f)
+
+
 def test_multiband_hist_title(image_array_2bands):
     """Test that custom titles work for multiband hists."""
     custom_titles = ["Title 1", "Title 2"]
@@ -87,20 +95,7 @@ def test_hist_number_of_columns(image_array_2bands):
         plt.close(f)
 
 
-def test_hist_masked_array(image_array_2bands):
-    masked_array_2_bands = np.ma.masked_array(image_array_2bands)
-    f, ax = ep.hist(masked_array_2_bands)
-    assert len(f.axes) == 2
-    plt.close(f)
-
-
-def test_hist_3d_masked_array(image_array_3bands):
-    masked_array_3_bands = np.ma.masked_array(image_array_3bands)
-    f, ax = ep.hist(masked_array_3_bands, cols=3)
-    assert len(f.axes) == 3
-    plt.close(f)
-
-
+# not sure how the tests below are different...
 def test_hist_plot_1_band_array(basic_image):
     f, ax = ep.hist(basic_image)
     assert len(f.axes) == 1
@@ -110,5 +105,35 @@ def test_hist_plot_1_band_array(basic_image):
 def test_hist_plot_1_dim(image_array_2bands):
     array_1_dim = image_array_2bands.ravel()
     f, ax = ep.hist(array_1_dim)
+    assert len(f.axes) == 1
+    plt.close(f)
+
+
+# TODO add a test for when color is provided in a single band hist as a string
+
+""" Tests for masked arrays """
+
+# TODO: This should count the number of values in the output hist
+
+
+def test_hist_masked_array(image_array_2bands):
+    """ Test that a masked 2 band array plots properly"""
+    masked_arr = np.ma.masked_where(
+        image_array_2bands == 6, image_array_2bands
+    )
+    f, ax = ep.hist(masked_arr)
+    # TODO:
+    # We probably want to count the number of values in the
+    # histogram total to ensure the mask is proper
+    assert len(f.axes) == 2
+    plt.close(f)
+
+
+# TODO: This should count the number of values in the output hist
+def test_hist_1band_masked_array(image_array_single_band):
+    masked_arr = np.ma.masked_where(
+        image_array_single_band == 4, image_array_single_band
+    )
+    f, ax = ep.hist(masked_arr)
     assert len(f.axes) == 1
     plt.close(f)
