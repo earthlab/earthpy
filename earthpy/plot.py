@@ -409,7 +409,7 @@ def hist(
     title=None,
     xlabel="",
     ylabel="",
-    range=[],
+    hist_range=[],
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -501,14 +501,14 @@ def hist(
                 the_color = colors[0]
             else:
                 the_color = colors[i]
-            if not range:
-                range = [np.nanmin(arr), np.nanmax(arr)]
+            if not hist_range:
+                hist_range = [np.nanmin(band), np.nanmax(band)]
             ax.hist(
                 band.ravel(),
                 bins=bins,
                 color=the_color,
                 alpha=0.8,
-                range=range,
+                range=hist_range,
             )
             if title:
                 ax.set_title(title[i])
@@ -531,10 +531,10 @@ def hist(
             arr_comp = arr.compressed()
         else:
             arr_comp = arr.ravel()
-        if not range:
-            range = [np.nanmin(arr_comp), np.nanmax(arr_comp)]
+        if not hist_range:
+            hist_range = [np.nanmin(arr_comp), np.nanmax(arr_comp)]
         fig, ax = plt.subplots(figsize=figsize)
-        ax.hist(arr_comp, range=range, bins=bins, color=colors[0])
+        ax.hist(arr_comp, range=hist_range, bins=bins, color=colors[0])
         if title:
             ax.set(title=title[0], xlabel=xlabel, ylabel=ylabel)
         return fig, ax

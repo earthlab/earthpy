@@ -137,6 +137,19 @@ def test_hist_plot_odd_axes(image_array_3bands):
 
 # TODO add a test for when color is provided in a single band hist as a string
 
+
+def test_hist_color_string(image_array_2bands, color="blue"):
+    f, ax = ep.hist(image_array_2bands, colors=color)
+    colors = [a.patches[0].__dict__.get("_original_facecolor") for a in ax]
+    expected_colors = [
+        np.array([0.0, 0.0, 1.0, 1.0]),
+        np.array([0.0, 0.0, 1.0, 1.0]),
+    ]
+    for i in range(2):
+        assert np.array_equal(colors[i], expected_colors[i])
+    plt.close(f)
+
+
 """ Tests for masked arrays """
 
 
@@ -147,10 +160,8 @@ def test_hist_masked_array(image_array_2bands):
     )
     nbins = 6
     f, ax = ep.hist(masked_arr, bins=nbins)
-
-    for an_axis in ax:
-        assert len(ax[0].patches) == nbins
-
+    for a in ax:
+        assert len(a.patches) == 6
     assert len(f.axes) == 2
     plt.close(f)
 
@@ -165,3 +176,17 @@ def test_hist_1band_masked_array(image_array_single_band):
     assert len(f.axes) == 1
     assert len(ax.patches) == nbins
     plt.close(f)
+
+
+def test_hist_1band_range(image_array_single_band):
+    """Ensure that the range limits are reflected in the plot"""
+    f, ax = ep.hist(image_array_single_band, hist_range=[2, 5])
+    range_check = ax.get_xlim()
+    assert range_check[0] > 1.5 and range_check[1] < 5.5
+
+
+def test_hist_multiband_array(image_array_3bands):
+    f, ax = ep.hist(image_array_3bands, hist_range=[2, 5])
+    for a in ax:
+        range_check = a.get_xlim()
+        assert range_check[0] > 1.5 and range_check[1] < 5.5
