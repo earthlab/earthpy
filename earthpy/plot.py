@@ -409,7 +409,7 @@ def hist(
     title=None,
     xlabel="",
     ylabel="",
-    hist_range=[],
+    hist_range=None,
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -434,10 +434,10 @@ def hist(
         The text to print on the x axis.
     ylabel : str (optional)
         The text to print on the y axis.
-    range : list (default = [np.nanmin(arr), np.nanmax(arr)])
-        The values over which the histogram will range. Should be
-        a list of length 2 with the minimum and maxmimum values to
-        be plotted in the histogram.
+    hist_range : tuple (optional)
+        The lower and upper range of the bins. Lower and upper outliers are ignored.
+        If not provided, range is (x.min(), x.max()).
+        Range has no effect if bins is a sequence.
 
     Returns
     ----------
@@ -496,13 +496,13 @@ def hist(
             plot_rows, cols, figsize=figsize, sharex=True, sharey=True
         )
         axs_ravel = axs.ravel()
+        if not hist_range:
+            hist_range = (np.nanmin(arr), np.nanmax(arr))
         for band, ax, i in zip(arr, axs.ravel(), range(n_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
             else:
                 the_color = colors[i]
-            if not hist_range:
-                hist_range = [np.nanmin(band), np.nanmax(band)]
             ax.hist(
                 band.ravel(),
                 bins=bins,
@@ -532,7 +532,7 @@ def hist(
         else:
             arr_comp = arr.ravel()
         if not hist_range:
-            hist_range = [np.nanmin(arr_comp), np.nanmax(arr_comp)]
+            hist_range = (np.nanmin(arr_comp), np.nanmax(arr_comp))
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(arr_comp, range=hist_range, bins=bins, color=colors[0])
         if title:

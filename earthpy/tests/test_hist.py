@@ -180,13 +180,12 @@ def test_hist_1band_masked_array(image_array_single_band):
 
 def test_hist_1band_range(image_array_single_band):
     """Ensure that the range limits are reflected in the plot"""
-    f, ax = ep.hist(image_array_single_band, hist_range=[2, 5])
+    f, ax = ep.hist(image_array_single_band, hist_range=(2, 5))
     range_check = ax.get_xlim()
     assert range_check[0] > 1.5 and range_check[1] < 5.5
 
 
 def test_hist_multiband_array(image_array_3bands):
-    f, ax = ep.hist(image_array_3bands, hist_range=[2, 5])
-    for a in ax:
-        range_check = a.get_xlim()
-        assert range_check[0] > 1.5 and range_check[1] < 5.5
+    f, ax = ep.hist(image_array_3bands, hist_range=(2, 5))
+    range_check = ax.get_xlim()
+    assert range_check[0] > 1.5 and range_check[1] < 5.5
