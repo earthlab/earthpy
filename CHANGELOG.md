@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
 ## [unreleased]
 * Add vignette for using the clip_shp() function (@nkorinek, #378)
 
@@ -14,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.1]
 * Updated colorado-flood dataset to fix file name (@lwasser, no associated issue)
 >>>>>>> c577c1b6f9e1f8ec4b914f06165abb4742963476
+=======
+
+## [unreleased]
+* Add vignette for using the clip_shp() function (@nkorinek, #378)
+
+## [0.7.1]
+* Updated colorado-flood dataset to fix file name (@lwasser, no associated issue)
+>>>>>>> 1339c4d0c734c16c55ab020d83ddd2a2768d72e7
 * Add vignette for using the hist() function (@nkorinek, #331)
 * Added file explaining all of the dataset available through EarthPy (@nkorinek, #369)
 * Added `es.crop_image()` example to the stack/crop vignette (@nkorinek, #368)
