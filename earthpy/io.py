@@ -31,7 +31,7 @@ DATA_URLS = {
         ),
     ],
     "colorado-flood": (
-        "https://ndownloader.figshare.com/files/12395030",
+        "https://ndownloader.figshare.com/files/16371473",
         ".",
         "zip",
     ),
