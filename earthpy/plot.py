@@ -473,16 +473,11 @@ def hist(
     if colors:
         if isinstance(colors, str):
             colors = [colors]
+    if not hist_range:
+        hist_range = (np.nanmin(arr), np.nanmax(arr))
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
         # Compress the arr if it's masked
-        if np.ma.is_masked(arr):
-            arrlis = []
-            for i in range(arr.shape[0]):
-                # Use compressed to flatten masked arr
-                arrlis.append(arr[i].compressed())
-            arr = np.array(arrlis)
-
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
             raise ValueError(
@@ -491,13 +486,16 @@ def hist(
             )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
-
+        if np.ma.is_masked(arr):
+            arrlis = []
+            for i in range(arr.shape[0]):
+                # Use compressed to flatten masked arr
+                arrlis.append(arr[i].compressed())
+            arr = arrlis
         fig, axs = plt.subplots(
             plot_rows, cols, figsize=figsize, sharex=True, sharey=True
         )
         axs_ravel = axs.ravel()
-        if not hist_range:
-            hist_range = (np.nanmin(arr), np.nanmax(arr))
         for band, ax, i in zip(arr, axs.ravel(), range(n_layers)):
             if len(colors) == 1:
                 the_color = colors[0]
@@ -512,6 +510,10 @@ def hist(
             )
             if title:
                 ax.set_title(title[i])
+            if xlabel:
+                ax.set(xlabel=xlabel)
+            if ylabel:
+                ax.set(ylabel=ylabel)
         # Clear additional axis elements
         for ax in axs_ravel[n_layers:]:
             ax.set_axis_off()
@@ -536,7 +538,11 @@ def hist(
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(arr_comp, range=hist_range, bins=bins, color=colors[0])
         if title:
-            ax.set(title=title[0], xlabel=xlabel, ylabel=ylabel)
+            ax.set(title=title[0])
+        if xlabel:
+            ax.set(xlabel=xlabel)
+        if ylabel:
+            ax.set(ylabel=ylabel)
         return fig, ax
 
 

@@ -135,7 +135,11 @@ def test_hist_plot_odd_axes(image_array_3bands):
 # TODO: test that adding an x and y label to the plot works
 
 
-# TODO add a test for when color is provided in a single band hist as a string
+def test_hist_axes(image_array_2bands):
+    f, ax = ep.hist(image_array_2bands, xlabel="xlabel", ylabel="ylabel")
+    for i in range(2):
+        assert ax[i].get_xlabel() == "xlabel"
+        assert ax[i].get_ylabel() == "ylabel"
 
 
 def test_hist_color_string(image_array_2bands, color="blue"):
@@ -186,6 +190,26 @@ def test_hist_1band_range(image_array_single_band):
 
 
 def test_hist_multiband_array(image_array_3bands):
-    f, ax = ep.hist(image_array_3bands, hist_range=(2, 5))
-    range_check = ax.get_xlim()
-    assert range_check[0] > 1.5 and range_check[1] < 5.5
+    f, ax = ep.hist(image_array_3bands, hist_range=(2, 5), cols=3)
+    for a in ax:
+        range_check = a.get_xlim()
+        assert range_check[0] > 1.5 and range_check[1] < 5.5
+
+
+def test_hist_fully_masked_array(image_array_single_band):
+    masked_arr = np.ma.masked_where(
+        image_array_single_band >= 0, image_array_single_band
+    )
+    with pytest.raises(ValueError, match="is not finite"):
+        f, ax = ep.hist(masked_arr)
+        plt.close(f)
+
+
+def test_hist_partially_masked_array(image_array_3bands):
+    ones = np.ones(image_array_3bands[0].shape)
+    image_array_3bands[2] = ones
+    masked_arr = np.ma.masked_where(
+        image_array_3bands == 1, image_array_3bands
+    )
+    f, ax = ep.hist(masked_arr, cols=3)
+    assert len(f.axes) == 3
