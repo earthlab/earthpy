@@ -93,8 +93,8 @@ roads = roads.to_crs(country_boundary.crs)
 # the roads data, to be overlayed on top of the polygon boundary.
 
 fig, ax = plt.subplots(figsize=(12, 8))
-roads.plot(ax=ax)
-country_boundary.boundary.plot(ax=ax, color="red")
+roads.plot(ax=ax, color="grey")
+country_boundary.boundary.plot(ax=ax, color="black")
 ax.set_title("Major NA Roads Unclipped to US Border", fontsize=20)
 ax.set_axis_off()
 plt.show()
@@ -119,8 +119,8 @@ roads_clipped = ec.clip_shp(roads, country_boundary)
 # The plot below shows the results of the clip function applied to the roads
 # sphinx_gallery_thumbnail_number = 5
 fig, ax = plt.subplots(figsize=(12, 8))
-roads_clipped.plot(ax=ax)
-country_boundary.boundary.plot(ax=ax, color="red")
+roads_clipped.plot(ax=ax, color="grey")
+country_boundary.boundary.plot(ax=ax, color="black")
 ax.set_title("Major NA Roads Clipped to US Border", fontsize=20)
 ax.set_axis_off()
 plt.show()
