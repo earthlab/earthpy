@@ -194,6 +194,14 @@ def image_array_single_band():
 
 
 @pytest.fixture
+def image_array_single_band_3dims():
+    arr = np.array(
+        [[[0, 5, 0, 2, 7], [2, 1, 6, 5, 7], [1, 3, 2, 0, 7], [5, 4, 4, 2, 2]]]
+    )
+    return arr
+
+
+@pytest.fixture
 def image_array_2bands():
     """ Simple array of shape 2,4,5 with fixded values. """
     arr = np.array(

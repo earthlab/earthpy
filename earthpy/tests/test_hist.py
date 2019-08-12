@@ -132,9 +132,6 @@ def test_hist_plot_odd_axes(image_array_3bands):
     plt.close(f)
 
 
-# TODO: test that adding an x and y label to the plot works
-
-
 def test_hist_axes(image_array_2bands):
     f, ax = ep.hist(image_array_2bands, xlabel="xlabel", ylabel="ylabel")
     for i in range(2):
@@ -142,8 +139,8 @@ def test_hist_axes(image_array_2bands):
         assert ax[i].get_ylabel() == "ylabel"
 
 
-def test_hist_color_string(image_array_2bands, color="blue"):
-    f, ax = ep.hist(image_array_2bands, colors=color)
+def test_hist_color_string(image_array_2bands):
+    f, ax = ep.hist(image_array_2bands, colors="blue")
     colors = [a.patches[0].__dict__.get("_original_facecolor") for a in ax]
     expected_colors = [
         np.array([0.0, 0.0, 1.0, 1.0]),
@@ -151,6 +148,14 @@ def test_hist_color_string(image_array_2bands, color="blue"):
     ]
     for i in range(2):
         assert np.array_equal(colors[i], expected_colors[i])
+    plt.close(f)
+
+
+def test_hist_single_band_3_dims(image_array_single_band_3dims):
+
+    f, ax = ep.hist(image_array_single_band_3dims)
+
+    assert len(f.axes) == 1
     plt.close(f)
 
 
