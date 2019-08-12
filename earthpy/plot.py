@@ -475,6 +475,11 @@ def hist(
             colors = [colors]
     if not hist_range:
         hist_range = (np.nanmin(arr), np.nanmax(arr))
+
+    # If the arr has a single extra dim, flatten it
+    if arr.shape[0] == 1:
+        arr = arr.squeeze()
+
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
         # Compress the arr if it's masked
