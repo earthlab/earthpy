@@ -401,7 +401,15 @@ def plot_rgb(
 
 
 def hist(
-    arr, colors=["purple"], figsize=(12, 12), cols=2, bins=20, title=None
+    arr,
+    colors=["purple"],
+    figsize=(12, 12),
+    cols=2,
+    bins=20,
+    title=None,
+    xlabel="",
+    ylabel="",
+    hist_range=None,
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -416,11 +424,21 @@ def hist(
         The x and y integer dimensions of the output plot.
     cols : int (default = 2)
         The number of columns for plot grid.
-    bins : int (default = 20)
-        The number of bins to generate for the histogram.
-    title : list (optional)
+    bins : int or list (default = 20)
+        The number of bins to generate for the histogram or a list of break
+        points for each bin following matplotlib ax.hist documentation.
+    title : str or list (optional)
         A list of title values that should either equal the number of bands
-        or be empty.
+        or be empty. A string is accepted for a single dimension array.
+    xlabel : str (optional)
+        The text to print on the x axis.
+    ylabel : str (optional)
+        The text to print on the y axis.
+    hist_range : tuple (optional)
+        The lower and upper range of the bins. Lower and upper outliers are ignored.
+        If not provided, range is (x.min(), x.max()).
+        Range has no effect if bins is a sequence.
+
     Returns
     ----------
     tuple
@@ -449,17 +467,31 @@ def hist(
         (<Figure size 800x300 with 3 Axes>, ...)
     """
 
+    if title:
+        if isinstance(title, str):
+            title = [title]
+    if colors:
+        if isinstance(colors, str):
+            colors = [colors]
+    if not hist_range:
+        hist_range = (np.nanmin(arr), np.nanmax(arr))
     # If the array is 3 dimensional setup grid plotting
     if arr.ndim > 2:
+        # Compress the arr if it's masked
         n_layers = arr.shape[0]
         if title and not len(title) == n_layers:
             raise ValueError(
-                "The number of plot titles should be the "
-                "same as the number of raster layers in your array."
+                "The number of plot titles should be the same "
+                "as the number of raster layers in your array."
             )
         # Calculate the total rows that will be required to plot each band
         plot_rows = int(np.ceil(arr.shape[0] / cols))
-
+        if np.ma.is_masked(arr):
+            arrlis = []
+            for i in range(arr.shape[0]):
+                # Use compressed to flatten masked arr
+                arrlis.append(arr[i].compressed())
+            arr = arrlis
         fig, axs = plt.subplots(
             plot_rows, cols, figsize=figsize, sharex=True, sharey=True
         )
@@ -469,25 +501,48 @@ def hist(
                 the_color = colors[0]
             else:
                 the_color = colors[i]
-            ax.hist(band.ravel(), bins=bins, color=the_color, alpha=0.8)
+            ax.hist(
+                band.ravel(),
+                bins=bins,
+                color=the_color,
+                alpha=0.8,
+                range=hist_range,
+            )
             if title:
                 ax.set_title(title[i])
+            if xlabel:
+                ax.set(xlabel=xlabel)
+            if ylabel:
+                ax.set(ylabel=ylabel)
         # Clear additional axis elements
         for ax in axs_ravel[n_layers:]:
             ax.set_axis_off()
 
         return fig, axs
-    elif arr.ndim == 2:
+
+    elif arr.ndim <= 2:
+        # Test that only one title is provided for a 2-dim array
+        if title:
+            if len(title) > 1:
+                raise ValueError(
+                    "You have one array to plot but more than one title. Please provide a single title value."
+                )
+
         # Plot all bands
+        if np.ma.is_masked(arr):
+            arr_comp = arr.compressed()
+        else:
+            arr_comp = arr.ravel()
+        if not hist_range:
+            hist_range = (np.nanmin(arr_comp), np.nanmax(arr_comp))
         fig, ax = plt.subplots(figsize=figsize)
-        ax.hist(
-            arr.ravel(),
-            range=[np.nanmin(arr), np.nanmax(arr)],
-            bins=bins,
-            color=colors[0],
-        )
+        ax.hist(arr_comp, range=hist_range, bins=bins, color=colors[0])
         if title:
             ax.set(title=title[0])
+        if xlabel:
+            ax.set(xlabel=xlabel)
+        if ylabel:
+            ax.set(ylabel=ylabel)
         return fig, ax
 
 
