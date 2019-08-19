@@ -117,7 +117,7 @@ roads_clipped = ec.clip_shp(roads, country_boundary)
 
 # Plot the clipped data
 # The plot below shows the results of the clip function applied to the roads
-# sphinx_gallery_thumbnail_number = 5
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(12, 8))
 roads_clipped.plot(ax=ax, color="grey")
 country_boundary.boundary.plot(ax=ax, color="black")
