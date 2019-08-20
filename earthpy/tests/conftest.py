@@ -145,11 +145,6 @@ def basic_image_tif_Affine(tmpdir, basic_image):
 
 
 @pytest.fixture
-def image_array_2bands():
-    return np.random.randint(10, size=(2, 4, 5))
-
-
-@pytest.fixture
 def in_paths(basic_image_tif):
     """ Input file paths for tifs to stack. """
     return [basic_image_tif] * 4
@@ -188,3 +183,68 @@ def basic_geometry_gdf(basic_geometry):
         geometry=[basic_geometry], crs={"init": "epsg:4326"}
     )
     return gdf
+
+
+@pytest.fixture
+def image_array_single_band():
+    arr = np.array(
+        [[0, 5, 0, 2, 7], [2, 1, 6, 5, 7], [1, 3, 2, 0, 7], [5, 4, 4, 2, 2]]
+    )
+    return arr
+
+
+@pytest.fixture
+def image_array_single_band_3dims():
+    arr = np.array(
+        [[[0, 5, 0, 2, 7], [2, 1, 6, 5, 7], [1, 3, 2, 0, 7], [5, 4, 4, 2, 2]]]
+    )
+    return arr
+
+
+@pytest.fixture
+def image_array_2bands():
+    """ Simple array of shape 2,4,5 with fixded values. """
+    arr = np.array(
+        [
+            [
+                [5, 3, 3, 3, 3],
+                [6, 0, 0, 6, 7],
+                [9, 6, 8, 9, 6],
+                [1, 0, 4, 9, 0],
+            ],
+            [
+                [1, 5, 2, 2, 5],
+                [1, 6, 5, 1, 0],
+                [0, 8, 0, 5, 3],
+                [0, 7, 3, 6, 7],
+            ],
+        ]
+    )
+    return arr
+
+
+@pytest.fixture
+def image_array_3bands():
+    arr = np.array(
+        [
+            [
+                [0, 1, 7, 6, 2],
+                [6, 7, 1, 1, 3],
+                [8, 5, 8, 1, 8],
+                [9, 3, 3, 7, 0],
+            ],
+            [
+                [9, 6, 8, 5, 9],
+                [0, 7, 5, 2, 8],
+                [2, 0, 9, 1, 9],
+                [5, 4, 6, 1, 6],
+            ],
+            [
+                [0, 5, 0, 2, 7],
+                [2, 1, 6, 5, 7],
+                [1, 3, 2, 0, 7],
+                [5, 4, 4, 2, 2],
+            ],
+        ]
+    )
+    return arr
