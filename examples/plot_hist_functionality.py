@@ -94,7 +94,7 @@ colors_list = [
 titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
 
 # Plot the histograms with the color and title lists you just created
-# sphinx_gallery_thumbnail_number = 5
+# sphinx_gallery_thumbnail_number = 1
 ep.hist(array_stack, colors=colors_list, title=titles)
 plt.show()
 
