@@ -67,7 +67,7 @@ array_stack, meta_data = es.stack(landsat_path, nodata=-9999)
 # The list must contain the same number of strings as there are bands in the stack.
 
 titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
-# sphinx_gallery_thumbnail_number = 5
+# sphinx_gallery_thumbnail_number = 1
 ep.plot_bands(array_stack, title=titles)
 plt.show()
 
