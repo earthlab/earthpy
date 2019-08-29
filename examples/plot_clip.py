@@ -20,10 +20,8 @@ of a polygon geometry using EarthPy.
 # opened with GeoPandas as GeoDataFrames and be in the same Coordinate
 # Reference System (CRS) for the ``clip_shp()`` function in EarthPy to work.
 #
-# This example uses a line shapefile containing all major roads in North America
-# and a polygon shapefile containing the United States boundary to show you how
-# to prepare and clip vector data. In this example, the roads will be clipped
-# to the United States boundary.
+# This example uses Polygons, a Line, and Points made with shapely and then
+# turned into GeoDataframes.
 #
 # .. note::
 #    The object to be clipped will be clipped to the full extent of the clip
@@ -37,65 +35,62 @@ of a polygon geometry using EarthPy.
 # To begin, import the needed packages. You will primarily use EarthPy's clip
 # utility alongside GeoPandas.
 
-import os
+import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
-import earthpy as et
+from shapely.geometry import Polygon, LineString, Point
 import earthpy.clip as ec
 
 ###############################################################################
-# Import Example Data
+# Create Example Data
 # -------------------
 #
-# Once the packages have been imported, download the data needed for this
-# example: one line shapefile containing all major roads in North America,
-# and one polygon shapefile containing the United States boundary.
+# Once the packages have been imported, you need to create the shapes to clip.
+# You need to make two polygons, one line, and one point feature with shapely,
+# and then open those shapes up with GeoPandas.
 
-data = et.data.get_data("spatial-vector-lidar")
+polygon1 = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
+polygon2 = Polygon([(-5, -5), (-5, 5), (5, 5), (5, -5), (-5, -5)])
+line = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
+pts = np.array([[2, 2], [3, 4], [9, 8]])
 
 ###############################################################################
 # Open Files with GeoPandas and Reproject the Data
 # -------------------------------------------------
 #
-# Start by setting your working directory. Then, import the data files to
-# GeoDataFrames using GeoPandas.
+# Open the data files to as GeoDataFrames using GeoPandas.
 #
-# Recall that the data must be in the same CRS in order to use the
-# ``clip_shp()`` function. If the data are not in the same CRS, be sure to use
-# the ``to_crs()`` function from GeoPandas to match the projects between the
-# two objects, as shown below.
+# .. note::
+#    Recall that the data must be in the same CRS in order to use the
+#    ``clip_shp()`` function. If the data are not in the same CRS, be sure to use
+#    the ``to_crs()`` function from GeoPandas to match the projects between the
+#    two objects, as shown below. In this example, since you make all of the data,
+#    you don't have to change the CRS.
 
-# Set your home environment
-os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
-
-# Open both files with GeoPandas
-road_path = os.path.join(
-    "data",
-    "spatial-vector-lidar",
-    "global",
-    "ne_10m_roads",
-    "ne_10m_n_america_roads.shp",
+# Now that since you have all of the shapes created, you can open them with GeoPandas
+poly_gdf1 = gpd.GeoDataFrame(
+    [1], geometry=[polygon1], crs={"init": "epsg:4326"}
 )
-roads = gpd.read_file(road_path)
-
-country_path = os.path.join(
-    "data", "spatial-vector-lidar", "usa", "usa-boundary-dissolved.shp"
+poly_gdf2 = gpd.GeoDataFrame(
+    [1], geometry=[polygon2], crs={"init": "epsg:4326"}
 )
-country_boundary = gpd.read_file(country_path)
-
-# Reproject the roads layer to match the US boundary CRS
-roads = roads.to_crs(country_boundary.crs)
+line_gdf = gpd.GeoDataFrame([1], geometry=[line], crs={"init": "epsg:4326"})
+points_gdf = gpd.GeoDataFrame(
+    [Point(xy) for xy in pts], columns=["geometry"], crs={"init": "epsg:4326"}
+)
 
 ###############################################################################
-# The plot below shows the roads data before it has been clipped. Notice that
+# The plot below shows all of the data before it has been clipped. Notice that
 # the ``.boundary`` method for a GeoPandas object is used to plot the
 # boundary rather than the filled polygon. This allows for other data, such as
-# the roads data, to be overlayed on top of the polygon boundary.
+# the line and point data, to be overlayed on top of the polygon boundary.
 
 fig, ax = plt.subplots(figsize=(12, 8))
-roads.plot(ax=ax, color="grey")
-country_boundary.boundary.plot(ax=ax, color="black")
-ax.set_title("Major NA Roads Unclipped to US Border", fontsize=20)
+poly_gdf1.boundary.plot(ax=ax)
+poly_gdf2.boundary.plot(ax=ax, color="red")
+line_gdf.plot(ax=ax, color="green")
+points_gdf.plot(ax=ax, color="purple")
+ax.set_title("All Unclipped Data", fontsize=20)
 ax.set_axis_off()
 plt.show()
 
@@ -104,8 +99,8 @@ plt.show()
 # --------------
 #
 # Now that the data are opened as GeoDataFrame objects and in the same
-# projection, the data can be clipped! Recall that in this example, the roads
-# will be clipped to the United States boundary.
+# projection, the data can be clipped! In this example we clip a polygon,
+# a line, and points to a created polygon.
 #
 # To clip the data, make
 # sure you put the object to be clipped as the first argument in
@@ -113,14 +108,49 @@ plt.show()
 # the first object clipped. The function will return the clipped GeoDataFrame
 # of the object that is being clipped (e.g. roads).
 
-roads_clipped = ec.clip_shp(roads, country_boundary)
+###############################################################################
+# Clip the Polygon Data
+# ---------------------
+
+polys_clipped = ec.clip_shp(poly_gdf1, poly_gdf2)
 
 # Plot the clipped data
-# The plot below shows the results of the clip function applied to the roads
-# sphinx_gallery_thumbnail_number = 2
+# The plot below shows the results of the clip function applied to the polygons
 fig, ax = plt.subplots(figsize=(12, 8))
-roads_clipped.plot(ax=ax, color="grey")
-country_boundary.boundary.plot(ax=ax, color="black")
-ax.set_title("Major NA Roads Clipped to US Border", fontsize=20)
+polys_clipped.plot(ax=ax, color="purple")
+poly_gdf1.boundary.plot(ax=ax)
+poly_gdf2.boundary.plot(ax=ax, color="red")
+ax.set_title("Polygons Clipped", fontsize=20)
 ax.set_axis_off()
+plt.show()
+
+###############################################################################
+# Clip the Line Data
+# ---------------------
+
+line_clip = ec.clip_shp(poly_gdf1, line_gdf)
+
+# Plot the clipped data
+# The plot below shows the results of the clip function applied to the lines
+# sphinx_gallery_thumbnail_number = 3
+fig, (ax1, ax2) = plt.subplots(1, 2)
+line_gdf.plot(ax=ax1, color="green")
+poly_gdf1.boundary.plot(ax=ax1)
+line_clip.plot(ax=ax2, color="green")
+poly_gdf1.boundary.plot(ax=ax2)
+plt.show()
+
+###############################################################################
+# Clip the Point Data
+# ---------------------
+
+points_clip = ec.clip_shp(poly_gdf2, points_gdf)
+
+# Plot the clipped data
+# The plot below shows the results of the clip function applied to the points
+fig, (ax1, ax2) = plt.subplots(1, 2)
+points_gdf.plot(ax=ax1, color="purple")
+poly_gdf2.boundary.plot(ax=ax1, color="red")
+points_clip.plot(ax=ax2, color="purple")
+poly_gdf2.boundary.plot(ax=ax2, color="red")
 plt.show()
