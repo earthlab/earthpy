@@ -81,6 +81,7 @@ def _plot_image(
     vmin=None,
     vmax=None,
     ax=None,
+    alpha=1,
 ):
 
     """
@@ -106,6 +107,9 @@ def _plot_image(
         Specify the vmax to scale imshow() plots.
     ax : Matplotlib axes object (Optional)
         Matplotlib axis object to plot image.
+    alpha : float (optional)
+        The alpha value for the plot. This will help adjust the transparency of the
+        plot to the desired level.
 
     Returns
     ----------
@@ -116,7 +120,9 @@ def _plot_image(
     if scale:
         arr_im = es.bytescale(arr_im)
 
-    im = ax.imshow(arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
+    im = ax.imshow(
+        arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent, alpha=alpha
+    )
     if title:
         ax.set(title=title)
     if cbar:
@@ -138,6 +144,7 @@ def plot_bands(
     vmin=None,
     vmax=None,
     ax=None,
+    alpha=1,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -165,6 +172,10 @@ def plot_bands(
         Specify the vmin to scale imshow() plots.
     vmax : Int (Optional)
         Specify the vmax to scale imshow() plots.
+    alpha : float (optional)
+        The alpha value for the plot. This will help adjust the transparency of the
+        plot to the desired level.
+
 
     Returns
     ----------
@@ -240,6 +251,7 @@ def plot_bands(
                 extent=extent,
                 title=the_title,
                 ax=ax,
+                alpha=alpha,
             )
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -272,6 +284,7 @@ def plot_bands(
             extent=extent,
             title=title,
             ax=ax,
+            alpha=alpha,
         )
         if show:
             plt.show()
@@ -410,6 +423,7 @@ def hist(
     xlabel="",
     ylabel="",
     hist_range=None,
+    alpha=1,
 ):
     """Plot histogram for each layer in a numpy array.
 
@@ -438,6 +452,9 @@ def hist(
         The lower and upper range of the bins. Lower and upper outliers are ignored.
         If not provided, range is (x.min(), x.max()).
         Range has no effect if bins is a sequence.
+    alpha : float (optional)
+        The alpha value for the plot. This will help adjust the transparency of the
+        plot to the desired level.
 
     Returns
     ----------
@@ -510,7 +527,7 @@ def hist(
                 band.ravel(),
                 bins=bins,
                 color=the_color,
-                alpha=0.8,
+                alpha=alpha,
                 range=hist_range,
             )
             if title:
@@ -541,7 +558,9 @@ def hist(
         if not hist_range:
             hist_range = (np.nanmin(arr_comp), np.nanmax(arr_comp))
         fig, ax = plt.subplots(figsize=figsize)
-        ax.hist(arr_comp, range=hist_range, bins=bins, color=colors[0])
+        ax.hist(
+            arr_comp, range=hist_range, bins=bins, color=colors[0], alpha=alpha
+        )
         if title:
             ax.set(title=title[0])
         if xlabel:
