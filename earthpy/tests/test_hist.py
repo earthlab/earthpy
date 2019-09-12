@@ -218,10 +218,11 @@ def test_hist_partially_masked_array(image_array_3bands):
     )
     f, ax = ep.hist(masked_arr, cols=3)
     assert len(f.axes) == 3
-    
+
+
 def test_alpha(image_array_2bands):
     """Test that the alpha param returns a plot with the correct alpha."""
-    alpha_val = .5
+    alpha_val = 0.5
     alpha_ax = ep.plot_bands(image_array_2bands, cols=2, alpha=alpha_val)
     for i in range(len(alpha_ax)):
         assert alpha_ax[i].get_images()[0].get_alpha() == alpha_val
