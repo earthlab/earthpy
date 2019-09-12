@@ -2,6 +2,7 @@
 
 import pytest
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 import earthpy.plot as ep
 import numpy as np
 
@@ -241,3 +242,18 @@ def test_multi_panel_single_band(one_band_3dims):
     assert len(all_axes) == 4
     assert all_axes[0].get_title() == title1
     assert all_axes[1].get_title() == title2
+    
+def test_alpha(image_array_2bands):
+    """Test that the alpha param returns a plot with the correct alpha."""
+    alpha_val = .5
+    alpha_ax = ep.plot_bands(image_array_2bands, cols=2, alpha=alpha_val)
+    for i in range(len(alpha_ax)):
+        assert alpha_ax[i].get_images()[0].get_alpha() == alpha_val
+        
+def test_norm(image_array_2bands):
+    """Test that the norm param returns a plot with the correct norm boundaries."""
+    norm_bounds = colors.BoundaryNorm([0,1], 2)
+    norm_ax = ep.plot_bands(image_array_2bands, cols=2, norm=norm_bounds, scale=False)
+    for axes in norm_ax:
+        assert norm_bounds.boundaries[0] == axes.get_images()[0].norm.vmin
+        assert norm_bounds.boundaries[1] == axes.get_images()[0].norm.vmax
