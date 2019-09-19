@@ -118,7 +118,7 @@ def _plot_image(
         
     Returns
     ----------
-    ax : axes object
+    ax : matplotlib.axes object
         The axes object(s) associated with the plot.
     """
 
