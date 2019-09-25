@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+* Add vignette to download data from URLs and EarthPy using `data.get_data()` function (@jlpalomino, #396)
+
 ## [0.7.3]
 * Added alpha arguments to `hist()` and `plot_bands()` (@nkorinek, #409, #410)
 
