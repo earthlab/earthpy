@@ -5,7 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.7.3]
+* Added alpha arguments to `hist()` and `plot_bands()` (@nkorinek, #409, #410)
+
+## [0.7.3]
+* Update `hist()` function to support masked arrays and single-dim arrays (@nkorinek, @lwasser #390)
+* Add vignette for using the `clip_shp()` function (@nkorinek, #378)
+
+## [0.7.2]
+* Fix to the colorado-flood dataset which had nested folders (@lwasser, #387)
+
+## [0.7.1]
+* Updated colorado-flood dataset to fix file name (@lwasser, no associated issue)
+* Add vignette for using the hist() function (@nkorinek, #331)
+* Added file explaining all of the dataset available through EarthPy (@nkorinek, #369)
+* Added `es.crop_image()` example to the stack/crop vignette (@nkorinek, #368)
+
+## [0.7.0]
+* Added twitter flood dataset to `io.py` (@nkorinek, #367)
+* Add example vignette for using the hillshade function (@nkorinek, #329)
+* Modified `es.spatial()` to include a function called `crop_all()` that crops a list of images (@nkorinek, #333)
+* Updated stack to ensure inputs are of same rows/cols/bands, CRS, and Affine transform (@joemcglinchy, #334)
 * Add vignette for using the plot_bands() function (@nkorinek, #315)
 * Add example vignette for stacking and cropping raster bands with EarthPy (@nkorinek, #267)
 * Add example vignette for plotting band combinations with EarthPy (@jlpalomino, #306)
@@ -22,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.7]
 * Add NoData masking support for `stack()` (@joemcglinchy, #282)
 * Fix multiline messages to use `"` vs `"""` (@lwasser, #270)
-    
+
 ## [0.6.6]
 * Add sphinx gallery for vignettes and update get started page (@lwasser #279, #203)
 * Add two example vignettes for using EarthPy with raster data (@lwasser)

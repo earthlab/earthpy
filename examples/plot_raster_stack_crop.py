@@ -78,8 +78,6 @@ stack_band_paths.sort()
 output_dir = os.path.join("data", "outputs")
 if os.path.isdir(output_dir) == False:
     os.mkdir(output_dir)
-if os.path.isdir(os.path.join(output_dir + "outputraster")) == False:
-    os.mkdir(os.path.join(output_dir + "outputraster"))
 
 raster_out_path = os.path.join(output_dir, "raster.tiff")
 
@@ -134,9 +132,7 @@ plt.show()
 # function. Do you notice any extreme values that may be impacting the stretch
 # of the image?
 
-ep.hist(array, title=["Band 1",
-                      "Band 2",
-                      "Band 3"])
+ep.hist(array, title=["Band 1", "Band 2", "Band 3"])
 plt.show()
 
 ###########################################################################
@@ -150,9 +146,14 @@ os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 array_nodata, raster_prof_nodata = es.stack(stack_band_paths, nodata=-9999)
 
 # View hist of data with nodata values removed
-ep.hist(array_nodata, title=["Band 1 - No Data Values Removed",
-                      "Band 2 - No Data Values Removed",
-                      "Band 3 - No Data Values Removed"])
+ep.hist(
+    array_nodata,
+    title=[
+        "Band 1 - No Data Values Removed",
+        "Band 2 - No Data Values Removed",
+        "Band 3 - No Data Values Removed",
+    ],
+)
 plt.show()
 
 # Recreate extent object for the No Data array
@@ -219,19 +220,18 @@ with rio.open(stack_band_paths[0]) as raster_crs:
 #############################################################################
 # Crop Each Band
 # --------------
-# This step crops all of the bands one by one. It uses enumerate to implement dynamic naming
-# of raster outputs. The ``i`` variable will be an integer that counts up one with every
-# loop that is completed, and ``bands`` will be the raster bands in the folder.
-# It crops the rasters one at a time and writes them to an output directory.
+# When you need to crop and stack a set of images, it is  most efficient to first
+# crop each image, and then stack it.
+# ``es.crop_all()`` is an efficient way to crop all bands in an image quickly.
+# The function will write out cropped rasters to a
+# directory and return a list of file paths that can then be used with
+# ``es.stack()``.
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
-for i, bands in enumerate(stack_band_paths):
-    outpath = "data/outputs/outputraster" + str(i)
-    with rio.open(bands) as currband:
-        crop, meta = es.crop_image(currband, crop_bound_utm13N)
-        with rio.open(outpath, "w", **meta) as dest:
-            dest.write(crop)
+band_paths_list = es.crop_all(
+    stack_band_paths, output_dir, crop_bound_utm13N, overwrite=True
+)
 
 #############################################################################
 # Stack All Bands
@@ -240,9 +240,10 @@ for i, bands in enumerate(stack_band_paths):
 
 os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
 
-stack = glob("data/outputs/outputraster*")
-cropped_array, array_raster = es.stack(stack, nodata=-9999)
-crop_extent = plotting_extent(crop[0], meta["transform"])
+cropped_array, array_raster_profile = es.stack(band_paths_list, nodata=-9999)
+crop_extent = plotting_extent(
+    cropped_array[0], array_raster_profile["transform"]
+)
 
 # Plotting the cropped image
 # sphinx_gallery_thumbnail_number = 5
@@ -254,5 +255,37 @@ ep.plot_rgb(
     stretch=True,
     extent=crop_extent,
     title="Cropped Raster and Fire Boundary",
+)
+plt.show()
+
+#############################################################################
+# Crop Individual Bands
+# ---------------------
+# If you only need to crop one raster image, you can use EarthPy's 
+# ``es.crop_image()`` function.
+# This function takes a Rasterio object and crops it to the provided 
+# spatial extent.
+
+# Open Landsat image as a Rasterio object in order to crop it
+os.chdir(os.path.join(et.io.HOME, "earth-analytics"))
+
+with rio.open(stack_band_paths[0]) as src:
+    single_cropped_image, single_cropped_meta = es.crop_image(
+        src, crop_bound_utm13N
+    )
+
+# Create the extent object
+single_crop_extent = plotting_extent(
+    single_cropped_image[0], single_cropped_meta["transform"]
+)
+
+# Plot the newly cropped image
+fig, ax = plt.subplots(figsize=(12, 6))
+crop_bound_utm13N.boundary.plot(ax=ax, color="red", zorder=10)
+ep.plot_bands(
+    single_cropped_image,
+    ax=ax,
+    extent=single_crop_extent,
+    title="Single Cropped Raster and Fire Boundary",
 )
 plt.show()

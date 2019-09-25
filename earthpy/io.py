@@ -31,7 +31,7 @@ DATA_URLS = {
         ),
     ],
     "colorado-flood": (
-        "https://ndownloader.figshare.com/files/12395030",
+        "https://ndownloader.figshare.com/files/16371473",
         ".",
         "zip",
     ),
@@ -70,8 +70,18 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "vignette-elevation": (
+        "https://ndownloader.figshare.com/articles/8259098/versions/2",
+        ".",
+        "zip",
+    ),
     "california-rim-fire": (
         "https://ndownloader.figshare.com/files/14419310",
+        ".",
+        "zip",
+    ),
+    "twitter-flood": (
+        "https://ndownloader.figshare.com/files/10960175",
         ".",
         "zip",
     ),

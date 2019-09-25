@@ -29,7 +29,7 @@ install:
   - conda info -a
   - conda env create -f environment.yml
   - activate earthpy-dev
-  - python setup.py install
+  - pip install -e . --no-deps
   - pip install -r dev-requirements.txt
 
 test_script:
