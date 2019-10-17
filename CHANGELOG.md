@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 * Add vignette to download data from URLs and EarthPy using `data.get_data()` function (@jlpalomino, #396)
+* Added alpha arguements to `hist()` and `plot_bands()` (@nkorinek, #409, #410)
 
 ## [0.7.3]
 * Added alpha arguments to `hist()` and `plot_bands()` (@nkorinek, #409, #410)
