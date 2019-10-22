@@ -75,7 +75,7 @@ $ conda install earthpy
 Once you have successfully installed EarthPy, you can import it into Python.
 
 ```python
->>> import earthpy as ep
+>>> import earthpy.plot as ep
 ```
 
 Below is a quick example of plotting multiple bands in a numpy array format.
