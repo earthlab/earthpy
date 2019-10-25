@@ -18,7 +18,7 @@ EarthPy is makes it easier to plot and manipulate spatial data in Python.
 
 Python is a generic programming language designed to support many different applications. Because of this, many commonly
 performed spatial tasks for science including plotting and working with spatial data take many steps of code. EarthPy
-takes advantage of functionality developed for raster data (rasterio) and vector data (geopandas) and simplifies the
+builds upon the functionality developed for raster data (rasterio) and vector data (geopandas) in Python and simplifies the
 code needed to:
 
 * [Stack and crop raster bands from data such as Landsat into an easy to use numpy array](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html)
@@ -36,6 +36,8 @@ EarthPy also has an `io` module that allows users to
 1. Quickly access pre-created data subsets used in the earth-analytics courses hosted
 on [www.earthdatascience.org](https://www.earthdatascience.org)
 2. Download other datasets that they may want to use in their workflows.
+
+EarthPy's design was inspired by the `raster` and `sp` package functionality available to `R` users. 
 
 ## View Example EarthPy Applications in Our Documentation Gallery  
 
