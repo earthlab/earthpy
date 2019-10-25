@@ -46,7 +46,7 @@ def test_hillshade_result(hillshade_arr, hillshade_result):
 
     # Tolerance used for floating point numbers
     assert np.allclose(
-        es.hillshade(hillshade_arr, azimuth=315, angle_altitude=45),
+        es.hillshade(hillshade_arr, azimuth=315, altitude=45),
         hillshade_result,
         atol=1e-10,
         rtol=1e-10,
@@ -63,7 +63,7 @@ def test_hillshade_shape(hillshade_arr):
     with pytest.raises(
         ValueError, match="Input array should be two-dimensional"
     ):
-        es.hillshade(hillshade_arr_3d, azimuth=315, angle_altitude=45)
+        es.hillshade(hillshade_arr_3d, azimuth=315, altitude=45)
 
 
 def test_hillshade_altitude(hillshade_arr):
@@ -74,7 +74,7 @@ def test_hillshade_altitude(hillshade_arr):
         ValueError,
         match="Altitude value should be less than or equal to 90 degrees",
     ):
-        es.hillshade(hillshade_arr, azimuth=315, angle_altitude=100)
+        es.hillshade(hillshade_arr, azimuth=315, altitude=100)
 
 
 def test_hillshade_azimuth(hillshade_arr):
@@ -85,4 +85,4 @@ def test_hillshade_azimuth(hillshade_arr):
         ValueError,
         match="Azimuth value should be less than or equal to 360 degrees",
     ):
-        es.hillshade(hillshade_arr, azimuth=375, angle_altitude=45)
+        es.hillshade(hillshade_arr, azimuth=375, altitude=45)
