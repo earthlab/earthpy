@@ -556,7 +556,7 @@ def bytescale(data, high=255, low=0, cmin=None, cmax=None):
     return (bytedata.clip(low, high) + 0.5).astype("uint8")
 
 
-def hillshade(arr, azimuth=30, angle_altitude=30):
+def hillshade(arr, azimuth=30, altitude=30):
     """Create hillshade from a numpy array containing elevation data.
 
     Parameters
@@ -565,7 +565,7 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
         Numpy array containing elevation values to be used to created hillshade.
     azimuth : float (default=30)
         The desired azimuth for the hillshade.
-    angle_altitude : float (default=30)
+    altitude : float (default=30)
         The desired sun angle altitude for the hillshade.
 
     Returns
@@ -605,8 +605,8 @@ def hillshade(arr, azimuth=30, angle_altitude=30):
             "Azimuth value should be less than or equal to 360 degrees"
         )
 
-    if angle_altitude <= 90.0:
-        altituderad = angle_altitude * np.pi / 180.0
+    if altitude <= 90.0:
+        altituderad = altitude * np.pi / 180.0
     else:
         raise ValueError(
             "Altitude value should be less than or equal to 90 degrees"
