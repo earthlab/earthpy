@@ -82,6 +82,7 @@ def _plot_image(
     vmax=None,
     ax=None,
     alpha=1,
+    norm=None,
 ):
 
     """
@@ -110,10 +111,14 @@ def _plot_image(
     alpha : float (optional)
         The alpha value for the plot. This will help adjust the transparency of the
         plot to the desired level.
-
+    norm : matplotlib Normalize object (Optional)
+        The normalized boundaries for custom values coloring. NOTE: For this argument
+        to work, the scale argument MUST be set to false. Otherwise, the values will
+        just be scaled from 0-255
+        
     Returns
     ----------
-    ax : axes object
+    ax : matplotlib.axes object
         The axes object(s) associated with the plot.
     """
 
@@ -121,7 +126,13 @@ def _plot_image(
         arr_im = es.bytescale(arr_im)
 
     im = ax.imshow(
-        arr_im, cmap=cmap, vmin=vmin, vmax=vmax, extent=extent, alpha=alpha
+        arr_im,
+        cmap=cmap,
+        vmin=vmin,
+        vmax=vmax,
+        extent=extent,
+        alpha=alpha,
+        norm=norm,
     )
     if title:
         ax.set(title=title)
@@ -145,6 +156,7 @@ def plot_bands(
     vmax=None,
     ax=None,
     alpha=1,
+    norm=None,
 ):
     """Plot each band in a numpy array in its own axis.
 
@@ -175,7 +187,11 @@ def plot_bands(
     alpha : float (optional)
         The alpha value for the plot. This will help adjust the transparency of the
         plot to the desired level.
-
+    norm : matplotlib Normalize object (Optional)
+        The normalized boundaries for custom values coloring. NOTE: For this argument
+        to work, the scale argument MUST be set to false. Because of this, the 
+        function will automatically set scale to false, even if the user manually
+        sets scale to true. 
 
     Returns
     ----------
@@ -202,7 +218,8 @@ def plot_bands(
         arr.ndim
     except AttributeError:
         raise AttributeError("Input arr should be a numpy array")
-
+    if norm:
+        scale = False
     if title:
         if isinstance(title, str):
             title = [title]
@@ -252,6 +269,7 @@ def plot_bands(
                 title=the_title,
                 ax=ax,
                 alpha=alpha,
+                norm=norm,
             )
         # This loop clears out the plots for axes which are empty
         # A matplotlib axis grid is always uniform with x cols and x rows
@@ -285,6 +303,7 @@ def plot_bands(
             title=title,
             ax=ax,
             alpha=alpha,
+            norm=norm,
         )
         if show:
             plt.show()

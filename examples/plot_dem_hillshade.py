@@ -120,7 +120,7 @@ plt.show()
 # ``es.hillshade()`` is 30 degrees.
 
 # Adjust the azimuth value
-hillshade_angle_10 = es.hillshade(elevation, angle_altitude=10)
+hillshade_angle_10 = es.hillshade(elevation, altitude=10)
 
 # Plot the hillshade layer with the modified angle altitude
 ep.plot_bands(
