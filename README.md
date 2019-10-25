@@ -17,46 +17,38 @@ EarthPy is makes it easier to plot and manipulate spatial data in Python.
 ## Why EarthPy?
 
 Python is a generic programming language designed to support many different applications. Because of this, many commonly
-performed spatial tasks for science including plotting and working with spatial data take many steps of code. EarthPy 
-takes advantage of functionality developed for raster data (rasterio) and vector data (geopandas) and simplifies the 
-code needed to :
+performed spatial tasks for science including plotting and working with spatial data take many steps of code. EarthPy
+takes advantage of functionality developed for raster data (rasterio) and vector data (geopandas) and simplifies the
+code needed to:
 
 * [Stack and crop raster bands from data such as Landsat into an easy to use numpy array](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_raster_stack_crop.html)
 * [Work with masks to set bad pixels such a those covered by clouds and cloud-shadows to NA (`mask_pixels()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_stack_masks.html#sphx-glr-gallery-vignettes-plot-stack-masks-py)
 * [Plot rgb (color), color infrared and other 3 band combination images (`plot_rgb()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_rgb.html)
 * [Plot bands of a raster quickly using `plot_bands()`](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_bands_functionality.html)
-* [Plot histograms for a set of raster files.](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_hist_functionality.html) 
+* [Plot histograms for a set of raster files.](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_hist_functionality.html)
 * [Create discrete (categorical) legends](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_draw_legend_docs.html)
 * [Calculate vegetation indices such as Normalized Difference Vegetation Index (`normalized_diff()`)](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_calculate_classify_ndvi.html)
 * [Create hillshade from a DEM](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_dem_hillshade.html)
 * [Clip point, line, and polygon geometries](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/plot_clip.html)
 
-EarthPy also has an io module that allows users to 
+EarthPy also has an `io` module that allows users to
 
-1. Quickly access pre-created datasubsets used in the earth-analytics courses hosted 
-on [www.earthdatascience.org](https://www.earthdatascience.org) 
+1. Quickly access pre-created data subsets used in the earth-analytics courses hosted
+on [www.earthdatascience.org](https://www.earthdatascience.org)
 2. Download other datasets that they may want to use in their workflows.
 
 ## View Example EarthPy Applications in Our Documentation Gallery  
 
-Check out our [vignette gallery](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/index.html) for 
-applied examples of using EarthPy in common spatial workflows. 
+Check out our [vignette gallery](https://earthpy.readthedocs.io/en/latest/gallery_vignettes/index.html) for
+applied examples of using EarthPy in common spatial workflows.
 
 ## Install
 
-To install, use `pip` or `conda-forge`. We encourage you to use `conda-forge` if you are a conda users. 
+EarthPy can be installed using `pip`, but we **strongly** recommend that you install it using conda and the `conda-forge` channel.
 
-### Install via Pip
+### Install Using Conda / conda-forge Channel (Preferred)
 
-To install EarthPy via `pip` use:
-
-```bash
-$ pip install --upgrade earthpy
-```
-
-### Install Using Conda / conda-forge Channel
-
-If you are working within an Anaconda environment, we suggest that you install EarthPy using 
+If you are working within an Anaconda environment, we suggest that you install EarthPy using
 `conda-forge`
 
 ```bash
@@ -72,6 +64,17 @@ $ conda install earthpy
 ```
 
 
+### Install via Pip
+
+EarthPy uses the rtree package for some of its operations which depends upon `libspatialindex`. This package can be
+challenging to install using pip whereas it will automagically be installed if you use conda.
+
+To install EarthPy via `pip` use:
+
+```bash
+$ pip install --upgrade earthpy
+```
+
 Once you have successfully installed EarthPy, you can import it into Python.
 
 ```python
@@ -86,27 +89,33 @@ Below is a quick example of plotting multiple bands in a numpy array format.
 >>> plt.show()
 ```
 
-## Active Contributors
+## Active Maintainers
 
 We welcome contributions to EarthPy. Below are the current active package maintainers. Please see our
-[contributors file](https://earthpy.readthedocs.io/en/latest/contributors.html) for a complete list of all 
+[contributors file](https://earthpy.readthedocs.io/en/latest/contributors.html) for a complete list of all
 of our contributors.
-
 
 <a title="Leah Wasser" href="https://www.github.com/lwasser"><img width="60" height="60" alt="Leah Wasser" class="pull-left" src="https://avatars.githubusercontent.com/u/7649194?size=120" /></a>
 <a title="Max Joseph" href="https://www.github.com/mbjoseph"><img width="60" height="60" alt="Max Joseph" class="pull-left" src="https://avatars.githubusercontent.com/u/2664564?size=120" /></a>
 <a title="Joseph McGlinchy" href="https://www.github.com/joemcglinchy"><img width="60" height="60" alt="Joseph McGlinchy" class="pull-left" src="https://avatars.githubusercontent.com/u/4762214?size=120" /></a>
 <a title="Jenny Palomino" href="https://www.github.com/jlpalomino"><img width="60" height="60" alt="Jenny Palomino" class="pull-left" src="https://avatars.githubusercontent.com/u/4017492?size=120" /></a>
 <a title="Nathan Korinek" href="https://www.github.com/nkorinek"><img width="60" height="60" alt="Nathan Korinek" class="pull-left" src="https://avatars.githubusercontent.com/u/38253680?size=120" /></a>
-<a title="Tim Head" href="https://www.github.com/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
-<a title="Michelle Roby" href="https://www.github.com/mirob9363"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/42818395?size=120" /></a>
 
+
+## Contributors
+
+We've welcome any and all contributions. Below are some of the
+contributors to EarthPy.
+
+<a title="Tim Head" href="https://www.github.com/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
+<a title="Chris Holdgraf" href="https://www.github.com/choldgraf"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/1839645?size=120" /></a>
+<a title="Michelle Roby" href="https://www.github.com/mirob9363"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/42818395?size=120" /></a>
 
 ## How to Contribute
 
-We welcome contributions to EarthPy! Please be sure to check out our 
+We welcome contributions to EarthPy! Please be sure to check out our
 [contributing guidelines](https://earthpy.readthedocs.io/en/latest/contributing.html)
-for more information about submitting pull requests or changes to EarthPy. 
+for more information about submitting pull requests or changes to EarthPy.
 
 ## License
 
