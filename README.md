@@ -105,8 +105,9 @@ of our contributors.
 ## Contributors
 
 We've welcome any and all contributions. Below are some of the
-contributors to EarthPy.
+contributors to EarthPy. We are currently trying to update this list!!
 
+<a title="Sean Gillies" href="https://www.github.com/sgillies"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/33697?size=120" /></a>
 <a title="Tim Head" href="https://www.github.com/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
 <a title="Chris Holdgraf" href="https://www.github.com/choldgraf"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/1839645?size=120" /></a>
 <a title="Michelle Roby" href="https://www.github.com/mirob9363"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/42818395?size=120" /></a>
