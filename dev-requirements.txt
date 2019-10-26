@@ -1,6 +1,6 @@
 codecov==2.0.15
 bumpversion==0.5.3
-pre-commit==1.18.1
+pre-commit==1.19.0
 m2r==0.2.1
 importlib-metadata==0.19
 pytest==5.2.2
