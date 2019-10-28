@@ -2,9 +2,9 @@ earthpy package
 ===============
 
 .. automodule:: earthpy
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -16,4 +16,3 @@ Submodules
    earthpy.mask
    earthpy.plot
    earthpy.spatial
-

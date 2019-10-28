@@ -1,4 +1,4 @@
 .. automodule:: earthpy.spatial
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
