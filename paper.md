@@ -10,22 +10,27 @@ tags:
 authors:
   - name: Leah Wasser 
     orcid: 0000-0002-8177-6550
-    affiliation: "Earth Lab, University of Colorado - Boulder"
+    affiliation: 1
   - name: Maxwell B. Joseph
     orcid: 0000-0002-7745-9990
-    affiliation: "Earth Lab, University of Colorado - Boulder"
+    affiliation: 1
   - name: Joe McGlinchy
     orcid: 0000-0003-2135-0168
-    affiliation: "Earth Lab, University of Colorado - Boulder"
+    affiliation: 1
   - name: Jenny Palomino 
     orcid: 0000-0003-4879-9299
-    affiliation: "Earth Lab, University of Colorado - Boulder"
+    affiliation: 1
   - name: Korinek, Nathan
     orcid: 0000-0003-0859-7246
-    affiliation: "Earth Lab, University of Colorado - Boulder"
+    affiliation: 1
   - name: Chris Holdgraf 
     orcid: 0000-0002-2391-0678
-    affiliation: "University of California - Berkeley, Project Jupyter"
+    affiliation: 2
+affiliations:
+ - name: "Earth Lab, University of Colorado - Boulder"
+   index: 1
+ - name: "University of California - Berkeley, Project Jupyter"
+   index: 2
     
 date: 28 October 2019
 bibliography: 
