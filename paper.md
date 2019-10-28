@@ -32,6 +32,7 @@ affiliations:
   - name: "University of California - Berkeley, Project Jupyter"
     index: 2
 date: 28 October 2019
+bibliography:
 ---
 
 # Summary & Purpose
