@@ -93,6 +93,9 @@ HOME = op.join(op.expanduser("~"))
 DATA_NAME = op.join("earth-analytics", "data")
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
+# Create logger object
+logger = logging.getLogger(name)
+
 
 class Data(object):
     """
@@ -180,7 +183,7 @@ class Data(object):
         if key is None and url is None:
             # If user doesn't input anything, print & log all available data keys.
             print(self.__repr__())
-            logging.info(self.__repr__())
+            logger.info(self.__repr__())
             return
 
         if key is not None:
@@ -273,7 +276,7 @@ class Data(object):
         if verbose is True:
             print("Downloading from {}".format(url))
         else:
-            logging.info("Downloading from {}".format(url))
+            logger.info("Downloading from {}".format(url))
 
         r = requests.get(url)
 
@@ -320,7 +323,6 @@ class Data(object):
         if verbose is True:
             print("Extracted output to {}".format(path))
         else:
-            logger = logging.getLogger(name)
             logger.info("Extracted output to {}".format(path))
 
 
