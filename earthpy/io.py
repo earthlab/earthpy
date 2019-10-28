@@ -320,7 +320,8 @@ class Data(object):
         if verbose is True:
             print("Extracted output to {}".format(path))
         else:
-            loggin.info("Extracted output to {}".format(path))
+            logger = logging.getLogger(name)
+            logger.info("Extracted output to {}".format(path))
 
 
 def path_to_example(dataset):
