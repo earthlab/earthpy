@@ -273,6 +273,14 @@ Travis will then deploy to PyPI if the build succeeds.
 Travis will only deploy to PyPI on tagged commits, so remember to push the tags.
 Once that is done, create a release on GitHub for the new version.
 
+Zenodo DOI
+~~~~~~~~~~
+Once you have created a tagged version of EarthPy, you are ready to create a final
+release. To do this, go to the EarthPy repo on github. And click on the releases
+tab. Create a new release using the tagged version that you just pushed to
+GitHub using bumpversion. Once that release is created, a new DOI will be issued
+on zenodo.
+
 
 Data Generated for Testing
 ==========================
