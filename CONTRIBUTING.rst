@@ -273,13 +273,22 @@ Travis will then deploy to PyPI if the build succeeds.
 Travis will only deploy to PyPI on tagged commits, so remember to push the tags.
 Once that is done, create a release on GitHub for the new version.
 
+Zenodo DOI
+----------
+Once you have created a tagged version of EarthPy, you are ready to create a final
+release. To do this, go to the EarthPy repo on github. And click on the releases
+tab. Create a new release using the tagged version that you just pushed to
+GitHub using bumpversion. Once that release is created, a new DOI will be issued
+on zenodo.
+
 
 Data Generated for Testing
 ==========================
 If a test requires a data object such as a GeoDataFrame or numpy array, and
-copies of that data object are required by multiple tests, we can use [pytest
-fixtures](https://docs.pytest.org/en/latest/fixture.html) to cleanly create
-and tear down those objects independently for each test.
-See [`earthpy/tests/conftest.py`](earthpy/tests/conftest.py) for fixture
-definitions, and [`earthpy/tests/test_clip.py`](earthpy/tests/test_clip.py)
+copies of that data object are required by multiple tests, we can use
+`pytest fixtures <https://docs.pytest.org/en/latest/fixture.html>`_ to cleanly
+create and tear down those objects independently for each test.
+See `earthpy/tests/conftest.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/conftest.py>`_
+for fixture definitions, and
+`earthpy/tests/test_clip.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/test_crop_image.py>`_
 for example usage of fixtures in tests.
