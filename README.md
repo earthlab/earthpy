@@ -120,6 +120,11 @@ We welcome contributions to EarthPy! Please be sure to check out our
 [contributing guidelines](https://earthpy.readthedocs.io/en/latest/contributing.html)
 for more information about submitting pull requests or changes to EarthPy.
 
-## License
+## License & Citation
 
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
+
+### Citation Information
+EarthPy citation information can be found on [zenodo](https://zenodo.org/record/2573233/export/hx). A link to bibtext format is below:
+
+*[bibtex](https://zenodo.org/record/2573233/export/hx)
