@@ -11,9 +11,11 @@ import os
 import os.path as op
 import re
 import requests
+import logging
 import tarfile
 import zipfile
 import earthpy
+
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
 # If zipfile, tarfile, etc, unzip to a folder w/ the name
@@ -176,7 +178,9 @@ class Data(object):
                 "set at the same time."
             )
         if key is None and url is None:
+            # If user doesn't input anything, print & log all available data keys.
             print(self.__repr__())
+            logging.info(self.__repr__())
             return
 
         if key is not None:
@@ -268,6 +272,8 @@ class Data(object):
 
         if verbose is True:
             print("Downloading from {}".format(url))
+        else:
+            logging.info("Downloading from {}".format(url))
 
         r = requests.get(url)
 
@@ -313,6 +319,8 @@ class Data(object):
         archive.extractall(path)
         if verbose is True:
             print("Extracted output to {}".format(path))
+        else:
+            loggin.info("Extracted output to {}".format(path))
 
 
 def path_to_example(dataset):
