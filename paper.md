@@ -27,16 +27,11 @@ authors:
     orcid: 0000-0002-2391-0678
     affiliation: 2
 affiliations:
- - name: "Earth Lab, University of Colorado - Boulder"
-   index: 1
- - name: "University of California - Berkeley, Project Jupyter"
-   index: 2
-    
+  - name: "Earth Lab, University of Colorado - Boulder"
+    index: 1
+  - name: "University of California - Berkeley, Project Jupyter"
+    index: 2
 date: 28 October 2019
-bibliography: 
-# Optional fields if submitting to a AAS journal too, see this blog post:
-# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-# We have a zenodo doi -- how does JOSS handle this?
 ---
 
 # Summary & Purpose
