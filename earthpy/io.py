@@ -275,7 +275,7 @@ class Data(object):
 
         if verbose is True:
             print("Downloading from {}".format(url))
-            logger.info("Downloading from {}".format(url))
+        logger.info("Downloading from %r", url)
 
         r = requests.get(url)
 
