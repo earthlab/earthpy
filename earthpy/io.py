@@ -274,7 +274,7 @@ class Data(object):
             return path
 
         if verbose is True:
-            print("Downloading from {}".format(url))
+            logger.setLevel(logging.INFO)
         logger.info("Downloading from %r", url)
 
         r = requests.get(url)
