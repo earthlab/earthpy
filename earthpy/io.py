@@ -94,7 +94,7 @@ DATA_NAME = op.join("earth-analytics", "data")
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 # Create logger object
-logger = logging.getLogger("io")
+logger = logging.getLogger(__name__)
 
 
 class Data(object):
