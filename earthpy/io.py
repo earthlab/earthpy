@@ -95,6 +95,7 @@ ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 # Create logger object
 logger = logging.getLogger(__name__)
+original_level = logger.level
 
 
 class Data(object):
@@ -183,7 +184,10 @@ class Data(object):
         if key is None and url is None:
             # If user doesn't input anything, print & log all available data keys.
             print(self.__repr__())
-            logger.info(self.__repr__())
+            # with LoggingContext(logger, logging.INFO if verbose else None):
+            #    logger.info("message")
+            # logger.setLevel(logging.INFO)
+            # logger.info(self.__repr__())
             return
 
         if key is not None:
@@ -205,7 +209,7 @@ class Data(object):
                 else:
                     fname = url.split("/")[-1]
 
-            # try and deduce filetype based on extension
+            # Try and deduce filetype based on extension
             file_type = "file"
             for ext in ALLOWED_FILE_TYPES:
                 if fname.endswith(ext):
@@ -287,7 +291,7 @@ class Data(object):
             self._download_and_extract(path, r, kind, verbose)
         return path
 
-    def _download_and_extract(self, path, r, kind, verbose):
+    def _download_and_extract(self, path, r, kind, verbose=True):
         """ Download and extract a compressed archive.
 
         This function downloads and extracts compressed directories to
@@ -319,7 +323,11 @@ class Data(object):
             archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
         os.makedirs(path, exist_ok=True)
         archive.extractall(path)
-        # Logger is set to info level above so no need to set it again
+        # We want the logger to PRINT if verbose is set to true, and just log if it's false.
+        # this does NOT seem to be printing
+        if verbose:
+            logger.setLevel(INFO)
+
         logger.info("Extracted output to {}".format(path))
 
 
@@ -352,5 +360,6 @@ def path_to_example(dataset):
         raise KeyError(dataset + " not found in earthpy example data.")
     return os.path.join(data_dir, dataset)
 
-# Reset logger back to 
-logger.setLevel(logging.WARNING)
+
+# Reset logger back to original level (should use sean's example here...
+logger.setLevel(original_level)
