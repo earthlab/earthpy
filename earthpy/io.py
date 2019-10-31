@@ -319,10 +319,8 @@ class Data(object):
             archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
         os.makedirs(path, exist_ok=True)
         archive.extractall(path)
-        if verbose is True:
-            print("Extracted output to {}".format(path))
-        else:
-            logger.info("Extracted output to {}".format(path))
+        # Logger is set to info level above so no need to set it again
+        logger.info("Extracted output to {}".format(path))
 
 
 def path_to_example(dataset):
