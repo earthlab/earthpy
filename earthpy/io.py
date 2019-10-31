@@ -351,3 +351,6 @@ def path_to_example(dataset):
     if dataset not in data_files:
         raise KeyError(dataset + " not found in earthpy example data.")
     return os.path.join(data_dir, dataset)
+
+# Reset logger back to 
+logger.setLevel(logging.WARNING)
