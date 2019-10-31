@@ -215,7 +215,7 @@ class Data(object):
                 if fname.endswith(ext):
                     file_type = ext
 
-            # remove extension for pretty download paths
+            # Remove extension for pretty download paths
             fname = re.sub("\\.{}$".format(file_type), "", fname)
 
             this_data = (url, fname, file_type)
@@ -244,7 +244,9 @@ class Data(object):
             data_paths.append(this_path)
         if len(data_paths) == 1:
             data_paths = data_paths[0]
-        return data_paths
+        if verbose:
+            return data_paths
+        logger.info(data_paths)
 
     def _download(self, url, path, kind, replace, verbose):
         """ Download a file.
