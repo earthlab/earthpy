@@ -221,6 +221,15 @@ def test_url_download_txt_file_with_content_disposition(eld):
 
 
 @skip_on_ci
+@pytest.mark.vcr()
+def test_verbose_arg_works(eld, caplog):
+    """ Test that the verbose argument can print or suppress messages. """
+    eld.get_data("little-text-file")
+    for record in caplog.records:
+        assert record.message != "" and record.levelname == "INFO"
+
+
+@skip_on_ci
 @pytest.mark.parametrize("verbose_arg_value", [True, False])
 @pytest.mark.vcr()
 def test_verbose_arg_works(eld, verbose_arg_value, capsys):
