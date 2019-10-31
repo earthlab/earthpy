@@ -94,6 +94,7 @@ DATA_NAME = op.join("earth-analytics", "data")
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 # Create logger object
+# logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 original_level = logger.level
 
@@ -278,10 +279,12 @@ class Data(object):
         path = op.expanduser(path)
         if replace is False and op.exists(path):
             return path
-
-        if verbose is True:
+        # We know here the level is being set to INFO but it is still not printing (as a log) in the terminal
+        if verbose:
             logger.setLevel(logging.INFO)
+            print(logger.level)
         logger.info("Downloading from %r", url)
+        print(logger.level)
 
         r = requests.get(url)
 
@@ -328,7 +331,7 @@ class Data(object):
         # We want the logger to PRINT if verbose is set to true, and just log if it's false.
         # this does NOT seem to be printing
         if verbose:
-            logger.setLevel(INFO)
+            logger.setLevel(logging.INFO)
 
         logger.info("Extracted output to {}".format(path))
 
