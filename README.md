@@ -8,6 +8,7 @@
 # EarthPy
 
 ![PyPI](https://img.shields.io/pypi/v/earthpy.svg?color=purple&style=plastic)
+[![pyOpenSci](https://tinyurl.com/y22nb8up)](https://github.com/pyOpenSci/software-review/issues/12)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/earthpy.svg?color=purple&label=pypi%20downloads&style=plastic)
 ![Conda](https://img.shields.io/conda/v/conda-forge/earthpy.svg?color=purple&style=plastic)
 ![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=plastic)
@@ -37,7 +38,7 @@ EarthPy also has an `io` module that allows users to
 on [www.earthdatascience.org](https://www.earthdatascience.org)
 2. Download other datasets that they may want to use in their workflows.
 
-EarthPy's design was inspired by the `raster` and `sp` package functionality available to `R` users. 
+EarthPy's design was inspired by the `raster` and `sp` package functionality available to `R` users.
 
 ## View Example EarthPy Applications in Our Documentation Gallery  
 
