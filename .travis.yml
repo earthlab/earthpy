@@ -13,7 +13,7 @@ matrix:
         - os: linux
           dist: xenial
           python: 3.7
-          env: TOXENV=py37,black,docs
+          env: TOXENV=py37 #,black,docs
         - os: osx
           language: generic
 
@@ -24,6 +24,9 @@ install:
 script:
   - chmod +x .travis/test.sh
   - ./.travis/test.sh
+
+after_failure:
+  - cat MSBuild_*.failure.txt
 
 deploy:
   provider: pypi
