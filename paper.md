@@ -87,11 +87,11 @@ convey key concepts for spatial data processing.
 
 To simplify dependency management and installation for non-experts, we maintain a version of EarthPy on the `conda-forge` channel, which installs the system 
 libraries upon which `EarthPy` depends. This combined with high-level wrapper 
-around `GeoPandas`, `Rasterio`, and `Matplotlib` lowers the barrier to entry for 
+around `GeoPandas`, `Rasterio`, and `Matplotlib` [@Hunter:2007] lowers the barrier to entry for 
 people, particularly scientists, who are learning how to work with spatial data in 
 `Python`. 
 
-While there are other useful `Python` packages for working independently with either vector (e.g. `PySAL`) or raster data (e.g. `GeoRasters`), `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package. 
+While there are other useful `Python` packages for working independently with either vector (e.g. `PySAL` [@pysal2007]) or raster data (e.g. `GeoRasters`), `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package. 
 
 
 ## EarthPy in the Classroom
