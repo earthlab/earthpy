@@ -91,7 +91,7 @@ around `GeoPandas`, `Rasterio`, and `Matplotlib` [@Hunter:2007] lowers the barri
 people, particularly scientists, who are learning how to work with spatial data in 
 `Python`. 
 
-While there are other useful `Python` packages for working independently with either vector (e.g. `PySAL` [@pysal2007]) or raster data (e.g. `GeoRasters`), `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package. 
+While there are other useful `Python` packages for working with vector data such as `PySAL` [@pysal2007] or raster data such as `GeoRasters`, `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package. 
 
 
 ## EarthPy in the Classroom
