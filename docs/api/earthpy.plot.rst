@@ -1,4 +1,4 @@
 .. automodule:: earthpy.plot
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

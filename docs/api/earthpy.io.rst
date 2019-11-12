@@ -1,4 +1,4 @@
 .. automodule:: earthpy.io
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
