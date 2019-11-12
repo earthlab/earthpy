@@ -88,15 +88,15 @@ convey key concepts for spatial data processing.
 
 `EarthPy` is an open source `Python` package that makes it easier to plot and work with both spatial raster and vector data using open source tools. `EarthPy`'s goal is to make working with spatial data easier for scientists who want to use open source `Python` tools for analysis and visualization.
 
-`Earthpy` depends upon `GeoPandas` [@kelsey_jordahl_2019_3483425:2019], which has a focus on vector data handling and analysis, and `Rasterio` [@gillies:2013], which facilitates input and output of raster data files as numpy arrays. It also requires `Matplotlib` for plotting operations.
+`Earthpy` depends upon `GeoPandas` [@kelsey_jordahl_2019_3483425], which has a focus on vector data handling and analysis, and `Rasterio` [@gillies_2019], which facilitates input and output of raster data files as numpy arrays. It also requires `Matplotlib` for plotting operations.
 
 To simplify dependency management and installation for non-experts, we maintain a version of EarthPy on the `conda-forge` channel, which installs the system
 libraries upon which `EarthPy` depends. This combined with high-level wrapper
-around `GeoPandas`, `Rasterio`, and `Matplotlib` lowers the barrier to entry for
+around `GeoPandas`, `Rasterio`, and `Matplotlib` [@Hunter:2007] lowers the barrier to entry for
 people, particularly scientists, who are learning how to work with spatial data in
 `Python`.
 
-While there are other useful `Python` packages for working independently with either vector (e.g. `PySAL`) or raster data (e.g. `GeoRasters`), `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package.
+While there are other useful `Python` packages for working with vector data such as `PySAL` [@pysal2007] or raster data such as `GeoRasters`, `EarthPy` draws from both `GeoPandas` and `Rasterio` to integrate functionality for vector and raster into one package.
 
 
 ## EarthPy in the Classroom

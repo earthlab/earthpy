@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.6]
+* no significant changes but pyopensci approval and badge added.
+
 ## [0.7.5]
 * Changed variable name for `angle_altitude` to `altitude` in `hillshade()` (@nkorinek, #436)
 * Added alpha arguments to `hist()` and `plot_bands()` (@nkorinek, #409, #410)
