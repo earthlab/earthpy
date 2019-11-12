@@ -34,7 +34,7 @@ affiliations:
     index: 1
   - name: "University of California - Berkeley, Project Jupyter"
     index: 2
-  - name: ""Wild Tree Tech""
+  - name: "Wild Tree Tech"
     index: 3
 date: 28 October 2019
 bibliography: paper.bib
