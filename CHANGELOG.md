@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8]
+* JOSS paper and pyopensci review completed release! 
+
 ## [0.7.6]
 * no significant changes but pyopensci approval and badge added.
 
