@@ -1,4 +1,4 @@
 .. automodule:: earthpy.clip
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
