@@ -3,7 +3,7 @@ bumpversion==0.5.3
 pre-commit==1.20.0
 m2r==0.2.1
 importlib-metadata==0.23
-pytest==5.2.2
+pytest==5.2.4
 pytest-vcr==1.0.2
 pytest-cov==2.7.1
 sphinx==2.2.1
