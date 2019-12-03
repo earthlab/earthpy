@@ -10,5 +10,5 @@ sphinx==2.2.1
 sphinx-autobuild==0.7.1
 sphinx_gallery==0.4.0
 sphinx_rtd_theme==0.4.3
-tox==3.13.2
+tox==3.14.2
 pip>=19.0
