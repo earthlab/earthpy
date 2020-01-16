@@ -114,6 +114,8 @@ plt.show()
 # of the object that is being clipped (e.g. roads).
 
 roads_clipped = ec.clip_shp(roads, country_boundary)
+# Remove empty geometries
+roads_clipped = roads_clipped[~roads_clipped.is_empty]
 
 # Plot the clipped data
 # The plot below shows the results of the clip function applied to the roads
