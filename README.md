@@ -1,4 +1,5 @@
-[![DOI](https://zenodo.org/badge/122149160.svg)](https://zenodo.org/badge/latestdoi/122149160)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.01886/status.svg)](https://doi.org/10.21105/joss.01886)
+[![pyOpenSci](https://tinyurl.com/y22nb8up)](https://github.com/pyOpenSci/software-review/issues/3)
 [![Build Status](https://travis-ci.org/earthlab/earthpy.svg?branch=master)](https://travis-ci.org/earthlab/earthpy)
 [![Build status](https://ci.appveyor.com/api/projects/status/xgf5g4ms8qhgtp21?svg=true)](https://ci.appveyor.com/project/earthlab/earthpy)
 [![codecov](https://codecov.io/gh/earthlab/earthpy/branch/master/graph/badge.svg)](https://codecov.io/gh/earthlab/earthpy)
@@ -8,12 +9,11 @@
 # EarthPy
 
 ![PyPI](https://img.shields.io/pypi/v/earthpy.svg?color=purple&style=plastic)
-[![pyOpenSci](https://tinyurl.com/y22nb8up)](https://github.com/pyOpenSci/software-review/issues/12)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/earthpy.svg?color=purple&label=pypi%20downloads&style=plastic)
 ![Conda](https://img.shields.io/conda/v/conda-forge/earthpy.svg?color=purple&style=plastic)
 ![Conda](https://img.shields.io/conda/dn/conda-forge/earthpy.svg?color=purple&label=conda-forge%20downloads&style=plastic)
 
-EarthPy is makes it easier to plot and manipulate spatial data in Python.
+EarthPy makes it easier to plot and manipulate spatial data in Python.
 
 ## Why EarthPy?
 
@@ -126,6 +126,25 @@ for more information about submitting pull requests or changes to EarthPy.
 [BSD-3](https://github.com/earthlab/earthpy/blob/master/LICENSE)
 
 ### Citation Information
-EarthPy citation information can be found on [zenodo](https://zenodo.org/record/2573233/export/hx). A link to bibtext format is below:
 
-*[bibtex](https://zenodo.org/record/2573233/export/hx)
+When citing EarthPy, please cite our [JOSS paper](https://doi.org/10.21105/joss.01886):
+
+```
+@article{Wasser2019EarthPy,
+	journal = {Journal of Open Source Software},
+	doi = {10.21105/joss.01886},
+	issn = {2475-9066},
+	number = {43},
+	publisher = {The Open Journal},
+	title = {EarthPy: A Python package that makes it easier to explore and plot raster and vector data using open source Python tools.},
+	url = {https://doi.org/10.21105/joss.01886},
+	volume = {4},
+	author = {Wasser, Leah and Joseph, Maxwell and McGlinchy, Joe and Palomino, Jenny and Korinek, Nathan and Holdgraf, Chris and Head, Tim},
+	pages = {1886},
+	date = {2019-11-13},
+	year = {2019},
+	month = {11},
+	day = {13},
+}
+
+```
