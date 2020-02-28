@@ -49,13 +49,13 @@ natural earth, including global roads, political boundaries, and populated
 places. Finally, there are NEON Lidar data and insitu measurements for
 SOAP and SJER sites.
 
-cold-springs-modis-h5
+cold-springs-modis-h4
 ---------------------
 
 This dataset contains imagery from the Moderate Resolution Imaging Spectrometer
 `(MODIS)    <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-modis/modis-remote-sensing-data-in-python/>`_
 maintained by NASA. `The satellite data <https://figshare.com/articles/Earth_Analytics_Cold_Springs_Fire_Remote_Sensing_Data/6083210>`_
-are for the 2016 Cold Springs fire near Nederland, CO. and are in h5 format.
+are for the 2016 Cold Springs fire near Nederland, CO. and are in h4 format.
 
 cold-springs-fire
 -----------------

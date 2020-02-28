@@ -40,7 +40,7 @@ DATA_URLS = {
         ".",
         "zip",
     ),
-    "cold-springs-modis-h5": (
+    "cold-springs-modis-h4": (
         "https://ndownloader.figshare.com/files/10960112",
         ".",
         "zip",
