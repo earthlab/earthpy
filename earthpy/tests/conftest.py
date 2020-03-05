@@ -52,7 +52,7 @@ def basic_image_tif(tmpdir, basic_image):
     """
     outfilename = str(tmpdir.join("basic_image.tif"))
     kwargs = {
-        "crs": rio.crs.CRS({"init": "epsg:4326"}),
+        "crs": rio.crs.CRS("epsg:4326"),
         "transform": Affine.identity(),
         "count": 1,
         "dtype": rio.uint8,
@@ -78,7 +78,7 @@ def basic_image_tif_2(tmpdir, basic_image_2):
     """
     outfilename = str(tmpdir.join("basic_image_2.tif"))
     kwargs = {
-        "crs": rio.crs.CRS({"init": "epsg:4326"}),
+        "crs": rio.crs.CRS("epsg:4326"),
         "transform": Affine.identity(),
         "count": 1,
         "dtype": rio.uint8,
@@ -104,7 +104,7 @@ def basic_image_tif_CRS(tmpdir, basic_image):
     """
     outfilename = str(tmpdir.join("basic_image_CRS.tif"))
     kwargs = {
-        "crs": rio.crs.CRS({"init": "epsg:3857"}),
+        "crs": rio.crs.CRS("epsg:3857"),
         "transform": Affine.identity(),
         "count": 1,
         "dtype": rio.uint8,
@@ -130,7 +130,7 @@ def basic_image_tif_Affine(tmpdir, basic_image):
     """
     outfilename = str(tmpdir.join("basic_image_Affine.tif"))
     kwargs = {
-        "crs": rio.crs.CRS({"init": "epsg:4326"}),
+        "crs": rio.crs.CRS("epsg:4326"),
         "transform": Affine(2.0, 0.0, 0.0, 0.0, 2.0, 0.0),
         "count": 1,
         "dtype": rio.uint8,
@@ -179,9 +179,7 @@ def basic_geometry_gdf(basic_geometry):
     -------
     GeoDataFrame containing the basic_geometry polygon
     """
-    gdf = gpd.GeoDataFrame(
-        geometry=[basic_geometry], crs={"init": "epsg:4326"}
-    )
+    gdf = gpd.GeoDataFrame(geometry=[basic_geometry], crs="epsg:4326")
     return gdf
 
 
