@@ -63,7 +63,7 @@ cold-springs-fire
 This dataset contains satellite and vector data for the
 `2016 Cold Springs fire near Nederland, CO <https://figshare.com/articles/Earth_Analytics_Cold_Springs_Fire_Remote_Sensing_Data/6083210>`_.
 The imagery used for this dataset comes from MODIS, National Agriculture
-Imagery Program `(NAIP) <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-in-python/naip-imagery-raster-stacks-in-python/#work-with-naip-data-in-python>`_
+Imagery Program `(NAIP) <https://www.earthdatascience.org/courses/use-data-open-source-python/multispectral-remote-sensing/intro-naip/>`_
 (provided by the US Department of Agriculture), and
 Land-Use Satellite `(Landsat) <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-in-python/landsat-bands-geotif-in-Python/>`_
 (provided by the USGS).
