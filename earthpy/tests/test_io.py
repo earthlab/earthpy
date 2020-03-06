@@ -69,21 +69,21 @@ def test_colorado_counties():
     """ Check assumptions about county polygons. """
     counties = gpd.read_file(eio.path_to_example("colorado-counties.geojson"))
     assert counties.shape == (64, 13)
-    assert counties.crs == {"init": "epsg:4326"}
+    assert counties.crs == "epsg:4326"
 
 
 def test_colorado_glaciers():
     """ Check assumptions about glacier point locations. """
     glaciers = gpd.read_file(eio.path_to_example("colorado-glaciers.geojson"))
     assert glaciers.shape == (134, 2)
-    assert glaciers.crs == {"init": "epsg:4326"}
+    assert glaciers.crs == "epsg:4326"
 
 
 def test_continental_divide_trail():
     """ Check assumptions about Continental Divide Trail path. """
     cdt = gpd.read_file(eio.path_to_example("continental-div-trail.geojson"))
     assert cdt.shape == (1, 2)
-    assert cdt.crs == {"init": "epsg:4326"}
+    assert cdt.crs == "epsg:4326"
 
 
 """ Tests for the EarthlabData class. """

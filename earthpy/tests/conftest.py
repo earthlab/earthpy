@@ -179,9 +179,7 @@ def basic_geometry_gdf(basic_geometry):
     -------
     GeoDataFrame containing the basic_geometry polygon
     """
-    gdf = gpd.GeoDataFrame(
-        geometry=[basic_geometry], crs={"init": "epsg:4326"}
-    )
+    gdf = gpd.GeoDataFrame(geometry=[basic_geometry], crs="epsg:4326")
     return gdf
 
 
