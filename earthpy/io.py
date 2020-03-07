@@ -55,6 +55,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "cs-full-landsat-scenes": (
+        "https://ndownloader.figshare.com/files/21941085",
+        ".",
+        "zip",
+    ),
     "cs-test-landsat": (
         "https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e",
         ".",
