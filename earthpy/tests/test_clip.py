@@ -13,9 +13,7 @@ def point_gdf():
     """ Create a point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
     gdf = gpd.GeoDataFrame(
-        [Point(xy) for xy in pts],
-        columns=["geometry"],
-        crs={"init": "epsg:4326"},
+        [Point(xy) for xy in pts], columns=["geometry"], crs="epsg:4326",
     )
     return gdf
 
@@ -24,9 +22,7 @@ def point_gdf():
 def single_rectangle_gdf():
     """Create a single rectangle for clipping. """
     poly_inters = Polygon([(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)])
-    gdf = gpd.GeoDataFrame(
-        [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
-    )
+    gdf = gpd.GeoDataFrame([1], geometry=[poly_inters], crs="epsg:4326")
     gdf["attr2"] = "site-boundary"
     return gdf
 
@@ -39,9 +35,7 @@ def larger_single_rectangle_gdf():
      are returned when you clip polygons. This fixture is larger which
      eliminates the slivers in the clip return."""
     poly_inters = Polygon([(-5, -5), (-5, 15), (15, 15), (15, -5), (-5, -5)])
-    gdf = gpd.GeoDataFrame(
-        [1], geometry=[poly_inters], crs={"init": "epsg:4326"}
-    )
+    gdf = gpd.GeoDataFrame([1], geometry=[poly_inters], crs="epsg:4326")
     gdf["attr2"] = ["study area"]
     return gdf
 
@@ -69,9 +63,7 @@ def two_line_gdf():
     """ Create Line Objects For Testing """
     linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
     lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
-    gdf = gpd.GeoDataFrame(
-        [1, 2], geometry=[linea, lineb], crs={"init": "epsg:4326"}
-    )
+    gdf = gpd.GeoDataFrame([1, 2], geometry=[linea, lineb], crs="epsg:4326")
     return gdf
 
 
@@ -80,7 +72,7 @@ def multi_poly_gdf(donut_geometry):
     """ Create a multi-polygon GeoDataFrame. """
     multi_poly = donut_geometry.unary_union
     out_df = gpd.GeoDataFrame(
-        geometry=gpd.GeoSeries(multi_poly), crs={"init": "epsg:4326"}
+        geometry=gpd.GeoSeries(multi_poly), crs="epsg:4326"
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["pool"]
@@ -97,8 +89,7 @@ def multi_line(two_line_gdf):
     multiline_feat = two_line_gdf.unary_union
     linec = LineString([(2, 1), (3, 1), (4, 1), (5, 2)])
     out_df = gpd.GeoDataFrame(
-        geometry=gpd.GeoSeries([multiline_feat, linec]),
-        crs={"init": "epsg:4326"},
+        geometry=gpd.GeoSeries([multiline_feat, linec]), crs="epsg:4326",
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["road", "stream"]
@@ -113,7 +104,7 @@ def multi_point(point_gdf):
         gpd.GeoSeries(
             [multi_point, Point(2, 5), Point(-11, -14), Point(-10, -12)]
         ),
-        crs={"init": "epsg:4326"},
+        crs="epsg:4326",
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["tree", "another tree", "shrub", "berries"]
@@ -137,9 +128,7 @@ def test_returns_gdf(point_gdf, single_rectangle_gdf):
 def test_non_overlapping_geoms():
     """Test that a bounding box returns error if the extents don't overlap"""
     unit_box = Polygon([(0, 0), (0, 1), (1, 1), (1, 0), (0, 0)])
-    unit_gdf = gpd.GeoDataFrame(
-        [1], geometry=[unit_box], crs={"init": "epsg:4326"}
-    )
+    unit_gdf = gpd.GeoDataFrame([1], geometry=[unit_box], crs="epsg:4326")
     non_overlapping_gdf = unit_gdf.copy()
     non_overlapping_gdf = non_overlapping_gdf.geometry.apply(
         lambda x: shapely.affinity.translate(x, xoff=20)
