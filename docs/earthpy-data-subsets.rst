@@ -115,4 +115,4 @@ twitter-flood
 cold-springs-landsat-scenes
 ---------------------------
 
-Before and after `Landsat imagery of the 2016 Cold Springs fire near Nederland, CO <https://figshare.com/articles/Earth_Analytics_Python_HOMEWORK_Landsat_Pre_Fire_Data_Cloud_Free/6083300>`_.
+Before and after cloud-free `Landsat scenes covering the 2016 Cold Springs fire near Nederland, CO <https://figshare.com/articles/Earth_Analytics_Python_HOMEWORK_Landsat_Pre_Fire_Data_Cloud_Free/6083300>`_.
