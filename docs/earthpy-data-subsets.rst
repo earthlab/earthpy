@@ -68,7 +68,7 @@ Imagery Program `(NAIP) <https://www.earthdatascience.org/courses/use-data-open-
 Land-Use Satellite `(Landsat) <https://www.earthdatascience.org/courses/earth-analytics-python/multispectral-remote-sensing-in-python/landsat-bands-geotif-in-Python/>`_
 (provided by the USGS).
 
-cs-test-naip`Geolocated Twitter data related to the 2013 Boulder floods <https://figshare.com/articles/Earth_Analytics_Python_2017_Colorado_Floods_Twitter_data/5603413>`_.
+cs-test-naip
 
 ------------
 
