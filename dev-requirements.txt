@@ -1,4 +1,4 @@
-codecov==2.0.15
+codecov==2.0.21
 bumpversion==0.5.3
 pre-commit==1.21.0
 m2r==0.2.1
