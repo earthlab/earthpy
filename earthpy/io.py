@@ -85,6 +85,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "cold-springs-landsat-scenes": (
+        "https://ndownloader.figshare.com/files/21941085 ",
+        ".",
+        "zip",
+    ),
 }
 
 HOME = op.join(op.expanduser("~"))
