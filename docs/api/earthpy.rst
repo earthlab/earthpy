@@ -11,6 +11,7 @@ Submodules
 
 .. toctree::
 
+   earthpy.clip
    earthpy.io
    earthpy.mask
    earthpy.plot
