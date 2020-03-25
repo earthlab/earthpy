@@ -68,8 +68,8 @@ $ conda install earthpy
 
 ### Install via Pip
 
-EarthPy uses the rtree package for some of its operations which depends upon `libspatialindex`. This package can be
-challenging to install using pip whereas it will automagically be installed if you use conda.
+We strongly suggest that you install EarthPy using conda-forge given pip can be more prone to 
+spatial library dependency conflicts. However, you can install earthpy using pip.
 
 To install EarthPy via `pip` use:
 
