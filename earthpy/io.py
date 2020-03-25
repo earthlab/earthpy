@@ -80,8 +80,15 @@ DATA_URLS = {
         ".",
         "zip",
     ),
-    "twitter-flood": (
-        "https://ndownloader.figshare.com/files/10960175",
+    "twitter-flood": [
+        (
+            "https://ndownloader.figshare.com/files/10960175",
+            "boulder_flood_geolocated_tweets.json",
+            "file",
+        )
+    ],
+    "cold-springs-landsat-scenes": (
+        "https://ndownloader.figshare.com/files/21941085 ",
         ".",
         "zip",
     ),

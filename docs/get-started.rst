@@ -53,6 +53,6 @@ You can access these data subsets by using:
     >>> import earthpy as et
     >>> # View all available data keys
     >>> et.data.get_data()
-    Available Datasets: ['california-rim-fire', 'co-flood-extras', 'cold-springs-fire', 'cold-springs-modis-h4', 'colorado-flood', 'cs-test-landsat', 'cs-test-naip', 'ndvi-automation', 'spatial-vector-lidar', 'twitter-flood', 'vignette-elevation', 'vignette-landsat']
+    Available Datasets: ['california-rim-fire', 'co-flood-extras', 'cold-springs-fire', 'cold-springs-landsat-scenes', 'cold-springs-modis-h4', 'colorado-flood', 'cs-test-landsat', 'cs-test-naip', 'ndvi-automation', 'spatial-vector-lidar', 'twitter-flood', 'vignette-elevation', 'vignette-landsat']
     >>> # Download data subset to your `$HOME/earth-analytics/data` directory
     >>> data = et.data.get_data('cold-springs-fire', verbose=False)
