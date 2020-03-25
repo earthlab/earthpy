@@ -290,5 +290,5 @@ copies of that data object are required by multiple tests, we can use
 create and tear down those objects independently for each test.
 See `earthpy/tests/conftest.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/conftest.py>`_
 for fixture definitions, and
-`earthpy/tests/test_clip.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/test_crop_image.py>`_
+`earthpy/tests/test_crop_image.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/test_crop_image.py>`_
 for example usage of fixtures in tests.
