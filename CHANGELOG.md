@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+* Fix twitter flood data key in get_data (@lwasser, #512)
+* Added new landsat data as a download option to get_data (@nkorinek)
 * Fix clip vignette. Cant plot w empty geoms (@lwasser, #475)
 
 ## [0.8]
-* JOSS paper and pyopensci review completed release! 
+* JOSS paper and pyopensci review completed release!
 
 ## [0.7.6]
 * no significant changes but pyopensci approval and badge added.
