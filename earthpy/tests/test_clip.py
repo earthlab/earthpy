@@ -68,9 +68,7 @@ def multi_point(point_gdf):
 
 
 def test_warning_main_clip_function(point_gdf, single_rectangle_gdf):
-    with pytest.raises(
-        Warning, match="clip_shp is deprecated. Use the clip()"
-    ):
+    with pytest.raises(Warning, match="clip_shp is deprecated in earthpy"):
         cl.clip_shp(point_gdf, single_rectangle_gdf)
 
 
