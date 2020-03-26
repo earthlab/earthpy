@@ -447,7 +447,7 @@ def crop_all(
         >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
         >>> paths = [path_to_example(fname) for fname in band_fnames]
         >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
-        >>> out_dir = os.path.commonpath(band_paths)
+        >>> out_dir = os.path.commonpath(paths)
         >>> output_files = es.crop_all(paths, out_dir, rmnp, overwrite=True)
         >>> len(output_files)
         3
