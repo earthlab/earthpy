@@ -9,6 +9,7 @@ dependencies:
 - sphinx_rtd_theme=0.4.3
 - m2r=0.2.1
 - sphinx-gallery=0.2.0
+- pandas=1.0.3
 # To make conda resolution faster - following geopandas
 - scikit-image=0.16.2
 - libgdal=3.0.4
