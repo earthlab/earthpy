@@ -1,11 +1,8 @@
 """ Tests for the spatial module. """
 
-import os
 import numpy as np
 import pytest
-import geopandas as gpd
 import rasterio as rio
-from affine import Affine
 from shapely.geometry import Polygon, Point, LineString
 import earthpy.spatial as es
 

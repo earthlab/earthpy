@@ -6,8 +6,7 @@ A module to clip vector data using GeoPandas.
 
 """
 
-import pandas as pd
-import geopandas as gpd
+import sys
 
 
 # @deprecate

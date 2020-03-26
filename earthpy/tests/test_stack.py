@@ -26,18 +26,21 @@ def in_paths_mismatch(basic_image_tif, basic_image_tif_2):
 
 @pytest.fixture
 def in_paths_CRS_mismatch(basic_image_tif, basic_image_tif_CRS):
-    """ Input file paths for tifs of same dimension but different CRS to stack. """
+    """ Input file paths for tifs of same dimension but different CRS to
+    stack. """
     return [basic_image_tif] * 4 + [basic_image_tif_CRS]
 
 
 @pytest.fixture
 def in_paths_Affine_mismatch(basic_image_tif, basic_image_tif_Affine):
-    """ Input file paths for tifs of same dimension but different affine transform to stack. """
+    """ Input file paths for tifs of same dimension but different affine
+    transform to stack. """
     return [basic_image_tif] * 4 + [basic_image_tif_Affine]
 
 
 def test_stack_array_size_mismatch(in_paths_mismatch):
-    """ Test for error raised when array dimensions (nrows, ncols) are not all equal. """
+    """ Test for error raised when array dimensions (nrows, ncols) are not
+    all equal. """
 
     with pytest.raises(ValueError, match="same dimensions"):
         es.stack(in_paths_mismatch)
@@ -51,14 +54,16 @@ def test_stack_CRS_mismatch(in_paths_CRS_mismatch):
 
 
 def test_stack_Affine_mismatch(in_paths_Affine_mismatch):
-    """ Test for error raised when raster Affine transform are not all equal. """
+    """ Test for error raised when raster Affine transform are not all
+    equal. """
 
     with pytest.raises(ValueError, match="same affine transform"):
         es.stack(in_paths_Affine_mismatch)
 
 
 def test_stack_no_file_ext(in_paths):
-    """Test for error raised when no file extension provided in output file."""
+    """Test for error raised when no file extension provided in output
+    file."""
 
     # Test that out_path needs a file extension to be valid
     out_fi = "test_stack"
@@ -114,7 +119,8 @@ def test_stack_nodata(in_paths, out_path):
 
 
 def test_stack_nodata_outfile(in_paths, out_path):
-    """Test nodata parameter for masking stacked array and writing output file."""
+    """Test nodata parameter for masking stacked array and writing output
+    file."""
 
     stack_arr, stack_prof = es.stack(in_paths, out_path, nodata=0)
 
