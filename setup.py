@@ -3,7 +3,12 @@ from setuptools import setup
 
 
 DISTNAME = "earthpy"
-DESCRIPTION = "A set of helper functions to make working with spatial data in open source tools easier. This package is maintained by Earth Lab and was originally designed to support the earth analytics education program."
+DESCRIPTION = (
+    "A set of helper functions to make working with spatial data "
+    "in open source tools easier. This package is maintained by "
+    "Earth Lab and was originally designed to support the earth "
+    "analytics education program."
+)
 MAINTAINER = "Leah Wasser"
 MAINTAINER_EMAIL = "leah.wasser@colorado.edu"
 
@@ -22,7 +27,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.8.0",
+        version="0.9.0",
         packages=["earthpy"],
         install_requires=[
             "geopandas",
