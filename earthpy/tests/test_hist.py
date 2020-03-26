@@ -176,7 +176,8 @@ def test_hist_masked_array(image_array_2bands):
 
 
 def test_hist_1band_masked_array(image_array_single_band):
-    """Ensure that a masked single band arr plots & the number of bins is correct"""
+    """Ensure that a masked single band arr plots & the number of bins is
+    correct"""
     masked_arr = np.ma.masked_where(
         image_array_single_band == 4, image_array_single_band
     )

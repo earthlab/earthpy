@@ -6,6 +6,8 @@ A module to clip vector data using GeoPandas.
 
 """
 
+import sys
+
 
 # @deprecate
 def _clip_points(shp, clip_obj):
