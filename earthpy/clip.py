@@ -68,7 +68,7 @@ def clip_shp(shp, clip_obj):
     Please use the clip() function in GeoPandas instead.
     """
     raise Warning(
-        "clip_shp is deprecated. Use the clip() function in "
-        "GeoPandas. Exiting..."
+        "clip_shp is deprecated in earthpy and has been moved to Geopandas. "
+        "Please use the Geopandas clip() function. Exiting..."
     )
     sys.exit()
