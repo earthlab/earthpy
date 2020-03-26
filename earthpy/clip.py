@@ -6,9 +6,6 @@ A module to clip vector data using GeoPandas.
 
 """
 
-import pandas as pd
-import geopandas as gpd
-
 
 # @deprecate
 def _clip_points(shp, clip_obj):
@@ -69,7 +66,7 @@ def clip_shp(shp, clip_obj):
     Please use the clip() function in GeoPandas instead.
     """
     raise Warning(
-        "clip_shp is deprecated. Use the clip() function in "
-        "GeoPandas. Exiting..."
+        "clip_shp is deprecated in earthpy and has been moved to Geopandas. "
+        "Please use the Geopandas clip() function. Exiting..."
     )
     sys.exit()
