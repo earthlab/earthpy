@@ -69,7 +69,6 @@ Land-Use Satellite `(Landsat) <https://www.earthdatascience.org/courses/earth-an
 (provided by the USGS).
 
 cs-test-naip
-
 ------------
 
 NAIP imagery related to the 2016 Cold Springs fire near Nederland, CO.

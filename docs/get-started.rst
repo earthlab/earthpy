@@ -8,11 +8,10 @@ Earth Lab earth analytics courses and any user with a url and a zip file.
 EarthPy Module and Function Documentation
 -----------------------------------------
 
-All functions are included in the 5 earthpy modules:
+All functions are included in the 4 earthpy modules:
 
 - spatial
 - plot
-- clip
 - mask
 - io
 
@@ -42,7 +41,6 @@ You can also chose to import any of the individual modules as follows:
 
     >>> import earthpy.spatial as es
     >>> import earthpy.plot as ep
-    >>> import earthpy.clip as ec
     >>> import earthpy.mask as em
 
 Data

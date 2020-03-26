@@ -29,7 +29,6 @@ if __name__ == "__main__":
             "matplotlib>=2.0.0",
             "numpy>=1.14.0",
             "rasterio",
-            "Rtree>=0.8",
             "scikit-image",
             "requests",
         ],
