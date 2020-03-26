@@ -11,7 +11,6 @@ dependencies:
 - shapely=1.6.4
 - fiona=1.8.4
 - pyproj=1.9.6
-- rtree=0.8.3
 - sphinx=1.8.4
 - sphinx_rtd_theme=0.4.3
 - m2r=0.2.1
