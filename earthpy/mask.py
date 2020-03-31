@@ -109,8 +109,8 @@ def _create_mask(mask_arr, vals):
     Returns
     -----------
     arr : numpy array
-        A numpy array populated with 1's where the mask is applied (a Boolean True)
-        and a 0 where no masking will be done.
+        A numpy array populated with 1's where the mask is applied (a Boolean
+        True) and a 0 where no masking will be done.
     """
 
     try:
@@ -118,7 +118,7 @@ def _create_mask(mask_arr, vals):
     except AttributeError:
         raise AttributeError("Values should be provided as a list")
 
-    # For some reason if you don't copy this here, it magically changes the input
+    # For some reason if you don't copy this here, it changes the input
     # qa layer to a boolean in the main environment.
     new_mask_arr = mask_arr.copy()
     unique_vals = np.unique(new_mask_arr).tolist()
@@ -152,7 +152,8 @@ def _apply_mask(arr, input_mask):
     Returns
     -----------
     numpy array
-        The original numpy array with the mask applied to cover up issue pixels.
+        The original numpy array with the mask applied to cover up issue
+        pixels.
     """
 
     # Test if input_mask is numpy array w values == 1 for masked
@@ -172,10 +173,11 @@ def _apply_mask(arr, input_mask):
 def mask_pixels(arr, mask_arr, vals=None):
     """Apply a mask to an input array.
 
-    Masks values in an n-dimensional input array (arr) based on input 1-dimensional
-    array (mask_arr). If mask_arr is provided in a boolean format, it is used as a mask.
-    If mask_arr is provided as a non-boolean format and values to mask (vals) are provided,
-    a Boolean masked array is created from the mask_arr and the indicated vals to mask, and
+    Masks values in an n-dimensional input array (arr) based on input
+    1-dimensional array (mask_arr). If mask_arr is provided in a boolean
+    format, it is used as a mask. If mask_arr is provided as a non-boolean
+    format and values to mask (vals) are provided, a Boolean masked array is
+    created from the mask_arr and the indicated vals to mask, and
     then this new 1-dimensional masked array is used to mask the input arr.
 
     This function is useful when masking cloud and other unwanted pixels.
@@ -194,8 +196,9 @@ def mask_pixels(arr, mask_arr, vals=None):
     Returns
     -------
     arr : numpy array
-        A numpy array populated with 1's where the mask is applied (a Boolean True)
-        and the original numpy array's value where no masking was done.
+        A numpy array populated with 1's where the mask is applied (a
+        Boolean True) and the original numpy array's value where no masking
+        was done.
 
     Example
     -------

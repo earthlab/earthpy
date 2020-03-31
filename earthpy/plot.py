@@ -19,12 +19,14 @@ import earthpy.spatial as es
 def colorbar(mapobj, size="3%", pad=0.09):
     """Adjust colorbar height to match the matplotlib axis height.
 
-    NOTE: This function requires matplotlib v 3.0.1 or greater or v 2.9 or lower to run properly.
+    NOTE: This function requires matplotlib v 3.0.1 or greater or v 2.9 or
+    lower to run properly.
 
     Parameters
     ----------
     mapobj : matplotlib axis object
-        The image that the colorbar will be representing as a matplotlib axis object.
+        The image that the colorbar will be representing as a matplotlib axis
+        object.
     size : char (default = "3%")
         The percent width of the colorbar relative to the plot.
     pad : int (default = 0.09)
@@ -109,13 +111,13 @@ def _plot_image(
     ax : Matplotlib axes object (Optional)
         Matplotlib axis object to plot image.
     alpha : float (optional)
-        The alpha value for the plot. This will help adjust the transparency of the
-        plot to the desired level.
+        The alpha value for the plot. This will help adjust the transparency of
+        the plot to the desired level.
     norm : matplotlib Normalize object (Optional)
-        The normalized boundaries for custom values coloring. NOTE: For this argument
-        to work, the scale argument MUST be set to false. Otherwise, the values will
-        just be scaled from 0-255
-        
+        The normalized boundaries for custom values coloring. NOTE: For this
+        argument to work, the scale argument MUST be set to false. Otherwise,
+        the values will just be scaled from 0-255
+
     Returns
     ----------
     ax : matplotlib.axes object
@@ -185,13 +187,13 @@ def plot_bands(
     vmax : Int (Optional)
         Specify the vmax to scale imshow() plots.
     alpha : float (optional)
-        The alpha value for the plot. This will help adjust the transparency of the
-        plot to the desired level.
+        The alpha value for the plot. This will help adjust the transparency
+        of the plot to the desired level.
     norm : matplotlib Normalize object (Optional)
-        The normalized boundaries for custom values coloring. NOTE: For this argument
-        to work, the scale argument MUST be set to false. Because of this, the 
-        function will automatically set scale to false, even if the user manually
-        sets scale to true. 
+        The normalized boundaries for custom values coloring. NOTE: For this
+        argument to work, the scale argument MUST be set to false. Because
+        of this, the function will automatically set scale to false,
+        even if the user manually sets scale to true.
 
     Returns
     ----------
@@ -366,7 +368,8 @@ def plot_rgb(
     title : string (optional)
         The intended title of the plot.
     stretch : Boolean (optional)
-        Application of a linear stretch. If set to True, a linear stretch will be applied.
+        Application of a linear stretch. If set to True, a linear stretch will
+        be applied.
 
     Returns
     ----------
@@ -384,7 +387,7 @@ def plot_rgb(
         >>> from earthpy.io import path_to_example
         >>> with rio.open(path_to_example('rmnp-rgb.tif')) as src:
         ...     img_array = src.read()
-        >>> # Before you plot, ensure that the input array does not have nodata values like -9999
+        >>> # Ensure the input array doesn't have nodata values like -9999
         >>> ep.plot_rgb(img_array)
         <matplotlib.axes._subplots.AxesSubplot object at 0x...
 
@@ -468,12 +471,12 @@ def hist(
     ylabel : str (optional)
         The text to print on the y axis.
     hist_range : tuple (optional)
-        The lower and upper range of the bins. Lower and upper outliers are ignored.
-        If not provided, range is (x.min(), x.max()).
+        The lower and upper range of the bins. Lower and upper outliers are
+        ignored. If not provided, range is (x.min(), x.max()).
         Range has no effect if bins is a sequence.
     alpha : float (optional)
-        The alpha value for the plot. This will help adjust the transparency of the
-        plot to the desired level.
+        The alpha value for the plot. This will help adjust the transparency
+        of the plot to the desired level.
 
     Returns
     ----------
@@ -566,7 +569,8 @@ def hist(
         if title:
             if len(title) > 1:
                 raise ValueError(
-                    "You have one array to plot but more than one title. Please provide a single title value."
+                    "You have one array to plot but more than one title. "
+                    "Please provide a single title value."
                 )
 
         # Plot all bands
@@ -591,7 +595,8 @@ def hist(
 
 def make_col_list(unique_vals, nclasses=None, cmap=None):
     """
-    Convert a matplotlib named colormap into a discrete list of n-colors in RGB format.
+    Convert a matplotlib named colormap into a discrete list of n-colors in
+    RGB format.
 
     Parameters
     ----------
@@ -732,7 +737,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         )
 
     patches = [
-        mpatches.Patch(color=colors[i], label="{l}".format(l=titles[i]))
+        mpatches.Patch(color=colors[i], label="{lab}".format(lab=titles[i]))
         for i in range(len(titles))
     ]
     # Get the axis for the legend
