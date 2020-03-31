@@ -60,7 +60,7 @@ The above operations are crucial to understanding a dataset and identifying issu
 
 `EarthPy` was originally designed to support the Earth Analytics Education program at Earth Lab - University of Colorado, Boulder. Our program teaches students how to work with a suite of earth and environmental data using open source `Python`. All lessons are published as free open education resources on our online learning portal (https://www.earthdatascience.org). Through this publication process, we identified that many spatial data exploration and cleanup tasks which were performed regularly required many steps that could be easily wrapped into helper functions. We modeled these functions after those available in the `R` ecosystem, given the experience of the developers' many years of working and teaching with `R`.
 
-`EarthPy` allows the user to streamline common geospatial data operations in a modular way. This reduces the amount of repetitive coding required to open and stack raster datasets, clip  the data to a defined area, and in particular, plotting data for investigation.   
+`EarthPy` allows the user to streamline common geospatial data operations in a modular way. This reduces the amount of repetitive coding required to open and stack raster datasets, crop the data to a defined area, and in particular, plotting data for investigation.   
 
 # EarthPy Functionality
 
@@ -70,7 +70,6 @@ The above operations are crucial to understanding a dataset and identifying issu
 * [mask: Mask out cloud and shadow covered pixels from raster data](https://earthpy.readthedocs.io/en/latest/api/earthpy.mask.html): helper functions to mask remote sensing images using a cloud mask or QA (i.e. quality) layer.
 * [plot: Visualizing spatial data](https://earthpy.readthedocs.io/en/latest/api/earthpy.plot.html): plotting utilities including plotting a set of bands saved in a numpy array format, creating a custom colorbar, and custom legends with unique symbology.
 * [spatial: Raster processing and analysis](https://earthpy.readthedocs.io/en/latest/api/earthpy.spatial.html): utilities to crop a set of bands to a defined spatial extent, create a hillshade, stack bands, and calculate normalized difference rasters.
-* [clip: Vector data subsetting](https://earthpy.readthedocs.io/en/latest/api/earthpy.clip.html): A module to clip vector data using GeoPandas. Allows for clipping of points, lines, and polygon data within a specified polygon.
 
 ## EarthPy Vignettes
 

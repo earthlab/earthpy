@@ -17,6 +17,7 @@ import earthpy
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
 # If zipfile, tarfile, etc, unzip to a folder w/ the name
+
 DATA_URLS = {
     "co-flood-extras": [
         (
@@ -51,12 +52,18 @@ DATA_URLS = {
         "zip",
     ),
     "cs-test-naip": (
-        "https://ndownloader.figshare.com/files/10960211?private_link=18f892d9f3645344b2fe",
+        (
+            "https://ndownloader.figshare.com/files/10960211?"
+            "private_link=18f892d9f3645344b2fe"
+        ),
         ".",
         "zip",
     ),
     "cs-test-landsat": (
-        "https://ndownloader.figshare.com/files/10960214?private_link=fbba903d00e1848b423e",
+        (
+            "https://ndownloader.figshare.com/files/10960214?private_link"
+            "=fbba903d00e1848b423e"
+        ),
         ".",
         "zip",
     ),

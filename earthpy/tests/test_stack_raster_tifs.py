@@ -1,6 +1,5 @@
 """ Tests for the _stack_raster_tifs() method """
 
-import os
 import numpy as np
 import pytest
 import earthpy.spatial as es

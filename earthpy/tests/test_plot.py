@@ -1,9 +1,6 @@
 """ Colorbar Tests """
 
-import numpy as np
 import pytest
-
-# mpl.use("TkAgg")
 import matplotlib.pyplot as plt
 import earthpy.plot as ep
 
