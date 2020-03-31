@@ -3,7 +3,7 @@ Plot Bands of Satellite Imagery with EarthPy
 ==================================================================
 
 Learn how to use the EarthPy ``plot_bands()`` function to quickly plot
-raster bands for an image. ``Plot_bands()`` can be used to both 
+raster bands for an image. ``Plot_bands()`` can be used to both
 plot many bands with one command with custom titles and legends OR
 to plot a single raster layer with (or without) a legend.
 
@@ -80,21 +80,6 @@ plt.show()
 # colorbar using the ``cbar`` parameter (``cbar=False``).
 
 ep.plot_bands(array_stack[4], cbar=False)
-plt.show()
-
-##################################################################################
-# Turn Off Scaling
-# -----------------
-#
-# ``ep.plot_bands()`` scales the imagery to a 0-255 scale by default. This range
-# of values makes it easier for matplotlib to plot the data. To turn off
-# scaling, set the scale parameter to ``False``. Below you
-# plot NDVI with scaling turned off in order for the proper range of values
-# (-1 to 1) to be displayed. You can use the ``cmap=`` parameter to adjust
-# the colormap for the plot
-
-NDVI = es.normalized_diff(array_stack[4], array_stack[3])
-ep.plot_bands(NDVI, scale=False, cmap="RdYlGn")
 plt.show()
 
 ##################################################################################

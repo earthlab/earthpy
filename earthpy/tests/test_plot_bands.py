@@ -124,7 +124,7 @@ def test_cbar_param(one_band_3dims):
     """Test that the colorbar param works for a single band arr
     """
     one_band_2dims = one_band_3dims[0]
-    ax = ep.plot_bands(one_band_2dims)
+    ax = ep.plot_bands(one_band_2dims, scale=True)
     arr = ax.get_images()[0].get_array()
     c_bar = ax.images[0].colorbar
 
@@ -142,7 +142,7 @@ def test_not_scaled_single_band(one_band_3dims):
     """
     one_band_2dims = one_band_3dims[0]
 
-    ax = ep.plot_bands(one_band_2dims, cbar=False, scale=False)
+    ax = ep.plot_bands(one_band_2dims, cbar=False)
     arr = ax.get_images()[0].get_array()
     c_bar = ax.images[0].colorbar
 
@@ -160,7 +160,7 @@ def test_not_scaled_multi_band(image_array_2bands):
     """
 
     im = image_array_2bands
-    ax = ep.plot_bands(im, scale=False)
+    ax = ep.plot_bands(im)
 
     # Get all arrays to be plotted
     all_arrs = [a.get_images()[0].get_array() for a in ax if a.get_images()]
@@ -180,7 +180,7 @@ def test_vmin_vmax_multi_band(image_array_2bands):
     one_band_2dims = image_array_2bands
     vmin = -10
     vmax = 10
-    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax, scale=False)
+    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax)
 
     # Get all cbars - the min and max vals for all cbars should be -10 and 10
     cb_max = [a.images[0].colorbar.vmax for a in ax if a.images]
@@ -200,7 +200,7 @@ def test_vmin_vmax_single_band(one_band_3dims):
     one_band_2dims = one_band_3dims[0]
     vmin = 0
     vmax = 10
-    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax, scale=False)
+    ax = ep.plot_bands(one_band_2dims, vmin=vmin, vmax=vmax)
     c_bar = ax.images[0].colorbar
 
     # Cbar should be scaled between the vmin and vmax vals
@@ -255,9 +255,7 @@ def test_alpha(image_array_2bands):
 def test_norm_scale_false(image_array_2bands):
     """Test that the norm param returns a plot with the correct norm boundaries."""
     norm_bounds = colors.BoundaryNorm([0, 1], 2)
-    norm_ax = ep.plot_bands(
-        image_array_2bands, cols=2, norm=norm_bounds, scale=False
-    )
+    norm_ax = ep.plot_bands(image_array_2bands, cols=2, norm=norm_bounds)
     for axes in norm_ax:
         assert norm_bounds.boundaries[0] == axes.get_images()[0].norm.vmin
         assert norm_bounds.boundaries[1] == axes.get_images()[0].norm.vmax
