@@ -136,7 +136,7 @@ def test_cbar_param(one_band_3dims):
 
 
 def test_not_scaled_single_band(one_band_3dims):
-    """Test if the user turns off scaling and cbar the data vals should remain intact.
+    """Test if user turns off scaling and cbar the data vals remain intact.
 
     Also if no cbar is specified it should not render.
     """
@@ -156,7 +156,8 @@ def test_not_scaled_single_band(one_band_3dims):
 
 
 def test_not_scaled_multi_band(image_array_2bands):
-    """Test if the user turns off scaling for multi bands the data vals should remain intact.
+    """Test if the user turns off scaling for multi bands the data vals
+    remain intact.
     """
 
     im = image_array_2bands
@@ -174,7 +175,8 @@ def test_not_scaled_multi_band(image_array_2bands):
 def test_vmin_vmax_multi_band(image_array_2bands):
     """Test vmin and max apply properly in multi band images
 
-    If the data are scaled between -10 and 10 the cbar vals should reflect that.
+    If the data are scaled between -10 and 10 the cbar vals should reflect
+    that.
     """
 
     one_band_2dims = image_array_2bands
@@ -194,7 +196,8 @@ def test_vmin_vmax_multi_band(image_array_2bands):
 def test_vmin_vmax_single_band(one_band_3dims):
     """Test vmin and max apply properly
 
-    If the data are scaled between -10 and 10 the cbar vals should reflect that.
+    If the data are scaled between -10 and 10 the cbar vals should reflect
+    that.
     """
 
     one_band_2dims = one_band_3dims[0]
@@ -253,7 +256,8 @@ def test_alpha(image_array_2bands):
 
 
 def test_norm_scale_false(image_array_2bands):
-    """Test that the norm param returns a plot with the correct norm boundaries."""
+    """Test that the norm param returns a plot with the correct norm
+    boundaries."""
     norm_bounds = colors.BoundaryNorm([0, 1], 2)
     norm_ax = ep.plot_bands(image_array_2bands, cols=2, norm=norm_bounds)
     for axes in norm_ax:
@@ -262,7 +266,8 @@ def test_norm_scale_false(image_array_2bands):
 
 
 def test_norm_scale_true(image_array_2bands):
-    """Test that the norm param returns a plot with the correct norm boundaries."""
+    """Test that the norm param returns a plot with the correct norm
+    boundaries."""
     norm_bounds = colors.BoundaryNorm([0, 1], 2)
     norm_ax = ep.plot_bands(
         image_array_2bands, cols=2, norm=norm_bounds, scale=True
@@ -273,7 +278,8 @@ def test_norm_scale_true(image_array_2bands):
 
 
 def test_norm_scale_unset(image_array_2bands):
-    """Test that the norm param returns a plot with the correct norm boundaries."""
+    """Test that the norm param returns a plot with the correct norm
+    boundaries."""
     norm_bounds = colors.BoundaryNorm([0, 1], 2)
     norm_ax = ep.plot_bands(image_array_2bands, cols=2, norm=norm_bounds)
     for axes in norm_ax:

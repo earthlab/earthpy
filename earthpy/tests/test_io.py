@@ -190,7 +190,10 @@ def test_invalid_data_type(eld):
 def test_arbitrary_url_zip_download(eld):
     """ Verify that aribitrary URLs work for zip file downloads. """
     path = eld.get_data(
-        url="https://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_nation_20m.zip"
+        url=(
+            "https://www2.census.gov/geo/tiger/GENZ2016/shp"
+            "/cb_2016_us_nation_20m.zip"
+        )
     )
     path_has_contents = len(os.listdir(path)) > 0
     assert path_has_contents

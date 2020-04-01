@@ -60,21 +60,22 @@ def extent_to_json(ext_obj):
 
 
 def normalized_diff(b1, b2):
-    """Take two n-dimensional numpy arrays and calculate the normalized difference.
+    """Take two n-dimensional numpy arrays and calculate the normalized
+    difference.
 
     Math will be calculated (b1-b2) / (b1 + b2).
 
     Parameters
     ----------
     b1, b2 : numpy arrays
-        Two numpy arrays that will be used to calculate the normalized difference.
-        Math will be calculated (b1-b2) / (b1+b2).
+        Two numpy arrays that will be used to calculate the normalized
+        difference. Math will be calculated (b1-b2) / (b1+b2).
 
     Returns
     ----------
     n_diff : numpy array
-        The element-wise result of (b1-b2) / (b1+b2) calculation. Inf values are set
-        to nan. Array returned as masked if result includes nan values.
+        The element-wise result of (b1-b2) / (b1+b2) calculation. Inf values
+        are set to nan. Array returned as masked if result includes nan values.
 
     Examples
     --------
@@ -106,7 +107,8 @@ def normalized_diff(b1, b2):
     # Set inf values to nan and provide custom warning
     if np.isinf(n_diff).any():
         warnings.warn(
-            "Divide by zero produced infinity values that will be replaced with nan values",
+            "Divide by zero produced infinity values that will be replaced "
+            "with nan values",
             Warning,
         )
         n_diff[np.isinf(n_diff)] = np.nan
@@ -130,7 +132,8 @@ def stack(band_paths, out_path="", nodata=None):
         A path with a file name for the output stacked raster
         tif file.
     nodata : numeric (optional)
-        A value (int or float) that represents invalid or missing values to mask in the output.
+        A value (int or float) that represents invalid or missing values to
+        mask in the output.
 
     Returns
     ----------
@@ -139,8 +142,8 @@ def stack(band_paths, out_path="", nodata=None):
         numpy array
             N-dimensional array created by stacking the raster files provided.
         rasterio profile object
-            A rasterio profile object containing the updated spatial metadata for
-            the stacked numpy array.
+            A rasterio profile object containing the updated spatial metadata
+            for the stacked numpy array.
 
     Example
     -------
@@ -171,7 +174,8 @@ def stack(band_paths, out_path="", nodata=None):
 
     if len(band_paths) < 2:
         raise ValueError(
-            "The list of file paths is empty. You need at least 2 files to create a stack."
+            "The list of file paths is empty. You need at least 2 files to "
+            "create a stack."
         )
 
     # Invalid filename specified and write_raster == True.
@@ -211,7 +215,8 @@ def stack(band_paths, out_path="", nodata=None):
 
         if not len(set(dest_shps)) == 1:
             raise ValueError(
-                "Please ensure all source rasters have same dimensions (nrows, ncols)."
+                "Please ensure all source rasters have same dimensions "
+                "(nrows, ncols)."
             )
 
         # Update band count
@@ -240,13 +245,12 @@ def stack(band_paths, out_path="", nodata=None):
             # Valid output path checked above
             file_fmt = os.path.basename(out_path).split(".")[-1]
 
-            # Check if the file format for output is the same as the source driver
+            # Check that file format for output is the same as source driver
             rio_driver = sources[0].profile["driver"]
-            if not file_fmt in rio_driver.lower():
+            if file_fmt not in rio_driver.lower():
                 raise ValueError(
-                    "Source data is {}. Please specify corresponding output extension.".format(
-                        rio_driver
-                    )
+                    "Source data is {}. Please specify corresponding output "
+                    "extension.".format(rio_driver)
                 )
 
             # Write stacked gtif file
@@ -299,7 +303,7 @@ def _stack_bands(sources, write_raster=False, dest=None):
         for src in sources:
             src.profile
 
-    except AttributeError as ae:
+    except AttributeError:
         raise AttributeError("The sources object should be Dataset Reader")
         sys.exit()
 
@@ -441,10 +445,10 @@ def crop_all(
         >>> import geopandas as gpd
         >>> from earthpy.io import path_to_example
         >>> band_fnames = ["red.tif", "green.tif", "blue.tif"]
-        >>> band_paths = [path_to_example(fname) for fname in band_fnames]
+        >>> paths = [path_to_example(fname) for fname in band_fnames]
         >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
-        >>> output_dir = os.path.commonpath(band_paths)
-        >>> output_files = es.crop_all(band_paths, output_dir, rmnp, overwrite=True)
+        >>> out_dir = os.path.commonpath(paths)
+        >>> output_files = es.crop_all(paths, out_dir, rmnp, overwrite=True)
         >>> len(output_files)
         3
         >>> os.path.isfile(output_files[0])
@@ -545,12 +549,14 @@ def bytescale(data, high=255, low=0, cmin=None, cmax=None):
         raise ValueError("`cmax` should be larger than `cmin`.")
     elif crange == 0:
         raise ValueError(
-            "`cmax` and `cmin` should not be the same value. Please specify `cmax` > `cmin`"
+            "`cmax` and `cmin` should not be the same value. Please specify "
+            "`cmax` > `cmin`"
         )
 
     scale = float(high - low) / crange
 
-    # If cmax is less than the data max, then this scale parameter will create data > 1.0. clip the data to cmax first.
+    # If cmax is less than the data max, then this scale parameter will create
+    # data > 1.0. clip the data to cmax first.
     data[data > cmax] = cmax
     bytedata = (data - cmin) * scale + low
     return (bytedata.clip(low, high) + 0.5).astype("uint8")
@@ -562,7 +568,7 @@ def hillshade(arr, azimuth=30, altitude=30):
     Parameters
     ----------
     arr : numpy array of shape (rows, columns)
-        Numpy array containing elevation values to be used to created hillshade.
+        Numpy array with elevation values to be used to created hillshade.
     azimuth : float (default=30)
         The desired azimuth for the hillshade.
     altitude : float (default=30)
@@ -594,7 +600,7 @@ def hillshade(arr, azimuth=30, altitude=30):
     """
     try:
         x, y = np.gradient(arr)
-    except:
+    except ValueError:
         raise ValueError("Input array should be two-dimensional")
 
     if azimuth <= 360.0:

@@ -121,8 +121,8 @@ def basic_image_tif_CRS(tmpdir, basic_image):
 @pytest.fixture
 def basic_image_tif_Affine(tmpdir, basic_image):
     """
-    A GeoTIFF representation of the basic_image array with a different affine transform.
-    Borrowed from rasterio/tests/conftest.py
+    A GeoTIFF representation of the basic_image array with a different affine
+    transform. Borrowed from rasterio/tests/conftest.py
 
     Returns
     -------

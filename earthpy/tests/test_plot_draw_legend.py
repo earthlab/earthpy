@@ -4,10 +4,10 @@ import numpy as np
 import pytest
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
-plt.show = lambda: None
 from matplotlib.colors import ListedColormap
 import earthpy.plot as ep
+
+plt.show = lambda: None
 
 
 @pytest.fixture
@@ -38,7 +38,8 @@ def binned_array():
 
 @pytest.fixture
 def arr_plot_blues(binned_array_3bins):
-    """Returns an imshow object using the Blues cmap and the arr used to plot"""
+    """Returns an imshow object using the Blues cmap and the arr used to
+    plot"""
     bins, im_arr_bin = binned_array_3bins
 
     f, ax = plt.subplots()
@@ -171,7 +172,8 @@ def test_colors(arr_plot_blues):
 
 
 def test_neg_vals():
-    """Test that the legend plots when positive and negative values are provided"""
+    """Test that the legend plots when positive and negative values are
+    provided"""
 
     arr = np.array([[-1, 0, 1], [1, 0, -1]])
     f, ax = plt.subplots()
@@ -184,7 +186,8 @@ def test_neg_vals():
 
 
 def test_listed_cmap(arr_plot_list_cmap):
-    """Test that the the legend generates properly when provided with a ListedColormap"""
+    """Test that the the legend generates properly when provided with a
+    ListedColormap"""
 
     im_ax, arr = arr_plot_list_cmap
 
@@ -195,7 +198,8 @@ def test_listed_cmap(arr_plot_list_cmap):
 
 
 def test_classes_provided_as_array(arr_plot_list_cmap):
-    """Test that draw_legend works when classes are provided as an arr (not a list)."""
+    """Test that draw_legend works when classes are provided as an arr
+    (not a list)."""
 
     im_ax, arr = arr_plot_list_cmap
     n_classes = 5
@@ -251,7 +255,8 @@ def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
 
 
 def test_listedcmap_ncol_equals_nclasses(vals_missing_plot_list_cmap):
-    """If a 5 color listed cmap is provided and 6 classes are specified, return value error"""
+    """If a 5 color listed cmap is provided and 6 classes are specified,
+    return value error"""
 
     n_classes = 5
     im_ax, arr = vals_missing_plot_list_cmap
