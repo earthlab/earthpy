@@ -116,7 +116,7 @@ def _plot_image(
     norm : matplotlib Normalize object (Optional)
         The normalized boundaries for custom values coloring. NOTE: For this
         argument to work, the scale argument MUST be set to false. Otherwise,
-        the values will just be scaled from 0-255.
+        the values will be scaled from 0-255.
 
     Returns
     ----------
