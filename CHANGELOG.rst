@@ -12,6 +12,7 @@ Unreleased
 0.9
 ---
 
+-  Removed m2r as a dependency (@nkorinek, #527)
 -  Add flake 8 (@lwasser, #519)
 -  Remove conda envt for RTD build (@lwasser, #518)
 -  Deprecate clip function from earthpy given it’s moved to geopandas
