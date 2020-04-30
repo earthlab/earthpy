@@ -65,7 +65,6 @@ with rio.open(dtm) as src:
 # Plot the data
 ep.plot_bands(
     elevation,
-    scale=False,
     cmap="gist_earth",
     title="DTM Without Hillshade",
     figsize=(10, 6),
@@ -81,11 +80,7 @@ plt.show()
 hillshade = es.hillshade(elevation)
 
 ep.plot_bands(
-    hillshade,
-    scale=False,
-    cbar=False,
-    title="Hillshade made from DTM",
-    figsize=(10, 6),
+    hillshade, cbar=False, title="Hillshade made from DTM", figsize=(10, 6),
 )
 plt.show()
 
@@ -104,7 +99,6 @@ hillshade_azimuth_210 = es.hillshade(elevation, azimuth=210)
 # Plot the hillshade layer with the modified azimuth
 ep.plot_bands(
     hillshade_azimuth_210,
-    scale=False,
     cbar=False,
     title="Hillshade with Azimuth set to 210 Degrees",
     figsize=(10, 6),
@@ -125,7 +119,6 @@ hillshade_angle_10 = es.hillshade(elevation, altitude=10)
 # Plot the hillshade layer with the modified angle altitude
 ep.plot_bands(
     hillshade_angle_10,
-    scale=False,
     cbar=False,
     title="Hillshade with Angle Altitude set to 10 Degrees",
     figsize=(10, 6),
@@ -145,7 +138,6 @@ fig, ax = plt.subplots(figsize=(10, 6))
 ep.plot_bands(
     elevation,
     ax=ax,
-    scale=False,
     cmap="terrain",
     title="Lidar Digital Elevation Model (DEM)\n overlayed on top of a hillshade",
 )

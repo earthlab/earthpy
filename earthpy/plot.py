@@ -79,7 +79,7 @@ def _plot_image(
     title=None,
     extent=None,
     cbar=True,
-    scale=True,
+    scale=False,
     vmin=None,
     vmax=None,
     ax=None,
@@ -116,7 +116,7 @@ def _plot_image(
     norm : matplotlib Normalize object (Optional)
         The normalized boundaries for custom values coloring. NOTE: For this
         argument to work, the scale argument MUST be set to false. Otherwise,
-        the values will just be scaled from 0-255
+        the values will be scaled from 0-255.
 
     Returns
     ----------
@@ -153,7 +153,7 @@ def plot_bands(
     title=None,
     extent=None,
     cbar=True,
-    scale=True,
+    scale=False,
     vmin=None,
     vmax=None,
     ax=None,
