@@ -92,9 +92,7 @@ ndvi = es.normalized_diff(arr_st[4], arr_st[3])
 titles = ["Landsat 8 - Normalized Difference Vegetation Index (NDVI)"]
 
 # Turn off bytescale scaling due to float values for NDVI
-ep.plot_bands(
-    ndvi, cmap="RdYlGn", cols=1, title=titles, scale=False, vmin=-1, vmax=1
-)
+ep.plot_bands(ndvi, cmap="RdYlGn", cols=1, title=titles, vmin=-1, vmax=1)
 
 ###############################################################################
 # Classify NDVI
@@ -109,7 +107,9 @@ ndvi_class_bins = [-np.inf, 0, 0.1, 0.25, 0.4, np.inf]
 ndvi_landsat_class = np.digitize(ndvi, ndvi_class_bins)
 
 # Apply the nodata mask to the newly classified NDVI data
-ndvi_landsat_class = np.ma.masked_where(np.ma.getmask(ndvi), ndvi_landsat_class)
+ndvi_landsat_class = np.ma.masked_where(
+    np.ma.getmask(ndvi), ndvi_landsat_class
+)
 np.unique(ndvi_landsat_class)
 
 
