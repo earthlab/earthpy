@@ -9,10 +9,11 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 Unreleased
 ----------
 
+-  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
+
 0.9
 ---
 
--  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
 -  Removed m2r as a dependency (@nkorinek, #527)
 -  Add flake 8 (@lwasser, #519)
 -  Remove conda envt for RTD build (@lwasser, #518)
