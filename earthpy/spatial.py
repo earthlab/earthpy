@@ -338,7 +338,7 @@ def crop_image(raster, geoms, all_touched=True):
 
     Parameters
     ----------
-    raster : rasterio object
+    raster : rasterio.io.DatasetReader object
         The rasterio object to be cropped.
     geoms : geopandas geodataframe or list of polygons
         The spatial polygon boundaries in GeoJSON-like dict format
@@ -369,13 +369,12 @@ def crop_image(raster, geoms, all_touched=True):
         >>> from earthpy.io import path_to_example
         >>> # Clip an RGB image to the extent of Rocky Mountain National Park
         >>> rmnp = gpd.read_file(path_to_example("rmnp.shp"))
-        >>> with rio.open(path_to_example("rmnp-rgb.tif")) as raster:
-        ...     src_image = raster.read()
-        ...     out_image, out_meta = es.crop_image(raster, rmnp)
-        >>> out_image.shape
-        (3, 265, 281)
-        >>> src_image.shape
-        (3, 373, 485)
+        >>> with rio.open(path_to_example("rmnp-rgb.tif")) as src_raster:
+        ...     cropped_raster, cropped_meta = es.crop_image(src_raster, rmnp)
+        >>> src_raster.shape
+        (373, 485)
+        >>> cropped_raster.shape[1:3]
+        (265, 281)
     """
     if isinstance(geoms, gpd.geodataframe.GeoDataFrame):
         clip_extent = [extent_to_json(geoms)]
