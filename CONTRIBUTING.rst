@@ -2,9 +2,9 @@
 Contributing Guidelines
 =======================
 
-We welcome contributions to EarthPy.
+We welcome contributions to Matplotcheck.
 When contributing, please follow the guidelines below and adhere to the
-`EarthPy Code of Conduct <code-of-conduct.html>`_.
+`Matplotcheck Code of Conduct <code-of-conduct.html>`_.
 
 At this stage of development, we are developing a set of
 usable wrapper functions that help make working with earth
@@ -25,7 +25,7 @@ If you are proposing a feature:
 Get Started!
 ============
 
-Ready to contribute? Here's how to set up EarthPy for local development.
+Ready to contribute? Here's how to set up Matplotcheck for local development.
 
 1. Fork the repository on GitHub
 --------------------------------
@@ -37,7 +37,7 @@ and click the **Fork** button in the top-right corner of the page.
 2. Clone your fork locally
 --------------------------
 
-Use ``git clone`` to get a local copy of your EarthPy repository on your
+Use ``git clone`` to get a local copy of your Matplotcheck repository on your
 local filesystem::
 
     $ git clone git@github.com:your_name_here/earthpy.git
@@ -74,7 +74,7 @@ Or, if you prefer to use virtualenv rather than conda::
 Install the package
 ^^^^^^^^^^^^^^^^^^^
 
-Once your earthpy-dev environment is activated, install EarthPy in editable
+Once your earthpy-dev environment is activated, install Matplotcheck in editable
 mode, along with the development requirements and pre-commit hooks::
 
     $ pip install -e .
@@ -109,9 +109,9 @@ Optional: testing multiple python versions locally
 
 To test against multiple versions of python, you can use tox.
 This step is optional, as tox will test against multiple versions as part of
-EarthPy's continuous integration pipeline.
-To use tox, you must be able to install EarthPy's dependencies without
-using the ``environment.yml`` file, i.e., you must be able to install EarthPy
+Matplotcheck's continuous integration pipeline.
+To use tox, you must be able to install Matplotcheck's dependencies without
+using the ``environment.yml`` file, i.e., you must be able to install Matplotcheck
 and its dependencies with pip.
 
 Running tox is as simple as::
@@ -165,17 +165,17 @@ When submitting a pull request:
 Documentation Updates
 =====================
 
-Improving the documentation and testing for code already in EarthPy
+Improving the documentation and testing for code already in Matplotcheck
 is a great way to get started if you'd like to make a contribution. Please note
 that our documentation files are in
 `ReStructuredText (.rst)
 <http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
 format and format your pull request accordingly.
 
-To create a vignette for an EarthPy workflow, create a ``.py`` file that shows the
+To create a vignette for an Matplotcheck workflow, create a ``.py`` file that shows the
 necessary steps to complete the workflow. Make sure the file name begins with
 ``plot`` in order to ensure that the vignette is correctly built. Store the
-vignette in the ``examples`` folder within the ``earthpy`` directory. EarthPy
+vignette in the ``examples`` folder within the ``earthpy`` directory. Matplotcheck
 uses Sphinx Gallery to build vignettes. Help for formatting and building
 vignettes can be found on `their website <https://sphinx-gallery.github.io>`_.
 
@@ -192,7 +192,7 @@ You can preview the generated documentation by opening
 
 Earthpy uses `doctest
 <https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html>`_ to test
-code in the documentation, which includes docstrings in EarthPy's modules, and
+code in the documentation, which includes docstrings in Matplotcheck's modules, and
 code chunks in the reStructuredText source files.
 This enables the actual output of code examples to be checked against expected
 output.
@@ -221,11 +221,11 @@ e.g.,::
 Code Style
 ==========
 
-- EarthPy currently only supports Python 3 (3.5+). Please test code locally
+- Matplotcheck currently only supports Python 3 (3.5+). Please test code locally
   in Python 3 when possible (all supported versions will be automatically
   tested on Travis CI).
 
-- EarthPy uses a pre-commit hook that runs the black code autoformatter.
+- Matplotcheck uses a pre-commit hook that runs the black code autoformatter.
   Be sure to execute `pre-commit install` as described above, which will cause
   black to autoformat code prior to commits. If this step is skipped, black
   may cause build failures on Travis CI due to formatting issues.
@@ -240,7 +240,7 @@ Code Style
     - Class definitions should use camel case - example: ``ClassNameHere`` .
 
 - Imports should be grouped with standard library imports first,
-  3rd-party libraries next, and EarthPy imports third following PEP 8
+  3rd-party libraries next, and Matplotcheck imports third following PEP 8
   standards. Within each grouping, imports should be alphabetized. Always use
   absolute imports when possible, and explicit relative imports for local
   imports when necessary in tests.
@@ -264,7 +264,7 @@ package, and generates a git commit along with an associated git tag for the
 new version.
 For more on bumpversion, see: https://github.com/peritus/bumpversion
 
-To deploy EarthPy, push the commit and the version tags::
+To deploy Matplotcheck, push the commit and the version tags::
 
     $ git push
     $ git push --tags
@@ -275,8 +275,8 @@ Once that is done, create a release on GitHub for the new version.
 
 Zenodo DOI
 ----------
-Once you have created a tagged version of EarthPy, you are ready to create a final
-release. To do this, go to the EarthPy repo on github. And click on the releases
+Once you have created a tagged version of Matplotcheck, you are ready to create a final
+release. To do this, go to the Matplotcheck repo on github. And click on the releases
 tab. Create a new release using the tagged version that you just pushed to
 GitHub using bumpversion. Once that release is created, a new DOI will be issued
 on zenodo.
