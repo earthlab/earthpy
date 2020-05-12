@@ -3,7 +3,7 @@ Welcome to EarthPy!
 
 Before submitting a Pull Request please be sure to submit an issue that describes what the contents of the PR addresses.
 
-**IMPORTANT:** Please do not use this repository as a practice activity to learn how to use GitHub! Only submit a PR after 
+**IMPORTANT:** Please do not use this repository as a practice activity to learn how to use GitHub! Only submit a PR after: 
 
 1. Submitting an issue with a valid item that you wish to address in earthpy
 2. Getting approval from one of the maintainers to submit a formal PR.
