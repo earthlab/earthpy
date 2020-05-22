@@ -8,6 +8,7 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 
 Unreleased
 ----------
+- Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 
 0.9
 ---
