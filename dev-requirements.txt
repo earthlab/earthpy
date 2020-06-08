@@ -5,7 +5,7 @@ importlib-metadata==1.6.0
 pytest==5.4.2
 pytest-vcr==1.0.2
 pytest-cov==2.7.1
-sphinx==3.0.4
+sphinx==3.1.0
 sphinx-autobuild==0.7.1
 sphinx_gallery==0.6.2
 sphinx_rtd_theme==0.4.3
