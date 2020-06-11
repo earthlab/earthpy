@@ -211,6 +211,8 @@ class Data(object):
                     fname = re.findall("filename=(.+)", content)[0]
                 else:
                     fname = url.split("/")[-1]
+                if fname.endswith('"') and fname.startswith('"'):
+                    fname = fname[1:-1]
 
             # try and deduce filetype based on extension
             file_type = "file"
