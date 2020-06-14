@@ -1,4 +1,4 @@
-codecov==2.0.22
+codecov==2.1.7
 bumpversion==0.5.3
 pre-commit==1.21.0
 importlib-metadata==1.6.0
