@@ -103,7 +103,7 @@ DATA_URLS = {
         "https://ndownloader.figshare.com/files/23070791",
         ".",
         "zip",
-    )
+    ),
 }
 
 HOME = op.join(op.expanduser("~"))
