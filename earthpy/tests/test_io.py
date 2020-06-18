@@ -238,5 +238,9 @@ def test_verbose_arg_works(eld, verbose_arg_value, capsys):
 def test_url_download_with_quotes(eld):
     """ Test download with that has quotes around file name to see that get_data
     now removes the quotes. """
-    path = eld.get_data(url="https://opendata.arcgis.com/datasets/955e7a0f52474b60a9866950daf10acb_0.zip")
+    quotes_url = (
+        "https://opendata.arcgis.com/datasets/955e7a0f5"
+        + "2474b60a9866950daf10acb_0.zip"
+    )
+    path = eld.get_data(url=quotes_url)
     assert path.endswith("shp") and os.path.isdir(path)
