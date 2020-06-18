@@ -99,6 +99,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "naip-fire-crop": (
+        "https://ndownloader.figshare.com/files/23070791",
+        ".",
+        "zip",
+    )
 }
 
 HOME = op.join(op.expanduser("~"))
