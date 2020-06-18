@@ -10,9 +10,12 @@ Unreleased
 ----------
 - Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 
+-  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
+
 0.9
 ---
 
+-  Added fix for downloads with quotes around them (@nkorinek, #560)
 -  Removed m2r as a dependency (@nkorinek, #527)
 -  Add flake 8 (@lwasser, #519)
 -  Remove conda envt for RTD build (@lwasser, #518)
