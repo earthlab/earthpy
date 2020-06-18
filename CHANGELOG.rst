@@ -15,6 +15,7 @@ Unreleased
 0.9
 ---
 
+-  Added dataset for cropped NAIP data (@nkorinek, #561)
 -  Added fix for downloads with quotes around them (@nkorinek, #560)
 -  Removed m2r as a dependency (@nkorinek, #527)
 -  Add flake 8 (@lwasser, #519)
