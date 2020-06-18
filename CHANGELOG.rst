@@ -8,15 +8,18 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 
 Unreleased
 ----------
-- Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 
+0.9.1
+-----
+
+-  Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 -  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
+-  Added dataset for cropped NAIP data (@nkorinek, #561)
+-  Added fix for downloads with quotes around them (@nkorinek, #560)
 
 0.9
 ---
 
--  Added dataset for cropped NAIP data (@nkorinek, #561)
--  Added fix for downloads with quotes around them (@nkorinek, #560)
 -  Removed m2r as a dependency (@nkorinek, #527)
 -  Add flake 8 (@lwasser, #519)
 -  Remove conda envt for RTD build (@lwasser, #518)
@@ -24,7 +27,7 @@ Unreleased
    now (@nkorinek, #510)
 -  Fix twitter flood data key in get_data (@lwasser, #512)
 -  Added new landsat data as a download option to get_data (@nkorinek)
--  Fix clip vignette. Cant plot w empty geoms (@lwasser, #475)
+-  Fix clip vignette. Can't plot w empty geoms (@lwasser, #475)
 
 0.8
 ---
