@@ -231,3 +231,12 @@ def test_verbose_arg_works(eld, verbose_arg_value, capsys):
     eld.get_data("little-text-file", verbose=verbose_arg_value)
     output_printed = capsys.readouterr().out != ""
     assert output_printed == verbose_arg_value
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_url_download_with_quotes(eld):
+    """ Test download with that has quotes around file name to see that get_data
+    now removes the quotes. """
+    path = eld.get_data(url="https://opendata.arcgis.com/datasets/955e7a0f52474b60a9866950daf10acb_0.zip")
+    assert path.endswith("shp") and os.path.isdir(path)

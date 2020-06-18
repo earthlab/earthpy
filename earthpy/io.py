@@ -214,7 +214,7 @@ class Data(object):
                 if fname.endswith('"') and fname.startswith('"'):
                     fname = fname[1:-1]
 
-            # try and deduce filetype based on extension
+            # Determine filetype using file name extension
             file_type = "file"
             for ext in ALLOWED_FILE_TYPES:
                 if fname.endswith(ext):
