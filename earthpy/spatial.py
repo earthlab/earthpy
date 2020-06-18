@@ -230,7 +230,7 @@ def stack(band_paths, out_path="", nodata=None):
         # Stack the bands and return an array, but don't write to disk
         if not write_raster:
 
-            arr, prof = _stack_bands(sources)
+            arr, meta = _stack_bands(sources)
 
             # If user specified nodata, mask the array
             if nodata is not None:
@@ -238,7 +238,7 @@ def stack(band_paths, out_path="", nodata=None):
                 nodata = np.array([nodata]).astype(arr.dtype)[0]
                 arr = np.ma.masked_equal(arr, nodata)
 
-            return arr, prof
+            return arr, meta
 
         # Write out the stacked array and return a numpy array
         else:
@@ -260,17 +260,17 @@ def stack(band_paths, out_path="", nodata=None):
             # Read and return array
             with rio.open(out_path, "r") as src:
                 arr = src.read()
-                prof = src.profile
+                meta = src.profile
 
                 # If user specified nodata, mask the array
                 if nodata is not None:
-                    # make sure value is same data type
+                    # Make sure value is same data type
                     nodata = np.array([nodata]).astype(arr.dtype)[0]
 
-                    # mask the array
+                    # Mask the array
                     arr = np.ma.masked_equal(arr, nodata)
 
-                return arr, prof
+                return arr, meta
 
 
 def _stack_bands(sources, write_raster=False, dest=None):
