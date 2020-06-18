@@ -10,6 +10,8 @@ Unreleased
 ----------
 - Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 
+-  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
+
 0.9
 ---
 

@@ -267,8 +267,8 @@ def stack(band_paths, out_path="", nodata=None):
                     # make sure value is same data type
                     nodata = np.array([nodata]).astype(arr.dtype)[0]
 
-                # mask the array
-                arr = np.ma.masked_equal(arr, nodata)
+                    # mask the array
+                    arr = np.ma.masked_equal(arr, nodata)
 
                 return arr, prof
 
