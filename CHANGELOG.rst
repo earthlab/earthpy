@@ -9,9 +9,10 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 Unreleased
 ----------
 
-0.9.1
+0.9.2
 -----
 
+-  NOTE slight glitch migrating to the new version of bump version, hence bumped to 9.2
 -  Update crop_image docstring to be more specific, remove read() from example (@bmcandr, #483)
 -  Fixed a bug in `stack()` that was masking arrays unnecessarily (@nkorinek, #493)
 -  Added dataset for cropped NAIP data (@nkorinek, #561)
