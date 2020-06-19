@@ -99,6 +99,11 @@ DATA_URLS = {
         ".",
         "zip",
     ),
+    "naip-fire-crop": (
+        "https://ndownloader.figshare.com/files/23070791",
+        ".",
+        "zip",
+    ),
 }
 
 HOME = op.join(op.expanduser("~"))
@@ -211,8 +216,10 @@ class Data(object):
                     fname = re.findall("filename=(.+)", content)[0]
                 else:
                     fname = url.split("/")[-1]
+                if fname.endswith('"') and fname.startswith('"'):
+                    fname = fname[1:-1]
 
-            # try and deduce filetype based on extension
+            # Determine filetype using file name extension
             file_type = "file"
             for ext in ALLOWED_FILE_TYPES:
                 if fname.endswith(ext):
