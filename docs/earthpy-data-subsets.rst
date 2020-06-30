@@ -115,3 +115,8 @@ cold-springs-landsat-scenes
 ---------------------------
 
 Before and after cloud-free `Landsat scenes covering the 2016 Cold Springs fire near Nederland, CO <https://figshare.com/articles/Earth_Analytics_Python_HOMEWORK_Landsat_Pre_Fire_Data_Cloud_Free/6083300>`_.
+
+naip-fire-crop
+--------------
+
+This dataset contains `NAIP data cropped to the cold springs fire study area in Colorado near Nederland, CO. <https://figshare.com/articles/NAIP_before_and_after_cold_springs_fire_cropped_data/12462245>`_.

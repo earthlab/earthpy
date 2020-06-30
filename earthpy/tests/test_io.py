@@ -219,8 +219,8 @@ def test_url_download_tar_gz_file(eld):
 @pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(eld):
     """ Test arbitrary URL download with content-disposition. """
-    path = eld.get_data(url="https://ndownloader.figshare.com/files/14555681")
-    assert path.endswith("abc.txt") and os.path.isfile(path)
+    path = eld.get_data(url="https://ndownloader.figshare.com/files/7275959")
+    assert path.endswith("example.csv") and os.path.isfile(path)
 
 
 @skip_on_ci
@@ -231,3 +231,16 @@ def test_verbose_arg_works(eld, verbose_arg_value, capsys):
     eld.get_data("little-text-file", verbose=verbose_arg_value)
     output_printed = capsys.readouterr().out != ""
     assert output_printed == verbose_arg_value
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_url_download_with_quotes(eld):
+    """ Test download with that has quotes around file name to see that get_data
+    now removes the quotes. """
+    quotes_url = (
+        "https://opendata.arcgis.com/datasets/955e7a0f5"
+        + "2474b60a9866950daf10acb_0.zip"
+    )
+    path = eld.get_data(url=quotes_url)
+    assert path.endswith("shp") and os.path.isdir(path)
