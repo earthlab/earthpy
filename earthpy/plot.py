@@ -213,9 +213,9 @@ def plot_bands(
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
         ...                   figsize=(8, 3))
-array([<AxesSubplot:title={'center':'Red'}>,
-       <AxesSubplot:title={'center':'Green'}>,
-       <AxesSubplot:title={'center':'Blue'}>], dtype=object)
+        array([<AxesSubplot:title={'center':'Red'}>,
+               <AxesSubplot:title={'center':'Green'}>,
+               <AxesSubplot:title={'center':'Blue'}>], dtype=object)
     """
     show = False
     try:
