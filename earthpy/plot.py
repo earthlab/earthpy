@@ -390,7 +390,7 @@ def plot_rgb(
         ...     img_array = src.read()
         >>> # Ensure the input array doesn't have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        <matplotlib.axes._subplots.AxesSubplot object at 0x...
+        <AxesSubplot:>
 
     """
 
