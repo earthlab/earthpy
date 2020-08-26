@@ -213,7 +213,9 @@ def plot_bands(
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
         ...                   figsize=(8, 3))
-        array([<matplotlib.axes._subplots.AxesSubplot object at 0x...
+            array([<AxesSubplot:title={'center':'Red'}>,
+                   <AxesSubplot:title={'center':'Green'}>,
+                   <AxesSubplot:title={'center':'Blue'}>], dtype=object)
     """
     show = False
     try:
