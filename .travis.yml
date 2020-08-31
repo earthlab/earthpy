@@ -10,6 +10,10 @@ matrix:
           dist: xenial
           python: 3.7
           env: TOXENV=py37, black ,docs
+        - os: linux
+          dist: xenial
+          python: 3.8
+          env: TOXENV=py38, black ,docs
         - os: osx
           language: generic
 
