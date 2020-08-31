@@ -1,21 +1,20 @@
 language: python
-
 matrix:
-    include:
-      - os: linux
-          dist: xenial
-          python: 3.6
-          env: TOXENV=py36
-        - os: linux
-          dist: xenial
-          python: 3.7
-          env: TOXENV=py37, black ,docs
-        - os: linux
-          dist: xenial
-          python: 3.8
-          env: TOXENV=py38, black ,docs
-        - os: osx
-          language: generic
+  include:
+  - os: linux
+    dist: xenial
+    python: 3.6
+    env: TOXENV=py36
+  - os: linux
+    dist: xenial
+    python: 3.7
+    env: TOXENV=py37
+  - os: linux
+    dist: xenial
+    python: 3.8
+    env: TOXENV=py38, black ,docs
+  - os: osx
+    language: generic
 
 install:
   - chmod +x .travis/install.sh
