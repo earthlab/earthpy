@@ -221,7 +221,7 @@ e.g.,::
 Code Style
 ==========
 
-- EarthPy currently only supports Python 3 (3.5+). Please test code locally
+- EarthPy currently only supports Python 3 (3.6+). Please test code locally
   in Python 3 when possible (all supported versions will be automatically
   tested on Travis CI).
 
