@@ -49,7 +49,7 @@ def test_num_titles(image_array_2bands):
 
 
 def test_str_for_title(image_array_2bands):
-    """Test that a single string title renders properly """
+    """Test that a single string title renders properly."""
 
     single_band = image_array_2bands[0]
     ax = ep.plot_bands(arr=single_band, title="my title")
@@ -121,8 +121,7 @@ def test_single_band_2dims(one_band_3dims):
 
 
 def test_cbar_param(one_band_3dims):
-    """Test that the colorbar param works for a single band arr
-    """
+    """Test that the colorbar param works for a single band arr."""
     one_band_2dims = one_band_3dims[0]
     ax = ep.plot_bands(one_band_2dims, scale=True)
     arr = ax.get_images()[0].get_array()

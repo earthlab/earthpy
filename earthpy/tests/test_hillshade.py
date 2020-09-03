@@ -8,7 +8,7 @@ import earthpy.spatial as es
 @pytest.fixture
 def hillshade_arr():
     """Create 2-dimensional array of shape (6,6) for testing
-    input array to hillshade function. """
+    input array to hillshade function."""
     arr = np.array([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1]])
     return arr
 
@@ -16,7 +16,7 @@ def hillshade_arr():
 @pytest.fixture
 def hillshade_result():
     """Create 2-dimensional array of shape (6,6) of expected
-    returned array using hillshade_arr() as input. """
+    returned array using hillshade_arr() as input."""
     result = np.array(
         [
             [
