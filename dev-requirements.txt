@@ -7,7 +7,7 @@ pytest-vcr==1.0.2
 sphinx==3.2.1
 pytest-cov==2.10.1
 sphinx-autobuild==2020.9.1
-sphinx_gallery==0.7.0
+sphinx_gallery==0.8.1
 sphinx_rtd_theme==0.5.0
 tox==3.20.0
 pip>=19.0
