@@ -8,54 +8,54 @@ import earthpy.spatial as es
 
 @pytest.fixture
 def out_path(tmpdir):
-    """ A path for an output .tif file. """
+    """A path for an output .tif file."""
     return os.path.join(str(tmpdir), "out.tif")
 
 
 @pytest.fixture
 def in_paths(basic_image_tif):
-    """ Input file paths for tifs to stack. """
+    """Input file paths for tifs to stack."""
     return [basic_image_tif] * 4
 
 
 @pytest.fixture
 def in_paths_mismatch(basic_image_tif, basic_image_tif_2):
-    """ Input file paths for tifs of different dimensions to stack. """
+    """Input file paths for tifs of different dimensions to stack."""
     return [basic_image_tif] * 4 + [basic_image_tif_2]
 
 
 @pytest.fixture
 def in_paths_CRS_mismatch(basic_image_tif, basic_image_tif_CRS):
-    """ Input file paths for tifs of same dimension but different CRS to
-    stack. """
+    """Input file paths for tifs of same dimension but different CRS to
+    stack."""
     return [basic_image_tif] * 4 + [basic_image_tif_CRS]
 
 
 @pytest.fixture
 def in_paths_Affine_mismatch(basic_image_tif, basic_image_tif_Affine):
-    """ Input file paths for tifs of same dimension but different affine
-    transform to stack. """
+    """Input file paths for tifs of same dimension but different affine
+    transform to stack."""
     return [basic_image_tif] * 4 + [basic_image_tif_Affine]
 
 
 def test_stack_array_size_mismatch(in_paths_mismatch):
-    """ Test for error raised when array dimensions (nrows, ncols) are not
-    all equal. """
+    """Test for error raised when array dimensions (nrows, ncols) are not
+    all equal."""
 
     with pytest.raises(ValueError, match="same dimensions"):
         es.stack(in_paths_mismatch)
 
 
 def test_stack_CRS_mismatch(in_paths_CRS_mismatch):
-    """ Test for error raised when raster CRS are not all equal. """
+    """Test for error raised when raster CRS are not all equal."""
 
     with pytest.raises(ValueError, match="same CRS"):
         es.stack(in_paths_CRS_mismatch)
 
 
 def test_stack_Affine_mismatch(in_paths_Affine_mismatch):
-    """ Test for error raised when raster Affine transform are not all
-    equal. """
+    """Test for error raised when raster Affine transform are not all
+    equal."""
 
     with pytest.raises(ValueError, match="same affine transform"):
         es.stack(in_paths_Affine_mismatch)
@@ -101,7 +101,7 @@ def test_stack_outputfile(in_paths, out_path):
 
 
 def test_stack_return_array(in_paths):
-    """ Test returning only array."""
+    """Test returning only array."""
 
     # Test valid use case of just getting back the array.
     n_bands = len(in_paths)
@@ -130,7 +130,7 @@ def test_stack_nodata_outfile(in_paths, out_path):
 
 
 def test_stack_invalid_out_paths_raise_errors():
-    """ If users provide an output path that doesn't exist, raise error. """
+    """If users provide an output path that doesn't exist, raise error."""
 
     with pytest.raises(ValueError, match="not exist"):
         es.stack(
