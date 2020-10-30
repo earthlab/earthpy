@@ -11,4 +11,3 @@ dependencies:
   - geopandas
   - rasterio
   - scikit-image
-  - gdal = 2
