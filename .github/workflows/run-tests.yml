@@ -33,7 +33,7 @@ jobs:
           #conda env create -f ci/environment.yml
           conda install -c  conda-forge matplotlib pytest requests  \
             geopandas rasterio scikit-image \
-            black flake8 sphinx sphinx_gallery
+            black flake8 #sphinx sphinx_gallery
 
 
       - name: Check Environment
@@ -49,6 +49,7 @@ jobs:
       - name: Build Docs
         shell: bash
         run: |
+          pip  install sphinx-gallery
           make docs -B
       - name: Lint
         shell: bash
