@@ -4,7 +4,7 @@ channels:
 dependencies:
   # Core scientific python
 #  - numpy
-#  - matplotlib
+  - matplotlib
   - pytest
   - requests
 
