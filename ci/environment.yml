@@ -11,4 +11,4 @@ dependencies:
   # Geo stuff
   - geopandas
   - rasterio
-#  - scikit-image
+  - scikit-image

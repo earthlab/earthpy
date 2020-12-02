@@ -23,7 +23,8 @@ jobs:
       - name: Setup Conda
         uses: s-weigand/setup-conda@v1
         with:
-          activate-conda: false
+          activate-conda: true
+          python-version: ${{ matrix.python-version }}
 
       - name: Install Env
         shell: bash
@@ -33,7 +34,7 @@ jobs:
       - name: Check Environment
         shell: bash
         run: |
-          source activate earthpy-dev
+          conda activate earthpy-dev
           conda list
           python -v
       - name: Run Tests
