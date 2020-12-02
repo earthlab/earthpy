@@ -6,6 +6,7 @@ dependencies:
 #  - numpy
 #  - matplotlib
   - pytest
+  - requests
 
   # Geo stuff
   - geopandas
