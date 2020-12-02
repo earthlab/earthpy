@@ -15,8 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest"]
-        python-version: [3.7]
+        os: ["ubuntu-latest"] #["ubuntu-latest", "macos-latest", "windows-latest"]
+        python-version: [3.7] #[3.6, 3.7, 3.8]
 
     steps:
       - uses: actions/checkout@v2
@@ -31,18 +31,25 @@ jobs:
         run: |
           python --version
           #conda env create -f ci/environment.yml
-          conda install -c  conda-forge matplotlib  pytest  requests  geopandas  rasterio  scikit-image
+          conda install -c  conda-forge matplotlib  pytest  requests  geopandas  rasterio  scikit-image black flake8 sphinx
+
 
       - name: Check Environment
         shell: bash
         run: |
-          # source activate earthpy-dev
-          #conda list
+          conda list
           python --version
       - name: Run Tests
         shell: bash
         run: |
-          #  source activate earthpy-dev
           pytest -v --color=yes
-          #conda list
           python --version
+      - name: Build Docs
+        shell: bash
+        run: |
+          make docs -B
+      - name: Lint
+        shell: bash
+        run: |
+          black --check --verbose earthpy
+          flake8 earthpy
