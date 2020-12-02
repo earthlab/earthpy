@@ -34,7 +34,7 @@ jobs:
       - name: Check Environment
         shell: bash
         run: |
-          conda activate earthpy-dev
+          source activate earthpy-dev
           conda list
           python -v
       - name: Run Tests
