@@ -36,7 +36,7 @@ jobs:
         run: |
           source activate earthpy-dev
           #conda list
-          python -version
+          python --version
       - name: Run Tests
         shell: bash
         run: |
@@ -44,14 +44,3 @@ jobs:
           pytest -v --color=yes
           #conda list
           python --version
-#    steps:
-#      - uses: conda-incubator/setup-miniconda@v2
-#        with:
-#          auto-update-conda: true
-#          activate-environment: anaconda-client-env
-#          environment-file: ci/environment.yml
-#          python-version: ${{ matrix.python-version }}
-#          channels: conda-forge
-#      - name: Conda info
-#        shell: bash -l {0}
-#        run: conda info

@@ -3,12 +3,11 @@ channels:
   - conda-forge
 dependencies:
   # Core scientific python
-#  - numpy
   - matplotlib
   - pytest
   - requests
 
-  # Geo stuff
+  # Spatial tools
   - geopandas
   - rasterio
   - scikit-image
