@@ -28,7 +28,7 @@ jobs:
       - name: Install Env
         shell: bash
         run: |
-          conda env create -f ${{ matrix.env }}
+          conda env create -f ci/environment.yml
 
       - name: Check Environment
         shell: bash
