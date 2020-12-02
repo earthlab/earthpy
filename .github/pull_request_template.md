@@ -1,3 +1,5 @@
+**IMPORTANT: DO NOT USE THIS REPO TO PRACTICE PULL REQUESTS AND LEARN GITHUB!** 
+
 # Earth Lab -- Pull Request Template
 Welcome to EarthPy! 
 
