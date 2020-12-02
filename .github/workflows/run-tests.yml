@@ -38,8 +38,7 @@ jobs:
       - name: Run Tests
         shell: bash
         run: |
-          conda init bash
-          conda activate earthpy-dev
+          source activate earthpy-dev
           pytest -v --color=yes
           conda list
 #    steps:
