@@ -35,6 +35,11 @@ jobs:
         run: |
           source activate earthpy-dev
           conda list
+      - name: Run Tests
+        shell: bash
+        run: |
+          pytest -v --color=yes
+          conda list
 #    steps:
 #      - uses: conda-incubator/setup-miniconda@v2
 #        with:
