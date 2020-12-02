@@ -87,7 +87,7 @@ Below is a quick example of plotting multiple bands in a numpy array format.
 
 ```python
 >>> arr = np.random.randint(4, size=(3, 5, 5))
->>> ep.plot_bands(arr, titles=["Band 1", "Band 2", "Band 3"])
+>>> ep.plot_bands(arr, title=["Band 1", "Band 2", "Band 3"])
 >>> plt.show()
 ```
 
