@@ -29,7 +29,9 @@ jobs:
       - name: Install Env
         shell: bash
         run: |
-          conda env create -f ci/environment.yml
+          python --version
+          #conda env create -f ci/environment.yml
+          conda install -c  conda-forge matplotlib  pytest  requests  geopandas  rasterio  scikit-image
 
       - name: Check Environment
         shell: bash
