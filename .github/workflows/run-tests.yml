@@ -22,7 +22,7 @@ jobs:
         with:
           auto-update-conda: true
           activate-environment: anaconda-client-env
-          environment-file: environment.yml
+          environment-file: ci/environment.yml
           python-version: ${{ matrix.python-version }}
           channels: conda-forge
       - name: Conda info
