@@ -31,7 +31,9 @@ jobs:
         run: |
           python --version
           #conda env create -f ci/environment.yml
-          conda install -c  conda-forge matplotlib  pytest  requests  geopandas  rasterio  scikit-image black flake8 sphinx
+          conda install -c  conda-forge matplotlib pytest requests  \
+            geopandas rasterio scikit-image \
+            black flake8 sphinx sphinx_gallery
 
 
       - name: Check Environment
