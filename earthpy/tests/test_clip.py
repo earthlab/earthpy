@@ -12,7 +12,9 @@ def point_gdf():
     """ Create a point GeoDataFrame. """
     pts = np.array([[2, 2], [3, 4], [9, 8], [-12, -15]])
     gdf = gpd.GeoDataFrame(
-        [Point(xy) for xy in pts], columns=["geometry"], crs="epsg:4326",
+        [Point(xy) for xy in pts],
+        columns=["geometry"],
+        crs="epsg:4326",
     )
     return gdf
 
@@ -45,7 +47,8 @@ def multi_line(two_line_gdf):
     multiline_feat = two_line_gdf.unary_union
     linec = LineString([(2, 1), (3, 1), (4, 1), (5, 2)])
     out_df = gpd.GeoDataFrame(
-        geometry=gpd.GeoSeries([multiline_feat, linec]), crs="epsg:4326",
+        geometry=gpd.GeoSeries([multiline_feat, linec]),
+        crs="epsg:4326",
     )
     out_df = out_df.rename(columns={0: "geometry"}).set_geometry("geometry")
     out_df["attr"] = ["road", "stream"]
@@ -99,6 +102,7 @@ def test_warning_mutli_point_clip_function(multi_point, single_rectangle_gdf):
 
 def test_warning_point_clip_function(point_gdf, single_rectangle_gdf):
     with pytest.raises(
-        Warning, match="_clip_points is deprecated. Use the _clip_points()",
+        Warning,
+        match="_clip_points is deprecated. Use the _clip_points()",
     ):
         cl._clip_points(point_gdf, single_rectangle_gdf)
