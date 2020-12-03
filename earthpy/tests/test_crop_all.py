@@ -28,7 +28,7 @@ def test_crop_all_files_exist(in_paths, output_dir, basic_geometry_gdf):
 
 def test_crop_all_fails_overwrite(in_paths, output_dir, basic_geometry_gdf):
     """Test that crop all fails when overwrite isn't set to True if files
-    already exist. """
+    already exist."""
     with pytest.raises(ValueError, match="The file "):
         es.crop_all(in_paths, output_dir, basic_geometry_gdf)
 

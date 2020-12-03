@@ -117,7 +117,7 @@ def test_key_and_url_set_simultaneously(eld):
 
 
 def test_available_datasets_are_printed(eld, capsys):
-    """ If no key or url provided, print datasets.
+    """If no key or url provided, print datasets.
 
     The output that is printed should be identical to the __repr__ output.
     Using capsys in pytest provides a way to capture stdout/stderr output.
@@ -236,8 +236,8 @@ def test_verbose_arg_works(eld, verbose_arg_value, capsys):
 @skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_with_quotes(eld):
-    """ Test download with that has quotes around file name to see that get_data
-    now removes the quotes. """
+    """Test download with that has quotes around file name to see that get_data
+    now removes the quotes."""
     quotes_url = (
         "https://opendata.arcgis.com/datasets/955e7a0f5"
         + "2474b60a9866950daf10acb_0.zip"

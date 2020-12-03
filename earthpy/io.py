@@ -257,7 +257,7 @@ class Data(object):
         return data_paths
 
     def _download(self, url, path, kind, replace, verbose):
-        """ Download a file.
+        """Download a file.
 
         This helper function downloads files and saves them to ``path``.
         Zip and tar files are extracted to the ``path`` directory.
@@ -301,7 +301,7 @@ class Data(object):
         return path
 
     def _download_and_extract(self, path, r, kind, verbose):
-        """ Download and extract a compressed archive.
+        """Download and extract a compressed archive.
 
         This function downloads and extracts compressed directories to
         a local directory.
@@ -337,7 +337,7 @@ class Data(object):
 
 
 def path_to_example(dataset):
-    """ Construct a file path to an example dataset.
+    """Construct a file path to an example dataset.
 
     This file defines helper functions to access data files in this directory,
     to support examples. Adapted from the PySAL package.

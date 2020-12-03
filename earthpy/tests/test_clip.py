@@ -37,7 +37,7 @@ def two_line_gdf():
 
 @pytest.fixture
 def multi_line(two_line_gdf):
-    """ Create a multi-line GeoDataFrame.
+    """Create a multi-line GeoDataFrame.
 
     This has one multi line and another regular line.
     """

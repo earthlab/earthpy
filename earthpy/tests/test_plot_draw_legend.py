@@ -213,7 +213,7 @@ def test_classes_provided_as_array(arr_plot_list_cmap):
 
 def test_noncont_listed_cmap(vals_missing_plot_list_cmap):
     """An arr with 3 vals (missing the 1, and 5) which requires normalization
-     produces creates a legend with 3 handles."""
+    produces creates a legend with 3 handles."""
 
     im_ax, arr = vals_missing_plot_list_cmap
 
@@ -227,7 +227,7 @@ def test_noncont_listed_cmap(vals_missing_plot_list_cmap):
 def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
     """Test legend for a listed cmap where
     the user wants all classes to be drawn in the legend. IE the classified
-    image has classes 2,3,4 and the user wants classes 1-5 to appear """
+    image has classes 2,3,4 and the user wants classes 1-5 to appear"""
 
     im_ax, arr = vals_missing_plot_list_cmap
 
@@ -242,7 +242,7 @@ def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
 def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
     """Test legend for a listed cmap where
     the user wants all classes to be drawn in the legend. IE the classified
-    image has classes 2,3,4 and the user wants classes 1-5 to appear """
+    image has classes 2,3,4 and the user wants classes 1-5 to appear"""
 
     im_ax, arr = vals_missing_plot_cont_cmap
 

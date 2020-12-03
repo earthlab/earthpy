@@ -8,7 +8,7 @@ import earthpy.spatial as es
 
 
 def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
-    """ Cropping with a GeoDataFrame works when all_touched=True.
+    """Cropping with a GeoDataFrame works when all_touched=True.
 
     Cropping basic_image_tif file with the basic geometry fixture returns
     all of the cells that have the value 1 in the basic_image_tif fixture

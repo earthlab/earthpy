@@ -121,8 +121,7 @@ def test_single_band_2dims(one_band_3dims):
 
 
 def test_cbar_param(one_band_3dims):
-    """Test that the colorbar param works for a single band arr
-    """
+    """Test that the colorbar param works for a single band arr"""
     one_band_2dims = one_band_3dims[0]
     ax = ep.plot_bands(one_band_2dims, scale=True)
     arr = ax.get_images()[0].get_array()

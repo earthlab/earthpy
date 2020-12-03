@@ -40,10 +40,10 @@ def test_no_data_val(rgb_image):
 
 def test_rgb_extent(rgb_image):
     """Test to ensure that when the extent is provided, plot_rgb stretches
-     the image or applies the proper x and y lims. Also ensure that the
-     correct bands are plotted an in the correct order when the rgb
-     param is called and defined. Finally test that a provided title and
-     figsize created a plot with the correct title and figsize"""
+    the image or applies the proper x and y lims. Also ensure that the
+    correct bands are plotted an in the correct order when the rgb
+    param is called and defined. Finally test that a provided title and
+    figsize created a plot with the correct title and figsize"""
     a_rgb_image, ext = rgb_image
     ax = plot_rgb(
         a_rgb_image,
@@ -91,7 +91,7 @@ def test_two_ax_provided(rgb_image):
 
     This test is being added because it turned out that the second plot
     was clearing given a call to plt.show and that wasn't being captured
-    in the previous tests. """
+    in the previous tests."""
 
     rgb_image, _ = rgb_image
     f, (ax1, ax2) = plt.subplots(2, 1)
