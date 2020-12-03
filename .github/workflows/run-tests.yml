@@ -1,3 +1,7 @@
+# This workflow  runs tests for earthpy
+# Because we want a conda environment -  and that builds  slower,
+# we divided up  tests from linting and docs  to make  for simpler  install envts
+
 name: Run Tests & Build Docs - Matrix OS / Python Version
 
 on:
@@ -31,7 +35,8 @@ jobs:
         run: |
           python --version
           #conda env create -f ci/environment.yml
-          conda install -c  conda-forge matplotlib pytest requests  \
+          conda install -c  conda-forge matplotlib \
+            pytest requests  \
             geopandas rasterio scikit-image
 
       - name: Check Environment
