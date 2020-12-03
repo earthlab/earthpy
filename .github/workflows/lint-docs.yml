@@ -35,7 +35,9 @@ jobs:
     - name: Build Docs
       run: |
         make docs -B
-    - name: Lint
+    - name: Run Black
       run: |
-        black --check --verbose .
+        flake8 earthpy
+    - name: Run Flake8
+      run: |
         flake8 earthpy
