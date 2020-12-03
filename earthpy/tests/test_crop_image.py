@@ -21,21 +21,21 @@ def test_crop_image_with_gdf(basic_image_tif, basic_geometry_gdf):
 
 
 def test_crop_image_with_gdf_touch_false(basic_image_tif, basic_geometry_gdf):
-    """ Cropping with a GeoDataFrame works when all_touched=False. """
+    """Cropping with a GeoDataFrame works when all_touched=False."""
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, basic_geometry_gdf, all_touched=False)
     assert np.sum(img) == 4
 
 
 def test_crop_image_with_geometry(basic_image_tif, basic_geometry):
-    """ Cropping with a geometry works with all_touched=True. """
+    """Cropping with a geometry works with all_touched=True."""
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, [basic_geometry], all_touched=True)
     assert np.sum(img) == 9
 
 
 def test_crop_image_with_geojson_touch_false(basic_image_tif, basic_geometry):
-    """ Cropping with GeoJSON works when all_touched=False. """
+    """Cropping with GeoJSON works when all_touched=False."""
     geojson = basic_geometry.__geo_interface__
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, [geojson], all_touched=False)
@@ -43,7 +43,7 @@ def test_crop_image_with_geojson_touch_false(basic_image_tif, basic_geometry):
 
 
 def test_crop_image_when_poly_bounds_image_extent(basic_image_tif):
-    """ When an image is fully contained in a larger polygon, dont crop. """
+    """When an image is fully contained in a larger polygon, dont crop."""
     big_polygon = Polygon([(-1, -1), (11, -1), (11, 11), (-1, 11), (-1, -1)])
     with rio.open(basic_image_tif) as src:
         img, meta = es.crop_image(src, [big_polygon])
@@ -52,7 +52,7 @@ def test_crop_image_when_poly_bounds_image_extent(basic_image_tif):
 
 
 def test_crop_image_with_one_point_raises_error(basic_image_tif):
-    """ Cropping an image with one point should raise an error. """
+    """Cropping an image with one point should raise an error."""
     point = Point([(1, 1)])
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError, match="width and height must be > 0"):
@@ -60,7 +60,7 @@ def test_crop_image_with_one_point_raises_error(basic_image_tif):
 
 
 def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
-    """ Cropping with a horizontal or vertical line raises an error. """
+    """Cropping with a horizontal or vertical line raises an error."""
     line = LineString([(1, 1), (2, 1), (3, 1)])
     with rio.open(basic_image_tif) as src:
         with pytest.raises(ValueError, match="width and height must be > 0"):
@@ -68,14 +68,14 @@ def test_crop_image_with_1d_extent_raises_error(basic_image_tif):
 
 
 def test_crop_image_fails_two_rasters(basic_image_tif, basic_geometry):
-    """ crop_image should raise an error if provided two rasters. """
+    """crop_image should raise an error if provided two rasters."""
     with rio.open(basic_image_tif) as src:
         with pytest.raises(TypeError):
             es.crop_image(src, src)
 
 
 def test_crop_image_swapped_args(basic_image_tif, basic_geometry):
-    """ If users provide a polygon instead of raster raise an error. """
+    """If users provide a polygon instead of raster raise an error."""
     with pytest.raises(AttributeError):
         es.crop_image(basic_geometry, basic_image_tif)
     with pytest.raises(AttributeError):
@@ -83,7 +83,7 @@ def test_crop_image_swapped_args(basic_image_tif, basic_geometry):
 
 
 def test_crop_image_fails_empty_list(basic_image_tif, basic_geometry):
-    """ If users provide empty list as arg, crop_image fails. """
+    """If users provide empty list as arg, crop_image fails."""
     with pytest.raises(AttributeError):
         es.crop_image(list(), basic_geometry)
     with rio.open(basic_image_tif) as src:

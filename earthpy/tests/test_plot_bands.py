@@ -49,7 +49,7 @@ def test_num_titles(image_array_2bands):
 
 
 def test_str_for_title(image_array_2bands):
-    """Test that a single string title renders properly """
+    """Test that a single string title renders properly."""
 
     single_band = image_array_2bands[0]
     ax = ep.plot_bands(arr=single_band, title="my title")

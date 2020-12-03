@@ -19,7 +19,7 @@ def image_array_1band_stretch():
 
 @pytest.fixture
 def rgb_image():
-    """Fixture holding an RGB image for plotting"""
+    """Fixture holding an RGB image for plotting."""
     with rio.open(path_to_example("rmnp-rgb.tif")) as src:
         rgb = src.read()
         ext = plotting_extent(src)
@@ -43,7 +43,7 @@ def test_rgb_extent(rgb_image):
     the image or applies the proper x and y lims. Also ensure that the
     correct bands are plotted an in the correct order when the rgb
     param is called and defined. Finally test that a provided title and
-    figsize created a plot with the correct title and figsize"""
+    figsize created a plot with the correct title and figsize."""
     a_rgb_image, ext = rgb_image
     ax = plot_rgb(
         a_rgb_image,
@@ -75,7 +75,7 @@ def test_1band(rgb_image):
 
 
 def test_ax_provided(rgb_image):
-    """Test to ensure the plot works when an explicit axis is provided"""
+    """Test to ensure the plot works when an explicit axis is provided."""
     rgb_image, _ = rgb_image
     _, ax1 = plt.subplots()
     ax = plot_rgb(rgb_image, ax=ax1)
@@ -159,7 +159,7 @@ def test_ticks_off(rgb_image):
 
 
 def test_stretch_output_default(image_array_1band_stretch):
-    """Test to ensure that an array provided is stretched between 0 and 255"""
+    """Test to ensure that an array provided is stretched between 0 and 255."""
 
     arr = image_array_1band_stretch
     # Stretch using the default value of 2%

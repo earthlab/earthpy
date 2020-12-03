@@ -39,7 +39,7 @@ def binned_array():
 @pytest.fixture
 def arr_plot_blues(binned_array_3bins):
     """Returns an imshow object using the Blues cmap and the arr used to
-    plot"""
+    plot."""
     bins, im_arr_bin = binned_array_3bins
 
     f, ax = plt.subplots()
@@ -48,7 +48,7 @@ def arr_plot_blues(binned_array_3bins):
 
 @pytest.fixture
 def arr_plot_list_cmap(binned_array, listed_cmap):
-    """Returns a plot rendered using a listed cmap """
+    """Returns a plot rendered using a listed cmap."""
 
     cmap, norm = listed_cmap
     bins, arr_class = binned_array
@@ -59,7 +59,7 @@ def arr_plot_list_cmap(binned_array, listed_cmap):
 
 @pytest.fixture
 def vals_missing_plot_list_cmap(binned_array, listed_cmap):
-    """Returns a normalized imshow plot using a 3 value array w vals 2,3,4"""
+    """Returns a normalized imshow plot using a 3 value array w vals 2,3,4."""
 
     cmap, norm = listed_cmap
     bins, arr = binned_array
@@ -73,7 +73,7 @@ def vals_missing_plot_list_cmap(binned_array, listed_cmap):
 
 @pytest.fixture
 def vals_missing_plot_cont_cmap(binned_array):
-    """Returns a non normalized imshow plot using 3 consecutive value array"""
+    """Returns a non normalized imshow plot using 3 consecutive value array."""
 
     bins, arr = binned_array
 
@@ -88,7 +88,7 @@ def vals_missing_plot_cont_cmap(binned_array):
 
 
 def test_num_titles_classes(arr_plot_blues):
-    """Test that the number of classes equals the number of legend titles"""
+    """Test that the number of classes equals the number of legend titles."""
 
     im_ax, _ = arr_plot_blues
 
@@ -111,7 +111,7 @@ def test_num_titles_classes(arr_plot_blues):
 
 
 def test_stock_legend_titles(arr_plot_blues):
-    """Test that the correct number of default titles plot"""
+    """Test that the correct number of default titles plot."""
 
     im_ax, im_arr_bin = arr_plot_blues
 
@@ -128,7 +128,7 @@ def test_stock_legend_titles(arr_plot_blues):
 
 
 def test_custom_legend_titles(arr_plot_blues):
-    """Test that the correct number of custom legend titles plot"""
+    """Test that the correct number of custom legend titles plot."""
 
     im_ax, _ = arr_plot_blues
 
@@ -156,7 +156,7 @@ def test_non_ax_obj():
 
 
 def test_colors(arr_plot_blues):
-    """Test that the correct colors appear in the patches of the legend"""
+    """Test that the correct colors appear in the patches of the legend."""
 
     im_ax, _ = arr_plot_blues
     the_legend = ep.draw_legend(im_ax=im_ax)
@@ -173,7 +173,7 @@ def test_colors(arr_plot_blues):
 
 def test_neg_vals():
     """Test that the legend plots when positive and negative values are
-    provided"""
+    provided."""
 
     arr = np.array([[-1, 0, 1], [1, 0, -1]])
     f, ax = plt.subplots()
@@ -187,7 +187,7 @@ def test_neg_vals():
 
 def test_listed_cmap(arr_plot_list_cmap):
     """Test that the the legend generates properly when provided with a
-    ListedColormap"""
+    ListedColormap."""
 
     im_ax, arr = arr_plot_list_cmap
 
@@ -227,7 +227,7 @@ def test_noncont_listed_cmap(vals_missing_plot_list_cmap):
 def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
     """Test legend for a listed cmap where
     the user wants all classes to be drawn in the legend. IE the classified
-    image has classes 2,3,4 and the user wants classes 1-5 to appear"""
+    image has classes 2,3,4 and the user wants classes 1-5 to appear."""
 
     im_ax, arr = vals_missing_plot_list_cmap
 
@@ -242,7 +242,7 @@ def test_listed_cmap_3_classes(vals_missing_plot_list_cmap):
 def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
     """Test legend for a listed cmap where
     the user wants all classes to be drawn in the legend. IE the classified
-    image has classes 2,3,4 and the user wants classes 1-5 to appear"""
+    image has classes 2,3,4 and the user wants classes 1-5 to appear."""
 
     im_ax, arr = vals_missing_plot_cont_cmap
 
@@ -256,7 +256,7 @@ def test_cont_cmap_3_classes(vals_missing_plot_cont_cmap):
 
 def test_listedcmap_ncol_equals_nclasses(vals_missing_plot_list_cmap):
     """If a 5 color listed cmap is provided and 6 classes are specified,
-    return value error"""
+    return value error."""
 
     n_classes = 5
     im_ax, arr = vals_missing_plot_list_cmap
@@ -269,7 +269,7 @@ def test_listedcmap_ncol_equals_nclasses(vals_missing_plot_list_cmap):
 
 
 def test_masked_vals():
-    """Legend for masked array plots properly"""
+    """Legend for masked array plots properly."""
 
     im_arr = np.random.uniform(-2, 1, (15, 15))
     bins = [-0.8, -0.2, 0.2, 0.8, np.Inf]
