@@ -80,7 +80,10 @@ plt.show()
 hillshade = es.hillshade(elevation)
 
 ep.plot_bands(
-    hillshade, cbar=False, title="Hillshade made from DTM", figsize=(10, 6),
+    hillshade,
+    cbar=False,
+    title="Hillshade made from DTM",
+    figsize=(10, 6),
 )
 plt.show()
 
