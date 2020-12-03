@@ -172,7 +172,7 @@ with rio.open(stack_band_paths[0]) as raster_crs:
     bound_utm13N = bound.to_crs(raster_profile["crs"])
 
 ################################################################################
-# Create a Plot With the Boundary overlayed on the RGB Image 
+# Create a Plot With the Boundary overlayed on the RGB Image
 # ----------------------------------------------------------
 # You can plot a polygon boundary over an image by creating a raster extent
 # for the plot using the ``plotting_extent`` function from ``rasterio.plot``.
@@ -205,7 +205,7 @@ plt.show()
 ###############################################################################
 # Create Figure with Multiple Axes or Subplots
 # --------------------------------------------
-# ```plot_rgb()`` has an ``ax=`` parameter which supports subplots. You can 
+# ```plot_rgb()`` has an ``ax=`` parameter which supports subplots. You can
 # create figures that contain multiple plots by creating multiple ax
 # objects, one for each plot. You can also specify the number of rows and
 # columns in which to display the plots. In the example below, the two plots

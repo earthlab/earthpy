@@ -214,7 +214,6 @@ def plot_bands(
         ...                   title=titles,
         ...                   figsize=(8, 3))
         array([<AxesSubplot:title={'center':'Red'}>...
-
     """
     show = False
     try:
