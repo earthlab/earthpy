@@ -261,9 +261,9 @@ plt.show()
 #############################################################################
 # Crop Individual Bands
 # ---------------------
-# If you only need to crop one raster image, you can use EarthPy's 
+# If you only need to crop one raster image, you can use EarthPy's
 # ``es.crop_image()`` function.
-# This function takes a Rasterio object and crops it to the provided 
+# This function takes a Rasterio object and crops it to the provided
 # spatial extent.
 
 # Open Landsat image as a Rasterio object in order to crop it
