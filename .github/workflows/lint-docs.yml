@@ -40,4 +40,4 @@ jobs:
         flake8 earthpy
     - name: Run Flake8
       run: |
-        flake8 earthpy
+        flake8 .
