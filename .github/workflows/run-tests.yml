@@ -1,4 +1,4 @@
-name: Matrix OS / Python Version - Run Tests & Build Docs
+name: Run Tests & Build Docs - Matrix OS / Python Version
 
 on:
   push:
@@ -32,9 +32,7 @@ jobs:
           python --version
           #conda env create -f ci/environment.yml
           conda install -c  conda-forge matplotlib pytest requests  \
-            geopandas rasterio scikit-image \
-            black flake8 #sphinx sphinx_gallery
-
+            geopandas rasterio scikit-image
 
       - name: Check Environment
         shell: bash
@@ -46,13 +44,3 @@ jobs:
         run: |
           pytest -v --color=yes
           python --version
-      - name: Build Docs
-        shell: bash
-        run: |
-          pip  install sphinx-gallery
-          make docs -B
-      - name: Lint
-        shell: bash
-        run: |
-          black --check --verbose earthpy
-          flake8 earthpy
