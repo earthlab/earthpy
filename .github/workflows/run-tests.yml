@@ -2,7 +2,7 @@
 # Because we want a conda environment -  and that builds  slower,
 # we divided up  tests from linting and docs  to make  for simpler  install envts
 
-name: Run Tests & Build Docs - Matrix OS / Python Version
+name: Run Tests - Matrix OS / Python Version
 
 on:
   push:
