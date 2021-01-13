@@ -102,7 +102,7 @@ def _plot_image(
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
     cbar : Boolean (default = True)
         Turn off colorbar if needed.
-    scale : Boolean (Default = True)
+    scale : Boolean (Default = False)
         Turn off bytescale scaling if needed.
     vmin : Int (Optional)
         Specify the vmin to scale imshow() plots.
@@ -180,7 +180,7 @@ def plot_bands(
         Bounding box that the data will fill: (minx, miny, maxx, maxy).
     cbar : Boolean (default = True)
         Turn off colorbar if needed.
-    scale : Boolean (Default = True)
+    scale : Boolean (Default = False)
         Turn off bytescale scaling if needed.
     vmin : Int (Optional)
         Specify the vmin to scale imshow() plots.
