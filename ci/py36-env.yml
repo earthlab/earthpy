@@ -1,4 +1,4 @@
-name: matplotcheck-dev
+name: earthpy-dev
 channels:
   - conda-forge
 dependencies:
