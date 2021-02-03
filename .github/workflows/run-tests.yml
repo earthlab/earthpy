@@ -13,40 +13,30 @@ on:
       - '*'
 
 jobs:
-  example-1:
-    name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
+  runtests:
+    name: conda (${{ matrix.os }}, ${{ matrix.environment-file }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: [3.6, 3.7, 3.8]
-
+        environment-file: [ci/py36-env.yml, ci/py37-env.yml, ci/py38-env.yml]
+        exclude:
+          - environment-file: ci/py36-env.yml
+            os: windows-latest
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Conda
-        uses: s-weigand/setup-conda@v1
+      - uses: conda-incubator/setup-miniconda@v2
         with:
-          update-conda: true
-          conda-channels: conda-forge
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Env
-        shell: bash
-        run: |
-          python --version
-          #conda env create -f ci/environment.yml
-          conda install -c  conda-forge matplotlib \
-            pytest requests  \
-            geopandas rasterio scikit-image
-
-      - name: Check Environment
-        shell: bash
-        run: |
-          conda list
-          python --version
-      - name: Run Tests
-        shell: bash
-        run: |
-          pytest -v --color=yes
-          python --version
+          miniconda-version: 'latest'
+          channels: conda-forge
+          channel-priority: true
+          auto-update-conda: false
+          auto-activate-base: false
+          environment-file: ${{ matrix.environment-file }}
+          activate-environment: matplotcheck-dev
+      - run: conda list
+      - run: pytest -v --color=yes
