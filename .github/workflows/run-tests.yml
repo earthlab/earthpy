@@ -37,6 +37,6 @@ jobs:
           auto-update-conda: false
           auto-activate-base: false
           environment-file: ${{ matrix.environment-file }}
-          activate-environment: matplotcheck-dev
+          activate-environment: earthpy-dev
       - run: conda list
       - run: pytest -v --color=yes
