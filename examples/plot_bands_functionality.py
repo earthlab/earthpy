@@ -97,7 +97,7 @@ plt.show()
 # plot band 5 of the satellite imagery with scaling turned on in order to see
 # the data without the values being modified.
 
-ep.plot_bands(array_stack[4], cbar=False)
+ep.plot_bands(array_stack[4], cbar=False, scale=True)
 plt.show()
 
 ###############################################################################
