@@ -9,6 +9,8 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 Unreleased
 ----------
 
+- Small fixes for default parameter values in docstrings (@FaranIdo, no issue submitted - PR #652)
+
 0.9.2
 -----
 
