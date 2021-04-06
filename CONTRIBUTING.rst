@@ -286,7 +286,7 @@ Data Generated for Testing
 ==========================
 If a test requires a data object such as a GeoDataFrame or numpy array, and
 copies of that data object are required by multiple tests, we can use
-`pytest fixtures <https://docs.pytest.org/en/latest/fixture.html>`_ to cleanly
+`pytest fixtures <https://docs.pytest.org/en/stable/fixture.html>`_ to cleanly
 create and tear down those objects independently for each test.
 See `earthpy/tests/conftest.py <https://github.com/earthlab/earthpy/blob/master/earthpy/tests/conftest.py>`_
 for fixture definitions, and
