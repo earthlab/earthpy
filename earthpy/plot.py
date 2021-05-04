@@ -331,7 +331,7 @@ def _stretch_im(arr, str_clip):
     s_max = 100 - str_clip
     arr_rescaled = np.zeros_like(arr)
     for ii, band in enumerate(arr):
-        lower, upper = np.percentile(band, (s_min, s_max))
+        lower, upper = np.nanpercentile(band, (s_min, s_max))
         arr_rescaled[ii] = exposure.rescale_intensity(
             band, in_range=(lower, upper)
         )
@@ -404,6 +404,11 @@ def plot_rgb(
 
     if stretch:
         rgb_bands = _stretch_im(rgb_bands, str_clip)
+
+    nan_check = np.isnan(rgb_bands)
+
+    if np.any(nan_check):
+        rgb_bands = np.ma.masked_array(rgb_bands, nan_check)
 
     # If type is masked array - add alpha channel for plotting
     if ma.is_masked(rgb_bands):
