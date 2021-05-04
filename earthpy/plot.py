@@ -587,7 +587,11 @@ def hist(
             hist_range = (np.nanmin(arr_comp), np.nanmax(arr_comp))
         fig, ax = plt.subplots(figsize=figsize)
         ax.hist(
-            arr_comp, range=hist_range, bins=bins, color=colors[0], alpha=alpha
+            arr_comp,
+            range=hist_range,
+            bins=bins,
+            color=colors[0],
+            alpha=alpha,
         )
         if title:
             ax.set(title=title[0])

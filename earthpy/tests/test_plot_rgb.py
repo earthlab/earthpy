@@ -131,6 +131,7 @@ def test_stretch_image(rgb_image):
     assert max_val == 255
     plt.close()
 
+
 def test_stretch_image_nan(rgb_image):
     """Test that running stretch actually stretches the data
     to a max value of 255 and min value of 0 when nan values
