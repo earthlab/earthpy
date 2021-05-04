@@ -131,6 +131,21 @@ def test_stretch_image(rgb_image):
     assert max_val == 255
     plt.close()
 
+def test_stretch_image_nan(rgb_image):
+    """Test that running stretch actually stretches the data
+    to a max value of 255 and min value of 0 when nan values
+    are present within the plot_rgb fun."""
+
+    im, _ = rgb_image
+    np.place(im, im > 150, [0])
+    im = np.where(im < 25, np.nan, im)
+
+    ax = plot_rgb(im, stretch=True)
+    max_val = ax.get_images()[0].get_array().max()
+    min_val = ax.get_images()[0].get_array().min()
+    assert max_val == 255 and min_val == 0
+    plt.close()
+
 
 def test_masked_im(rgb_image):
     """Test that a masked image will be plotted using an alpha channel.
