@@ -627,6 +627,34 @@ def hillshade(arr, azimuth=30, altitude=30):
     return 255 * (shaded + 1) / 2
 
 
+def crs_check(path):
+    """Get the CRS of a raster file from a file path.
+
+    Parameters
+    ----------
+    path : string
+        Path to the raster file.
+
+    Returns
+    -------
+    crs : crs object
+        The CRS object stored in the raster file.
+    """
+
+    try:
+        with rio.open(path) as src:
+            crs = src.crs
+            # This section runs when the data is in a hierarchial format
+            if crs is None:
+                for data in src.subdatasets:
+                    with rio.open(data) as data_src:
+                        crs = data_src.crs
+        return crs
+    except rio.errors.RasterioIOError as e:
+        print("Please only input files that can be read as a raster.\n")
+        raise rio.errors.RasterioIOError(e.__str__())
+
+
 # @deprecate
 def stack_raster_tifs(band_paths, out_path, arr_out=True):
     """This function has been deprecated from earthpy.
