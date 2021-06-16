@@ -650,15 +650,20 @@ def crs_check(path):
                     with rio.open(data) as data_src:
                         crs = data_src.crs
         if crs is None:
-            raise ValueError("No CRS found in data. The raster may not have one.")
+            raise ValueError(
+                "No CRS found in data. " "The raster may not have one."
+            )
         else:
             return crs
-    except rio.errors.RasterioIOError as e:
-        raise rio.errors.RasterioIOError("Oops, your data are not in a format "
-              "that rasterio can read. Please check the rasterio documentation "
-              "for accepted file formats and make sure that your data are in "
-              "raster format..\n"
-              )
+    except rio.errors.RasterioIOError:
+        raise rio.errors.RasterioIOError(
+            "Oops, your data are not in a format "
+            "that rasterio can read. Please "
+            "check the rasterio documentation "
+            "for accepted file formats and make "
+            "sure that your data are in raster "
+            "format..\n"
+        )
 
 
 # @deprecate

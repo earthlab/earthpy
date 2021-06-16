@@ -5,9 +5,11 @@ import earthpy as et
 import earthpy.spatial as es
 from earthpy.io import path_to_example
 
+
 @pytest.fixture
 def output_dir(out_path):
     return op.dirname(out_path)
+
 
 def test_epsg():
     """Unit test for loading EPSG to Proj4 string dictionary."""
@@ -22,7 +24,7 @@ def test_crs_check_tif():
 
 
 def test_crs_check_bad_file():
-    with pytest.raises(rio.errors.RasterioIOError, match="Oops, your data are"):
+    with pytest.raises(rio.errors.RasterioIOError, match="Oops, your data ar"):
         es.crs_check(path_to_example("rmnp.shp"))
 
 
