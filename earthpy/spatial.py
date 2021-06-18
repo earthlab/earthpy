@@ -643,15 +643,16 @@ def crs_check(path):
 
     try:
         with rio.open(path) as src:
-            crs = src.crs
             # This section runs when the data is in a hierarchial format
-            if crs is None:
+            if len(src.subdatasets) > 0:
                 for data in src.subdatasets:
                     with rio.open(data) as data_src:
                         crs = data_src.crs
+            else:
+                crs = src.crs
         if crs is None:
             raise ValueError(
-                "No CRS found in data. " "The raster may not have one."
+                "No CRS found in data. The raster may not have one."
             )
         else:
             return crs
