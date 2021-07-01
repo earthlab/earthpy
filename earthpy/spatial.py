@@ -633,7 +633,7 @@ def crs_check(path):
     Parameters
     ----------
     path : string
-        Path to the raster file.
+        Path to a raster file in a format that rasterio can read.
 
     Returns
     -------
@@ -643,16 +643,28 @@ def crs_check(path):
 
     try:
         with rio.open(path) as src:
-            crs = src.crs
             # This section runs when the data is in a hierarchial format
-            if crs is None:
+            if len(src.subdatasets) > 0:
                 for data in src.subdatasets:
                     with rio.open(data) as data_src:
                         crs = data_src.crs
-        return crs
-    except rio.errors.RasterioIOError as e:
-        print("Please only input files that can be read as a raster.\n")
-        raise rio.errors.RasterioIOError(e.__str__())
+            else:
+                crs = src.crs
+        if crs is None:
+            raise ValueError(
+                "No CRS found in data. The raster may not have one."
+            )
+        else:
+            return crs
+    except rio.errors.RasterioIOError:
+        raise rio.errors.RasterioIOError(
+            "Oops, your data are not in a format "
+            "that rasterio can read. Please "
+            "check the rasterio documentation "
+            "for accepted file formats and make "
+            "sure that your data are in raster "
+            "format..\n"
+        )
 
 
 # @deprecate
