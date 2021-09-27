@@ -1,13 +1,13 @@
 pre-commit==2.13.0
 bumpversion==0.6.0
-codecov==2.1.11
+codecov==2.1.12
 importlib-metadata==4.8.1
 pytest==6.2.4
 pytest-vcr==1.0.2
-sphinx==4.0.2
+sphinx==4.2.0
 pytest-cov==2.12.1
 sphinx-autobuild==2021.3.14
 sphinx_gallery==0.9.0
-sphinx_rtd_theme==0.5.2
-tox==3.23.1
+sphinx_rtd_theme==1.0.0
+tox==3.24.4
 pip>=19.0
