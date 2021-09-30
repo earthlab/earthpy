@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = "EarthPy"
-copyright = "2019, Earth Lab"
+copyright = "2021, Earth Lab"
 author = "Earth Lab"
 
 # The short X.Y version
 version = "0.9.3"
 # The full version, including alpha/beta/rc tags
-release = "0.9.2"
+release = "0.9.3"
 
 
 # -- General configuration ---------------------------------------------------
