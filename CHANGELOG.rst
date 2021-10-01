@@ -6,10 +6,15 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_, and this project adheres to
 `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
-Unreleased
+0.9.4
 ----------
 
-- Small fixes for default parameter values in docstrings (@FaranIdo, no issue submitted - PR #652)
+- Updated Changelog with missing entries (@nkorinek, #740)
+- Updated linting test to run black and flake8 (@aefitts, #715)
+- Updated crs_check with better error handling (@nkorinek, #711)
+- Added function crs_check to get the crs from a raster's file path (@nkorinek, #707)
+- Modified `plot_rgb()` to handle NAN values better, allowing plotting of Xarray dataarrays (@nkorinek, #693)
+- Modified docs to set the scaling boolean default value to be accurate in docstrings and vignettes (@FaranIdo, #652)
 
 0.9.2
 -----
