@@ -20,6 +20,8 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 - Modified `plot_rgb()` to handle NAN values better, allowing plotting of Xarray dataarrays (@nkorinek, #693)
 - Small fixes for default parameter values in docstrings (@FaranIdo, no issue submitted - PR #652)
 
+-  Modified `ep.colorbar()` to work with GeoDataFrame plots (@nkorinek, #557)
+
 0.9.2
 -----
 
