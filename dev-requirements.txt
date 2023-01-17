@@ -9,5 +9,5 @@ pytest-cov==3.0.0
 sphinx-autobuild==2021.3.14
 sphinx_gallery==0.10.1
 sphinx_rtd_theme==1.0.0
-tox==3.24.4
+tox==4.3.3
 pip>=19.0
