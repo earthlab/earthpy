@@ -243,4 +243,5 @@ def test_url_download_with_quotes(eld):
         + "2474b60a9866950daf10acb_0.zip"
     )
     path = eld.get_data(url=quotes_url)
-    assert path.endswith("shp") and os.path.isdir(path)
+    files = os.listdir(path)
+    assert "City_of_Boulder_City_Limits.shp" in files and os.path.isdir(path)
