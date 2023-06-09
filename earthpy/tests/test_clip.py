@@ -30,7 +30,7 @@ def single_rectangle_gdf():
 
 @pytest.fixture
 def two_line_gdf():
-    """Create Line Objects For Testing """
+    """Create Line Objects For Testing"""
     linea = LineString([(1, 1), (2, 2), (3, 2), (5, 3)])
     lineb = LineString([(3, 4), (5, 7), (12, 2), (10, 5), (9, 7.5)])
     gdf = gpd.GeoDataFrame([1, 2], geometry=[linea, lineb], crs="epsg:4326")
@@ -60,7 +60,7 @@ def multi_point(point_gdf):
     """Create a multi-point GeoDataFrame."""
     multi_point = point_gdf.unary_union
     out_df = gpd.GeoDataFrame(
-        gpd.GeoSeries(
+        geometry=gpd.GeoSeries(
             [multi_point, Point(2, 5), Point(-11, -14), Point(-10, -12)]
         ),
         crs="epsg:4326",
@@ -95,7 +95,7 @@ def test_warning_line_clip_function(two_line_gdf, single_rectangle_gdf):
         cl._clip_line_poly(two_line_gdf, single_rectangle_gdf)
 
 
-def test_warning_mutli_point_clip_function(multi_point, single_rectangle_gdf):
+def test_warning_multi_point_clip_function(multi_point, single_rectangle_gdf):
     """Check that _clip_multi_point returns a deprecated warning."""
     with pytest.raises(
         Warning,
