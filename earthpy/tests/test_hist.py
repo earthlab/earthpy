@@ -102,7 +102,7 @@ def test_hist_number_of_columns(image_array_2bands):
     number_of_columns = [1, 2]
     for n in number_of_columns:
         f, ax = ep.hist(image_array_2bands, cols=n)
-        assert [a.numCols for a in ax] == [n] * 2
+        assert [a.get_gridspec().ncols for a in ax] == [n] * 2
         plt.close(f)
 
 
@@ -163,7 +163,7 @@ def test_hist_single_band_3_dims(image_array_single_band_3dims):
 
 
 def test_hist_masked_array(image_array_2bands):
-    """ Test that a masked 2 band array plots properly"""
+    """Test that a masked 2 band array plots properly"""
     masked_arr = np.ma.masked_where(
         image_array_2bands == 6, image_array_2bands
     )
