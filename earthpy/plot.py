@@ -213,7 +213,7 @@ def plot_bands(
         ...     ep.plot_bands(src.read(),
         ...                   title=titles,
         ...                   figsize=(8, 3))
-        array([<AxesSubplot:title={'center':'Red'}>...
+        array([<Axes: title={'center': 'Red'}>...
     """
     show = False
     try:
@@ -389,7 +389,7 @@ def plot_rgb(
         ...     img_array = src.read()
         >>> # Ensure the input array doesn't have nodata values like -9999
         >>> ep.plot_rgb(img_array)
-        <AxesSubplot:>
+        <Axes: >
 
     """
 
