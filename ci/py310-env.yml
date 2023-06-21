@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
 
-  - python=3.7
+  - python=3.10
   # Core scientific python
   - matplotlib
   - scipy
