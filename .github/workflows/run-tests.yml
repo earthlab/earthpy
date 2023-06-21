@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        environment-file: [ci/py37-env.yml, ci/py38-env.yml, ci/py39-env.yml]
+        environment-file: [ci/py38-env.yml, ci/py39-env.yml, ci/py310-env.yml]
         exclude:
           - environment-file: ci/py36-env.yml
             os: windows-latest
