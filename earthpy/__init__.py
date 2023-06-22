@@ -16,7 +16,16 @@ The ``earthpy.data`` object allows quick access to a variety of datasets,
 via the :class:`earthpy.io.Data` class and the
 :meth:`earthpy.io.Data.get_data` method.
 """
-ref = importlib.resources.files("earthpy").joinpath("example-data/epsg.json")
+try:
+    ref = importlib.resources.files("earthpy").joinpath(
+        "example-data/epsg.json"
+    )
+except AttributeError:
+    import importlib_resources
+
+    ref = importlib_resources.files("earthpy").joinpath(
+        "example-data/epsg.json"
+    )
 contents = ref.read_bytes().decode("utf-8")
 
 epsg = json.loads(contents)
