@@ -4,7 +4,7 @@ Utility functions for the working with spatial data.
 
 """
 
-import importlib_resources
+import importlib.resources
 import json
 from .io import Data
 
@@ -16,7 +16,7 @@ The ``earthpy.data`` object allows quick access to a variety of datasets,
 via the :class:`earthpy.io.Data` class and the
 :meth:`earthpy.io.Data.get_data` method.
 """
-ref = importlib_resources.files("earthpy").joinpath("example-data/epsg.json")
+ref = importlib.resources.files("earthpy").joinpath("example-data/epsg.json")
 contents = ref.read_bytes().decode("utf-8")
 
 epsg = json.loads(contents)
