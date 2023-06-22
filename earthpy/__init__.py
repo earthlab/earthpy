@@ -4,7 +4,7 @@ Utility functions for the working with spatial data.
 
 """
 
-from pkg_resources import resource_string
+import importlib.resources
 import json
 from .io import Data
 
@@ -16,10 +16,19 @@ The ``earthpy.data`` object allows quick access to a variety of datasets,
 via the :class:`earthpy.io.Data` class and the
 :meth:`earthpy.io.Data.get_data` method.
 """
+try:
+    ref = importlib.resources.files("earthpy").joinpath(
+        "example-data/epsg.json"
+    )
+except AttributeError:
+    import importlib_resources
 
-epsg = json.loads(
-    resource_string("earthpy", "example-data/epsg.json").decode("utf-8")
-)
+    ref = importlib_resources.files("earthpy").joinpath(
+        "example-data/epsg.json"
+    )
+contents = ref.read_bytes().decode("utf-8")
+
+epsg = json.loads(contents)
 """ A dictionary of EPSG code to Proj4 string mappings.
 
 Proj4 string values can be received via epsg['epsg-code-here'].

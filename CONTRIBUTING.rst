@@ -63,7 +63,7 @@ locally, but this is the recommended option on Windows and MacOS::
 want to be able to test against multiple versions of python locally, you can
 create an empty conda environment::
 
-    $ conda create -n earthpy-dev python=3.7
+    $ conda create -n earthpy-dev python=3.10
     $ conda activate earthpy-dev
 
 Or, if you prefer to use virtualenv rather than conda::
