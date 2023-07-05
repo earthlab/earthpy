@@ -97,11 +97,8 @@ We welcome contributions to EarthPy. Below are the current active package mainta
 [contributors file](https://earthpy.readthedocs.io/en/latest/contributors.html) for a complete list of all
 of our contributors.
 
-<a title="Leah Wasser" href="https://www.github.com/lwasser"><img width="60" height="60" alt="Leah Wasser" class="pull-left" src="https://avatars.githubusercontent.com/u/7649194?size=120" /></a>
-<a title="Max Joseph" href="https://www.github.com/mbjoseph"><img width="60" height="60" alt="Max Joseph" class="pull-left" src="https://avatars.githubusercontent.com/u/2664564?size=120" /></a>
-<a title="Joseph McGlinchy" href="https://www.github.com/joemcglinchy"><img width="60" height="60" alt="Joseph McGlinchy" class="pull-left" src="https://avatars.githubusercontent.com/u/4762214?size=120" /></a>
-<a title="Jenny Palomino" href="https://www.github.com/jlpalomino"><img width="60" height="60" alt="Jenny Palomino" class="pull-left" src="https://avatars.githubusercontent.com/u/4017492?size=120" /></a>
 <a title="Nathan Korinek" href="https://www.github.com/nkorinek"><img width="60" height="60" alt="Nathan Korinek" class="pull-left" src="https://avatars.githubusercontent.com/u/38253680?size=120" /></a>
+<a title="Elsa Culler" href="https://github.com/eculler"><img width="60" height="60" alt="Nathan Korinek" class="pull-left" src="https://avatars.githubusercontent.com/u/3465768?v=4?size=120" /></a>
 
 
 ## Contributors
@@ -109,6 +106,10 @@ of our contributors.
 We've welcome any and all contributions. Below are some of the
 contributors to EarthPy. We are currently trying to update this list!!
 
+<a title="Leah Wasser" href="https://www.github.com/lwasser"><img width="60" height="60" alt="Leah Wasser" class="pull-left" src="https://avatars.githubusercontent.com/u/7649194?size=120" /></a>
+<a title="Max Joseph" href="https://www.github.com/mbjoseph"><img width="60" height="60" alt="Max Joseph" class="pull-left" src="https://avatars.githubusercontent.com/u/2664564?size=120" /></a>
+<a title="Joseph McGlinchy" href="https://www.github.com/joemcglinchy"><img width="60" height="60" alt="Joseph McGlinchy" class="pull-left" src="https://avatars.githubusercontent.com/u/4762214?size=120" /></a>
+<a title="Jenny Palomino" href="https://www.github.com/jlpalomino"><img width="60" height="60" alt="Jenny Palomino" class="pull-left" src="https://avatars.githubusercontent.com/u/4017492?size=120" /></a>
 <a title="Sean Gillies" href="https://www.github.com/sgillies"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/33697?size=120" /></a>
 <a title="Tim Head" href="https://www.github.com/betatim"><img width="60" height="60" alt="Tim Head" class="pull-left" src="https://avatars.githubusercontent.com/u/1448859?size=120" /></a>
 <a title="Chris Holdgraf" href="https://www.github.com/choldgraf"><img width="60" height="60" alt="Michelle Roby" class="pull-left" src="https://avatars.githubusercontent.com/u/1839645?size=120" /></a>
