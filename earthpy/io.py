@@ -173,6 +173,9 @@ class Data(object):
             already downloaded.
         verbose : bool
             Whether to print verbose output while downloading files.
+        file_name : string
+            Change the file name of files downloaded from urls. Can't be used
+            with key downloads.
 
         Returns
         -------
