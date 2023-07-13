@@ -116,6 +116,12 @@ def test_key_and_url_set_simultaneously(eld):
         eld.get_data(key="foo", url="bar")
 
 
+def test_key_and_file_name_set_simultaneously(eld):
+    """key and file name should not both be set."""
+    with pytest.raises(ValueError, match="can not both be set at the same"):
+        eld.get_data(key="foo", file_name="bar")
+
+
 def test_available_datasets_are_printed(eld, capsys):
     """If no key or url provided, print datasets.
 
@@ -245,3 +251,64 @@ def test_url_download_with_quotes(eld):
     path = eld.get_data(url=quotes_url)
     files = os.listdir(path)
     assert "City_of_Boulder_City_Limits.shp" in files and os.path.isdir(path)
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_arbitrary_url_zip_download_custom_fname(eld):
+    """Verify custom file_name works with zip download."""
+    path = eld.get_data(
+        url=(
+            "https://www2.census.gov/geo/tiger/GENZ2016/shp"
+            "/cb_2016_us_nation_20m.zip"
+        ),
+        file_name="test_name_zip",
+    )
+    path_has_contents = len(os.listdir(path)) > 0
+    assert path_has_contents and "test_name_zip" in path
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_url_download_tar_file_custom_fname(eld):
+    """Verify custom file_name works with tar download."""
+    path = eld.get_data(
+        url="https://ndownloader.figshare.com/files/14615411",
+        file_name="test_name_tar",
+    )
+    assert "abc.txt" in os.listdir(path) and "test_name_tar" in path
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_url_download_tar_gz_file_custom_fname(eld):
+    """Verify custom file_name works with tar_gz download."""
+    path = eld.get_data(
+        url="https://ndownloader.figshare.com/files/14615414",
+        file_name="test_name_targz",
+    )
+    assert "abc.txt" in os.listdir(path) and "test_name_targz" in path
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_url_download_txt_file_with_content_disposition_custom_fname(eld):
+    """Verify custom file_name works with arbitrary file_type download."""
+    path = eld.get_data(
+        url="https://ndownloader.figshare.com/files/7275959",
+        file_name="test_csv",
+    )
+    assert path.endswith("test_csv.csv") and os.path.isfile(path)
+
+
+@skip_on_ci
+@pytest.mark.vcr()
+def test_file_name_with_extension_fails(eld):
+    """Test that including an extension in the file_name argument fails."""
+    with pytest.raises(
+        ValueError, match="File type extension found in file_name"
+    ):
+        eld.get_data(
+            url="https://ndownloader.figshare.com/files/7275959",
+            file_name="test_csv.csv",
+        )

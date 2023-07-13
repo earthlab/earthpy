@@ -9,6 +9,7 @@ The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`
 unreleased
 ----------
 
+- Added a custom file name argument to get_data (@nkorinek, #891)
 - Update contributors to EarthPy (@nkorinek, #886)
 - Fix issue with Codecov (@nkorinek, #885)
 - Update dependencies, fix tests, and upgrade to support Python 3.8, 3.9, and 3.10 (@nkorinek, #878)

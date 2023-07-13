@@ -150,7 +150,9 @@ class Data(object):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, key=None, url=None, replace=False, verbose=True):
+    def get_data(
+        self, key=None, url=None, replace=False, verbose=True, file_name=None
+    ):
         """
         Retrieve the data for a given week and return its path.
 
@@ -194,6 +196,13 @@ class Data(object):
                 "The `url` and `key` parameters can not both be "
                 "set at the same time."
             )
+
+        if key is not None and file_name is not None:
+            raise ValueError(
+                "The `key` and `file_name` parameters can not both "
+                "be set at the same time."
+            )
+
         if key is None and url is None:
             print(self.__repr__())
             return
@@ -224,6 +233,18 @@ class Data(object):
             for ext in ALLOWED_FILE_TYPES:
                 if fname.endswith(ext):
                     file_type = ext
+
+            if file_name is not None:
+                if "." in file_name:
+                    raise ValueError(
+                        "File type extension found in file_name, do not "
+                        "include file type extension in file_name."
+                    )
+                if file_type == "file":
+                    ext = fname.split(".")[1]
+                else:
+                    ext = file_type
+                fname = "{}.{}".format(file_name, ext)
 
             # remove extension for pretty download paths
             fname = re.sub("\\.{}$".format(file_type), "", fname)
