@@ -36,6 +36,7 @@ if __name__ == "__main__":
             "rasterio",
             "scikit-image",
             "requests",
+            "keyring"
         ],
         zip_safe=False,  # the package can run out of an .egg file
         classifiers=[
