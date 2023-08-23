@@ -70,7 +70,9 @@ class AppeearsDownloader(object):
 			self,
 			product, layer, start_date, end_date, polygon, 
 			recurring=False, year_range=None,
-			download_key="appeears", ea_dir=None):
+			download_key="appeears", ea_dir=None,
+			use_keyring=True):
+			
 		# Initialize attributes
 		self._product = product
 		self._layer = layer
@@ -80,11 +82,19 @@ class AppeearsDownloader(object):
 		self._year_range = year_range
 		self._polygon = polygon
 		
-		self._task_id = None
 		self._auth_header = None
 		self._status = None
 		
-		# Set up file paths
+		# Set up task id
+		self.task_id_path = os.path.join(
+			pathlib.Path.home(), '.appeears_taskid')
+		if os.path.exists(self.task_id_path):
+			with open(self.task_id_path, 'r') as task_id_file:
+				self._task_id = task_id_file.readline()
+		else:
+			self._task_id = None
+		
+		# Set up download path
 		self.download_key = download_key
 		if ea_dir is None:
 			ea_dir = os.path.join(pathlib.Path.home(), 'earth-analytics')
@@ -236,7 +246,8 @@ class AppeearsDownloader(object):
 		
 		# Save task ID for later
 		self._task_id = task_response.json()['task_id']
-
+		with open(self.task_id_path, 'w') as task_id_file:
+			task_id_file.write(self._task_id)
 
 	def wait_for_task(self):
 		"""
@@ -298,7 +309,7 @@ class AppeearsDownloader(object):
 				os.makedirs(os.path.dirname(filepath))
 				
 			# Write the file to the destination directory
-			if os.path.exits(filepath) and cache:
+			if os.path.exists(filepath) and cache:
 				logging.info(
 					'File at {} alreading exists. Skipping...'
 					.format(filepath))
@@ -307,3 +318,6 @@ class AppeearsDownloader(object):
 				with open(filepath, 'wb') as f:
 					for data in response.iter_content(chunk_size=8192):
 						f.write(data)
+		
+		# Remove task id file when download is complete
+		os.remove(self.task_id_path)
