@@ -39,4 +39,6 @@ jobs:
           environment-file: ${{ matrix.environment-file }}
           activate-environment: earthpy-dev
       - run: conda list
+      - run: python -m keyring NASA_EARTHDATA NED_USERNAME ${{ secrets.EARTHDATA_USERNAME }}
+      - run: python -m keyring NASA_EARTHDATA NED_USERNAME ${{ secrets.EARTHDATA_PASSWORD }}
       - run: pytest -v --color=yes
