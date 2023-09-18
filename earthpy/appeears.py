@@ -33,20 +33,27 @@ class AppeearsDownloader(object):
 
 	Parameters
 	----------
-	download_key: str, optional
+	download_key : str, optional
 		Label used in data_dir and as the API job label
-	ea_dir: pathlike, optional
+	ea_dir : pathlike, optional
 		Replacement directory for ~/earth-analytics
-	product: str
+	product : str
 		A product code from 
 		https://appeears.earthdatacloud.nasa.gov/products
-	layer: str
+	layer : str
 		A layer code from 
 		https://appeears.earthdatacloud.nasa.gov/products
-	start_date: str
-		Start date for data subset, as 'MM-DD-YYYY'
-	end_date: str
-		End date for data subset, as 'MM-DD-YYYY'
+	start_date : str
+		Start date for data subset, as 'MM-DD-YYYY' 
+		or 'MM-DD' if recurring
+	end_date : str
+		End date for data subset, as 'MM-DD-YYYY' 
+		or 'MM-DD' if recurring
+	recurring : bool
+		Whether the date range recurs each year. 
+		Requires year_range.
+	year_range : str
+		Year range for recurring dates, as '[YYYY,YYYY]'
 	polygon: gpd.GeoDataFrame
 		The spatial boundary to subset
 		
