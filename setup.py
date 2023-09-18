@@ -9,8 +9,8 @@ DESCRIPTION = (
     "Earth Lab and was originally designed to support the earth "
     "analytics education program."
 )
-MAINTAINER = "Leah Wasser"
-MAINTAINER_EMAIL = "leah.wasser@colorado.edu"
+MAINTAINER = "Elsa Culler"
+MAINTAINER_EMAIL = "elsa.culler@colorado.edu"
 
 
 # read the contents of your README file
