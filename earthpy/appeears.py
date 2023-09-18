@@ -245,7 +245,7 @@ class AppeearsDownloader(object):
 			if self._year_range is None:
 				raise ValueError(
 					'Must supply year range for recurring dates')
-			task['params']['dates'][0]['recurring'] = True
+			task['params']['dates'][0]['recurring'] = 'true'
 			task['params']['dates'][0]['yearRange'] = self._year_range
 
 		# Submit the task request
