@@ -134,6 +134,8 @@ class AppeearsDownloader(object):
 			'headers': {'Authorization': self.auth_header}
 		}
 		if req_json:
+			logging.debug('Submitting task with JSON\n{}'.format(
+				json.dumps(req_json)))
 			kwargs['json'] = req_json
 			
 		# Stream file downloads
@@ -143,6 +145,7 @@ class AppeearsDownloader(object):
 		
 		# Submit request
 		response = requests.request(method=method, **kwargs)
+		logging.debug('RESPONSE TEXT: \n{}'.format(response.text))
 		response.raise_for_status()
 		
 		logging.info('{} request successfully completed'.format(endpoint))
@@ -245,7 +248,7 @@ class AppeearsDownloader(object):
 			if self._year_range is None:
 				raise ValueError(
 					'Must supply year range for recurring dates')
-			task['params']['dates'][0]['recurring'] = 'true'
+			task['params']['dates'][0]['recurring'] = True
 			task['params']['dates'][0]['yearRange'] = self._year_range
 
 		# Submit the task request
