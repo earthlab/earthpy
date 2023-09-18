@@ -242,7 +242,7 @@ class AppeearsDownloader(object):
 		}
 		
 		if self._recurring:
-			if self.year_range is None:
+			if self._year_range is None:
 				raise ValueError(
 					'Must supply year range for recurring dates')
 			task['params']['dates'][0]['recurring'] = True
