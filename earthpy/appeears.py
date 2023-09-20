@@ -168,8 +168,12 @@ class AppeearsDownloader(object):
 			The name under which to store the credential in keyring
 		"""
 		# Get username and password from keyring
-		username = keyring.get_password(service, username_id)
-		password = keyring.get_password(service, username)
+		try:
+			username = keyring.get_password(service, username_id)
+			password = keyring.get_password(service, username)
+		except:
+			username = None
+			password = None
 		
 		# Prompt user if no username or password is stored
 		if (username is None) or (password is None):
