@@ -180,8 +180,11 @@ class AppeearsDownloader(object):
 			# Ask for the user's username and password
 			username = input('NASA Earthdata Username: ')
 			password = getpass.getpass('NASA Earthdata Password: ')
-			keyring.set_password(service, username_id, username)
-			keyring.set_password(service, username, password)
+			try:
+				keyring.set_password(service, username_id, username)
+				keyring.set_password(service, username, password)
+			except:
+				pass
 			
 		logging.info('Logging into AppEEARS API...')
 		
