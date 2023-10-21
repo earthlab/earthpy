@@ -331,7 +331,10 @@ def _stretch_im(arr, str_clip):
     s_max = 100 - str_clip
     arr_rescaled = np.zeros_like(arr)
     for ii, band in enumerate(arr):
-        lower, upper = np.nanpercentile(band, (s_min, s_max))
+        if np.ma.isMaskedArray(band):
+            lower, upper = np.nanpercentile(band.compressed(), (s_min, s_max))
+        else:
+            lower, upper = np.nanpercentile(band, (s_min, s_max))
         arr_rescaled[ii] = exposure.rescale_intensity(
             band, in_range=(lower, upper)
         )
