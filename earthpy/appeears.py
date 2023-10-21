@@ -168,16 +168,23 @@ class AppeearsDownloader(object):
 			The name under which to store the credential in keyring
 		"""
 		# Get username and password from keyring
-		username = keyring.get_password(service, username_id)
-		password = keyring.get_password(service, username)
+		try:
+			username = keyring.get_password(service, username_id)
+			password = keyring.get_password(service, username)
+		except:
+			username = None
+			password = None
 		
 		# Prompt user if no username or password is stored
 		if (username is None) or (password is None):
 			# Ask for the user's username and password
 			username = input('NASA Earthdata Username: ')
 			password = getpass.getpass('NASA Earthdata Password: ')
-			keyring.set_password(service, username_id, username)
-			keyring.set_password(service, username, password)
+			try:
+				keyring.set_password(service, username_id, username)
+				keyring.set_password(service, username, password)
+			except:
+				pass
 			
 		logging.info('Logging into AppEEARS API...')
 		
