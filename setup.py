@@ -9,8 +9,8 @@ DESCRIPTION = (
     "Earth Lab and was originally designed to support the earth "
     "analytics education program."
 )
-MAINTAINER = "Leah Wasser"
-MAINTAINER_EMAIL = "leah.wasser@colorado.edu"
+MAINTAINER = "Elsa Culler"
+MAINTAINER_EMAIL = "elsa.culler@colorado.edu"
 
 
 # read the contents of your README file
@@ -27,7 +27,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.9.4",
+        version="0.10.0",
         packages=["earthpy"],
         install_requires=[
             "geopandas",
@@ -36,6 +36,7 @@ if __name__ == "__main__":
             "rasterio",
             "scikit-image",
             "requests",
+            "keyring"
         ],
         zip_safe=False,  # the package can run out of an .egg file
         classifiers=[
