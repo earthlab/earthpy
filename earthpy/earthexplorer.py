@@ -10,6 +10,23 @@ import requests
 from .io import HOME, DATA_NAME
 
 class BBox:
+    """
+    Coordinates of a bounding box for EarthExplorerDownloader
+
+    Parameters
+    ----------
+    llx, lly, urx, ury: float
+        The lower left (ll) and upper right (ur) x and y coordinates
+
+    Attributes
+    ----------
+    llx, lly, urx, ury: float
+        The lower left (ll) and upper right (ur) x and y coordinatess
+    spatial_filter: dict, JSON-like
+        Prepared JSON for the bounding box for 
+        EarthExplorerDownloader
+    """
+    
     def __init__(self, llx, lly, urx, ury):
         self.llx, self.lly, self.urx, self.ury = llx, lly, urx, ury
 
@@ -21,7 +38,46 @@ class BBox:
             'upperRight': {'latitude': self.ury, 'longitude': self.urx}}
 
 class EarthExplorerDownloader:
+    """
+    Download data using the USGS M2M API (EarthExplorer)
+    
+    Parameters
+    ----------
+    dataset : str
+        The name of the dataset to download
+    label : str
+        M2M identifier for the download
+    bbox : earthpy.earthexplorer.BBox
+        Spatial extent of the download
+    start : str
+        Start date of the download in 'YYYY-MM-DD' format
+    end : str
+        End date of the download in 'YYYY-MM-DD' format
+    file_type (optional) : str
+        Either 'zip' or 'tar', default 'zip'
+    store_credential : boolean
+        Whether or not to store the EarthExplorer username and password
+        in the user's home folder.
 
+    Attributes
+    ----------
+    base_url : urllike
+        The base URL for the API
+    dld_file_tmpl : str
+        Format string for the names of downloaded files
+    api_key : str
+        The api key for the session
+    ext : str
+        Extension corresponding to the file_type parameter
+    temporal_filter : dict
+        Start and end dates prepared for JSON
+    acquisition_filter : dict
+        Same as temporal_filter
+    data_dir : pathlike
+        Directory to store downloaded data
+    path_tmpl : pathlike
+        Format string for downloaded file paths
+    """
     base_url = "https://m2m.cr.usgs.gov/api/api/json/stable/{endpoint}"
     dld_file_tmpl = '{display_id}.{ext}'
 
@@ -46,7 +102,19 @@ class EarthExplorerDownloader:
         self._dataset_alias = None
 
     def get_ee_login_info(self, info_type):
-        # Collect and store login info
+        """
+        Collect and store API login info
+        
+        Parameters
+        ----------
+        info_type : str
+            'username' or 'password'
+
+        Returns
+        -------
+        info : str
+            User input
+        """
         info_path = os.path.join(HOME, '.ee_{}'.format(info_type))
         info = None
         if os.path.exists(info_path) and self.store_credential:
@@ -62,6 +130,9 @@ class EarthExplorerDownloader:
         return info
 
     def login(self):
+        """
+        Lo
+        """
         if self.api_key is None:
             login_payload = {
                 'username': self.get_ee_login_info('username'), 
