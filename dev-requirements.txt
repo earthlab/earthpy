@@ -11,4 +11,4 @@ sphinx_gallery==0.13.0
 sphinx_rtd_theme==1.2.2
 tox==4.6.4
 pip>=19.0
-importlib-resources==6.0.0
+importlib-resources==6.1.3
