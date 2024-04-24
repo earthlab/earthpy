@@ -12,11 +12,11 @@ import logging
 import os
 import pathlib
 import re
-import requests
 import time
 from glob import glob
 
 import keyring
+import requests
 
 class AppeearsDownloader(object):
 	"""
@@ -171,6 +171,14 @@ class AppeearsDownloader(object):
 		try:
 			username = keyring.get_password(service, username_id)
 			password = keyring.get_password(service, username)
+		except:
+			username = None
+			password = None
+			
+		# Get username and password from environment
+		try:
+			username = os.environ['EARTHDATA_USERNAME']
+			password = os.environ['EARTHDATA_PASSWORD']
 		except:
 			username = None
 			password = None
