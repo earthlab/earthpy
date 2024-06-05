@@ -98,6 +98,8 @@ class AppeearsDownloader(object):
 		if os.path.exists(self.task_id_path):
 			with open(self.task_id_path, 'r') as task_id_file:
 				self._task_id = task_id_file.readline()
+		elif 'APPEEARS_TASKID' in os.environ:
+			self._task_id = os.environ['APPEEARS_TASKID']
 		else:
 			self._task_id = None
 		
