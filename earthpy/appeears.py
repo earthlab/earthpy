@@ -100,6 +100,8 @@ class AppeearsDownloader(object):
 				self._task_id = task_id_file.readline()
 		elif 'APPEEARS_TASKID' in os.environ:
 			self._task_id = os.environ['APPEEARS_TASKID']
+			with open(self.task_id_path, 'w') as task_id_file:
+				task_id_file.write(self._task_id)
 		else:
 			self._task_id = None
 		
