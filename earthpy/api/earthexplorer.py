@@ -7,7 +7,7 @@ from getpass import getpass
 
 import requests
 
-from .io import HOME, DATA_NAME
+from ..io import HOME, DATA_NAME
 
 class BBox:
     """

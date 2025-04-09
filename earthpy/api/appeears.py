@@ -4,6 +4,11 @@ earthpy.appeears
 
 A module to download data using the APPPEARS API.
 
+NOTE TO DEVS:
+  - Make sure to handle the case where a task is expired
+  - Allow the option to overwrite the keychain
+  - Validate the year range parameter
+
 """
 
 import getpass
@@ -18,7 +23,9 @@ from glob import glob
 import keyring
 import requests
 
-class AppeearsDownloader(object):
+from .api import 
+
+class AppeearsDownloader(APIDownloader):
 	"""
 	Class to download data using the appeears API
 	
@@ -218,11 +225,13 @@ class AppeearsDownloader(object):
 	def task_id(self):
 		if not self._task_id:
 			self.submit_task_request()
+		elif self.task_status=='expired':
+			self.submit_task_request()
 		return self._task_id
 	
 	@property
 	def task_status(self):
-		if self._status != 'done':
+		if self._status!='done':
 			self.wait_for_task()
 		return self._status
 
@@ -295,6 +304,7 @@ class AppeearsDownloader(object):
 			elif 'status' in status_response.json():
 				self._status = status_response.json()['status']
 			
+			if self._status 
 			logging.info(self._status)
 		logging.info('Task completed - ready for download.')
 	
