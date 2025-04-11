@@ -23,8 +23,6 @@ from glob import glob
 import keyring
 import requests
 
-from .api import 
-
 class AppeearsDownloader(APIDownloader):
 	"""
 	Class to download data using the appeears API
