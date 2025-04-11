@@ -2,10 +2,12 @@ name: earthpy-dev
 channels:
   - conda-forge
 dependencies:
+  - python=3.12
+  - pytest
+  
   # Core scientific python
   - numpy
   - matplotlib
-#  - python=3.6
 
   # Geo stuff
   - geopandas

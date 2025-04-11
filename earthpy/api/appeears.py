@@ -5,7 +5,6 @@ earthpy.appeears
 A module to download data using the APPPEARS API.
 
 NOTE TO DEVS:
-  - Make sure to handle the case where a task is expired
   - Allow the option to overwrite the keychain
   - Validate the year range parameter
 
@@ -22,6 +21,8 @@ from glob import glob
 
 import keyring
 import requests
+
+from .api import APIDownloader
 
 class AppeearsDownloader(APIDownloader):
 	"""
@@ -306,7 +307,6 @@ class AppeearsDownloader(APIDownloader):
 			elif 'status' in status_response.json():
 				self._status = status_response.json()['status']
 			
-			if self._status 
 			logging.info(self._status)
 		logging.info('Task completed - ready for download.')
 	
