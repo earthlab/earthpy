@@ -1,5 +1,5 @@
 from os import path
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 DISTNAME = "earthpy"
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
         version="0.10.0",
-        packages=["earthpy"],
+        packages=find_packages(),
         install_requires=[
             "geopandas",
             "matplotlib>=2.0.0",
