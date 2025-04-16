@@ -31,7 +31,7 @@ def binned_array_3bins():
 @pytest.fixture
 def binned_array():
     im_arr = np.random.uniform(-2, 1, (6, 6))
-    bins = [-100, -0.8, -0.2, 0.2, 0.8, np.Inf]
+    bins = [-100, -0.8, -0.2, 0.2, 0.8, np.inf]
     im_arr_bin = np.digitize(im_arr, bins)
     return bins, im_arr_bin
 
@@ -272,7 +272,7 @@ def test_masked_vals():
     """Legend for masked array plots properly."""
 
     im_arr = np.random.uniform(-2, 1, (15, 15))
-    bins = [-0.8, -0.2, 0.2, 0.8, np.Inf]
+    bins = [-0.8, -0.2, 0.2, 0.8, np.inf]
     im_arr_bin = np.digitize(im_arr, bins)
     arr_bin_ma = np.ma.masked_equal(im_arr_bin, 0)
     unmasked_vals = [

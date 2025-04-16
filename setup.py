@@ -30,13 +30,14 @@ if __name__ == "__main__":
         version="0.10.0",
         packages=find_packages(),
         install_requires=[
+            "requests",
+            "keyring",
+            "platformdirs",
             "geopandas",
             "matplotlib>=2.0.0",
             "numpy>=1.14.0",
             "rasterio",
             "scikit-image",
-            "requests",
-            "keyring"
         ],
         zip_safe=False,  # the package can run out of an .egg file
         classifiers=[

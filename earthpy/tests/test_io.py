@@ -7,6 +7,7 @@ import numpy as np
 import rasterio as rio
 import geopandas as gpd
 import earthpy.io as eio
+from earthpy.project import Project
 
 
 RUNNING_ON_CI = False
@@ -18,10 +19,10 @@ skip_on_ci = pytest.mark.skipif(
     RUNNING_ON_CI, reason="Test fails intermittently on CI systems."
 )
 
-
 @pytest.fixture
-def eld(tmpdir):
-    return eio.Data(path=tmpdir)
+def eld(tmp_path, monkeypatch):
+    monkeypatch.setenv("EARTHPY_DATA_HOME", str(tmp_path / "testdata"))
+    return eio.Data()
 
 
 def test_invalid_datasets_raise_errors():
@@ -191,8 +192,8 @@ def test_arbitrary_url_zip_download(eld):
     """Verify that aribitrary URLs work for zip file downloads."""
     path = eld.get_data(
         url=(
-            "https://www2.census.gov/geo/tiger/GENZ2016/shp"
-            "/cb_2016_us_nation_20m.zip"
+            "https://github.com/earthlab/earthpy/releases/download/v0.9.4"
+            "/test.zip"
         )
     )
     path_has_contents = len(os.listdir(path)) > 0

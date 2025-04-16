@@ -20,9 +20,11 @@ import time
 from glob import glob
 
 import keyring
+import netrc
 import requests
 
 from .api import APIDownloader
+from .auth import Authenticator
 
 class AppeearsDownloader(APIDownloader):
 	"""
@@ -78,13 +80,14 @@ class AppeearsDownloader(APIDownloader):
 	"""
 	
 	base_url = "https://appeears.earthdatacloud.nasa.gov/api/"
+	login_service = "urs.earthdata.nasa.gov"
+	download_key = "earthpy"
 	
 	def __init__(
 			self,
 			product, layer, start_date, end_date, polygon, 
 			recurring=False, year_range=None,
-			download_key="appeears", ea_dir=None,
-			use_keyring=True):
+			download_key="appeears", ea_dir=None):
 			
 		# Initialize attributes
 		self._product = product
@@ -163,7 +166,7 @@ class AppeearsDownloader(APIDownloader):
 		return response
 		
 	
-	def login(self, service='NASA_EARTHDATA', username_id='NED_USERNAME'):
+	def login(self, interactive=False, override=False):
 		"""
 		Logs in to the AppEEARS API.
 
@@ -177,34 +180,10 @@ class AppeearsDownloader(APIDownloader):
 		service : str, optional
 			The name under which to store the credential in keyring
 		"""
-		# Get username and password from keyring
-		try:
-			username = keyring.get_password(service, username_id)
-			password = keyring.get_password(service, username)
-		except:
-			username = None
-			password = None
-			
-		# Get username and password from environment
-		try:
-			username = os.environ['EARTHDATA_USERNAME']
-			password = os.environ['EARTHDATA_PASSWORD']
-		except:
-			username = None
-			password = None
-		
-		# Prompt user if no username or password is stored
-		if (username is None) or (password is None):
-			# Ask for the user's username and password
-			username = input('NASA Earthdata Username: ')
-			password = getpass.getpass('NASA Earthdata Password: ')
-			try:
-				keyring.set_password(service, username_id, username)
-				keyring.set_password(service, username, password)
-			except:
-				pass
-			
-		logging.info('Logging into AppEEARS API...')
+		username, password = Authenticator(
+			service=self.login_service,
+			env_prefix='EARTHDATA'
+		).get_credentials(interactive=interactive, override=override)
 		
 		# Set up authentication and submit login request
 		login_resp = requests.post(
@@ -227,8 +206,6 @@ class AppeearsDownloader(APIDownloader):
 	@property
 	def task_id(self):
 		if not self._task_id:
-			self.submit_task_request()
-		elif self.task_status=='expired':
 			self.submit_task_request()
 		return self._task_id
 	
@@ -293,6 +270,8 @@ class AppeearsDownloader(APIDownloader):
 		self._status = 'initializing'
 		while self._status != 'done':
 			time.sleep(3)
+			if self._status=='expired':
+			    self.submit_task_request()
 			# Wait 20 seconds in between status checks
 			if self._status != 'initializing':
 				time.sleep(20)

@@ -4,6 +4,14 @@ channels:
 dependencies:
   - python=3.12
   - pytest
+  - pytest-vcr
+
+  # System management
+  - keyring
+  - platformdirs
+
+  # Web
+  - requests
   
   # Core scientific python
   - numpy

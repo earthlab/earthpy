@@ -14,8 +14,8 @@ def test_download_data():
 	logging.basicConfig(level=logging.DEBUG)
 	
 	quotes_url = (
-		"https://opendata.arcgis.com/datasets/955e7a0f5"
-		"2474b60a9866950daf10acb_0.zip"
+		"https://github.com/earthlab/earthpy/releases/download/v0.9.4"
+		"/test-boundary.zip"
 	)
 	gdf = gpd.read_file(quotes_url)
 	downloader = etapi.AppeearsDownloader(
@@ -26,8 +26,8 @@ def test_download_recurring_data():
 	logging.basicConfig(level=logging.DEBUG)
 	
 	quotes_url = (
-		"https://opendata.arcgis.com/datasets/955e7a0f5"
-		"2474b60a9866950daf10acb_0.zip"
+		"https://github.com/earthlab/earthpy/releases/download/v0.9.4"
+		"/test-boundary.zip"
 	)
 	gdf = gpd.read_file(quotes_url)
 	downloader = etapi.AppeearsDownloader(

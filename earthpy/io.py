@@ -10,10 +10,13 @@ import io
 import os
 import os.path as op
 import re
+
 import requests
 import tarfile
 import zipfile
+
 import earthpy
+from .project import Project
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
 # If zipfile, tarfile, etc, unzip to a folder w/ the name
@@ -106,24 +109,22 @@ DATA_URLS = {
     ),
 }
 
-HOME = op.join(op.expanduser("~"))
-DATA_NAME = op.join("earth-analytics", "data")
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
-
-
+        
 class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
 
     An object of this class is available upon importing earthpy as
-    ``earthpy.data`` that writes data files to the path:
-    ``~/earth-analytics/data/``.
+    ``earthpy.data`` that writes data files to the project path, 
+    default ``~/earth-analytics/data/project-name``.
 
     Parameters
     ----------
-    path : string | None
-        The path where data is stored. NOTE: this defaults to the directory
-        ``~/earth-analytics/data/``.
+    project : earthpy.Project | None
+        The project defining where data is stored. The default data
+        directory is 
+        ``platformdirs.user_data_dir/earth-analytics/data/``.
 
     Examples
     --------
@@ -140,17 +141,22 @@ class Data(object):
         Available Datasets: ['california-rim-fire', ...]
     """
 
-    def __init__(self, path=None):
-        if path is None:
-            path = op.join(HOME, DATA_NAME)
-        self.path = path
+    def __init__(self, project=None):
+        if project is None:
+            project = Project()
+        self.project = project
+        self.path = project.project_dir
         self.data_keys = sorted(list(DATA_URLS.keys()))
 
     def __repr__(self):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, key=None, url=None, replace=False, verbose=True):
+    def get_data(self, 
+                 key=None, url=None, 
+                 filename=None,
+                 replace=False, verbose=True
+        ):
         """
         Retrieve the data for a given week and return its path.
 
@@ -189,6 +195,7 @@ class Data(object):
             >>> et.data.get_data(url=url)  # doctest: +SKIP
 
         """
+
         if key is not None and url is not None:
             raise ValueError(
                 "The `url` and `key` parameters can not both be "
@@ -211,13 +218,17 @@ class Data(object):
 
         if url is not None:
             with requests.head(url) as r:
+                # Try HTML headers
                 if "content-disposition" in r.headers.keys():
                     content = r.headers["content-disposition"]
                     fname = re.findall("filename=(.+)", content)[0]
+                # Otherwise get filename from URL
                 else:
                     fname = url.split("/")[-1]
-                if fname.endswith('"') and fname.startswith('"'):
-                    fname = fname[1:-1]
+
+            # Remove any extra quotes
+            if fname.endswith('"') and fname.startswith('"'):
+                fname = fname[1:-1]
 
             # Determine filetype using file name extension
             file_type = "file"
@@ -225,7 +236,12 @@ class Data(object):
                 if fname.endswith(ext):
                     file_type = ext
 
-            # remove extension for pretty download paths
+            # User override file name
+            if not (filename is None):
+                fname = filename
+
+            # Remove file or archive extension for pretty download paths
+            # Does not remove extensions for individual files
             fname = re.sub("\\.{}$".format(file_type), "", fname)
 
             this_data = (url, fname, file_type)
@@ -252,12 +268,15 @@ class Data(object):
                 verbose=verbose,
             )
             data_paths.append(this_path)
+        
+        # Return the data path or list of paths
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
 
     def _download(self, url, path, kind, replace, verbose):
-        """Download a file.
+        """
+        Download a file.
 
         This helper function downloads files and saves them to ``path``.
         Zip and tar files are extracted to the ``path`` directory.
@@ -283,7 +302,7 @@ class Data(object):
         output_path : str
             Path to the downloaded file.
         """
-        path = op.expanduser(path)
+        path = op.join(self.project.project_dir, path)
         if replace is False and op.exists(path):
             return path
 
@@ -339,8 +358,8 @@ class Data(object):
 def path_to_example(dataset):
     """Construct a file path to an example dataset.
 
-    This file defines helper functions to access data files in this directory,
-    to support examples. Adapted from the PySAL package.
+    This file defines helper functions to access data files in this 
+    directory, to support examples. Adapted from the PySAL package.
 
     Parameters
     ----------

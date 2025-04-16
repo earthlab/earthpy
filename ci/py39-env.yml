@@ -7,6 +7,9 @@ dependencies:
   # Core scientific python
   - matplotlib
   - scipy
+  # System management
+  - keyring
+  - platformdirs
 
   # Geo stuff
   - geopandas
