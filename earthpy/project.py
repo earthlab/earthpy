@@ -55,13 +55,11 @@ class Project:
 
     def __init__(
         self,
-        appname="data",
-        appauthor="earth-analytics",
+        appname="earth-analytics",
         project_dirname="earthpy-downloads",
         env_var="EARTHPY_DATA_HOME"
     ):
         self.appname = appname
-        self.appauthor = appauthor
         self.project_dirname = project_dirname
         self.env_var = env_var
 
@@ -98,7 +96,7 @@ class Project:
 
         # Look for global config file
         config_dir = Path(
-            user_config_dir(self.appname, self.appauthor)
+            user_config_dir(self.appname)
         ).expanduser()
         global_config = self._find_config_file(config_dir)
         if global_config:
@@ -106,7 +104,7 @@ class Project:
 
         # Fallback to platformdirs default
         return Path(
-            user_data_dir(self.appname, self.appauthor)
+            user_data_dir(self.appname)
         ).expanduser().resolve()
 
     def _find_config_file(self, directory: Path) -> Path | None:
