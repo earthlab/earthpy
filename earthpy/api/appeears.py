@@ -119,6 +119,7 @@ class AppeearsDownloader(APIDownloader):
         if ea_dir is None:
             ea_dir = os.path.join(pathlib.Path.home(), 'earth-analytics')
         self.data_dir = os.path.join(ea_dir, download_key)
+        os.makedirs(self.data_dir, exist_ok=True)
         
     def appeears_request(
             self, endpoint, 
@@ -298,6 +299,15 @@ class AppeearsDownloader(APIDownloader):
         cache : bool
             Use cache to avoid repeat downloads
         """
+        if cache:
+            existing_files = glob(os.path.join(self.data_dir, '*' '*.tif'))
+            if existing_files:
+                logging.info(
+                    'Files already exist in {}. '
+                    'Set cache=False to overwrite.'.format(self.data_dir))
+                return
+        
+        # Check task status
         status = self.task_status
         logging.info('Current task status: {}'.format(status))
         
@@ -321,8 +331,6 @@ class AppeearsDownloader(APIDownloader):
             
             # Create a destination directory to store the file in
             filepath = os.path.join(self.data_dir, file_info['file_name'])
-            if not os.path.exists(os.path.dirname(filepath)):
-                os.makedirs(os.path.dirname(filepath))
                 
             # Write the file to the destination directory
             if os.path.exists(filepath) and cache:
