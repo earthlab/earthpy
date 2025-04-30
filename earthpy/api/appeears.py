@@ -300,12 +300,12 @@ class AppeearsDownloader(APIDownloader):
             Use cache to avoid repeat downloads
         """
         if cache:
-            existing_files = glob(os.path.join(self.data_dir, '*' '*.tif'))
+            existing_files = glob(os.path.join(self.data_dir, '*', '*.tif'))
             if existing_files:
                 logging.info(
                     'Files already exist in {}. '
                     'Set cache=False to overwrite.'.format(self.data_dir))
-                return
+                return existing_files
         
         # Check task status
         status = self.task_status
