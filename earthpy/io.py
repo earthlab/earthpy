@@ -7,152 +7,99 @@ File Input/Output utilities.
 """
 
 import io
-import os
-import os.path as op
 import re
+
 import requests
 import tarfile
 import zipfile
-import earthpy
 
-# Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
-# If zipfile, tarfile, etc, unzip to a folder w/ the name
+from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL
 
-DATA_URLS = {
-    "co-flood-extras": [
-        (
-            "https://ndownloader.figshare.com/files/7010681",
-            "boulder-precip.csv",
-            "file",
-        ),
-        (
-            "https://ndownloader.figshare.com/files/7010681",
-            "temperature_example.csv",
-            "file",
-        ),
-    ],
-    "colorado-flood": (
-        "https://ndownloader.figshare.com/files/16371473",
-        ".",
-        "zip",
-    ),
-    "spatial-vector-lidar": (
-        "https://ndownloader.figshare.com/files/12459464",
-        ".",
-        "zip",
-    ),
-    "cold-springs-modis-h4": (
-        "https://ndownloader.figshare.com/files/10960112",
-        ".",
-        "zip",
-    ),
-    "cold-springs-fire": (
-        "https://ndownloader.figshare.com/files/10960109",
-        ".",
-        "zip",
-    ),
-    "cs-test-naip": (
-        (
-            "https://ndownloader.figshare.com/files/10960211?"
-            "private_link=18f892d9f3645344b2fe"
-        ),
-        ".",
-        "zip",
-    ),
-    "cs-test-landsat": (
-        (
-            "https://ndownloader.figshare.com/files/10960214?private_link"
-            "=fbba903d00e1848b423e"
-        ),
-        ".",
-        "zip",
-    ),
-    "ndvi-automation": (
-        "https://ndownloader.figshare.com/files/13431344",
-        ".",
-        "zip",
-    ),
-    "vignette-landsat": (
-        "https://ndownloader.figshare.com/files/15197339",
-        ".",
-        "zip",
-    ),
-    "vignette-elevation": (
-        "https://ndownloader.figshare.com/articles/8259098/versions/2",
-        ".",
-        "zip",
-    ),
-    "california-rim-fire": (
-        "https://ndownloader.figshare.com/files/14419310",
-        ".",
-        "zip",
-    ),
-    "twitter-flood": [
-        (
-            "https://ndownloader.figshare.com/files/10960175",
-            "boulder_flood_geolocated_tweets.json",
-            "file",
-        )
-    ],
-    "cold-springs-landsat-scenes": (
-        "https://ndownloader.figshare.com/files/21941085 ",
-        ".",
-        "zip",
-    ),
-    "naip-fire-crop": (
-        "https://ndownloader.figshare.com/files/23070791",
-        ".",
-        "zip",
-    ),
-}
-
-HOME = op.join(op.expanduser("~"))
-DATA_NAME = op.join("earth-analytics", "data")
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
-
-
+        
 class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
 
     An object of this class is available upon importing earthpy as
-    ``earthpy.data`` that writes data files to the path:
-    ``~/earth-analytics/data/``.
+    ``earthpy.data`` that writes data files to the project path, 
+    default ``~/earth-analytics/data/project-name``.
 
     Parameters
     ----------
-    path : string | None
-        The path where data is stored. NOTE: this defaults to the directory
-        ``~/earth-analytics/data/``.
-
-    Examples
-    --------
-    List datasets that are available for download, using default object:
-
-        >>> import earthpy as et
-        >>> et.data
-        Available Datasets: ['california-rim-fire', ...]
-
-    Specify a custom directory for data downloads:
-
-        >>> et.data.path = "."
-        >>> et.data
-        Available Datasets: ['california-rim-fire', ...]
+    project : earthpy.Project | None
+        The project defining where data is stored.
+    figshare_project_id : str | None
+        The Figshare project ID to use for data retrieval.
+    figshare_token : str | None
+        The Figshare token to use for data uploads.
     """
 
-    def __init__(self, path=None):
-        if path is None:
-            path = op.join(HOME, DATA_NAME)
-        self.path = path
+    def __init__(self, project=None):
+        self.project = project
+
+        if project is not None:
+            self.path = project.project_dir
+            self.figshare_project_id = project.figshare_project_id
+            self.figshare_token = project.figshare_token
+        else:
+            self.path = DEFAULT_DATA_HOME
+            self.figshare_project_id = None
+            self.figshare_token = None
+        self.path.mkdir(parents=True, exist_ok=True)
+
         self.data_keys = sorted(list(DATA_URLS.keys()))
+
+        self.headers = {"Content-Type": "application/json"}
+        if self.figshare_token:
+            self.headers['Authorization'] = f"token {self.figshare_token}"
+
+    @property
+    def articles(self):
+        """Fetch and map article titles to IDs."""
+        if self.project is None:
+            return {}
+        article_url = (
+            f"{FIGSHARE_API_URL}/projects/"
+            f"{self.figshare_project_id}/articles"
+        )
+        response = requests.get(article_url, headers=self.headers)
+        response.raise_for_status()
+        articles = response.json()
+        # Create a mapping of titles to article IDs
+        return {article['title']: article['id'] for article in articles}
+
+    def list_datasets(self):
+        """Pretty print available datasets."""
+        if self._is_notebook():
+            display(JSON(self.articles))
+            print('Legacy datasets:')
+            display(JSON(self.data_keys))
+        else:
+            print(self.articles)
+            print('Legacy datasets:')
+            print(self.data_keys)
+
+    def _is_notebook(self):
+        """Check if the code is being run in a Jupyter notebook."""
+        try:
+            from IPython import get_ipython
+            from IPython.display import display, JSON
+            return get_ipython() is not None
+        except ImportError:
+            return False
 
     def __repr__(self):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, key=None, url=None, replace=False, verbose=True):
+    def get_data(self, 
+                 key=None, url=None, title=None,
+                 filename=None,
+                 replace=False, verbose=True
+        ):
         """
-        Retrieve the data for a given week and return its path.
+        Retrieve the data subset and return its path.
 
         This will retrieve data from the internet if it isn't already
         downloaded, otherwise it will only return a path to that dataset.
@@ -161,11 +108,19 @@ class Data(object):
         ----------
         key : str
             The dataset to retrieve. Possible options can be found in
-            ``self.data_keys``. Note: ``key`` and ``url`` are mutually
-            exclusive.
+            ``self.data_keys``. Note: ``key``, ``url``, and 
+            ``title`` are mutually exclusive.
         url : str
-            A URL to fetch into the data directory. Use this for ad-hoc dataset
-            downloads. Note: ``key`` and ``url`` are mutually exclusive.
+            A URL to fetch into the data directory. Use this for 
+            ad-hoc dataset downloads. Note: ``key``, ``url``, and 
+            ``title`` are mutually exclusive.
+        title : str
+            The title of the dataset to retrieve. This is used to
+            fetch the article ID from Figshare. Note: ``key``, 
+            ``url``, and ``title`` are mutually exclusive.
+        filename : str
+            The name of the file to save the dataset as. This is
+            useful for renaming files after download.
         replace : bool
             Whether to replace the data for this key if it is
             already downloaded.
@@ -183,20 +138,26 @@ class Data(object):
 
             >>> et.data.get_data('california-rim-fire') # doctest: +SKIP
 
-        Or, download a dataset using a figshare URL:
+        Or, download a dataset using a URL:
 
             >>> url = 'https://ndownloader.figshare.com/files/12395030'
             >>> et.data.get_data(url=url)  # doctest: +SKIP
 
         """
-        if key is not None and url is not None:
+
+        if (key is not None) + (url is not None) + (title is not None) > 1:
             raise ValueError(
-                "The `url` and `key` parameters can not both be "
-                "set at the same time."
+                "The `key`, `url`, and `title` parameters are mutually "
+                "exclusive. Please provide only one of them."
             )
-        if key is None and url is None:
-            print(self.__repr__())
-            return
+
+        if (key is None) and (url is None) and (title is None):
+            if self.project:
+                title = self.project.title
+            else:
+                print("No key, url, or title provided. Available datasets:")
+                self.list_datasets()
+                return
 
         if key is not None:
             if key not in DATA_URLS:
@@ -207,17 +168,29 @@ class Data(object):
                 )
 
             this_data = DATA_URLS[key]
-            this_root = op.join(str(self.path), key)
+
+        if title is not None:
+            article_id = self.articles.get(title)
+            if article_id is None:
+                raise KeyError(
+                    f"Title '{title}' not found in available datasets."
+                )
+            urls = self._get_figshare_download_urls(article_id)
+            this_data = [(url, name, "file") for name, url in urls.items()]
 
         if url is not None:
             with requests.head(url) as r:
+                # Try HTML headers
                 if "content-disposition" in r.headers.keys():
                     content = r.headers["content-disposition"]
                     fname = re.findall("filename=(.+)", content)[0]
+                # Otherwise get filename from URL
                 else:
                     fname = url.split("/")[-1]
-                if fname.endswith('"') and fname.startswith('"'):
-                    fname = fname[1:-1]
+
+            # Remove any extra quotes
+            if fname.endswith('"') and fname.startswith('"'):
+                fname = fname[1:-1]
 
             # Determine filetype using file name extension
             file_type = "file"
@@ -225,11 +198,15 @@ class Data(object):
                 if fname.endswith(ext):
                     file_type = ext
 
-            # remove extension for pretty download paths
+            # User override file name
+            if not (filename is None):
+                fname = filename
+
+            # Remove file or archive extension for pretty download paths
+            # Does not remove extensions for individual files
             fname = re.sub("\\.{}$".format(file_type), "", fname)
 
             this_data = (url, fname, file_type)
-            this_root = op.join(str(self.path), "earthpy-downloads")
 
         if not isinstance(this_data, list):
             this_data = [this_data]
@@ -246,18 +223,99 @@ class Data(object):
 
             this_path = self._download(
                 url=url,
-                path=os.path.join(this_root, name),
+                path=(self.path / name),
                 kind=kind,
                 replace=replace,
                 verbose=verbose,
             )
             data_paths.append(this_path)
+        
+        # Return the data path or list of paths
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
+    
+    def get_data_path(self, dataset_name):
+        """
+        Retrieve the path to a dataset if it exists in the project directory.
+        This method searches recursively in all nested directories and only
+        returns exact matches.
+
+        Parameters
+        ----------
+        dataset_name : str
+            The name of the dataset to retrieve.
+
+        Returns
+        -------
+        Path
+            Path to the dataset.
+
+        Raises
+        ------
+        KeyError
+            If the dataset does not exist in the project directory.
+
+        Examples
+        --------
+        >>> data.get_data_path("rmnp-rgb.tif")
+        PosixPath('/path/to/project-dir/subfolder/rmnp-rgb.tif')
+        """
+        # Recursively search for the file in all subdirectories
+        found_files = [
+            path for path in self.path.rglob('*') 
+            if path.name == dataset_name
+        ]
+
+        if not found_files:
+            raise KeyError(f"Dataset '{dataset_name}' not found in {self.path}.")
+        
+        # Return the first match (there shouldn't be duplicates)
+        return found_files[0]
+
+    def _get_figshare_download_urls(self, article_id):
+        """
+        Retrieve the download URLs for all files in a Figshare article.
+
+        Parameters
+        ----------
+        article_id : int
+            The Figshare article ID.
+
+        Returns
+        -------
+        dict
+            A dictionary mapping filenames to download URLs.
+        """
+        # API Endpoint for article metadata
+        url = f"https://api.figshare.com/v2/articles/{article_id}"
+        print(f"🔄 Fetching metadata for article {article_id}...")
+
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise ValueError(
+                f"Failed to retrieve metadata for article {article_id}."
+                f" Status code: {response.status_code}")
+
+        metadata = response.json()
+        files = metadata.get("files", [])
+
+        if not files:
+            print(f"⚠️ No files found for article {article_id}.")
+            return {}
+
+        # Dictionary of filenames and their download URLs
+        download_urls = {
+            file_info["name"]: file_info["download_url"]
+            for file_info in files
+        }
+
+        print(f"✅ Found {len(download_urls)} files for download.")
+        return download_urls
 
     def _download(self, url, path, kind, replace, verbose):
-        """Download a file.
+        """
+        Download a file.
 
         This helper function downloads files and saves them to ``path``.
         Zip and tar files are extracted to the ``path`` directory.
@@ -283,16 +341,17 @@ class Data(object):
         output_path : str
             Path to the downloaded file.
         """
-        path = op.expanduser(path)
-        if replace is False and op.exists(path):
+        path = self.project.project_dir / path
+        if replace is False and path.exists():
             return path
 
         if verbose is True:
             print("Downloading from {}".format(url))
 
         r = requests.get(url)
+        r.raise_for_status()
 
-        os.makedirs(op.dirname(path), exist_ok=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
         if kind == "file":
             with open(path, "wb") as f:
                 f.write(r.content)
@@ -330,37 +389,7 @@ class Data(object):
             archive = tarfile.open(fileobj=file_like_object)
         if kind == "tar.gz":
             archive = tarfile.open(fileobj=file_like_object, mode="r:gz")
-        os.makedirs(path, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True)
         archive.extractall(path)
         if verbose is True:
             print("Extracted output to {}".format(path))
-
-
-def path_to_example(dataset):
-    """Construct a file path to an example dataset.
-
-    This file defines helper functions to access data files in this directory,
-    to support examples. Adapted from the PySAL package.
-
-    Parameters
-    ----------
-    dataset: string
-        Name of a dataset to access (e.g., "epsg.json", or "RGB.byte.tif")
-
-    Returns
-    -------
-    A file path (string) to the dataset
-
-    Example
-    -------
-
-        >>> import earthpy.io as eio
-        >>> eio.path_to_example('rmnp-dem.tif')
-        '...rmnp-dem.tif'
-    """
-    earthpy_path = os.path.split(earthpy.__file__)[0]
-    data_dir = os.path.join(earthpy_path, "example-data")
-    data_files = os.listdir(data_dir)
-    if dataset not in data_files:
-        raise KeyError(dataset + " not found in earthpy example data.")
-    return os.path.join(data_dir, dataset)

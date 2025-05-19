@@ -1,5 +1,5 @@
 from os import path
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 DISTNAME = "earthpy"
@@ -9,8 +9,8 @@ DESCRIPTION = (
     "Earth Lab and was originally designed to support the earth "
     "analytics education program."
 )
-MAINTAINER = "Leah Wasser"
-MAINTAINER_EMAIL = "leah.wasser@colorado.edu"
+MAINTAINER = "Elsa Culler"
+MAINTAINER_EMAIL = "elsa.culler@colorado.edu"
 
 
 # read the contents of your README file
@@ -27,15 +27,17 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.9.4",
-        packages=["earthpy"],
+        version="0.10.0",
+        packages=find_packages(),
         install_requires=[
+            "requests",
+            "keyring",
+            "platformdirs",
             "geopandas",
             "matplotlib>=2.0.0",
             "numpy>=1.14.0",
             "rasterio",
             "scikit-image",
-            "requests",
         ],
         zip_safe=False,  # the package can run out of an .egg file
         classifiers=[
