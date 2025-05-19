@@ -8,8 +8,11 @@ import pathlib
 
 
 import geopandas as gpd
+import pytest
+
 import earthpy.api.appeears as etapi
 
+@pytest.mark.vcr()
 def test_download_data():
 	logging.basicConfig(level=logging.DEBUG)
 	
@@ -23,6 +26,7 @@ def test_download_data():
 		download_key='earthpy-test')
 	downloader.download_files()
 	
+@pytest.mark.vcr()
 def test_download_recurring_data():
 	logging.basicConfig(level=logging.DEBUG)
 	

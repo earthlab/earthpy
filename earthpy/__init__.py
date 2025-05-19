@@ -7,6 +7,7 @@ Utility functions for the working with spatial data.
 import importlib.resources
 import json
 from .io import Data
+from .project import Project
 
 data = Data()
 """

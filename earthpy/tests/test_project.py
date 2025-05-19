@@ -1,85 +1,108 @@
 import os
-import json
-import configparser
-from pathlib import Path
-
 import pytest
-from platformdirs import user_config_dir, user_data_dir
+from pathlib import Path
+from platformdirs import user_data_dir
 
 from earthpy.project import Project
+from earthpy.io import Data
 
 @pytest.fixture
-def clear_env(monkeypatch):
-    monkeypatch.delenv("EARTHPY_DATA_HOME", raising=False)
-    monkeypatch.delenv("EARTHPY_DATA_PROJECT_DIR", raising=False)
+def project():
+    """Fixture for creating a temporary Project instance."""
+    return Project(title="Test Project", 
+                   dirname="test-downloads")
 
-@pytest.fixture
-def fake_home(tmp_path, monkeypatch):
-    monkeypatch.setenv("HOME", str(tmp_path))
-    return tmp_path
 
-def test_default_behavior(fake_home, clear_env, monkeypatch):
-    monkeypatch.setenv("HOME", str(fake_home))
-
-    project = Project()
-    expected = Path(
-        user_data_dir("data", "earth-analytics")
-    ).expanduser() / "earthpy-downloads"
-
-    assert project.project_dir == expected
-    assert expected.exists()
-
-def test_env_override(monkeypatch, tmp_path, clear_env):
-    override_path = tmp_path / "custom_data"
-    monkeypatch.setenv("EARTHPY_DATA_HOME", str(override_path))
-    project = Project()
-    assert project.data_home == override_path
-    assert project.project_dir == override_path / "earthpy-downloads"
-    assert os.environ["EARTHPY_DATA_HOME"] == str(project.data_home)
-    assert os.environ["EARTHPY_DATA_PROJECT_DIR"] == str(
-        project.project_dir
-    )
-
-def test_local_json_config(tmp_path, monkeypatch, clear_env):
-    config_path = tmp_path / "earthpy_config.json"
-    custom_path = tmp_path / "json_home"
-    config_path.write_text(json.dumps({"data_home": str(custom_path)}))
-    monkeypatch.chdir(tmp_path)
-
-    project = Project()
-    assert project.data_home == custom_path.resolve()
-    assert project.project_dir == custom_path / "earthpy-downloads"
-
-def test_local_ini_config(tmp_path, monkeypatch, clear_env):
-    config_path = tmp_path / "earthpy_config.ini"
-    custom_path = tmp_path / "ini_home"
-    parser = configparser.ConfigParser()
-    parser["data"] = {"home": str(custom_path)}
-    with open(config_path, "w") as f:
-        parser.write(f)
-
-    monkeypatch.chdir(tmp_path)
-    project = Project()
-    assert project.data_home == custom_path.resolve()
-    assert project.project_dir == custom_path / "earthpy-downloads"
-
-def test_global_config_fallback(tmp_path, monkeypatch, clear_env):
-    monkeypatch.setenv("HOME", str(tmp_path))
-
-    # Correct config path using platformdirs
-    config_dir = Path(user_config_dir("data", "earth-analytics")).expanduser()
-    config_dir.mkdir(parents=True)
-    config_path = config_dir / "earthpy_config.json"
-
-    fallback_path = tmp_path / "global_config_data"
-    config_path.write_text(json.dumps({"data_home": str(fallback_path)}))
-
-    project = Project()
-    assert project.data_home == fallback_path.resolve()
-    assert project.project_dir == fallback_path / "earthpy-downloads"
-
-def test_project_dirname_override(tmp_path, monkeypatch, clear_env):
-    monkeypatch.setenv("HOME", str(tmp_path))
-    project = Project(project_dirname="alt-downloads")
-    assert project.project_dir.name == "alt-downloads"
+def test_directory_creation(project):
+    """Test that the project and data directories are created."""
+    assert project.data_home.exists()
     assert project.project_dir.exists()
+    assert (project.project_dir / ".dvc").exists()
+
+
+def test_project_directory_naming(project):
+    """Test that the project directory is named correctly."""
+    expected_name = "test-downloads"
+    assert project.project_dir.name == expected_name
+
+
+def test_dvc_initialization(project):
+    """Test that DVC is initialized correctly."""
+    assert (project.project_dir / ".dvc").exists()
+    assert (project.project_dir / ".dvcignore").exists()
+
+
+def test_get_config_parameter_env_var(monkeypatch):
+    """Test that environment variables override config files."""
+    monkeypatch.setenv("EARTHPY_PROJECT_TITLE", "Env Project Title")
+    project = Project()
+    assert (
+        project._get_config_parameter("project_title") 
+        == "Env Project Title")
+
+
+def test_get_config_parameter_config_file(monkeypatch, tmp_path):
+    """Test that configuration is loaded from a local file."""
+    # Create a mock configuration file
+    config_file = tmp_path / "earthpy_config.json"
+    config_file.write_text('{"project_title": "Config Project Title"}')
+    
+    # Switch to the temp directory and load the project
+    monkeypatch.chdir(tmp_path)
+    project = Project()
+    assert (
+        project._get_config_parameter("project_title") 
+        == "Config Project Title")
+
+
+def test_default_data_home():
+    """Test that the default data home is set correctly."""
+    project = Project()
+    expected_data_home = Path(user_data_dir("earth-analytics"))
+    assert project.data_home == expected_data_home
+
+
+def test_default_figshare_project_id():
+    """Test that the default Figshare project ID is set if not in config."""
+    project = Project()
+    assert project.figshare_project_id == "30926"
+
+
+def test_invalid_config_file(monkeypatch, tmp_path):
+    """Test that an invalid config file does not crash the loader."""
+    # Create an invalid JSON configuration
+    config_file = tmp_path / "earthpy_config.json"
+    config_file.write_text('{"project_title": "Config Project Title" INVALID_JSON')
+    
+    # Switch to the temp directory and load the project
+    monkeypatch.chdir(tmp_path)
+    project = Project()
+    assert project._get_config_parameter("project_title") is None
+
+
+def test_init_dvc_exists(monkeypatch, tmp_path):
+    """Test that DVC is initialized if it doesn't exist."""
+    project_dir = tmp_path / "test-project"
+    project_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create an instance of Project
+    project = Project(title="Test Project", dirname=str(project_dir))
+
+    # Monkeypatch the project instance attribute
+    monkeypatch.setattr(project, "project_dir", project_dir)
+
+    # Run the DVC init to see if it sets up correctly
+    project._init_dvc()
+    assert (project_dir / ".dvc").exists()
+
+def test_get_data_cheyenne_river(monkeypatch, tmp_path):
+    """Test the Cheyenne River Flood Frequency dataset download."""
+    cr_project = Project(
+        title="Cheyenne River Flood Frequency",
+        dirname="cheyenne-river-flood-test")
+    cr_project.get_data()
+    
+    # Assertions
+    file_path = cr_project.project_dir / "cheyenne_streamflow_1934_2024"
+    assert Path(file_path).exists(), f"{file_path} was not downloaded successfully."
+    print(f"✅ Downloaded successfully: {file_path}")
