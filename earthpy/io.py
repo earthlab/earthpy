@@ -6,20 +6,14 @@ File Input/Output utilities.
 
 """
 
-import humanize
 import io
 import re
-from rich import print
-from rich.table import Table
-import shutil
-from pathlib import Path
 
 import requests
 import tarfile
 import zipfile
-from dvc.repo import Repo
 
-from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL, DVCIGNORE
+from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL
 
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
         
@@ -279,65 +273,7 @@ class Data(object):
         # Return the first match (there shouldn't be duplicates)
         return found_files[0]
 
-    def upload_to_figshare(self, admin=False):
-        """
-        Upload project data to Figshare
-        """
-        if not self.project:
-            raise ValueError("Cannot upload to Figshare -- project required.")
-        
-        # Commit DVC changes
-        self.project._update_dvc()
-
-        # Prepare zip file for upload
-        zip_filename = f"{self.project.title.lower().replace(' ', '-')}.zip"
-        tmp_path = self.project.project_dir / "tmp" 
-        tmp_path.mkdir(parents=True, exist_ok=True)
-        zip_path = tmp_path / zip_filename
-
-        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for file_path in self.project.project_dir.rglob('*'):
-                # Exclude specified files and directories
-                if any(part in DVCIGNORE for part in file_path.parts):
-                    continue
-                
-                # Write to zip file
-                zip_loc = file_path.relative_to(self.project.project_dir)
-                print(f"Adding {zip_loc} to zip file...")
-                zipf.write(file_path, zip_loc)
-        print(f"✅ Project successfully zipped to '{zip_path}'.")
-        
-        # Collect all files for upload
-        upload_size = humanize.naturalsize(zip_path.stat().st_size)
-        print(f'💾 Total upload size: {upload_size}')
-        
-        # Confirm upload
-        if not admin:
-            confirmation = input(f'Update data subset to Figshare? [y/N]: ')
-            if confirmation.lower() != 'y':
-                print('❌ Upload canceled.')
-                # Clean up zip file
-                shutil.rmtree(tmp_path)
-                return
-        
-        # Prepare Figshare upload
-        filename = file_path.basename()
-        print(f'📤 Uploading {filename}...')
-        with open(file_path, 'rb') as f:
-            response = requests.post(
-                f'https://api.figshare.com/v2/account/articles',
-                headers=self.headers,
-                files={'file': (filename, f)}
-            )
-            if response.status_code == 201:
-                print(f'✅ Uploaded {filename}')
-            else:
-                print(f'❌ Failed to upload {filename}: {response.text}')
-
-        # Clean up zip file
-        shutil.rmtree(tmp_path)
-
-    def _get_figshare_download_urls(self, article_id, admin=False):
+    def _get_figshare_download_urls(self, article_id):
         """
         Retrieve the download URLs for all files in a Figshare article.
 
@@ -345,8 +281,6 @@ class Data(object):
         ----------
         article_id : int
             The Figshare article ID.
-        admin : bool, default=False
-            If True, includes `dvc.lock` and `dvc.yaml` in the file list.
 
         Returns
         -------

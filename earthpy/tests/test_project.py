@@ -79,22 +79,6 @@ def test_invalid_config_file(monkeypatch, tmp_path):
     project = Project()
     assert project._get_config_parameter("project_title") is None
 
-
-def test_init_dvc_exists(monkeypatch, tmp_path):
-    """Test that DVC is initialized if it doesn't exist."""
-    project_dir = tmp_path / "test-project"
-    project_dir.mkdir(parents=True, exist_ok=True)
-
-    # Create an instance of Project
-    project = Project(title="Test Project", dirname=str(project_dir))
-
-    # Monkeypatch the project instance attribute
-    monkeypatch.setattr(project, "project_dir", project_dir)
-
-    # Run the DVC init to see if it sets up correctly
-    project._init_dvc()
-    assert (project_dir / ".dvc").exists()
-
 def test_get_data_cheyenne_river(monkeypatch, tmp_path):
     """Test the Cheyenne River Flood Frequency dataset download."""
     cr_project = Project(

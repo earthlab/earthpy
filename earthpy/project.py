@@ -6,21 +6,15 @@ Directory management for data projects
 
 """
 
+import configparser
 import os
 import json
-import configparser
 from pathlib import Path
 from platformdirs import user_data_dir, user_config_dir
 from pprint import pprint
 
-import requests
-from dvc.repo import Repo
-
 from .config import (
-    DVCIGNORE,
-    DVCIGNORE_TEMPLATE,
     DEFAULT_PROJECT_DIRNAME,
-    DEFAULT_DATA_HOME,
     DEFAULT_FIGSHARE_PROJECT_ID,
 )
 from .io import Data
@@ -100,14 +94,11 @@ class Project:
         self.data_home = Path(
             self._get_config_parameter("data_home")
             or user_data_dir(self.appname)
-            or pathlib.Path.home() / "earth-analytics" / "data")
+            or Path.home() / "earth-analytics" / "data")
         self.project_dir = self.data_home / self.project_dirname
 
         self.data_home.mkdir(parents=True, exist_ok=True)
         self.project_dir.mkdir(parents=True, exist_ok=True)
-
-        # Initialize DVC
-        self._init_dvc()
 
         # Figshare API setup
         self.figshare_project_id = (
@@ -280,109 +271,3 @@ class Project:
             return self.config[param_name]
 
         return None
-    
-    def _init_dvc(self):
-        """
-        Initialize DVC in the project directory.
-        
-        This method checks if DVC is already initialized in the
-        project directory. If not, it initializes DVC and creates
-        a `.dvcignore` file with common ignore patterns.
-        """
-        # Initialize DVC if not already initialized
-        if (self.project_dir / ".dvc").exists():
-            self.repo = Repo(self.project_dir)
-            print(f"DVC already initialized in {self.project_dir}.")
-        else:
-            print(f"Initializing DVC in {self.project_dir}...")
-            self.repo = Repo.init(self.project_dir, no_scm=True)
-            
-            # Restore DVC pipeline if dvc.yaml and dvc.lock exist
-            dvc_yaml = self.project_dir / "dvc.yaml"
-            dvc_lock = self.project_dir / "dvc.lock"
-            
-            if dvc_yaml.exists() and dvc_lock.exists():
-                print("🔄 dvc.yaml and dvc.lock found. Running DVC repro...")
-
-                try:
-                    # Reproduce the DVC pipeline
-                    self.repo.reproduce()
-                    print("✅ DVC pipeline successfully reproduced.")
-                except Exception as e:
-                    print(f"❌ DVC repro failed: {e}")
-            else:
-                print(
-                    "⚠️ dvc.yaml and dvc.lock not found. "
-                    "Skipping DVC restoration.")
-
-        # Create a .dvcignore if not exists
-        ignore_path = self.project_dir / ".dvcignore"
-        if not ignore_path.exists():
-            with open(ignore_path, 'w') as f:
-                f.write(DVCIGNORE_TEMPLATE)
-            print(".dvcignore created.")
-
-        # Update DVC tracking if there are changes
-        self._update_dvc(human_check=False)
-
-        print("DVC tracking initialized.")
-
-    @property
-    def _dvc_tracked_files(self):
-        """
-        Get a list of DVC tracked files in the project directory.
-
-        Returns
-        -------
-        list
-            List of DVC tracked files.
-        """
-        tracked_files = []
-        for file in self.project_dir.rglob("*"):
-            if Path(str(file) + ".dvc").exists():
-                tracked_files.append(file)
-        return tracked_files
-
-    def _update_dvc(self, human_check=False):
-        """
-        Add and commit changes to DVC if there are detected differences.
-        Optionally, prompt for human confirmation before proceeding.
-
-        Parameters
-        ----------
-        human_check : bool, default=False
-            If True, prompts the user for confirmation before committing.
-
-        Returns
-        -------
-        bool
-            True if a commit was made, False otherwise.
-        """
-        dvc_file = self.repo.status()
-        print(f"Adding untracked data files to DVC")
-
-        self.repo.add(str(self.project_dir))
-        print(f"Added {files} to DVC")
-
-        # Human confirmation (if enabled)
-        if human_check:
-            print("\n📌 Detected Changes:")
-            
-            user_input = input(
-                "\n⚠️  Proceed with committing changes? (y/n): ")
-            if user_input.lower() not in ['y', 'yes']:
-                print("❌ Commit aborted by user. Removing staged changes.")
-                self.repo.reset()
-                return False
-
-        # Now check for status (which ones are staged)
-        changes_after_add = self.repo.status()
-        if not changes_after_add:
-            print("⚠️ No staged changes detected. Skipping commit.")
-            return False
-
-        # 🔄 Commit the changes
-        print(f"📦 Detected staged changes. Committing...")
-        self.repo.commit(f"Updated DVC state for {self.project_dirname}")
-        print("✅ DVC tracking updated.")
-        return True

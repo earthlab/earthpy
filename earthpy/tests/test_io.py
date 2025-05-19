@@ -324,25 +324,14 @@ def test_get_figshare_download_urls(mock_project):
                  "download_url": "http://example.com/file1.csv"},
                 {"name": "file2.csv", 
                  "download_url": "http://example.com/file2.csv"},
-                {"name": "dvc.lock", 
-                 "download_url": "http://example.com/dvc.lock"},
-                {"name": "dvc.yaml", 
-                 "download_url": "http://example.com/dvc.yaml"},
             ]
         }
         mock_get.return_value = mock_response
         
         # Test without admin flag
-        urls = data._get_figshare_download_urls(article_id=1234, admin=False)
-        assert "dvc.lock" not in urls
-        assert "dvc.yaml" not in urls
+        urls = data._get_figshare_download_urls(article_id=1234)
         assert "file1.csv" in urls
         assert "file2.csv" in urls
-
-        # Test with admin flag
-        urls = data._get_figshare_download_urls(article_id=1234, admin=True)
-        assert "dvc.lock" in urls
-        assert "dvc.yaml" in urls
 
 
 def test_download(mock_project, tmp_path):
