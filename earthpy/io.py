@@ -183,6 +183,7 @@ class Data(object):
                 for ext in ALLOWED_FILE_TYPES:
                     if fname.endswith(ext):
                         file_type = ext
+                        fname = fname.replace('.'+ext, "")
                 this_data.append((data_url, fname, file_type))
 
         if url is not None:
