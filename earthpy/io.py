@@ -176,7 +176,15 @@ class Data(object):
                     f"Title '{title}' not found in available datasets."
                 )
             urls = self._get_figshare_download_urls(article_id)
-            this_data = [(url, name, "file") for name, url in urls.items()]
+
+            this_data = []
+            for name, url in urls.items():
+                # Determine filetype using file name extension
+                file_type = "file"
+                for ext in ALLOWED_FILE_TYPES:
+                    if fname.endswith(ext):
+                        file_type = ext
+                this_data.append((url, name, file_type))
 
         if url is not None:
             with requests.head(url) as r:
