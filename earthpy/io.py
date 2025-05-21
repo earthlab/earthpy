@@ -177,13 +177,13 @@ class Data(object):
                 )
             urls = self._get_figshare_download_urls(article_id)
             this_data = []
-            for name, url in urls.items():
+            for fname, url in urls.items():
                 # Determine filetype using file name extension
                 file_type = "file"
                 for ext in ALLOWED_FILE_TYPES:
                     if fname.endswith(ext):
                         file_type = ext
-                this_data.append((url, name, file_type))
+                this_data.append((url, fname, file_type))
 
         if url is not None:
             with requests.head(url) as r:
