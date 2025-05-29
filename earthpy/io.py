@@ -13,7 +13,7 @@ import requests
 import tarfile
 import zipfile
 
-from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL
+from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL, DVCIGNORE
 
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
         
@@ -176,15 +176,17 @@ class Data(object):
                     f"Title '{title}' not found in available datasets."
                 )
             urls = self._get_figshare_download_urls(article_id)
-
+            print(urls)
             this_data = []
-            for name, url in urls.items():
+            for fname, data_url in urls.items():
                 # Determine filetype using file name extension
                 file_type = "file"
                 for ext in ALLOWED_FILE_TYPES:
                     if fname.endswith(ext):
                         file_type = ext
-                this_data.append((url, name, file_type))
+                        fname = fname.replace('.'+ext, "")
+                this_data.append((data_url, fname, file_type))
+            print(this_data)
 
         if url is not None:
             with requests.head(url) as r:
@@ -220,7 +222,9 @@ class Data(object):
             this_data = [this_data]
 
         data_paths = []
+        print(this_data)
         for url, name, kind in this_data:
+            print(name)
 
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
@@ -237,6 +241,7 @@ class Data(object):
                 verbose=verbose,
             )
             data_paths.append(this_path)
+            print(data_paths)
         
         # Return the data path or list of paths
         if len(data_paths) == 1:
@@ -401,3 +406,56 @@ class Data(object):
         archive.extractall(path)
         if verbose is True:
             print("Extracted output to {}".format(path))
+
+    def _zip_dir(self, dir_path, zip_home, zipf):
+        """Zip a directory and return the zip file path."""
+        for subfile in dir_path.rglob("*"):
+            if subfile.name in DVCIGNORE:
+                print(f"Skipping {subfile} as it is in DVCIGNORE.")
+                continue
+            if subfile.is_file():
+                dest_path = subfile.relative_to(zip_home)
+                print(f"    Zipping {subfile} to {dest_path}")
+                zipf.write(subfile, dest_path)
+            if subfile.is_dir():
+                # Ensure directories are included in the zip
+                self._zip_dir(subfile, zip_home, zipf)
+    
+    def prepare_for_upload(self):
+        """
+        Prepare files for upload to Figshare.
+        
+        This function collects all files in the project path,
+        excluding hidden files and those in the DVCIGNORE list, and 
+        zips them into a directory named "figshare-upload". 
+
+        Returns
+        -------
+        output_path : Path
+            Path to the directory containing files prepared for upload.
+        """
+        files_and_dirs = [
+            f for f in self.path.glob("*") 
+            if (
+                not f in DVCIGNORE) 
+                and (not f.name == "figshare-upload")
+                and (not f.name.startswith(".")
+            )
+        ]
+
+        output_path = self.path / "figshare-upload"
+        output_path.mkdir(parents=True, exist_ok=True)
+        for path in files_and_dirs:
+            if path.is_file():
+                # If it's a file, just copy it to the output path
+                dest_file = output_path / path.name
+                print(f"Copying file: {path} to {dest_file}")
+                dest_file.write_bytes(path.read_bytes())
+            if path.is_dir():
+                zipfile_name = output_path / f"{path.name}.zip"
+                with zipfile.ZipFile(zipfile_name, "w") as zipf:
+                    print(f"Zipping directory: {path} to {zipfile_name}")
+                    self._zip_dir(path, path, zipf)
+
+        print(f"Prepared files for upload in {output_path}")
+        return output_path

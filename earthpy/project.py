@@ -144,7 +144,7 @@ class Project:
                 key=self.key, replace=replace, verbose=verbose)
         if url:
             self.data.get_data(
-                url=self.url, filename=filename, 
+                url=url, filename=filename, 
                 replace=replace, verbose=verbose)
         if self.title:
             self.data.get_data(
