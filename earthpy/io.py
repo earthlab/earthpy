@@ -176,7 +176,7 @@ class Data(object):
                     f"Title '{title}' not found in available datasets."
                 )
             urls = self._get_figshare_download_urls(article_id)
-            print(urls)
+
             this_data = []
             for fname, data_url in urls.items():
                 # Determine filetype using file name extension
@@ -186,7 +186,6 @@ class Data(object):
                         file_type = ext
                         fname = fname.replace('.'+ext, "")
                 this_data.append((data_url, fname, file_type))
-            print(this_data)
 
         if url is not None:
             with requests.head(url) as r:
