@@ -23,8 +23,10 @@ import keyring
 import netrc
 import requests
 
+from earthpy import Project
 from .api import APIDownloader
 from .auth import Authenticator
+
 
 class AppeearsDownloader(APIDownloader):
     """
@@ -42,9 +44,10 @@ class AppeearsDownloader(APIDownloader):
     Parameters
     ----------
     download_key : str, optional
-        Label used in data_dir and as the API job label
-    ea_dir : pathlike, optional
-        Replacement directory for ~/earth-analytics
+        Label used in the project directory and as the API job label
+    project : earthpy.Project, optional
+        An Earthpy Project object to use for data storage.
+        If not provided, a default project is created.
     product : str
         A product code from 
         https://appeears.earthdatacloud.nasa.gov/products
@@ -69,10 +72,8 @@ class AppeearsDownloader(APIDownloader):
     ----------
     base_url : str
         The appeears API url
-    data_dir : pathlike
-        Path to store data in. Default: ~/earth-analytics/appeears-data
     download_key : str
-        Label used in data_dir and as the API job label
+        Label used in project and as the API job label
     auth_header : str
         Authentication header to use for AppEEARS commands
     task_id : str
@@ -87,7 +88,7 @@ class AppeearsDownloader(APIDownloader):
             self,
             product, layer, start_date, end_date, polygon, 
             recurring=False, year_range=None,
-            download_key="appeears", ea_dir=None):
+            download_key="appeears", project=None):
             
         # Initialize attributes
         self._product = product
@@ -102,9 +103,8 @@ class AppeearsDownloader(APIDownloader):
         self._status = None
         
         # Set up task id
-        self.task_id_path = os.path.join(
-            pathlib.Path.home(), '.appeears_taskid')
-        if os.path.exists(self.task_id_path):
+        self.task_id_path = pathlib.Path.home() / '.appeears_taskid'
+        if self.task_id_path.exists():
             with open(self.task_id_path, 'r') as task_id_file:
                 self._task_id = task_id_file.readline()
         elif 'APPEEARS_TASKID' in os.environ:
@@ -116,10 +116,7 @@ class AppeearsDownloader(APIDownloader):
         
         # Set up download path
         self.download_key = download_key
-        if ea_dir is None:
-            ea_dir = os.path.join(pathlib.Path.home(), 'earth-analytics')
-        self.data_dir = os.path.join(ea_dir, download_key)
-        os.makedirs(self.data_dir, exist_ok=True)
+        self.project = project or Project(dirname=self.download_key)
         
     def appeears_request(
             self, endpoint, 
@@ -300,11 +297,11 @@ class AppeearsDownloader(APIDownloader):
             Use cache to avoid repeat downloads
         """
         if cache:
-            existing_files = glob(os.path.join(self.data_dir, '*', '*.tif'))
-            if existing_files:
+            existing_files = self.project.project_dir.rglob('*')
+            if list(existing_files):
                 logging.info(
-                    'Files already exist in {}. '
-                    'Set cache=False to overwrite.'.format(self.data_dir))
+                    f'Files already exist in {self.project.project_dir}. '
+                    'Set cache=False to overwrite.')
                 return existing_files
         
         # Check task status
@@ -330,15 +327,18 @@ class AppeearsDownloader(APIDownloader):
                 file_id=file_info['file_id'])
             
             # Create a destination directory to store the file in
-            filepath = os.path.join(self.data_dir, file_info['file_name'])
+            filepath = self.project.project_dir / file_info['file_name']
+
                 
             # Write the file to the destination directory
-            if os.path.exists(filepath) and cache:
+            if filepath.exists() and cache:
                 logging.info(
                     'File at {} alreading exists. Skipping...'
                     .format(filepath))
             else:
                 logging.info('Downloading file {}'.format(filepath))
+                # Ensure the parent directory exists
+                filepath.parent.mkdir(parents=True, exist_ok=True)
                 with open(filepath, 'wb') as f:
                     for data in response.iter_content(chunk_size=8192):
                         f.write(data)

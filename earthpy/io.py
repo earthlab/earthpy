@@ -409,12 +409,13 @@ class Data(object):
     def _zip_dir(self, dir_path, zip_home, zipf):
         """Zip a directory and return the zip file path."""
         for subfile in dir_path.rglob("*"):
-            if subfile.name in DVCIGNORE:
+            if (subfile.name in DVCIGNORE) and self.verbose:
                 print(f"Skipping {subfile} as it is in DVCIGNORE.")
                 continue
             if subfile.is_file():
                 dest_path = subfile.relative_to(zip_home)
-                print(f"    Zipping {subfile} to {dest_path}")
+                if self.verbose:
+                    print(f"    Zipping {subfile} to {dest_path}")
                 zipf.write(subfile, dest_path)
             if subfile.is_dir():
                 # Ensure directories are included in the zip
@@ -448,13 +449,15 @@ class Data(object):
             if path.is_file():
                 # If it's a file, just copy it to the output path
                 dest_file = output_path / path.name
-                print(f"Copying file: {path} to {dest_file}")
+                if self.verbose:
+                    print(f"Copying file: {path} to {dest_file}")
                 dest_file.write_bytes(path.read_bytes())
             if path.is_dir():
                 zipfile_name = output_path / f"{path.name}.zip"
                 with zipfile.ZipFile(zipfile_name, "w") as zipf:
-                    print(f"Zipping directory: {path} to {zipfile_name}")
+                    if self.verbose:
+                        print(f"Zipping directory: {path} to {zipfile_name}")
                     self._zip_dir(path, path, zipf)
-
-        print(f"Prepared files for upload in {output_path}")
+        if self.verbose:
+            print(f"Prepared files for upload in {output_path}")
         return output_path

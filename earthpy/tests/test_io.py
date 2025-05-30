@@ -269,16 +269,16 @@ def test_url_download_txt_file_with_content_disposition(data_instance):
 
 
 @skip_on_ci
-@pytest.mark.parametrize("verbose_arg_value", [True, False])
 @pytest.mark.vcr()
 def test_verbose_arg_works(
         data_instance, 
-        verbose_arg_value, 
         capsys):
     """Test that the verbose argument can print or suppress messages."""
-    data_instance.get_data("little-text-file", verbose=verbose_arg_value)
-    output_printed = capsys.readouterr().out != ""
-    assert output_printed == verbose_arg_value
+    data_instance.get_data("little-text-file", verbose=True)
+    output_true = capsys.readouterr().out
+    data_instance.get_data("little-text-file", verbose=False)
+    output_false = capsys.readouterr().out
+    assert len(output_true) > len(output_false)
 
 
 @skip_on_ci

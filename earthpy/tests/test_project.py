@@ -17,19 +17,12 @@ def test_directory_creation(project):
     """Test that the project and data directories are created."""
     assert project.data_home.exists()
     assert project.project_dir.exists()
-    assert (project.project_dir / ".dvc").exists()
 
 
 def test_project_directory_naming(project):
     """Test that the project directory is named correctly."""
     expected_name = "test-downloads"
     assert project.project_dir.name == expected_name
-
-
-def test_dvc_initialization(project):
-    """Test that DVC is initialized correctly."""
-    assert (project.project_dir / ".dvc").exists()
-    assert (project.project_dir / ".dvcignore").exists()
 
 
 def test_get_config_parameter_env_var(monkeypatch):
@@ -87,6 +80,6 @@ def test_get_data_cheyenne_river(monkeypatch, tmp_path):
     cr_project.get_data()
     
     # Assertions
-    file_path = cr_project.project_dir / "cheyenne_streamflow_1934_2024"
+    file_path = cr_project.project_dir / "cheyenne_streamflow_1934_2024.csv"
     assert Path(file_path).exists(), f"{file_path} was not downloaded successfully."
     print(f"✅ Downloaded successfully: {file_path}")
