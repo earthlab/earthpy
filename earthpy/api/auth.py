@@ -74,9 +74,8 @@ class Authenticator:
             if creds_json:
                 creds = json.loads(creds_json)
                 return creds['username'], creds['password']
-        except (json.JSONDecodeError, KeyError):
-            pass
-        return None
+        except:
+            return None
 
     def set_keyring_credentials(self, username: str, password: str):
         """Store username and password in keyring"""
