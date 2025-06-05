@@ -316,7 +316,7 @@ class AppeearsDownloader(APIDownloader):
         
         files = bundle_response.json()['files']
         
-        '{} files available for download'.format(len(files))
+        logging.info('{} files available for download'.format(len(files)))
         
         # Download files
         for file_info in files:
