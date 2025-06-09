@@ -166,7 +166,7 @@ class AppeearsDownloader(APIDownloader):
         return response
         
     
-    def login(self, interactive=False, override=False):
+    def login(self, interactive=True, override=False):
         """
         Logs in to the AppEEARS API.
 
