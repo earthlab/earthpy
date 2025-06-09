@@ -116,7 +116,9 @@ class AppeearsDownloader(APIDownloader):
         
         # Set up download path
         self.download_key = download_key
-        self.project = project or Project(dirname=self.download_key)
+        self.project = project or Project()
+        self.download_dir = self.project.project_dir / self.download_key
+        self.download_dir.mkdir(parents=True, exist_ok=True)
         
     def appeears_request(
             self, endpoint, 
@@ -297,10 +299,10 @@ class AppeearsDownloader(APIDownloader):
             Use cache to avoid repeat downloads
         """
         if cache:
-            existing_files = self.project.project_dir.rglob('*')
-            if list(existing_files):
+            existing_files = self.download_dir.rglob('*')
+            if len(list(existing_files))>0:
                 logging.info(
-                    f'Files already exist in {self.project.project_dir}. '
+                    f'Files already exist in {self.download_dir}. '
                     'Set cache=False to overwrite.')
                 return existing_files
         
@@ -327,8 +329,7 @@ class AppeearsDownloader(APIDownloader):
                 file_id=file_info['file_id'])
             
             # Create a destination directory to store the file in
-            filepath = self.project.project_dir / file_info['file_name']
-
+            filepath = self.download_dir / file_info['file_name']
                 
             # Write the file to the destination directory
             if filepath.exists() and cache:
