@@ -88,7 +88,8 @@ class AppeearsDownloader(APIDownloader):
             self,
             product, layer, start_date, end_date, polygon, 
             recurring=False, year_range=None,
-            download_key="appeears", project=None):
+            download_key="appeears", project=None, 
+            interactive=True, override=False):
             
         # Initialize attributes
         self._product = product
@@ -98,6 +99,8 @@ class AppeearsDownloader(APIDownloader):
         self._recurring = recurring
         self._year_range = year_range
         self._polygon = polygon
+        self._interactive = interactive
+        self._override = override
         
         self._auth_header = None
         self._status = None
@@ -200,7 +203,7 @@ class AppeearsDownloader(APIDownloader):
     @property
     def auth_header(self):
         if not self._auth_header:
-            self.login()
+            self.login(interactive=self._interactive, override=self._override)
         return self._auth_header
     
     @property
