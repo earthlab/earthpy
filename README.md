@@ -91,6 +91,14 @@ Below is a quick example of plotting multiple bands in a numpy array format.
 >>> plt.show()
 ```
 
+### Install on Fedora
+
+To install EarthPy on Fedora, use:
+
+```bash
+$ dnf install python3-earthpy
+```
+
 ## Active Maintainers
 
 We welcome contributions to EarthPy. Below are the current active package maintainers. Please see our
