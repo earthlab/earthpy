@@ -241,7 +241,6 @@ class Data(object):
                 verbose=verbose,
             )
             data_paths.append(this_path)
-            print(data_paths)
         
         # Return the data path or list of paths
         if len(data_paths) == 1:
