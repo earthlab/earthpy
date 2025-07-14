@@ -148,7 +148,7 @@ class Data(object):
             >>> et.data.get_data(url=url)  # doctest: +SKIP
 
         """
-
+        
         if (key is not None) + (url is not None) + (title is not None) > 1:
             raise ValueError(
                 "The `key`, `url`, and `title` parameters are mutually "
@@ -170,7 +170,7 @@ class Data(object):
                     "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
                     "Choose one of: {}".format(pretty_keys)
                 )
-
+            self.path /= key
             this_data = DATA_URLS[key]
 
         if title is not None:
@@ -225,9 +225,7 @@ class Data(object):
             this_data = [this_data]
 
         data_paths = []
-        print(this_data)
         for url, name, kind in this_data:
-            print(name)
 
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
