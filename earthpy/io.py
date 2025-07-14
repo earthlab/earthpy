@@ -353,7 +353,7 @@ class Data(object):
         output_path : str
             Path to the downloaded file.
         """
-        path = self.project.project_dir / path
+        path = self.path / path
         if replace is False and path.exists():
             return path
 
