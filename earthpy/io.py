@@ -7,6 +7,7 @@ File Input/Output utilities.
 """
 
 import io
+import pathlib
 import re
 
 import requests
@@ -18,7 +19,7 @@ from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL, DVCIGNORE
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
 # Backward compatibility for old datasets
-HOME = DEFAULT_DATA_HOME
+HOME = pathlib.Path.home()
         
 class Data(object):
     """
