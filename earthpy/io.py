@@ -170,7 +170,6 @@ class Data(object):
                     "Key '" + key + "' not found in earthpy.io.DATA_URLS. "
                     "Choose one of: {}".format(pretty_keys)
                 )
-            self.path /= key
             this_data = DATA_URLS[key]
 
         if title is not None:
