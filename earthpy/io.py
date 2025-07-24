@@ -301,7 +301,8 @@ class Data(object):
         """
         # API Endpoint for article metadata
         url = f"https://api.figshare.com/v2/articles/{article_id}"
-        print(f"🔄 Fetching metadata for article {article_id}...")
+        if self.verbose:
+            print(f"🔄 Fetching metadata for article {article_id}...")
 
         response = requests.get(url)
         if response.status_code != 200:
@@ -322,7 +323,8 @@ class Data(object):
             for file_info in files
         }
 
-        print(f"✅ Found {len(download_urls)} files for download.")
+        if self.verbose:
+            print(f"✅ Found {len(download_urls)} files for download.")
         return download_urls
 
     def _download(self, url, path, kind, replace, verbose):

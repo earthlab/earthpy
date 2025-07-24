@@ -77,6 +77,7 @@ class Project:
         title=None, key=None,
         dirname=None,
         appname="earth-analytics",
+        verbose=False
     ):
         self.appname = appname
         self.config = self._load_config_files()
@@ -88,6 +89,7 @@ class Project:
             or title
             or DEFAULT_PROJECT_DIRNAME
         ).replace(" ", "-").lower()
+        self.verbose = verbose
         
 
         # Prepare directories
@@ -224,19 +226,22 @@ class Project:
 
             # Load local config if it exists
             if local_file.exists():
-                print(f"Loading local configuration from {local_file}")
+                if self.verbose:
+                    print(f"Loading local configuration from {local_file}")
                 local_configs.update(self._read_config_file(local_file))
 
             # Load global config if it exists
             if global_file.exists():
-                print(f"Loading global configuration from {global_file}")
+                if self.verbose:
+                    print(f"Loading global configuration from {global_file}")
                 global_configs.update(self._read_config_file(global_file))
 
         # Merge configurations, local values override global
         combined_config = {**global_configs, **local_configs}
 
-        print("\n**Final Configuration Loaded:**")
-        pprint(combined_config, sort_dicts=False, width=80)
+        if self.verbose:
+            print("\n**Final Configuration Loaded:**")
+            pprint(combined_config, sort_dicts=False, width=80)
 
         return combined_config
     
@@ -262,12 +267,14 @@ class Project:
         # Environment variable check (case-insensitive)
         for key, value in os.environ.items():
             if key.lower() == f"EARTHPY_{param_name}".lower():
-                print(f"Found '{param_name}' in environment variables.")
+                if self.verbose:
+                    print(f"Found '{param_name}' in environment variables.")
                 return value
 
         # Configuration file check
         if param_name in self.config:
-            print(f"Found '{param_name}' in configuration files.")
+            if self.verbose:
+                print(f"Found '{param_name}' in configuration files.")
             return self.config[param_name]
 
         return None
