@@ -41,6 +41,7 @@ class Data(object):
 
     def __init__(self, project=None, verbose=False):
         self.project = project
+        self.verbose = verbose
 
         if project is not None:
             self.path = project.project_dir
