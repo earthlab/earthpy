@@ -80,6 +80,7 @@ class Project:
         verbose=False
     ):
         self.appname = appname
+        self.verbose = verbose
         self.config = self._load_config_files()
         self.title = title or self._get_config_parameter("project_title")
         self.key = key or self._get_config_parameter("earthpy_data_key")
@@ -89,7 +90,6 @@ class Project:
             or title
             or DEFAULT_PROJECT_DIRNAME
         ).replace(" ", "-").lower()
-        self.verbose = verbose
         
 
         # Prepare directories
