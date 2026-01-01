@@ -108,6 +108,6 @@ The vignettes developed with `EarthPy` also provide easily adaptable starting po
 
 # Acknowledgements
 
-There have been many [contributors to earthpy](https://github.com/earthlab/earthpy/graphs/contributors) that we are thankful for. We are also thankful for the feedback that we recieved through the software review implemented by pyOpenSci. Specifically we thank Luiz Irber who has served as an editor for this review and the two reviewers: Sean Gillies and Rohit Goswami.
+There have been many [contributors to earthpy](https://github.com/earthlab/earthpy/graphs/contributors) that we are thankful for. We are also thankful for the feedback that we received through the software review implemented by pyOpenSci. Specifically we thank Luiz Irber who has served as an editor for this review and the two reviewers: Sean Gillies and Rohit Goswami.
 
 # References

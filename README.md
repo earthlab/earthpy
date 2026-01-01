@@ -58,7 +58,7 @@ $ conda install -c conda-forge earthpy
 ```
 
 Note: if you want to set conda-forge as your default conda channel, you can use the following install workflow.
-We recommmend this approach. Once you have run conda config, you can install earthpy without specifying a channel.
+We recommend this approach. Once you have run conda config, you can install earthpy without specifying a channel.
 
 ```bash
 $ conda config --add channels conda-forge
