@@ -18,6 +18,12 @@ from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL, DVCIGNORE
 
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
 
+EXAMPLE_DATA = pathlib.Path(__file__).parent / "example-data"
+
+def path_to_example(filename):
+    """Return the full path to an example data file."""
+    return str(EXAMPLE_DATA / filename)
+
 # Backward compatibility for old datasets
 HOME = pathlib.Path.home()
         
