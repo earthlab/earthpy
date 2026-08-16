@@ -19,7 +19,6 @@ import re
 import time
 from glob import glob
 
-import keyring
 import netrc
 import requests
 

@@ -16,7 +16,6 @@ import secrets
 import time
 from glob import glob
 
-import keyring
 import requests
 import sqlite3
 

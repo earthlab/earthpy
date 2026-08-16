@@ -3,8 +3,6 @@ import json
 import netrc
 import os
 import warnings
-
-import keyring
 from typing import Optional, Tuple, List
 
 
@@ -12,8 +10,7 @@ class Authenticator:
     """
     Credential manager for logging into an API service.
 
-    Supports credentials stored in .netrc, keyring, and environment
-    variables.
+    Supports credentials stored in .netrc and environment variables.
 
     Parameters
     ----------
@@ -21,7 +18,7 @@ class Authenticator:
         The name of the service to log in to.
     priority : list of str, optional
         Ordered list of credential stores to check. Options: 'netrc',
-        'keyring', 'env'. Default is ['netrc', 'keyring', 'env'].
+        'env'. Default is ['netrc', 'env'].
     env_prefix : str, optional
         Prefix for environment variable names. Default is uppercase of
         service name.
@@ -43,7 +40,7 @@ class Authenticator:
         env_prefix: Optional[str] = None,
     ):
         self.service = service
-        self.priority = priority or ["netrc", "keyring", "env"]
+        self.priority = priority or ["netrc", "env"]
         self.env_prefix = env_prefix or service.replace(".", "_").upper()
 
     # ==== .netrc ====
@@ -64,23 +61,6 @@ class Authenticator:
         raise NotImplementedError(
             "Setting .netrc credentials is not currently supported."
         )
-
-    # ==== Keyring ====
-
-    def get_keyring_credentials(self) -> Optional[Tuple[str, str]]:
-        """Get credentials stored in keyring as a JSON blob."""
-        try:
-            creds_json = keyring.get_password(self.service, "default")
-            if creds_json:
-                creds = json.loads(creds_json)
-                return creds["username"], creds["password"]
-        except:
-            return None
-
-    def set_keyring_credentials(self, username: str, password: str):
-        """Store username and password in keyring"""
-        creds = json.dumps({"username": username, "password": password})
-        keyring.set_password(self.service, "default", creds)
 
     # ==== Environment Variables ====
 
