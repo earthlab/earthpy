@@ -1,0 +1,194 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://api.figshare.com/v2/projects/30926/articles
+  response:
+    body:
+      string: '[{"id": 29640521, "title": "Veery Migration 2023", "doi": "10.6084/m9.figshare.29640521.v2",
+        "handle": "", "url": "https://api.figshare.com/v2/articles/29640521", "published_date":
+        "2025-10-01T12:57:08Z", "thumb": "", "defined_type": 3, "defined_type_name":
+        "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29640521",
+        "url_public_api": "https://api.figshare.com/v2/articles/29640521", "url_private_html":
+        "https://figshare.com/account/articles/29640521", "url_public_html": "https://figshare.com/articles/dataset/Veery_Migration_2023/29640521",
+        "timeline": {"posted": "2025-10-01T12:57:08", "firstOnline": "2025-09-29"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-10-01T12:57:08Z",
+        "modified_date": "2025-10-01T12:57:09Z"}, {"id": 29119190, "title": "Tasiyagnunpa
+        Migration 2023", "doi": "10.6084/m9.figshare.29119190.v8", "handle": "", "url":
+        "https://api.figshare.com/v2/articles/29119190", "published_date": "2025-09-29T19:45:45Z",
+        "thumb": "", "defined_type": 3, "defined_type_name": "dataset", "group_id":
+        0, "url_private_api": "https://api.figshare.com/v2/account/articles/29119190",
+        "url_public_api": "https://api.figshare.com/v2/articles/29119190", "url_private_html":
+        "https://figshare.com/account/articles/29119190", "url_public_html": "https://figshare.com/articles/dataset/Tasiyagnunpa_Migration_2023/29119190",
+        "timeline": {"posted": "2025-09-29T19:45:45", "firstOnline": "2025-05-21"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-09-29T19:45:45Z",
+        "modified_date": "2025-09-29T19:45:45Z"}, {"id": 29640518, "title": "Boulder
+        Climate", "doi": "10.6084/m9.figshare.29640518.v1", "handle": "", "url": "https://api.figshare.com/v2/articles/29640518",
+        "published_date": "2025-08-13T20:54:14Z", "thumb": "", "defined_type": 3,
+        "defined_type_name": "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29640518",
+        "url_public_api": "https://api.figshare.com/v2/articles/29640518", "url_private_html":
+        "https://figshare.com/account/articles/29640518", "url_public_html": "https://figshare.com/articles/dataset/Boulder_Climate/29640518",
+        "timeline": {"posted": "2025-08-13T20:54:14", "firstOnline": "2025-08-13"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-08-13T20:54:14Z",
+        "modified_date": "2025-08-13T20:55:27Z"}, {"id": 29521241, "title": "Tubarjal
+        Valley Saudi Arabia Irrigation", "doi": "10.6084/m9.figshare.29521241.v2",
+        "handle": "", "url": "https://api.figshare.com/v2/articles/29521241", "published_date":
+        "2025-07-24T14:36:22Z", "thumb": "", "defined_type": 3, "defined_type_name":
+        "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29521241",
+        "url_public_api": "https://api.figshare.com/v2/articles/29521241", "url_private_html":
+        "https://figshare.com/account/articles/29521241", "url_public_html": "https://figshare.com/articles/dataset/Al_Jawf_Saudi_Arabia_Irrigation/29521241",
+        "timeline": {"posted": "2025-07-24T14:36:22", "firstOnline": "2025-07-09"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-07-24T14:36:22Z",
+        "modified_date": "2025-07-24T14:36:22Z"}, {"id": 29203544, "title": "Karachi
+        Climate", "doi": "10.6084/m9.figshare.29203544.v3", "handle": "", "url": "https://api.figshare.com/v2/articles/29203544",
+        "published_date": "2025-06-09T23:14:32Z", "thumb": "", "defined_type": 3,
+        "defined_type_name": "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29203544",
+        "url_public_api": "https://api.figshare.com/v2/articles/29203544", "url_private_html":
+        "https://figshare.com/account/articles/29203544", "url_public_html": "https://figshare.com/articles/dataset/Karachi_Climate/29203544",
+        "timeline": {"posted": "2025-06-09T23:14:32", "firstOnline": "2025-06-05"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-06-09T23:14:32Z",
+        "modified_date": "2025-06-30T02:53:36Z"}, {"id": 29170118, "title": "Gila
+        River Vegetation", "doi": "10.6084/m9.figshare.29170118.v2", "handle": "",
+        "url": "https://api.figshare.com/v2/articles/29170118", "published_date":
+        "2025-06-09T21:13:44Z", "thumb": "", "defined_type": 3, "defined_type_name":
+        "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29170118",
+        "url_public_api": "https://api.figshare.com/v2/articles/29170118", "url_private_html":
+        "https://figshare.com/account/articles/29170118", "url_public_html": "https://figshare.com/articles/dataset/Gila_River_Vegetation/29170118",
+        "timeline": {"posted": "2025-06-09T21:13:44", "firstOnline": "2025-05-28"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-06-09T21:13:44Z",
+        "modified_date": "2025-10-01T14:26:58Z"}, {"id": 29087150, "title": "Cheyenne
+        River Flood Frequency", "doi": "10.6084/m9.figshare.29087150.v2", "handle":
+        "", "url": "https://api.figshare.com/v2/articles/29087150", "published_date":
+        "2025-05-20T00:31:47Z", "thumb": "", "defined_type": 3, "defined_type_name":
+        "dataset", "group_id": 0, "url_private_api": "https://api.figshare.com/v2/account/articles/29087150",
+        "url_public_api": "https://api.figshare.com/v2/articles/29087150", "url_private_html":
+        "https://figshare.com/account/articles/29087150", "url_public_html": "https://figshare.com/articles/dataset/Cheyenne_River_Flood_Frequency/29087150",
+        "timeline": {"posted": "2025-05-20T00:31:47", "firstOnline": "2025-05-16"},
+        "resource_title": "", "resource_doi": "", "created_date": "2025-05-20T00:31:47Z",
+        "modified_date": "2025-10-01T14:26:03Z"}]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS, DELETE, PUT, PATCH
+      Access-Control-Expose-Headers:
+      - Location
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 16 Aug 2026 12:54:47 GMT
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://api.figshare.com/v2/articles/29087150
+  response:
+    body:
+      string: '{"files": [{"id": 54659369, "name": "cheyenne_streamflow_1934_2024.csv",
+        "size": 1498233, "is_link_only": false, "download_url": "https://ndownloader.figshare.com/files/54659369",
+        "supplied_md5": "ca59a654f8aa790ed3cb9142da33d76a", "computed_md5": "ca59a654f8aa790ed3cb9142da33d76a",
+        "mimetype": "text/csv"}], "folder_structure": {}, "authors": [{"id": 3386570,
+        "full_name": "Earth Lab", "first_name": "Earth", "last_name": "Lab", "is_active":
+        true, "url_name": "_", "orcid_id": ""}], "custom_fields": [], "figshare_url":
+        "https://figshare.com/articles/dataset/Cheyenne_River_Flood_Frequency/29087150",
+        "download_disabled": false, "description": "<p dir=\"ltr\">Streamflow data
+        retrieved from the USGS National Water Information Service (NWIS) with the
+        <code>dataretrievals</code> library with the following query: </p><ul><li>Cheyenne
+        River near Wasta site (site number 06423500)</li><li>Starting 1934-10-01</li><li>Ending
+        2024-09-30</li></ul><p dir=\"ltr\">Data used in the ESIIL Stars program flood
+        frequency coding challenge and published online on the ESIIL Environmental
+        Data Science Learning Portal.</p><p dir=\"ltr\">Bibliography:</p><ol><li>U.S.
+        Geological Survey. (2016). <i>National Water Information System data</i> [Dataset].
+        USGS Water Data for the Nation. <a href=\"http://dx.doi.org/10.5066/F7P55KJN\"
+        target=\"_blank\">http://dx.doi.org/10.5066/F7P55KJN</a></li><li>Hodson, T.O.,
+        Hariharan, J.A., Black, S., and Horsburgh, J.S., 2023, dataretrieval (Python):
+        a Python package for discovering and retrieving water data available from
+        U.S. federal hydrologic web services: U.S. Geological Survey software release,
+        <a href=\"https://doi.org/10.5066/P94I5TX3\" rel=\"nofollow\" target=\"_blank\">https://doi.org/10.5066/P94I5TX3</a>.</li></ol><p></p>",
+        "funding": "Full Proposal: Environmental Data Science Innovation and Impact
+        Lab (ESIIL): Accelerating Discovery by Fostering an Open and Diverse Earth
+        Data Revolution", "funding_list": [{"id": 22768010, "title": "Full Proposal:
+        Environmental Data Science Innovation and Impact Lab (ESIIL): Accelerating
+        Discovery by Fostering an Open and Diverse Earth Data Revolution", "grant_code":
+        "2153040", "funder_name": "Directorate for Biological Sciences", "is_user_defined":
+        0, "url": "https://app.dimensions.ai/details/grant/grant.12914287"}], "version":
+        2, "status": "public", "size": 1498233, "created_date": "2025-05-20T00:31:47Z",
+        "modified_date": "2025-10-01T14:26:03Z", "is_public": true, "is_confidential":
+        false, "is_metadata_record": false, "confidential_reason": "", "metadata_reason":
+        "", "license": {"value": 1, "name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/"},
+        "tags": ["flood frequency analyses"], "keywords": ["flood frequency analyses"],
+        "categories": [{"id": 25888, "title": "Surface water hydrology", "parent_id":
+        25876, "path": "/25717/25876/25888", "source_id": "370704", "taxonomy_id":
+        100}], "references": [], "has_linked_file": false, "citation": "Lab, Earth
+        (2025). Cheyenne River Flood Frequency. figshare. Dataset. https://doi.org/10.6084/m9.figshare.29087150.v2",
+        "related_materials": [], "is_embargoed": false, "embargo_date": null, "embargo_type":
+        null, "embargo_title": "", "embargo_reason": "", "embargo_options": [], "id":
+        29087150, "title": "Cheyenne River Flood Frequency", "doi": "10.6084/m9.figshare.29087150.v2",
+        "handle": "", "url": "https://api.figshare.com/v2/articles/29087150", "published_date":
+        "2025-05-20T00:31:47Z", "thumb": "", "defined_type": 3, "defined_type_name":
+        "dataset", "group_id": null, "url_private_api": "https://api.figshare.com/v2/account/articles/29087150",
+        "url_public_api": "https://api.figshare.com/v2/articles/29087150", "url_private_html":
+        "https://figshare.com/account/articles/29087150", "url_public_html": "https://figshare.com/articles/dataset/Cheyenne_River_Flood_Frequency/29087150",
+        "timeline": {"posted": "2025-05-20T00:31:47", "firstOnline": "2025-05-16"},
+        "resource_title": null, "resource_doi": null}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS, DELETE, PUT, PATCH
+      Access-Control-Expose-Headers:
+      - Location
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 16 Aug 2026 12:54:47 GMT
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

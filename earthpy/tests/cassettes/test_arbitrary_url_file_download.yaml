@@ -1,0 +1,626 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: HEAD
+    uri: http://www.google.com/robots.txt
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - private, max-age=0
+      Content-Encoding:
+      - br
+      Content-Length:
+      - '1527'
+      Content-Type:
+      - text/plain
+      Cross-Origin-Opener-Policy-Report-Only:
+      - same-origin; report-to="static-on-bigtable"
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      Date:
+      - Sun, 16 Aug 2026 10:55:46 GMT
+      Expires:
+      - Sun, 16 Aug 2026 10:55:46 GMT
+      Last-Modified:
+      - Thu, 23 Jul 2026 21:00:00 GMT
+      Report-To:
+      - '{"group":"static-on-bigtable","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/static-on-bigtable"}]}'
+      Server:
+      - sffe
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: http://www.google.com/robots.txt
+  response:
+    body:
+      string: 'User-agent: *
+
+        User-agent: Yandex
+
+        Disallow: /search
+
+        Allow: /search/about
+
+        Allow: /search/howsearchworks
+
+        Disallow: /sdch
+
+        Disallow: /groups
+
+        Disallow: /index.html?
+
+        Disallow: /?
+
+        Disallow: /goto?
+
+        Allow: /?hl=
+
+        Disallow: /?hl=*&
+
+        Allow: /?hl=*&gws_rd=ssl$
+
+        Disallow: /?hl=*&*&gws_rd=ssl
+
+        Allow: /?gws_rd=ssl$
+
+        Allow: /?pt1=true$
+
+        Disallow: /imgres
+
+        Disallow: /u/
+
+        Disallow: /setprefs
+
+        Disallow: /m?
+
+        Disallow: /m/
+
+        Allow:    /m/finance
+
+        Disallow: /wml?
+
+        Disallow: /wml/?
+
+        Disallow: /wml/search?
+
+        Disallow: /xhtml?
+
+        Disallow: /xhtml/?
+
+        Disallow: /xhtml/search?
+
+        Disallow: /xml?
+
+        Disallow: /imode?
+
+        Disallow: /imode/?
+
+        Disallow: /imode/search?
+
+        Disallow: /jsky?
+
+        Disallow: /jsky/?
+
+        Disallow: /jsky/search?
+
+        Disallow: /pda?
+
+        Disallow: /pda/?
+
+        Disallow: /pda/search?
+
+        Disallow: /local?
+
+        Disallow: /local_url
+
+        Disallow: /products?
+
+        Disallow: /product_
+
+        Disallow: /products_
+
+        Disallow: /products;
+
+        Disallow: /print
+
+        Disallow: /books/
+
+        Disallow: /bkshp?*dq=
+
+        Disallow: /bkshp?*q=
+
+        Disallow: /books?*dq=
+
+        Disallow: /books?*q=
+
+        Disallow: /books?*qtid=
+
+        Disallow: /books?*output=
+
+        Disallow: /books?*pg=
+
+        Disallow: /books?*jtp=
+
+        Disallow: /books?*jscmd=
+
+        Disallow: /books?*buy=
+
+        Disallow: /books?*zoom=
+
+        Allow: /books/about
+
+        Allow: /books?*zoom=1
+
+        Allow: /books?*zoom=5
+
+        Allow: /books/content?*zoom=1
+
+        Allow: /books/content?*zoom=5
+
+        Disallow: /patents?
+
+        Disallow: /patents/download/
+
+        Disallow: /patents/pdf/
+
+        Disallow: /patents/related/
+
+        Disallow: /scholar
+
+        Disallow: /citations?
+
+        Allow: /citations?user=
+
+        Allow: /citations?view_op=new_profile
+
+        Allow: /citations?view_op=top_venues
+
+        Allow: /scholar_share
+
+        Disallow: /s?
+
+        Disallow: /maps?
+
+        Allow: /maps?daddr=
+
+        Allow: /maps?entry=wc
+
+        Allow: /maps?f=
+
+        Allow: /maps?hl=
+
+        Allow: /maps?q=
+
+        Allow: /maps?saddr=
+
+        Allow: /maps?sid=
+
+        Allow: /maps?*output=classic
+
+        Allow: /maps?*file=
+
+        Disallow: /mapslt?
+
+        Disallow: /maphp?
+
+        Disallow: /maps/
+
+        Allow: /maps/$
+
+        Allow: /maps/@
+
+        Allow: /maps/?daddr=
+
+        Allow: /maps/?entry=wc
+
+        Allow: /maps/?f=
+
+        Allow: /maps/?hl=
+
+        Allow: /maps/?q=
+
+        Allow: /maps/?saddr=
+
+        Allow: /maps/?sid=
+
+        Allow: /maps/api/staticmap?
+
+        Allow: /maps/search/
+
+        Allow: /maps/sitemap.xml
+
+        Allow: /maps/sitemaps/
+
+        Allow: /maps/dir/
+
+        Allow: /maps/d/
+
+        Allow: /maps/reserve
+
+        Allow: /maps/about
+
+        Allow: /maps/contrib/
+
+        Allow: /maps/match
+
+        Allow: /maps/ms?
+
+        Allow: /maps/place/
+
+        Allow: /maps/_/
+
+        Allow: /search?*tbm=map
+
+        Allow: /maps/vt?
+
+        Allow: /maps/preview
+
+        Disallow: /maps/api/js/
+
+        Allow: /maps/api/js
+
+        Disallow: /mld?
+
+        Disallow: /staticmap?
+
+        Disallow: /help/maps/streetview/partners/welcome/
+
+        Disallow: /help/maps/indoormaps/partners/
+
+        Disallow: /lochp?
+
+        Disallow: /ie?
+
+        Disallow: /uds/
+
+        Disallow: /transit?
+
+        Disallow: /trends?
+
+        Disallow: /trends/music?
+
+        Disallow: /trends/hottrends?
+
+        Disallow: /trends/viz?
+
+        Disallow: /trends/embed.js?
+
+        Disallow: /trends/fetchComponent?
+
+        Disallow: /trends/beta
+
+        Disallow: /trends/topics
+
+        Disallow: /trends/explore?
+
+        Disallow: /trends/api
+
+        Disallow: /musica
+
+        Disallow: /musicl
+
+        Disallow: /musics
+
+        Disallow: /urchin_test/
+
+        Disallow: /movies?
+
+        Disallow: /wapsearch?
+
+        Disallow: /reviews/search?
+
+        Disallow: /cbk
+
+        Disallow: /profiles/me
+
+        Disallow: /s2/profiles/me
+
+        Allow: /s2/profiles
+
+        Allow: /s2/oz
+
+        Allow: /s2/photos
+
+        Allow: /s2/search/social
+
+        Allow: /s2/static
+
+        Disallow: /s2
+
+        Disallow: /transconsole/portal/
+
+        Disallow: /aclk
+
+        Disallow: /tbproxy/
+
+        Disallow: /support/forum/search?
+
+        Disallow: /reviews/polls/
+
+        Disallow: /hosted/images/
+
+        Disallow: /accounts/ClientLogin
+
+        Disallow: /accounts/ClientAuth
+
+        Disallow: /accounts/o8
+
+        Allow: /accounts/o8/id
+
+        Disallow: /quality_form?
+
+        Disallow: /labs/popgadget/search
+
+        Disallow: /compressiontest/
+
+        Disallow: /analytics/feeds/
+
+        Disallow: /analytics/partners/comments/
+
+        Disallow: /analytics/portal/
+
+        Disallow: /analytics/uploads/
+
+        Allow: /alerts/manage
+
+        Allow: /alerts/remove
+
+        Disallow: /alerts/
+
+        Allow: /alerts/$
+
+        Disallow: /phone/compare/?
+
+        Disallow: /travel/clk
+
+        Disallow: /travel/lodging/clk
+
+        Disallow: /travel/entity
+
+        Disallow: /travel/search
+
+        Disallow: /travel/flights/booking
+
+        Disallow: /travel/flights/s/
+
+        Disallow: /travel/flights/search
+
+        Disallow: /travel/hotels/stories
+
+        Disallow: /travel/hotels/*/stories
+
+        Disallow: /travel/story
+
+        Disallow: /hotelfinder/rpc
+
+        Disallow: /hotels/rpc
+
+        Disallow: /evaluation/
+
+        Disallow: /forms/perks/
+
+        Disallow: /shopping/suppliers/search
+
+        Disallow: /edu/cs4hs/
+
+        Disallow: /trustedstores/s/
+
+        Disallow: /trustedstores/tm2
+
+        Disallow: /trustedstores/verify
+
+        Disallow: /shopping?
+
+        Disallow: /shopping/product/
+
+        Disallow: /shopping/seller
+
+        Disallow: /shopping/ratings/account/metrics
+
+        Disallow: /shopping/ratings/merchant/immersivedetails
+
+        Disallow: /shopping/reviewer
+
+        Disallow: /shopping/search
+
+        Disallow: /shopping/deals
+
+        Allow: /shopping?udm=28$
+
+        Disallow: /storefront
+
+        Disallow: /storepicker
+
+        Disallow: /about/careers/applications/candidate-prep
+
+        Disallow: /about/careers/applications/connect-with-a-googler
+
+        Disallow: /about/careers/applications/jobs/results?page=
+
+        Disallow: /about/careers/applications/jobs/results/?page=
+
+        Disallow: /about/careers/applications/jobs/results?*&page=
+
+        Disallow: /about/careers/applications/jobs/results/?*&page=
+
+        Disallow: /landing/signout.html
+
+        Disallow: /gallery/
+
+        Disallow: /landing/now/ontap/
+
+        Allow: /maps/reserve
+
+        Allow: /maps/reserve/partners
+
+        Disallow: /maps/reserve/api/
+
+        Disallow: /maps/reserve/search
+
+        Disallow: /maps/reserve/bookings
+
+        Disallow: /maps/reserve/settings
+
+        Disallow: /maps/reserve/manage
+
+        Disallow: /maps/reserve/payment
+
+        Disallow: /maps/reserve/receipt
+
+        Disallow: /maps/reserve/sellersignup
+
+        Disallow: /maps/reserve/feedback
+
+        Disallow: /maps/reserve/terms
+
+        Disallow: /maps/reserve/m/
+
+        Disallow: /maps/reserve/b/
+
+        Disallow: /maps/reserve/partner-dashboard
+
+        Disallow: /local/cars
+
+        Disallow: /local/dealership/
+
+        Disallow: /local/dining/
+
+        Disallow: /local/place/products/
+
+        Disallow: /local/place/reviews/
+
+        Disallow: /local/place/rap/
+
+        Disallow: /local/tab/
+
+        Disallow: /localservices/
+
+        Allow: /localservices/coupon/
+
+        Disallow: /nonprofits/account/
+
+        Disallow: /uviewer
+
+        Disallow: /landing/cmsnext-root/
+
+
+        # AdsBot
+
+        User-agent: AdsBot-Google
+
+        Disallow: /maps/api/js/
+
+        Allow: /maps/api/js
+
+        Disallow: /maps/api/place/js/
+
+        Disallow: /maps/api/staticmap
+
+        Disallow: /maps/api/streetview
+
+
+        # New user agent groups must also have a user agent reference in the global
+        (*)
+
+        # group. See "Order of precedence" section in
+
+        # https://goo.gle/rep#order-of-precedence-for-user-agents
+
+        User-agent: Yandex
+
+        Disallow: /about/careers/applications/jobs/results
+
+        Disallow: /about/careers/applications-a/jobs/results
+
+
+        # Crawlers of certain social media sites are allowed to access page markup
+        when
+
+        # google.com/imgres* links are shared. To learn more, please contact
+
+        # images-robots-allowlist@google.com.
+
+        User-agent: facebookexternalhit
+
+        User-agent: Twitterbot
+
+        Allow: /imgres
+
+        Allow: /search
+
+        Disallow: /groups
+
+        Disallow: /hosted/images/
+
+        Disallow: /m/
+
+
+        Sitemap: https://www.google.com/sitemap.xml
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - private, max-age=0
+      Content-Encoding:
+      - br
+      Content-Length:
+      - '1527'
+      Content-Type:
+      - text/plain
+      Cross-Origin-Opener-Policy-Report-Only:
+      - same-origin; report-to="static-on-bigtable"
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      Date:
+      - Sun, 16 Aug 2026 10:55:46 GMT
+      Expires:
+      - Sun, 16 Aug 2026 10:55:46 GMT
+      Last-Modified:
+      - Thu, 23 Jul 2026 21:00:00 GMT
+      Report-To:
+      - '{"group":"static-on-bigtable","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/static-on-bigtable"}]}'
+      Server:
+      - sffe
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -13,6 +13,7 @@ import pytest
 import earthpy.api.appeears as etapi
 
 
+@pytest.mark.slow
 @pytest.mark.vcr()
 def test_download_data():
     logging.basicConfig(level=logging.DEBUG)
@@ -29,10 +30,12 @@ def test_download_data():
         "01-20-2021",
         gdf,
         download_key="earthpy-test",
+        interactive=False,
     )
     downloader.download_files()
 
 
+@pytest.mark.slow
 @pytest.mark.vcr()
 def test_download_recurring_data():
     logging.basicConfig(level=logging.DEBUG)
@@ -51,5 +54,6 @@ def test_download_recurring_data():
         year_range=[2021, 2022],
         polygon=gdf,
         download_key="earthpy-test-recurring",
+        interactive=False,
     )
     downloader.download_files()

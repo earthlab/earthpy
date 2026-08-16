@@ -1,0 +1,163 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://ndownloader.figshare.com/files/21894528
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Range
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Expose-Headers:
+      - Location,Accept-Ranges,Content-Encoding,Content-Length,Content-Range
+      Cache-Control:
+      - no-cache, no-store
+      - public, must-revalidate, proxy-revalidate
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=avg-monthly-temp-fahr.zip
+      Content-Length:
+      - '0'
+      Content-Type:
+      - application/zip
+      Date:
+      - Sun, 16 Aug 2026 12:55:22 GMT
+      Location:
+      - https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/21894528/avgmonthlytempfahr.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T125522Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=e9da2113c495df52dc45946699774c2b821d2be998104a034039422713b53467
+      Server:
+      - nginx
+      Set-Cookie:
+      - fig_tracker_client=dfc5dbe4-4436-4034-b8a0-c0e6d8a9895f; Max-Age=31536000;
+        Path=/; expires=Mon, 16-Aug-2027 12:55:22 GMT; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains;
+      X-Filename:
+      - 21894528/avgmonthlytempfahr.zip
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Storage-Bucket:
+      - pfigshare-u-files
+      X-Storage-File:
+      - 21894528/avgmonthlytempfahr.zip
+      X-Storage-Host:
+      - s3-eu-west-1.amazonaws.com
+      X-Storage-Protocol:
+      - https
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/21894528/avgmonthlytempfahr.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T125522Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=e9da2113c495df52dc45946699774c2b821d2be998104a034039422713b53467
+  response:
+    body:
+      string: !!binary |
+        UEsDBBQDAAAAABpYY1AAAAAAAAAAAAAAAAAKAAAAU2FuLURpZWdvL1BLAwQUAwAACAB0V2NQ3kwN
+        TnYAAACcAAAAIQAAAFNhbi1EaWVnby9TYW4tRGllZ28tMTk5OS10ZW1wLmNzdi3IsQrCQBCE4T7P
+        Mhwkxl2uDIhFQC2sLC/HokJMwnon3Nu7Jjb/fMxNgqIPUw5acJRBV5yCxge6RZ+juaDPk1jGgi7f
+        8zvhKkuS1yCKS0zzb8/zZzsOEldUtfcetHcNqHWmnSPTlhZE9nHj+J/aPmYTsclC1RdQSwMEFAMA
+        AAgAfFdjUPu8qtB6AAAAmgAAACEAAABTYW4tRGllZ28vU2FuLURpZWdvLTIwMDAtdGVtcC5jc3Yl
+        icEKwjAQRO/9liHExiT2WBAPBfXgyWMaFhVqW9ZEyN+7qTC8eczcKTCGMOfABScaeZNz4PhEv/Jr
+        Ei8Y8kyCqaDPj/xJuNGa6D0S4xrTUvuyfP/DkeImTau1hrPqUGHgjPJwvqJTO/hW7eGNsvBOXm/F
+        5BA4ieqaH1BLAwQUAwAACAAJWGNQ5gt2U3gAAACYAAAAIQAAAFNhbi1EaWVnby9TYW4tRGllZ28t
+        MjAwMS10ZW1wLmNzdiWKwQrCMBBE7/2WITQJbvBYEA8F9eDJYxoWFWpb1kTI37ttYXn7ZpgHR0Ef
+        pxKl4syDbHKJkl7oFnmP6hV9mVgxVnTlWb4Zd14yfwYW3FKe13+df3tx4rRJ49rWgpxxIGsCyO8g
+        UDAHBIfg9VQVGqzRNZnjuvHNH1BLAwQUAwAACAASWGNQEOC6t3gAAACaAAAAIQAAAFNhbi1EaWVn
+        by9TYW4tRGllZ28tMjAwMi10ZW1wLmNzdiWKywrCMBRE9/2WIfSRJt0WxEVBXbhymYaLCrUt10TI
+        35ubbmbOHOZBjjG5NTpOONPMBS6O/Qvjzu8lc8IUV8qxJIzxGb8Bd9oDfWZi3HzYpK/b7xAn8gWq
+        tq5bmA7GKGllJKzMBmbIZBs1wHZKw/aqF6fF6fKr/lBLAwQUAwAACAAaWGNQI8E7hHsAAACaAAAA
+        IQAAAFNhbi1EaWVnby9TYW4tRGllZ28tMjAwMy10ZW1wLmNzdi2KzQrCMBCE732WIfQn3eCxIB4K
+        6sGTxzQsKtS2rImQt3dbe5n55ufOXtD7KXnJOPEgG5y9hCe6RV6jckafJlYZM7r0SJ+IGy+R3wML
+        riHOq1/m7784ctigqMuygauMBVlDIDItqDX1SgeQ08FZoxeng9PQmErr/V/8AFBLAwQUAwAAAABr
+        V2NQAAAAAAAAAAAAAAAABwAAAFNvbm9tYS9QSwMEFAMAAAgA0lZjUK5QooN8AAAAnAAAABsAAABT
+        b25vbWEvU29ub21hLTE5OTktdGVtcC5jc3YlisEKwjAQRO/9liGYatLkWBAPBfXgyWMaFhVqW9ZE
+        yN+7qZc3j5m5U2AMYc6BC0408ibnwPGJfuXXJF4w5JkEU0GfH/mTcKM10XskxjWmpeZl+f6LI8VN
+        Gu29h7FKV1gYpzpYp/boWjG3k07g4doKXQcvZ3tQLaxWpvkBUEsDBBQDAAAIAP1WY1AGi6FMegAA
+        AJgAAAAbAAAAU29ub21hL1Nvbm9tYS0yMDAwLXRlbXAuY3N2JYrBCsIwEETv/ZZhSbVp47EgHgrq
+        wZPHNCwq1LasiZC/d1NhefN2mDt7weDn5CXjxKNscvYSnuhXeU3qGUOaWTFl9OmRPhE3XiO/RxZc
+        Q1xKXpbvvzhy2KTaGWNgW3KwDm1DigNZdHolXU0N3J46hVpXl4HR1zqy1Q9QSwMEFAMAAAgABVdj
+        UBfAfiV6AAAAlgAAABsAAABTb25vbWEvU29ub21hLTIwMDEtdGVtcC5jc3YlyjELgzAUBODd33I8
+        jJqYVSgdhLZDp44xPNqCVXlNCvn3jXG5+zjuwU4wuiU6STjzJAUXJ/6FYZP3nJ0wxoVzzAlDfMZv
+        wJ23wJ+JBTcf1r2v6+8YTuwLqqauFbQhDW2pg7EwhnrYlhSs2UNRA6upzUJfPh20JlP9AVBLAwQU
+        AwAACAAPV2NQMlwX830AAACcAAAAGwAAAFNvbm9tYS9Tb25vbWEtMjAwMi10ZW1wLmNzdiXJzQrC
+        MBAE4HufZVhqzJ/HgngoqAdPHtOwqFDbEhMhb+/aXma/nblzSOjDVEKqOPGQVpxDik90S3qN4oq+
+        TCwxVnTlUT4ZN14yvwdOuMY8/+9l/m7FkeOKRrWtgjHkYRUdYPdkYK3IaZHXpOCVrBI7eaVzhhys
+        IwvjSDc/UEsDBBQDAAAIABdXY1D3DuVBewAAAJYAAAAbAAAAU29ub21hL1Nvbm9tYS0yMDAzLXRl
+        bXAuY3N2JYrNCsIwEITvfZYhtGnz47EgHgrqwZPHNCwq1LasiZC3d1thmPmYmTsFxhDmHLjgRCPv
+        cA4cn+hXfk3CBUOeSWwq6PMjfxJutCZ6j8S4xrRseVm+/+JIcYdK13UL49UBtlEe1qpuIwPXKQ3f
+        qAbewbfSeJFWTmYYuVU/UEsBAj8DFAMAAAAAGlhjUAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAQgO1B
+        AAAAAFNhbi1EaWVnby9QSwECPwMUAwAACAB0V2NQ3kwNTnYAAACcAAAAIQAAAAAAAAAAACCApIEo
+        AAAAU2FuLURpZWdvL1Nhbi1EaWVnby0xOTk5LXRlbXAuY3N2UEsBAj8DFAMAAAgAfFdjUPu8qtB6
+        AAAAmgAAACEAAAAAAAAAAAAggKSB3QAAAFNhbi1EaWVnby9TYW4tRGllZ28tMjAwMC10ZW1wLmNz
+        dlBLAQI/AxQDAAAIAAlYY1DmC3ZTeAAAAJgAAAAhAAAAAAAAAAAAIICkgZYBAABTYW4tRGllZ28v
+        U2FuLURpZWdvLTIwMDEtdGVtcC5jc3ZQSwECPwMUAwAACAASWGNQEOC6t3gAAACaAAAAIQAAAAAA
+        AAAAACCApIFNAgAAU2FuLURpZWdvL1Nhbi1EaWVnby0yMDAyLXRlbXAuY3N2UEsBAj8DFAMAAAgA
+        GlhjUCPBO4R7AAAAmgAAACEAAAAAAAAAAAAggKSBBAMAAFNhbi1EaWVnby9TYW4tRGllZ28tMjAw
+        My10ZW1wLmNzdlBLAQI/AxQDAAAAAGtXY1AAAAAAAAAAAAAAAAAHAAAAAAAAAAAAEIDtQb4DAABT
+        b25vbWEvUEsBAj8DFAMAAAgA0lZjUK5QooN8AAAAnAAAABsAAAAAAAAAAAAggKSB4wMAAFNvbm9t
+        YS9Tb25vbWEtMTk5OS10ZW1wLmNzdlBLAQI/AxQDAAAIAP1WY1AGi6FMegAAAJgAAAAbAAAAAAAA
+        AAAAIICkgZgEAABTb25vbWEvU29ub21hLTIwMDAtdGVtcC5jc3ZQSwECPwMUAwAACAAFV2NQF8B+
+        JXoAAACWAAAAGwAAAAAAAAAAACCApIFLBQAAU29ub21hL1Nvbm9tYS0yMDAxLXRlbXAuY3N2UEsB
+        Aj8DFAMAAAgAD1djUDJcF/N9AAAAnAAAABsAAAAAAAAAAAAggKSB/gUAAFNvbm9tYS9Tb25vbWEt
+        MjAwMi10ZW1wLmNzdlBLAQI/AxQDAAAIABdXY1D3DuVBewAAAJYAAAAbAAAAAAAAAAAAIICkgbQG
+        AABTb25vbWEvU29ub21hLTIwMDMtdGVtcC5jc3ZQSwUGAAAAAAwADABlAwAAaAcAAAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Disposition:
+      - attachment; filename="avg-monthly-temp-fahr.zip"
+      Content-Length:
+      - '2787'
+      Content-Type:
+      - application/zip
+      Date:
+      - Sun, 16 Aug 2026 12:55:24 GMT
+      ETag:
+      - '"8ad91bc1daaeb5117ccad6fe3331e95d"'
+      Last-Modified:
+      - Sun, 18 Apr 2021 13:22:39 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - HeaGlXo5RIaKJwpRQVgYQ4XzSuRgeFg4OnkSyooGn/LBPbakR6zhcZtBmHoIg8IBkN3bvYSNLOsjsho0vGHajYYe+5MBHTo4
+      x-amz-replication-status:
+      - COMPLETED
+      x-amz-request-id:
+      - YVK5Q5TVJZ8YBS6R
+      x-amz-server-side-encryption:
+      - AES256
+      x-amz-tagging-count:
+      - '1'
+      x-amz-version-id:
+      - HFzlGDJ8gSYRYHy6tCpABBFO5vhYuApY
+    status:
+      code: 200
+      message: OK
+version: 1

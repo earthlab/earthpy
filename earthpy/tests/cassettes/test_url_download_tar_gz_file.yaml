@@ -1,0 +1,181 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: HEAD
+    uri: https://ndownloader.figshare.com/files/14615414
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Range,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Expose-Headers:
+      - Location,Accept-Ranges,Content-Encoding,Content-Length,Content-Range
+      Cache-Control:
+      - no-cache, no-store
+      - public, must-revalidate, proxy-revalidate
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=abc.tar.gz
+      Content-Length:
+      - '0'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Sun, 16 Aug 2026 10:55:48 GMT
+      Location:
+      - https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/14615414/abc.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105548Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=e07d2331b667c7d5d8b50595d3aca8a3c5882ba9024ffbb6208e5100af682d7c
+      Server:
+      - nginx
+      Set-Cookie:
+      - fig_tracker_client=9c5264a2-801b-432d-8af4-bffb4b7011cc; Max-Age=31536000;
+        Path=/; expires=Mon, 16-Aug-2027 10:55:48 GMT; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains;
+      X-Filename:
+      - 14615414/abc.tar.gz
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Storage-Bucket:
+      - pfigshare-u-files
+      X-Storage-File:
+      - 14615414/abc.tar.gz
+      X-Storage-Host:
+      - s3-eu-west-1.amazonaws.com
+      X-Storage-Protocol:
+      - https
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://ndownloader.figshare.com/files/14615414
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Range,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Expose-Headers:
+      - Location,Accept-Ranges,Content-Encoding,Content-Length,Content-Range
+      Cache-Control:
+      - no-cache, no-store
+      - public, must-revalidate, proxy-revalidate
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=abc.tar.gz
+      Content-Length:
+      - '0'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Sun, 16 Aug 2026 10:55:48 GMT
+      Location:
+      - https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/14615414/abc.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105548Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=e07d2331b667c7d5d8b50595d3aca8a3c5882ba9024ffbb6208e5100af682d7c
+      Server:
+      - nginx
+      Set-Cookie:
+      - fig_tracker_client=57f2b638-4cd5-44d4-93f5-134bbb761517; Max-Age=31536000;
+        Path=/; expires=Mon, 16-Aug-2027 10:55:48 GMT; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains;
+      X-Filename:
+      - 14615414/abc.tar.gz
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Storage-Bucket:
+      - pfigshare-u-files
+      X-Storage-File:
+      - 14615414/abc.tar.gz
+      X-Storage-Host:
+      - s3-eu-west-1.amazonaws.com
+      X-Storage-Protocol:
+      - https
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/14615414/abc.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105548Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=e07d2331b667c7d5d8b50595d3aca8a3c5882ba9024ffbb6208e5100af682d7c
+  response:
+    body:
+      string: !!binary |
+        H4sIANIOi1wAA+3OOwqAMBRE0Ve7iqxAXsxvPdHaRiNk+SpYWCkWIsI9zRQzxeR+aEst8ibdxOj3
+        tCnoOQ9BrPO+ixpTSKJWg3Vi9NVXh2UueTJGxlwvd3f9T+V+aJqvTwAAAAAAAAAAAAAAAAAAHlsB
+        mPxV+wAoAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Disposition:
+      - attachment; filename="abc.tar.gz"
+      Content-Length:
+      - '122'
+      Content-Type:
+      - application/gzip
+      Date:
+      - Sun, 16 Aug 2026 10:55:49 GMT
+      ETag:
+      - '"bfe10d107e1c9c245eecacb30cfb6eee"'
+      Last-Modified:
+      - Wed, 14 Apr 2021 12:01:51 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - HzpKUhvowyLo+rkFpGJe7BbHv+d1IiuAI7NeY396GmsCsaG4q9XlYv7o6RfDY80Mury44NaJf6orux1zFdpGQPiTSz29r3qE
+      x-amz-replication-status:
+      - COMPLETED
+      x-amz-request-id:
+      - HK4FYBXH7M4DQ3V7
+      x-amz-server-side-encryption:
+      - AES256
+      x-amz-tagging-count:
+      - '1'
+      x-amz-version-id:
+      - DXGBXF9I2u.J0TKQU2bDBwbJHlsGWIYi
+    status:
+      code: 200
+      message: OK
+version: 1

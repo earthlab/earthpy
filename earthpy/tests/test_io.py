@@ -1,8 +1,10 @@
 """Tests for io module."""
 
+import io
 import logging
 import os
 import shutil
+import zipfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
@@ -15,15 +17,6 @@ import rasterio as rio
 from earthpy.config import DATA_URLS
 from earthpy.project import Project
 from earthpy.io import Data, _safe_filename_from_content_disposition
-
-RUNNING_ON_CI = False
-if "CI" in os.environ:
-    if os.environ["CI"]:
-        RUNNING_ON_CI = True
-
-skip_on_ci = pytest.mark.skipif(
-    RUNNING_ON_CI, reason="Test fails intermittently on CI systems."
-)
 
 
 @pytest.fixture
@@ -149,11 +142,10 @@ DATA_URLS["little-text-file"] = [
 ]
 
 DATA_URLS["little-zip-file"] = [
-    ("https://figshare.com/ndownloader/files/21894528", ".", "zip")
+    ("https://ndownloader.figshare.com/files/21894528", ".", "zip")
 ]
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_urls_are_valid():
     """Test responses for each dataset to ensure valid URLs."""
@@ -190,7 +182,6 @@ def test_invalid_dataset_key(data_instance):
         data_instance.get_data(key="some non-existent key")
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_valid_download_file(data_instance):
     """Test that single files get downloaded."""
@@ -198,7 +189,6 @@ def test_valid_download_file(data_instance):
     assert os.path.isfile(file)
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_valid_download_zip(data_instance):
     """Test that zipped files get downloaded and extracted."""
@@ -207,7 +197,33 @@ def test_valid_download_zip(data_instance):
     assert path_has_contents
 
 
-@skip_on_ci
+def test_key_archive_uses_named_cache_directory(data_instance, monkeypatch):
+    """Extract legacy dot-path archives into a directory named for the key."""
+    dataset_key = "test-key-archive"
+    monkeypatch.setitem(
+        DATA_URLS,
+        dataset_key,
+        ("https://example.com/archive.zip", ".", "zip"),
+    )
+
+    archive_bytes = io.BytesIO()
+    with zipfile.ZipFile(archive_bytes, "w") as archive:
+        archive.writestr("sample.txt", "sample data")
+
+    response = MagicMock()
+    response.content = archive_bytes.getvalue()
+    response.raise_for_status.return_value = None
+
+    with patch("earthpy.io.requests.get", return_value=response) as get:
+        path = data_instance.get_data(dataset_key, verbose=False)
+        cached_path = data_instance.get_data(dataset_key, verbose=False)
+
+    assert path == data_instance.path / dataset_key
+    assert cached_path == path
+    assert (path / "sample.txt").read_text() == "sample data"
+    get.assert_called_once_with("https://example.com/archive.zip")
+
+
 @pytest.mark.parametrize("replace_arg_value", [True, False])
 @pytest.mark.vcr()
 def test_replace_arg_controle_overwrite(data_instance, replace_arg_value):
@@ -224,7 +240,6 @@ def test_replace_arg_controle_overwrite(data_instance, replace_arg_value):
         assert mtime1 == mtime2
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_arbitrary_url_file_download(data_instance):
     """Verify that arbitrary URLs work for data file downloads."""
@@ -241,7 +256,6 @@ def test_invalid_data_type(data_instance):
         data_instance.get_data("invalid-data-type")
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_arbitrary_url_zip_download(data_instance):
     """Verify that aribitrary URLs work for zip file downloads."""
@@ -255,7 +269,6 @@ def test_arbitrary_url_zip_download(data_instance):
     assert path_has_contents
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_tar_file(data_instance):
     """Ensure that tar files are downloaded and extracted."""
@@ -265,7 +278,6 @@ def test_url_download_tar_file(data_instance):
     assert "abc.txt" in os.listdir(path)
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_tar_gz_file(data_instance):
     """Ensure that tar.gz files are downloaded and extracted."""
@@ -275,7 +287,6 @@ def test_url_download_tar_gz_file(data_instance):
     assert "abc.txt" in os.listdir(path)
 
 
-@skip_on_ci
 @pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(data_instance):
     """Test arbitrary URL download with content-disposition."""
@@ -285,7 +296,7 @@ def test_url_download_txt_file_with_content_disposition(data_instance):
     assert (path.name == "temperature_example.csv") and os.path.isfile(path)
 
 
-@skip_on_ci
+@pytest.mark.vcr()
 def test_verbose_arg_works(data_instance, caplog):
     """Test that the verbose argument controls logger output."""
     with caplog.at_level(logging.INFO, logger="earthpy"):
@@ -301,7 +312,6 @@ def test_verbose_arg_works(data_instance, caplog):
     assert "Downloading from" not in output_false
 
 
-@skip_on_ci
 def test_url_download_with_quotes(data_instance):
     """Quoted Content-Disposition filenames should be normalized safely."""
     with patch("earthpy.io.requests.head") as mock_head, patch(

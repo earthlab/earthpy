@@ -280,6 +280,9 @@ class Data(object):
         data_paths = []
         for url, name, kind in this_data:
 
+            if key is not None and name == ".":
+                name = key
+
             if kind not in ALLOWED_FILE_TYPES:
                 raise ValueError(
                     "kind must be one of {}, got {}".format(

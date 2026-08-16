@@ -1,0 +1,204 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: HEAD
+    uri: https://ndownloader.figshare.com/files/7275959
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Range,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Expose-Headers:
+      - Location,Accept-Ranges,Content-Encoding,Content-Length,Content-Range
+      Cache-Control:
+      - no-cache, no-store
+      - public, must-revalidate, proxy-revalidate
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=temperature_example.csv
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/csv
+      Date:
+      - Sun, 16 Aug 2026 10:55:49 GMT
+      Location:
+      - https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/7275959/temperature_example.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105549Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=8c5b349fd18bd6d01c1c83cb437bb41ce8b5a65c02932a154fb2e6d148c76c40
+      Server:
+      - nginx
+      Set-Cookie:
+      - fig_tracker_client=5cf86468-5e61-4b09-8ccd-84ef9e990e6c; Max-Age=31536000;
+        Path=/; expires=Mon, 16-Aug-2027 10:55:49 GMT; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains;
+      X-Filename:
+      - 7275959/temperature_example.csv
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Storage-Bucket:
+      - pfigshare-u-files
+      X-Storage-File:
+      - 7275959/temperature_example.csv
+      X-Storage-Host:
+      - s3-eu-west-1.amazonaws.com
+      X-Storage-Protocol:
+      - https
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://ndownloader.figshare.com/files/7275959
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Range,X-API-Revision
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Expose-Headers:
+      - Location,Accept-Ranges,Content-Encoding,Content-Length,Content-Range
+      Cache-Control:
+      - no-cache, no-store
+      - public, must-revalidate, proxy-revalidate
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=temperature_example.csv
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/csv
+      Date:
+      - Sun, 16 Aug 2026 10:55:49 GMT
+      Location:
+      - https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/7275959/temperature_example.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105549Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=8c5b349fd18bd6d01c1c83cb437bb41ce8b5a65c02932a154fb2e6d148c76c40
+      Server:
+      - nginx
+      Set-Cookie:
+      - fig_tracker_client=1448c888-e2f0-4808-a7ed-251d264fc86c; Max-Age=31536000;
+        Path=/; expires=Mon, 16-Aug-2027 10:55:49 GMT; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains;
+      X-Filename:
+      - 7275959/temperature_example.csv
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Storage-Bucket:
+      - pfigshare-u-files
+      X-Storage-File:
+      - 7275959/temperature_example.csv
+      X-Storage-Host:
+      - s3-eu-west-1.amazonaws.com
+      X-Storage-Protocol:
+      - https
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/7275959/temperature_example.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20260816/eu-west-1/s3/aws4_request&X-Amz-Date=20260816T105549Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=8c5b349fd18bd6d01c1c83cb437bb41ce8b5a65c02932a154fb2e6d148c76c40
+  response:
+    body:
+      string: 'avg_temp, day
+
+        55, thursday
+
+        25, tuesday
+
+        NA, wednesday
+
+        -999, saturday
+
+        15, thursday
+
+        25, tuesday
+
+        65, thursday
+
+        NA, tuesday
+
+        95, thursday
+
+        -999, monday
+
+        85, monday
+
+        -999, monday
+
+        85, monday
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '179'
+      Content-Type:
+      - binary/octet-stream
+      Date:
+      - Sun, 16 Aug 2026 10:55:50 GMT
+      ETag:
+      - '"4aead748a179f25151d47178fcae057b"'
+      Last-Modified:
+      - Fri, 09 Apr 2021 22:31:25 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - 3InCiNTV30OWGiYNqiDjq/TIAawfl+XWl11et0a95XEy3yI82da4VE57NmP/3EWObmZwSMVFFoOsb3mcKa6qhD0Qk6sux2Ky
+      x-amz-replication-status:
+      - COMPLETED
+      x-amz-request-id:
+      - NVJGJTD13M3T99HX
+      x-amz-server-side-encryption:
+      - AES256
+      x-amz-tagging-count:
+      - '1'
+      x-amz-version-id:
+      - HeAS6p0zqNpcSxIdy4yuB7VR_mzLf8EF
+    status:
+      code: 200
+      message: OK
+version: 1

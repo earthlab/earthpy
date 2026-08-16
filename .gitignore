@@ -122,5 +122,6 @@ earthpy/tests/test_ignored_script.py
 
 pip-wheel-metadata/
 earthpy-dev/
-earthpy/tests/cassettes/
+earthpy/tests/cassettes/test_download_data.yaml
+earthpy/tests/cassettes/test_download_recurring_data.yaml
 *.ipynb

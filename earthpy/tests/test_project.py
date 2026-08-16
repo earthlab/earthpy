@@ -76,6 +76,7 @@ def test_invalid_config_file(monkeypatch, tmp_path):
     assert project._get_config_parameter("project_title") is None
 
 
+@pytest.mark.vcr()
 def test_get_data_cheyenne_river(monkeypatch, tmp_path):
     """Test the Cheyenne River Flood Frequency dataset download."""
     cr_project = Project(
