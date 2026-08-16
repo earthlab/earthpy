@@ -12,6 +12,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   earthpy.appeears
    earthpy.clip
    earthpy.io
    earthpy.mask

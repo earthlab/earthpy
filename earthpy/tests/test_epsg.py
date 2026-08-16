@@ -20,7 +20,7 @@ def test_epsg():
 def test_crs_check_tif():
     """Test crs check works properly."""
     crs = es.crs_check(path_to_example("rmnp-rgb.tif"))
-    assert(crs.to_epsg() == 4326)
+    assert crs.to_epsg() == 4326
 
 
 def test_crs_check_bad_file():
@@ -36,7 +36,7 @@ def test_no_crs_in_file(output_dir):
         profile = src.profile
         profile.update(crs=None)
 
-    with rio.open(output_path, 'w', **profile) as dst:
+    with rio.open(output_path, "w", **profile) as dst:
         dst.write(data, 1)
 
     with pytest.raises(ValueError, match="No CRS found in data. The raster "):

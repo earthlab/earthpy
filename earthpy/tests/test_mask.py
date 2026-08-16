@@ -1,4 +1,4 @@
-""" Tests for the mask module. """
+"""Tests for the mask module."""
 
 import numpy as np
 from earthpy.mask import mask_pixels
@@ -20,7 +20,7 @@ def im_mask():
 
 
 def test_arr_provided(im, im_mask):
-    """ Test that inputs are numpy arrays. """
+    """Test that inputs are numpy arrays."""
 
     with pytest.raises(
         AttributeError, match="Input arr should be a numpy array."
@@ -33,14 +33,14 @@ def test_arr_provided(im, im_mask):
 
 
 def test_masked_arr_returned(im, im_mask):
-    """ Test for return of masked_array type. """
+    """Test for return of masked_array type."""
 
     masked = mask_pixels(im, im_mask, vals=[0])
     assert np.ma.is_masked(masked)
 
 
 def test_vals_as_list(im, im_mask):
-    """ Test for return of masked_array type. """
+    """Test for return of masked_array type."""
 
     with pytest.raises(
         AttributeError, match="Values should be provided as a list"

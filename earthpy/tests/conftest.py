@@ -1,4 +1,5 @@
-""" Utility functions for tests. """
+"""Utility functions for tests."""
+
 import os
 import numpy as np
 import pytest
@@ -146,13 +147,13 @@ def basic_image_tif_Affine(tmpdir, basic_image):
 
 @pytest.fixture
 def in_paths(basic_image_tif):
-    """ Input file paths for tifs to stack. """
+    """Input file paths for tifs to stack."""
     return [basic_image_tif] * 4
 
 
 @pytest.fixture
 def out_path(tmpdir):
-    """ A path for an output .tif file. """
+    """A path for an output .tif file."""
     return os.path.join(str(tmpdir), "out.tif")
 
 
@@ -201,7 +202,7 @@ def image_array_single_band_3dims():
 
 @pytest.fixture
 def image_array_2bands():
-    """ Simple array of shape 2,4,5 with fixded values. """
+    """Simple array of shape 2,4,5 with fixded values."""
     arr = np.array(
         [
             [

@@ -50,7 +50,6 @@ import earthpy as et
 import earthpy.spatial as es
 import earthpy.plot as ep
 
-
 ###############################################################################
 # Import and Stack Example Data
 # ------------------------------

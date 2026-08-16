@@ -1,4 +1,4 @@
-""" Tests for the stack() method """
+"""Tests for the stack() method"""
 
 import os
 import numpy as np

@@ -16,6 +16,9 @@ jobs:
   runtests:
     name: conda (${{ matrix.os }}, ${{ matrix.environment-file }})
     runs-on: ${{ matrix.os }}
+    env:
+      EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+      EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
     strategy:
       fail-fast: false
       matrix:
@@ -28,8 +31,8 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           miniconda-version: 'latest'
           channels: conda-forge
@@ -39,6 +42,4 @@ jobs:
           environment-file: ${{ matrix.environment-file }}
           activate-environment: earthpy-dev
       - run: conda list
-      - run: python -m keyring NASA_EARTHDATA NED_USERNAME ${{ secrets.EARTHDATA_USERNAME }}
-      - run: python -m keyring NASA_EARTHDATA NED_USERNAME ${{ secrets.EARTHDATA_PASSWORD }}
       - run: pytest -v --color=yes

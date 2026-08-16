@@ -7,8 +7,10 @@ File Input/Output utilities.
 """
 
 import io
+import logging
 import pathlib
 import re
+from email.message import Message
 
 import requests
 import tarfile
@@ -17,16 +19,63 @@ import zipfile
 from .config import DEFAULT_DATA_HOME, DATA_URLS, FIGSHARE_API_URL, DVCIGNORE
 
 ALLOWED_FILE_TYPES = ["file", "tar", "tar.gz", "zip"]
+logger = logging.getLogger("earthpy")
 
 # Backward compatibility for old datasets
 HOME = pathlib.Path.home()
-        
+
+
+def _safe_filename_from_content_disposition(content_disposition):
+    """Parse a Content-Disposition filename and strip unsafe characters."""
+    if not content_disposition:
+        return None
+
+    message = Message()
+    message["content-disposition"] = content_disposition
+    filename = message.get_filename()
+    if filename is None:
+        return None
+
+    filename = filename.strip().strip('"').strip("'")
+    filename = filename.replace("\\", "/")
+    filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+    filename = "".join(
+        character
+        for character in filename
+        if character.isprintable()
+        and character not in {"\r", "\n", "\t", "\x00"}
+    )
+    filename = filename.strip(" .")
+
+    if not filename:
+        return None
+    return filename
+
+
+def path_to_example(fname):
+    """Return the absolute path to a packaged example dataset file."""
+    example_dir = pathlib.Path(__file__).resolve().parent / "example-data"
+    candidate = example_dir / fname
+    if candidate.exists():
+        return candidate
+
+    fallback = (
+        pathlib.Path(__file__).resolve().parent.parent / "example-data" / fname
+    )
+    if fallback.exists():
+        return fallback
+
+    raise FileNotFoundError(
+        f"Example file '{fname}' was not found in the package example-data directory."
+    )
+
+
 class Data(object):
     """
     Data storage and retrieval functionality for Earthlab.
 
     An object of this class is available upon importing earthpy as
-    ``earthpy.data`` that writes data files to the project path, 
+    ``earthpy.data`` that writes data files to the project path,
     default ``~/earth-analytics/data/project-name``.
 
     Parameters
@@ -57,7 +106,7 @@ class Data(object):
 
         self.headers = {"Content-Type": "application/json"}
         if self.figshare_token:
-            self.headers['Authorization'] = f"token {self.figshare_token}"
+            self.headers["Authorization"] = f"token {self.figshare_token}"
 
     @property
     def articles(self):
@@ -72,17 +121,17 @@ class Data(object):
         response.raise_for_status()
         articles = response.json()
         # Create a mapping of titles to article IDs
-        return {article['title']: article['id'] for article in articles}
+        return {article["title"]: article["id"] for article in articles}
 
     def list_datasets(self):
         """Pretty print available datasets."""
         if self._is_notebook():
             display(JSON(self.articles))
-            print('Legacy datasets:')
+            print("Legacy datasets:")
             display(JSON(self.data_keys))
         else:
             print(self.articles)
-            print('Legacy datasets:')
+            print("Legacy datasets:")
             print(self.data_keys)
 
     def _is_notebook(self):
@@ -90,6 +139,7 @@ class Data(object):
         try:
             from IPython import get_ipython
             from IPython.display import display, JSON
+
             return get_ipython() is not None
         except ImportError:
             return False
@@ -98,11 +148,15 @@ class Data(object):
         s = "Available Datasets: {}".format(self.data_keys)
         return s
 
-    def get_data(self, 
-                 key=None, url=None, title=None,
-                 filename=None,
-                 replace=False, verbose=True
-        ):
+    def get_data(
+        self,
+        key=None,
+        url=None,
+        title=None,
+        filename=None,
+        replace=False,
+        verbose=True,
+    ):
         """
         Retrieve the data subset and return its path.
 
@@ -113,15 +167,15 @@ class Data(object):
         ----------
         key : str
             The dataset to retrieve. Possible options can be found in
-            ``self.data_keys``. Note: ``key``, ``url``, and 
+            ``self.data_keys``. Note: ``key``, ``url``, and
             ``title`` are mutually exclusive.
         url : str
-            A URL to fetch into the data directory. Use this for 
-            ad-hoc dataset downloads. Note: ``key``, ``url``, and 
+            A URL to fetch into the data directory. Use this for
+            ad-hoc dataset downloads. Note: ``key``, ``url``, and
             ``title`` are mutually exclusive.
         title : str
             The title of the dataset to retrieve. This is used to
-            fetch the article ID from Figshare. Note: ``key``, 
+            fetch the article ID from Figshare. Note: ``key``,
             ``url``, and ``title`` are mutually exclusive.
         filename : str
             The name of the file to save the dataset as. This is
@@ -149,7 +203,7 @@ class Data(object):
             >>> et.data.get_data(url=url)  # doctest: +SKIP
 
         """
-        
+
         if (key is not None) + (url is not None) + (title is not None) > 1:
             raise ValueError(
                 "The `key`, `url`, and `title` parameters are mutually "
@@ -188,7 +242,7 @@ class Data(object):
                 for ext in ALLOWED_FILE_TYPES:
                     if fname.endswith(ext):
                         file_type = ext
-                        fname = fname.replace('.'+ext, "")
+                        fname = fname.replace("." + ext, "")
                 this_data.append((data_url, fname, file_type))
 
         if url is not None:
@@ -196,14 +250,13 @@ class Data(object):
                 # Try HTML headers
                 if "content-disposition" in r.headers.keys():
                     content = r.headers["content-disposition"]
-                    fname = re.findall("filename=(.+)", content)[0]
+                    fname = _safe_filename_from_content_disposition(content)
                 # Otherwise get filename from URL
                 else:
-                    fname = url.split("/")[-1]
+                    fname = None
 
-            # Remove any extra quotes
-            if fname.endswith('"') and fname.startswith('"'):
-                fname = fname[1:-1]
+            if fname is None:
+                fname = url.split("/")[-1]
 
             # Determine filetype using file name extension
             file_type = "file"
@@ -242,12 +295,12 @@ class Data(object):
                 verbose=verbose,
             )
             data_paths.append(this_path)
-        
+
         # Return the data path or list of paths
         if len(data_paths) == 1:
             data_paths = data_paths[0]
         return data_paths
-    
+
     def get_data_path(self, dataset_name):
         """
         Retrieve the path to a dataset if it exists in the project directory.
@@ -276,13 +329,14 @@ class Data(object):
         """
         # Recursively search for the file in all subdirectories
         found_files = [
-            path for path in self.path.rglob('*') 
-            if path.name == dataset_name
+            path for path in self.path.rglob("*") if path.name == dataset_name
         ]
 
         if not found_files:
-            raise KeyError(f"Dataset '{dataset_name}' not found in {self.path}.")
-        
+            raise KeyError(
+                f"Dataset '{dataset_name}' not found in {self.path}."
+            )
+
         # Return the first match (there shouldn't be duplicates)
         return found_files[0]
 
@@ -303,29 +357,29 @@ class Data(object):
         # API Endpoint for article metadata
         url = f"https://api.figshare.com/v2/articles/{article_id}"
         if self.verbose:
-            print(f"🔄 Fetching metadata for article {article_id}...")
+            logger.info("Fetching metadata for article %s...", article_id)
 
         response = requests.get(url)
         if response.status_code != 200:
             raise ValueError(
                 f"Failed to retrieve metadata for article {article_id}."
-                f" Status code: {response.status_code}")
+                f" Status code: {response.status_code}"
+            )
 
         metadata = response.json()
         files = metadata.get("files", [])
 
         if not files:
-            print(f"⚠️ No files found for article {article_id}.")
+            logger.info("No files found for article %s.", article_id)
             return {}
 
         # Dictionary of filenames and their download URLs
         download_urls = {
-            file_info["name"]: file_info["download_url"]
-            for file_info in files
+            file_info["name"]: file_info["download_url"] for file_info in files
         }
 
         if self.verbose:
-            print(f"✅ Found {len(download_urls)} files for download.")
+            logger.info("Found %s files for download.", len(download_urls))
         return download_urls
 
     def _download(self, url, path, kind, replace, verbose):
@@ -361,7 +415,7 @@ class Data(object):
             return path
 
         if verbose is True:
-            print("Downloading from {}".format(url))
+            logger.info("Downloading from %s", url)
 
         r = requests.get(url)
         r.raise_for_status()
@@ -423,14 +477,14 @@ class Data(object):
             if subfile.is_dir():
                 # Ensure directories are included in the zip
                 self._zip_dir(subfile, zip_home, zipf)
-    
+
     def prepare_for_upload(self, verbose=False):
         """
         Prepare files for upload to Figshare.
-        
+
         This function collects all files in the project path,
-        excluding hidden files and those in the DVCIGNORE list, and 
-        zips them into a directory named "figshare-upload". 
+        excluding hidden files and those in the DVCIGNORE list, and
+        zips them into a directory named "figshare-upload".
 
         Returns
         -------
@@ -438,12 +492,11 @@ class Data(object):
             Path to the directory containing files prepared for upload.
         """
         files_and_dirs = [
-            f for f in self.path.glob("*") 
-            if (
-                not f in DVCIGNORE) 
-                and (not f.name == "figshare-upload")
-                and (not f.name.startswith(".")
-            )
+            f
+            for f in self.path.glob("*")
+            if (not f in DVCIGNORE)
+            and (not f.name == "figshare-upload")
+            and (not f.name.startswith("."))
         ]
 
         output_path = self.path / "figshare-upload"

@@ -1,5 +1,6 @@
-""" Tests for io module. """
+"""Tests for io module."""
 
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -13,8 +14,7 @@ import rasterio as rio
 
 from earthpy.config import DATA_URLS
 from earthpy.project import Project
-from earthpy.io import Data
-
+from earthpy.io import Data, _safe_filename_from_content_disposition
 
 RUNNING_ON_CI = False
 if "CI" in os.environ:
@@ -26,14 +26,13 @@ skip_on_ci = pytest.mark.skipif(
 )
 
 
-
 @pytest.fixture
 def data_instance(tmp_path, monkeypatch):
     """Fixture to create a Data instance for testing with example data."""
-    
+
     # Set the environment variable for the test path
     monkeypatch.setenv("EARTHPY_DATA_HOME", str(tmp_path / "testdata"))
-    
+
     # Create the project
     project = Project(title="Test Project", dirname="example-data")
     data = Data(project)
@@ -42,7 +41,7 @@ def data_instance(tmp_path, monkeypatch):
     example_data_path = Path(__file__).parent.parent / "example-data"
     test_data_path = project.project_dir
     test_data_path.mkdir(parents=True, exist_ok=True)
-    
+
     # Copy example data to the temp path if it exists
     if example_data_path.exists():
         for item in example_data_path.iterdir():
@@ -81,10 +80,17 @@ def test_rgb(data_instance, tmp_path):
     example_file.parent.mkdir(parents=True, exist_ok=True)
 
     # Create a dummy GeoTIFF
-    with rio.open(example_file, 'w', driver='GTiff',
-                  height=373, width=485, count=3,
-                  dtype='uint8', crs='EPSG:4326') as dst:
-        dst.write(np.zeros((3, 373, 485), dtype='uint8'))
+    with rio.open(
+        example_file,
+        "w",
+        driver="GTiff",
+        height=373,
+        width=485,
+        count=3,
+        dtype="uint8",
+        crs="EPSG:4326",
+    ) as dst:
+        dst.write(np.zeros((3, 373, 485), dtype="uint8"))
 
     with rio.open(data_instance.get_data_path("rmnp-rgb.tif")) as src:
         rgb = src.read()
@@ -102,8 +108,9 @@ def test_colorado_counties(data_instance, tmp_path):
     with open(example_file, "w") as f:
         f.write('{"type": "FeatureCollection", "features": []}')
 
-    counties = gpd.read_file(data_instance.get_data_path(
-        "colorado-counties.geojson"))
+    counties = gpd.read_file(
+        data_instance.get_data_path("colorado-counties.geojson")
+    )
     assert counties.crs == "epsg:4326"
 
 
@@ -115,8 +122,9 @@ def test_colorado_glaciers(data_instance, tmp_path):
     with open(example_file, "w") as f:
         f.write('{"type": "FeatureCollection", "features": []}')
 
-    glaciers = gpd.read_file(data_instance.get_data_path(
-        "colorado-glaciers.geojson"))
+    glaciers = gpd.read_file(
+        data_instance.get_data_path("colorado-glaciers.geojson")
+    )
     assert glaciers.crs == "epsg:4326"
 
 
@@ -128,8 +136,9 @@ def test_continental_divide_trail(data_instance, tmp_path):
     with open(example_file, "w") as f:
         f.write('{"type": "FeatureCollection", "features": []}')
 
-    cdt = gpd.read_file(data_instance.get_data_path(
-        "continental-div-trail.geojson"))
+    cdt = gpd.read_file(
+        data_instance.get_data_path("continental-div-trail.geojson")
+    )
     assert cdt.crs == "epsg:4326"
 
 
@@ -163,8 +172,7 @@ def test_key_and_url_set_simultaneously(data_instance):
         data_instance.get_data(key="foo", url="bar")
 
 
-def test_available_datasets_are_printed(
-        data_instance, capsys):
+def test_available_datasets_are_printed(data_instance, capsys):
     """If no key or url provided, print datasets.
 
     The output that is printed should be identical to the __repr__ output.
@@ -173,7 +181,8 @@ def test_available_datasets_are_printed(
     """
     Data().get_data()
     printed_output = capsys.readouterr().out
-    assert 'california-rim-fire' in printed_output
+    assert "california-rim-fire" in printed_output
+
 
 def test_invalid_dataset_key(data_instance):
     """Raise errors for unknown dataset keys."""
@@ -205,7 +214,9 @@ def test_replace_arg_controle_overwrite(data_instance, replace_arg_value):
     """If replace=False, do not replace existing files. If true, replace."""
     file1 = data_instance.get_data("little-text-file")
     mtime1 = os.path.getmtime(file1)
-    file2 = data_instance.get_data("little-text-file", replace=replace_arg_value)
+    file2 = data_instance.get_data(
+        "little-text-file", replace=replace_arg_value
+    )
     mtime2 = os.path.getmtime(file2)
     if replace_arg_value is True:
         assert mtime1 < mtime2
@@ -248,7 +259,9 @@ def test_arbitrary_url_zip_download(data_instance):
 @pytest.mark.vcr()
 def test_url_download_tar_file(data_instance):
     """Ensure that tar files are downloaded and extracted."""
-    path = data_instance.get_data(url="https://ndownloader.figshare.com/files/14615411")
+    path = data_instance.get_data(
+        url="https://ndownloader.figshare.com/files/14615411"
+    )
     assert "abc.txt" in os.listdir(path)
 
 
@@ -256,7 +269,9 @@ def test_url_download_tar_file(data_instance):
 @pytest.mark.vcr()
 def test_url_download_tar_gz_file(data_instance):
     """Ensure that tar.gz files are downloaded and extracted."""
-    path = data_instance.get_data(url="https://ndownloader.figshare.com/files/14615414")
+    path = data_instance.get_data(
+        url="https://ndownloader.figshare.com/files/14615414"
+    )
     assert "abc.txt" in os.listdir(path)
 
 
@@ -264,35 +279,70 @@ def test_url_download_tar_gz_file(data_instance):
 @pytest.mark.vcr()
 def test_url_download_txt_file_with_content_disposition(data_instance):
     """Test arbitrary URL download with content-disposition."""
-    path = data_instance.get_data(url="https://ndownloader.figshare.com/files/7275959")
-    assert (path.name=="temperature_example.csv") and os.path.isfile(path)
-
-
-@skip_on_ci
-@pytest.mark.vcr()
-def test_verbose_arg_works(
-        data_instance, 
-        capsys):
-    """Test that the verbose argument can print or suppress messages."""
-    data_instance.get_data("little-text-file", verbose=True)
-    output_true = capsys.readouterr().out
-    data_instance.get_data("little-text-file", verbose=False)
-    output_false = capsys.readouterr().out
-    assert len(output_true) > len(output_false)
-
-
-@skip_on_ci
-@pytest.mark.vcr()
-def test_url_download_with_quotes(data_instance):
-    """Test download with that has quotes around file name to see that get_data
-    now removes the quotes."""
-    quotes_url = (
-        "https://opendata.arcgis.com/datasets/955e7a0f5"
-        + "2474b60a9866950daf10acb_0.zip"
+    path = data_instance.get_data(
+        url="https://ndownloader.figshare.com/files/7275959"
     )
-    path = data_instance.get_data(url=quotes_url)
-    files = os.listdir(path)
-    assert "City_of_Boulder_City_Limits.shp" in files and os.path.isdir(path)
+    assert (path.name == "temperature_example.csv") and os.path.isfile(path)
+
+
+@skip_on_ci
+def test_verbose_arg_works(data_instance, caplog):
+    """Test that the verbose argument controls logger output."""
+    with caplog.at_level(logging.INFO, logger="earthpy"):
+        data_instance.get_data("little-text-file", verbose=True)
+    output_true = caplog.text
+
+    caplog.clear()
+    with caplog.at_level(logging.INFO, logger="earthpy"):
+        data_instance.get_data("little-text-file", verbose=False)
+    output_false = caplog.text
+
+    assert "Downloading from" in output_true
+    assert "Downloading from" not in output_false
+
+
+@skip_on_ci
+def test_url_download_with_quotes(data_instance):
+    """Quoted Content-Disposition filenames should be normalized safely."""
+    with patch("earthpy.io.requests.head") as mock_head, patch(
+        "earthpy.io.requests.get"
+    ) as mock_get:
+        head_response = MagicMock()
+        head_response.headers = {
+            "content-disposition": 'attachment; filename="City_of_Boulder_City_Limits.shp"'
+        }
+        mock_head.return_value.__enter__.return_value = head_response
+
+        download_response = MagicMock()
+        download_response.content = b"fake-shapefile-content"
+        download_response.raise_for_status.return_value = None
+        mock_get.return_value = download_response
+
+        path = data_instance.get_data(url="https://example.com/archive.zip")
+
+    assert path.name == "City_of_Boulder_City_Limits.shp"
+    assert os.path.isfile(path)
+
+
+def test_safe_filename_from_content_disposition_handles_quotes():
+    """Quoted filenames should be unwrapped and preserved."""
+    value = 'attachment; filename="City_of_Boulder_City_Limits.shp"'
+    assert (
+        _safe_filename_from_content_disposition(value)
+        == "City_of_Boulder_City_Limits.shp"
+    )
+
+
+def test_safe_filename_from_content_disposition_handles_rfc5987():
+    """RFC 5987 filename* values should be decoded."""
+    value = "attachment; filename*=UTF-8''hello%20world.txt"
+    assert _safe_filename_from_content_disposition(value) == "hello world.txt"
+
+
+def test_safe_filename_from_content_disposition_sanitizes_paths():
+    """Directory traversal characters should not survive filename parsing."""
+    value = 'attachment; filename="../../etc/passwd"'
+    assert _safe_filename_from_content_disposition(value) == "passwd"
 
 
 @pytest.fixture
@@ -309,25 +359,29 @@ def test_data_initialization(mock_project):
     assert data.figshare_project_id == mock_project.figshare_project_id
     assert data.figshare_token == mock_project.figshare_token
     assert data.path.exists()
-    
+
 
 def test_get_figshare_download_urls(mock_project):
     """Test that _get_figshare_download_urls retrieves the correct URLs."""
     data = Data(mock_project)
-    
-    with patch('requests.get') as mock_get:
+
+    with patch("requests.get") as mock_get:
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "files": [
-                {"name": "file1.csv", 
-                 "download_url": "http://example.com/file1.csv"},
-                {"name": "file2.csv", 
-                 "download_url": "http://example.com/file2.csv"},
+                {
+                    "name": "file1.csv",
+                    "download_url": "http://example.com/file1.csv",
+                },
+                {
+                    "name": "file2.csv",
+                    "download_url": "http://example.com/file2.csv",
+                },
             ]
         }
         mock_get.return_value = mock_response
-        
+
         # Test without admin flag
         urls = data._get_figshare_download_urls(article_id=1234)
         assert "file1.csv" in urls
@@ -341,15 +395,19 @@ def test_download(mock_project, tmp_path):
     test_path = tmp_path / "testfile.csv"
 
     # Mock the request response
-    with patch('requests.get') as mock_get:
+    with patch("requests.get") as mock_get:
         mock_response = MagicMock()
         mock_response.content = b"test,data,123"
         mock_get.return_value = mock_response
 
         # Test download
         data._download(
-            url=test_url, path=test_path, kind="file", 
-            replace=True, verbose=True)
+            url=test_url,
+            path=test_path,
+            kind="file",
+            replace=True,
+            verbose=True,
+        )
         assert test_path.exists()
         with open(test_path, "r") as f:
             content = f.read()
@@ -359,13 +417,13 @@ def test_download(mock_project, tmp_path):
 def test_articles(mock_project):
     """Test that articles are fetched and mapped correctly."""
     data = Data(mock_project)
-    
-    with patch('requests.get') as mock_get:
+
+    with patch("requests.get") as mock_get:
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = [
             {"title": "Dataset 1", "id": 111},
-            {"title": "Dataset 2", "id": 222}
+            {"title": "Dataset 2", "id": 222},
         ]
         mock_get.return_value = mock_response
 

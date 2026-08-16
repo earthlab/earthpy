@@ -12,7 +12,7 @@ class Authenticator:
     """
     Credential manager for logging into an API service.
 
-    Supports credentials stored in .netrc, keyring, and environment 
+    Supports credentials stored in .netrc, keyring, and environment
     variables.
 
     Parameters
@@ -20,10 +20,10 @@ class Authenticator:
     service : str
         The name of the service to log in to.
     priority : list of str, optional
-        Ordered list of credential stores to check. Options: 'netrc', 
+        Ordered list of credential stores to check. Options: 'netrc',
         'keyring', 'env'. Default is ['netrc', 'keyring', 'env'].
     env_prefix : str, optional
-        Prefix for environment variable names. Default is uppercase of 
+        Prefix for environment variable names. Default is uppercase of
         service name.
 
     Attributes
@@ -40,10 +40,10 @@ class Authenticator:
         self,
         service: str,
         priority: Optional[List[str]] = None,
-        env_prefix: Optional[str] = None
+        env_prefix: Optional[str] = None,
     ):
         self.service = service
-        self.priority = priority or ['netrc', 'keyring', 'env']
+        self.priority = priority or ["netrc", "keyring", "env"]
         self.env_prefix = env_prefix or service.replace(".", "_").upper()
 
     # ==== .netrc ====
@@ -58,12 +58,12 @@ class Authenticator:
         except (FileNotFoundError, TypeError):
             return None
         return None
-    
+
     def set_netrc_credentials(self, username: str, password: str):
         """Editing .netrc is not yet supported."""
         raise NotImplementedError(
-            "Setting .netrc credentials is not currently supported.")
-
+            "Setting .netrc credentials is not currently supported."
+        )
 
     # ==== Keyring ====
 
@@ -73,13 +73,13 @@ class Authenticator:
             creds_json = keyring.get_password(self.service, "default")
             if creds_json:
                 creds = json.loads(creds_json)
-                return creds['username'], creds['password']
+                return creds["username"], creds["password"]
         except:
             return None
 
     def set_keyring_credentials(self, username: str, password: str):
         """Store username and password in keyring"""
-        creds = json.dumps({'username': username, 'password': password})
+        creds = json.dumps({"username": username, "password": password})
         keyring.set_password(self.service, "default", creds)
 
     # ==== Environment Variables ====
@@ -94,9 +94,9 @@ class Authenticator:
 
     def set_env_credentials(self, username: str, password: str):
         """
-        Set credentials in the current environment. 
-        
-        Credentials do not persist between sessions. Useful for runtime 
+        Set credentials in the current environment.
+
+        Credentials do not persist between sessions. Useful for runtime
         configuration and continuous integration.
         """
         os.environ[f"{self.env_prefix}_USERNAME"] = username
@@ -105,24 +105,22 @@ class Authenticator:
     # ==== Login ====
 
     def get_credentials(
-            self, 
-            interactive: bool = True, 
-            override: bool = False
-        ) -> Tuple[str, str]:
+        self, interactive: bool = True, override: bool = False
+    ) -> Tuple[str, str]:
         """
         Attempt to retrieve credentials using the specified priority.
 
-        If credentials are found and override is True, prompt to 
-        override them. If credentials are not found and interactive is 
+        If credentials are found and override is True, prompt to
+        override them. If credentials are not found and interactive is
         True, prompt to enter and store them.
 
         Parameters
         ----------
         interactive : bool, optional
-            If True, allows prompting the user for credentials. 
+            If True, allows prompting the user for credentials.
             Default is True.
         override : bool, optional
-            If True, and credentials are found, ask whether to override 
+            If True, and credentials are found, ask whether to override
             them. Default is False.
 
         Returns
@@ -146,10 +144,14 @@ class Authenticator:
                     print(f"Credentials found using '{method}' backend.")
 
                     if interactive and override:
-                        user_input = input(
-                            "Do you want to override these credentials?"
-                            " [y/N]: "
-                            ).strip().lower()
+                        user_input = (
+                            input(
+                                "Do you want to override these credentials?"
+                                " [y/N]: "
+                            )
+                            .strip()
+                            .lower()
+                        )
                         if user_input == "y":
                             username, password = self._prompt_for_credentials()
                             self._store_credentials(username, password)
@@ -158,14 +160,15 @@ class Authenticator:
         if not interactive:
             raise RuntimeError(
                 f"No credentials found for {self.service} and interactive mode"
-                " is off.")
+                " is off."
+            )
 
         print(
-            f"No stored credentials found for {self.service}. Please log in.")
+            f"No stored credentials found for {self.service}. Please log in."
+        )
         username, password = self._prompt_for_credentials()
         self._store_credentials(username, password)
         return username, password
-
 
     def _prompt_for_credentials(self) -> Tuple[str, str]:
         """Securely prompt the user for credentials."""
@@ -173,11 +176,10 @@ class Authenticator:
         password = getpass.getpass("Password: ")
         return username, password
 
-
     def _store_credentials(self, username: str, password: str):
         """
         Try to store credentials
-        
+
         Use the first backend in the priority list
         that supports setting credentials. Log if unable to store.
         """
@@ -191,9 +193,12 @@ class Authenticator:
                 except NotImplementedError:
                     warnings.warn(
                         f"Setting credentials not supported for '{method}'"
-                        " backend.")
+                        " backend."
+                    )
                 except Exception as e:
                     warnings.warn(
-                        f"Failed to store credentials with '{method}': {e}")
+                        f"Failed to store credentials with '{method}': {e}"
+                    )
         warnings.warn(
-            "Credentials could not be saved with any available method.")
+            "Credentials could not be saved with any available method."
+        )

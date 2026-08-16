@@ -14,24 +14,19 @@ DEFAULT_PROJECT_DIRNAME = "earthpy-downloads"
 DEFAULT_DATA_HOME = Path.home() / "earth-analytics" / "data"
 
 # Default exclusions -- hidden files and directories also excluded
-DVCIGNORE = [
-    "Thumbs.db", 
-    ".DS_Store", 
-    "__MACOSX", 
-    "tmp"
-]
-DVCIGNORE_TEMPLATE = '\n'.join(
-    DVCIGNORE 
-    + 
-    [
-        '*.aux',
-        '*.bck',
-        '*.bak',
-        '*.log',
-        '*.out',
-        '*.tmp',
-        '.*',
-    ])
+DVCIGNORE = ["Thumbs.db", ".DS_Store", "__MACOSX", "tmp"]
+DVCIGNORE_TEMPLATE = "\n".join(
+    DVCIGNORE
+    + [
+        "*.aux",
+        "*.bck",
+        "*.bak",
+        "*.log",
+        "*.out",
+        "*.tmp",
+        ".*",
+    ]
+)
 
 # Data URLs, structured as {'week_name': [(URL, FILENAME, FILETYPE)]}
 # If zipfile, tarfile, etc, unzip to a folder w/ the name

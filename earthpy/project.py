@@ -19,6 +19,7 @@ from .config import (
 )
 from .io import Data
 
+
 class Project:
     """
     Manage a project data directory.
@@ -74,10 +75,11 @@ class Project:
 
     def __init__(
         self,
-        title=None, key=None,
+        title=None,
+        key=None,
         dirname=None,
         appname="earth-analytics",
-        verbose=False
+        verbose=False,
     ):
         self.appname = appname
         self.verbose = verbose
@@ -85,18 +87,22 @@ class Project:
         self.title = title or self._get_config_parameter("project_title")
         self.key = key or self._get_config_parameter("earthpy_data_key")
         self.project_dirname = (
-            dirname 
-            or self._get_config_parameter("project_dirname")
-            or title
-            or DEFAULT_PROJECT_DIRNAME
-        ).replace(" ", "-").lower()
-        
+            (
+                dirname
+                or self._get_config_parameter("project_dirname")
+                or title
+                or DEFAULT_PROJECT_DIRNAME
+            )
+            .replace(" ", "-")
+            .lower()
+        )
 
         # Prepare directories
         self.data_home = Path(
             self._get_config_parameter("data_home")
             or user_data_dir(self.appname)
-            or Path.home() / "earth-analytics" / "data")
+            or Path.home() / "earth-analytics" / "data"
+        )
         self.project_dir = self.data_home / self.project_dirname
 
         self.data_home.mkdir(parents=True, exist_ok=True)
@@ -105,17 +111,21 @@ class Project:
         # Figshare API setup
         self.figshare_project_id = (
             self._get_config_parameter("figshare_project_id")
-            or DEFAULT_FIGSHARE_PROJECT_ID)
+            or DEFAULT_FIGSHARE_PROJECT_ID
+        )
         self.figshare_token = self._get_config_parameter("figshare_token")
 
         self.data = Data(project=self)
 
     def get_data(
-            self, 
-            key=None, url=None, title=None,
-            filename=None,
-            replace=False, verbose=True
-        ):
+        self,
+        key=None,
+        url=None,
+        title=None,
+        filename=None,
+        replace=False,
+        verbose=True,
+    ):
         """
         Download data to project directory.
 
@@ -142,18 +152,18 @@ class Project:
         self.title = title or self.title
 
         if self.key:
-            self.data.get_data(
-                key=self.key, replace=replace, verbose=verbose)
+            self.data.get_data(key=self.key, replace=replace, verbose=verbose)
         if url:
             self.data.get_data(
-                url=url, filename=filename, 
-                replace=replace, verbose=verbose)
+                url=url, filename=filename, replace=replace, verbose=verbose
+            )
         if self.title:
             self.data.get_data(
-                title=self.title, replace=replace, verbose=verbose)
-            
+                title=self.title, replace=replace, verbose=verbose
+            )
+
         return
-    
+
     def _read_config_file(self, file_path):
         """
         Read a configuration file into a dictionary.
@@ -188,19 +198,19 @@ class Project:
                         config_data[f"{section}.{key}"] = value
         except Exception as e:
             print(f"[Warning] Failed to read {file_path}: {e}")
-        
+
         return config_data
 
     def _load_config_files(self):
         """
         Load earthpy configuration files.
 
-        This method searches for `earthpy_config.ext` in the current 
-        working directory and the user configuration directory provided 
+        This method searches for `earthpy_config.ext` in the current
+        working directory and the user configuration directory provided
         by `platformdirs` and merges them into a single dictionary.
-        If both are found, local configurations **override** global 
-        configurations. Supported extensions are `.yml`, `.cfg`, 
-        `.ini`, and `.json`, with duplicate parameters overridden in 
+        If both are found, local configurations **override** global
+        configurations. Supported extensions are `.yml`, `.cfg`,
+        `.ini`, and `.json`, with duplicate parameters overridden in
         that order.
 
         Returns
@@ -244,14 +254,14 @@ class Project:
             pprint(combined_config, sort_dicts=False, width=80)
 
         return combined_config
-    
+
     def _get_config_parameter(self, param_name):
         """
         Retrieve a configuration parameter.
 
-        This method checks if the parameter exists as an 
-        environment variable with the `EARTHPY_` prefix 
-        (case-insensitive). If not found, it searches the loaded 
+        This method checks if the parameter exists as an
+        environment variable with the `EARTHPY_` prefix
+        (case-insensitive). If not found, it searches the loaded
         configuration files.
 
         Parameters

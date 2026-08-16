@@ -1,4 +1,4 @@
-""" Tests for the hillshade function. """
+"""Tests for the hillshade function."""
 
 import numpy as np
 import pytest

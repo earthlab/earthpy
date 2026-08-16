@@ -1,7 +1,6 @@
 from os import path
 from setuptools import setup, find_packages
 
-
 DISTNAME = "earthpy"
 DESCRIPTION = (
     "A set of helper functions to make working with spatial data "
@@ -27,7 +26,7 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
-        version="0.10.0",
+        version="1.0.0",
         packages=find_packages(),
         install_requires=[
             "requests",

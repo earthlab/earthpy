@@ -86,7 +86,6 @@ def _plot_image(
     alpha=1,
     norm=None,
 ):
-
     """
     Create a matplotlib figure with an image axis and associated extent.
 
