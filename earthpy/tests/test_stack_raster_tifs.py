@@ -1,4 +1,4 @@
-""" Tests for the _stack_raster_tifs() method """
+"""Tests for the _stack_raster_tifs() method"""
 
 import numpy as np
 import pytest

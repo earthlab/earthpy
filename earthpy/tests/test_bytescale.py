@@ -24,7 +24,7 @@ def test_high_val_range():
 
 
 def test_high_val_greater_255(byte_arr):
-    """A high value >255 should fail gracefully. """
+    """A high value >255 should fail gracefully."""
 
     with pytest.raises(
         ValueError, match="`high` should be less than or equal to 255."
@@ -33,7 +33,7 @@ def test_high_val_greater_255(byte_arr):
 
 
 def test_low_val_range(byte_arr):
-    """A low value <0 should fail gracefully. """
+    """A low value <0 should fail gracefully."""
 
     # Bad low value
     with pytest.raises(
@@ -81,7 +81,7 @@ def test_cmax_equals_cmin(byte_arr):
 
 
 def test_cmax_cmin_work(byte_arr):
-    """"Cmax and min values returns an arr with the range 0-255."""
+    """ "Cmax and min values returns an arr with the range 0-255."""
 
     scale_arr = es.bytescale(byte_arr, cmin=10, cmax=240)
 

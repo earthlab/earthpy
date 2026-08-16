@@ -1,16 +1,14 @@
-import os
 import pytest
 from pathlib import Path
 from platformdirs import user_data_dir
 
 from earthpy.project import Project
-from earthpy.io import Data
+
 
 @pytest.fixture
 def project():
     """Fixture for creating a temporary Project instance."""
-    return Project(title="Test Project", 
-                   dirname="test-downloads")
+    return Project(title="Test Project", dirname="test-downloads")
 
 
 def test_directory_creation(project):
@@ -30,8 +28,8 @@ def test_get_config_parameter_env_var(monkeypatch):
     monkeypatch.setenv("EARTHPY_PROJECT_TITLE", "Env Project Title")
     project = Project()
     assert (
-        project._get_config_parameter("project_title") 
-        == "Env Project Title")
+        project._get_config_parameter("project_title") == "Env Project Title"
+    )
 
 
 def test_get_config_parameter_config_file(monkeypatch, tmp_path):
@@ -39,13 +37,14 @@ def test_get_config_parameter_config_file(monkeypatch, tmp_path):
     # Create a mock configuration file
     config_file = tmp_path / "earthpy_config.json"
     config_file.write_text('{"project_title": "Config Project Title"}')
-    
+
     # Switch to the temp directory and load the project
     monkeypatch.chdir(tmp_path)
     project = Project()
     assert (
-        project._get_config_parameter("project_title") 
-        == "Config Project Title")
+        project._get_config_parameter("project_title")
+        == "Config Project Title"
+    )
 
 
 def test_default_data_home():
@@ -65,21 +64,29 @@ def test_invalid_config_file(monkeypatch, tmp_path):
     """Test that an invalid config file does not crash the loader."""
     # Create an invalid JSON configuration
     config_file = tmp_path / "earthpy_config.json"
-    config_file.write_text('{"project_title": "Config Project Title" INVALID_JSON')
-    
+    config_file.write_text(
+        '{"project_title": "Config Project Title" INVALID_JSON'
+    )
+
     # Switch to the temp directory and load the project
     monkeypatch.chdir(tmp_path)
     project = Project()
     assert project._get_config_parameter("project_title") is None
 
+
+@pytest.mark.vcr()
 def test_get_data_cheyenne_river(monkeypatch, tmp_path):
     """Test the Cheyenne River Flood Frequency dataset download."""
+    monkeypatch.setenv("EARTHPY_DATA_HOME", str(tmp_path))
     cr_project = Project(
         title="Cheyenne River Flood Frequency",
-        dirname="cheyenne-river-flood-test")
+        dirname="cheyenne-river-flood-test",
+    )
     cr_project.get_data()
-    
+
     # Assertions
     file_path = cr_project.project_dir / "cheyenne_streamflow_1934_2024.csv"
-    assert Path(file_path).exists(), f"{file_path} was not downloaded successfully."
+    assert Path(
+        file_path
+    ).exists(), f"{file_path} was not downloaded successfully."
     print(f"✅ Downloaded successfully: {file_path}")

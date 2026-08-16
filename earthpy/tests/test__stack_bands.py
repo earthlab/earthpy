@@ -1,4 +1,4 @@
-""" Tests for the _stack_bands() method """
+"""Tests for the _stack_bands() method"""
 
 import numpy as np
 import pytest

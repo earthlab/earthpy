@@ -51,8 +51,8 @@ designed for the Earth Lab Earth Analytics online courses (see https://www.earth
 You can access these data subsets by using:
 
     >>> import earthpy as et
-    >>> # View all available data keys
-    >>> et.data.get_data()
-    Available Datasets: ['california-rim-fire', 'co-flood-extras', 'cold-springs-fire', 'cold-springs-landsat-scenes', 'cold-springs-modis-h4', 'colorado-flood', 'cs-test-landsat', 'cs-test-naip', 'naip-fire-crop', 'ndvi-automation', 'spatial-vector-lidar', 'twitter-flood', 'vignette-elevation', 'vignette-landsat']
+    >>> # Check the available data keys
+    >>> "vignette-landsat" in et.data.data_keys
+    True
     >>> # Download data subset to your `$HOME/earth-analytics/data` directory
     >>> data = et.data.get_data('cold-springs-fire', verbose=False)

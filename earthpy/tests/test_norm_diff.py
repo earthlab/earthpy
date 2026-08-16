@@ -1,5 +1,4 @@
-""" Tests for the normalized_diff function in the spatial module. """
-
+"""Tests for the normalized_diff function in the spatial module."""
 
 import numpy as np
 import numpy.ma as ma

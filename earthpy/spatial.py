@@ -47,9 +47,9 @@ def extent_to_json(ext_obj):
     {'type': 'Polygon', 'coordinates': (((-105.4935937, 40.1580827), ...),)}
     """
 
-    if type(ext_obj) == gpd.geodataframe.GeoDataFrame:
+    if isinstance(ext_obj, gpd.GeoDataFrame):
         extent_json = mapping(box(*ext_obj.total_bounds))
-    elif type(ext_obj) == list:
+    elif isinstance(ext_obj, list):
         assert ext_obj[0] <= ext_obj[2], "xmin must be <= xmax"
         assert ext_obj[1] <= ext_obj[3], "ymin must be <= ymax"
         extent_json = mapping(box(*ext_obj))
@@ -376,10 +376,16 @@ def crop_image(raster, geoms, all_touched=True):
         >>> cropped_raster.shape[1:3]
         (265, 281)
     """
+    if not hasattr(raster, "meta"):
+        raise AttributeError(
+            "The raster must be an open rasterio dataset reader."
+        )
     if isinstance(geoms, gpd.geodataframe.GeoDataFrame):
         clip_extent = [extent_to_json(geoms)]
     else:
         clip_extent = geoms
+    if len(clip_extent) == 0:
+        raise ValueError("At least one geometry is required to crop a raster.")
     out_image, out_transform = mask(
         raster, clip_extent, crop=True, all_touched=all_touched
     )
@@ -463,6 +469,7 @@ def crop_all(
         )
     return_files = []
     for i, bands in enumerate(raster_paths):
+        bands = os.fspath(bands)
         path_name, extension = bands.rsplit(".", 1)
         name = os.path.basename(os.path.normpath(path_name))
         outpath = os.path.join(output_dir, name + "_crop." + extension)

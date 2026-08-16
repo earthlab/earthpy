@@ -13,7 +13,9 @@ Submodules
    :maxdepth: 4
 
    earthpy.clip
+   earthpy.config
    earthpy.io
    earthpy.mask
    earthpy.plot
+   earthpy.project
    earthpy.spatial

@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 import pytest
 from shapely.geometry import Polygon
 import earthpy.spatial as es
@@ -14,7 +16,20 @@ def test_crop_all_returns_list(in_paths, output_dir, basic_geometry_gdf):
     img_list = es.crop_all(
         in_paths, output_dir, basic_geometry_gdf, overwrite=True
     )
-    assert type(img_list) == list
+    assert isinstance(img_list, list)
+
+
+def test_crop_all_accepts_path_objects(
+    in_paths, output_dir, basic_geometry_gdf
+):
+    """Test that crop all accepts path-like raster inputs."""
+    img_list = es.crop_all(
+        [Path(path) for path in in_paths],
+        output_dir,
+        basic_geometry_gdf,
+        overwrite=True,
+    )
+    assert len(img_list) == len(in_paths)
 
 
 def test_crop_all_files_exist(in_paths, output_dir, basic_geometry_gdf):

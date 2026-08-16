@@ -1,4 +1,4 @@
-""" Tests for the spatial module. """
+"""Tests for the spatial module."""
 
 import numpy as np
 import pytest

@@ -6,21 +6,6 @@ A module to download data using various APIs.
 
 """
 
-import getpass
-import json
-import logging
-import os
-import pathlib
-import re
-import secrets
-import time
-from glob import glob
-
-import keyring
-import requests
-import sqlite3
-
-from ..project import Project
 
 class APIDownloader(object):
     """
@@ -55,8 +40,8 @@ class APIDownloader(object):
     area_of_interest : gpd.GeoDataFrame, shapely geometry, or bounding box, optional
         The spatial boundary to subset. Bounding boxes should
         match GeoDataFrame.total_bounds style.
-    auth_method : 
-        
+    auth_method :
+
     Attributes
     ----------
     base_url : str
@@ -66,6 +51,6 @@ class APIDownloader(object):
     download_label : str
         Label used in data_dir and as the API job label.
     """
-    
+
     base_url = NotImplemented
     download_key = NotImplemented

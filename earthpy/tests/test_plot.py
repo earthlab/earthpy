@@ -1,4 +1,4 @@
-""" Colorbar Tests """
+"""Colorbar Tests"""
 
 import pytest
 import matplotlib.pyplot as plt

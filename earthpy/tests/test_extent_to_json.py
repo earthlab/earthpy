@@ -1,5 +1,4 @@
-""" Tests for the extent_to_json function """
-
+"""Tests for the extent_to_json function"""
 
 import pandas as pd
 import pytest
@@ -10,7 +9,7 @@ import earthpy.spatial as es
 
 @pytest.fixture
 def list_out():
-    """ A JSON extent on the unit square spanning (0, 0), (1, 1). """
+    """A JSON extent on the unit square spanning (0, 0), (1, 1)."""
     return es.extent_to_json([0, 0, 1, 1])
 
 
@@ -29,7 +28,7 @@ def test_min_exceeds_max(list_input, error):
 
 
 def test_list_format_works(list_out):
-    """" Giving a list [minx, miny, maxx, maxy] makes a polygon"""
+    """ " Giving a list [minx, miny, maxx, maxy] makes a polygon"""
     assert list_out["type"] == "Polygon"
 
 
@@ -42,7 +41,7 @@ def test_polygon_is_square(list_out):
 
 
 def test_gdf_format_works(list_out):
-    """ Providing a GeoDataFrame creates returns expected vals"""
+    """Providing a GeoDataFrame creates returns expected vals"""
 
     points_df = pd.DataFrame({"lat": [0, 1], "lon": [0, 1]})
     points_df["coords"] = list(zip(points_df.lon, points_df.lat))

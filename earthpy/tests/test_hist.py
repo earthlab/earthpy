@@ -1,4 +1,4 @@
-""" Hist tests """
+"""Hist tests"""
 
 import numpy as np
 import pytest

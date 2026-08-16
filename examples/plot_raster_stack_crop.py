@@ -46,7 +46,6 @@ import earthpy as et
 import earthpy.spatial as es
 import earthpy.plot as ep
 
-
 ########################################################################################
 # Get Example Data Ready for Stack
 # ----------------------------------

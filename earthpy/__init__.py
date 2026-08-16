@@ -9,6 +9,8 @@ import json
 from .io import Data
 from .project import Project
 
+__all__ = ["Data", "Project", "data", "epsg"]
+
 data = Data()
 """
 Example datasets for EarthPy

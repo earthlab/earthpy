@@ -10,7 +10,6 @@ import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from matplotlib import patches as mpatches
-from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage import exposure
 import earthpy.spatial as es
@@ -86,7 +85,6 @@ def _plot_image(
     alpha=1,
     norm=None,
 ):
-
     """
     Create a matplotlib figure with an image axis and associated extent.
 
@@ -647,7 +645,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     col_index.append(1.0)
 
     # Create cmap list of colors
-    cm = plt.cm.get_cmap(cmap)
+    cm = plt.get_cmap(cmap) if isinstance(cmap, (str, type(None))) else cmap
 
     return [cm(c) for c in col_index]
 
@@ -686,7 +684,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         >>> import earthpy.plot as ep
         >>> import matplotlib.pyplot as plt
         >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> bins = [-np.inf, -0.8, 0.8, np.inf]
         >>> im_arr_bin = np.digitize(im_arr, bins)
         >>> cat_names = ["Class 1", "Class 2", "Class 3"]
         >>> f, ax = plt.subplots()
@@ -707,12 +705,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
     # If classes not provided, get them from the im array in the ax object
     # Else use provided vals
     if classes is not None:
-        # Get the colormap from the mpl object
-        cmap = im_ax.cmap.name
-
-        # If the colormap is manually generated from a list
-        if cmap == "from_list":
-            cmap = ListedColormap(im_ax.cmap.colors)
+        cmap = im_ax.cmap
 
         colors = make_col_list(
             nclasses=len(classes), unique_vals=classes, cmap=cmap
