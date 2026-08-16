@@ -1,5 +1,4 @@
 import getpass
-import json
 import netrc
 import os
 import warnings

@@ -1,10 +1,8 @@
-import os
 import pytest
 from pathlib import Path
 from platformdirs import user_data_dir
 
 from earthpy.project import Project
-from earthpy.io import Data
 
 
 @pytest.fixture
@@ -79,6 +77,7 @@ def test_invalid_config_file(monkeypatch, tmp_path):
 @pytest.mark.vcr()
 def test_get_data_cheyenne_river(monkeypatch, tmp_path):
     """Test the Cheyenne River Flood Frequency dataset download."""
+    monkeypatch.setenv("EARTHPY_DATA_HOME", str(tmp_path))
     cr_project = Project(
         title="Cheyenne River Flood Frequency",
         dirname="cheyenne-river-flood-test",

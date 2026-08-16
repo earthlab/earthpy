@@ -10,16 +10,12 @@ NOTE TO DEVS:
 
 """
 
-import getpass
 import json
 import logging
 import os
 import pathlib
-import re
 import time
-from glob import glob
 
-import netrc
 import requests
 
 from earthpy import Project

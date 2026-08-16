@@ -646,7 +646,7 @@ def make_col_list(unique_vals, nclasses=None, cmap=None):
     col_index.append(1.0)
 
     # Create cmap list of colors
-    cm = plt.cm.get_cmap(cmap)
+    cm = plt.get_cmap(cmap)
 
     return [cm(c) for c in col_index]
 
@@ -685,7 +685,7 @@ def draw_legend(im_ax, bbox=(1.05, 1), titles=None, cmap=None, classes=None):
         >>> import earthpy.plot as ep
         >>> import matplotlib.pyplot as plt
         >>> im_arr = np.random.uniform(-2, 1, (15, 15))
-        >>> bins = [-np.Inf, -0.8, 0.8, np.Inf]
+        >>> bins = [-np.inf, -0.8, 0.8, np.inf]
         >>> im_arr_bin = np.digitize(im_arr, bins)
         >>> cat_names = ["Class 1", "Class 2", "Class 3"]
         >>> f, ax = plt.subplots()

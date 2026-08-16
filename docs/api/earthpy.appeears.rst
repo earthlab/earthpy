@@ -3,7 +3,6 @@ earthpy.appeears
 
 .. automodule:: earthpy.api.appeears
    :members:
-   :undoc-members:
    :show-inheritance:
 
 Examples

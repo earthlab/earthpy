@@ -1,6 +1,6 @@
 """
 earthpy.project
-==========
+===============
 
 Directory management for data projects
 
@@ -47,12 +47,6 @@ class Project:
         The path to the project-specific directory.
     config : dict
         Configuration parameters loaded from files.
-    figshare_token : str
-        Figshare API token for authentication.
-    project_id : str
-        Figshare project ID for uploading data.
-    headers : dict
-        Headers for Figshare API requests.
     data : Data
         Instance of the Data class for downloading data.
     title : str
@@ -66,11 +60,12 @@ class Project:
 
     Examples
     --------
+    >>> from earthpy.project import Project
     >>> project = Project()
-    >>> print(project.data_home)
-    /home/user/.local/share/earth-analytics/data
-    >>> print(project.project_dir)
-    /home/user/.local/share/earth-analytics/data/earthpy-downloads
+    >>> project.data_home.name
+    'earth-analytics'
+    >>> project.project_dir.name
+    'earthpy-downloads'
     """
 
     def __init__(
@@ -188,6 +183,8 @@ class Project:
                 with open(file_path) as f:
                     config_data.update(json.load(f))
             elif ext == ".yml":
+                import yaml
+
                 with open(file_path) as f:
                     config_data.update(yaml.safe_load(f))
             elif ext in [".ini", ".cfg"]:

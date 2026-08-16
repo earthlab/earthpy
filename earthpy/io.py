@@ -126,6 +126,8 @@ class Data(object):
     def list_datasets(self):
         """Pretty print available datasets."""
         if self._is_notebook():
+            from IPython.display import display, JSON
+
             display(JSON(self.articles))
             print("Legacy datasets:")
             display(JSON(self.data_keys))
@@ -138,7 +140,6 @@ class Data(object):
         """Check if the code is being run in a Jupyter notebook."""
         try:
             from IPython import get_ipython
-            from IPython.display import display, JSON
 
             return get_ipython() is not None
         except ImportError:
@@ -327,7 +328,9 @@ class Data(object):
 
         Examples
         --------
-        >>> data.get_data_path("rmnp-rgb.tif")
+        >>> from earthpy.io import Data
+        >>> data = Data()
+        >>> data.get_data_path("rmnp-rgb.tif")  # doctest: +SKIP
         PosixPath('/path/to/project-dir/subfolder/rmnp-rgb.tif')
         """
         # Recursively search for the file in all subdirectories
@@ -497,9 +500,9 @@ class Data(object):
         files_and_dirs = [
             f
             for f in self.path.glob("*")
-            if (not f in DVCIGNORE)
-            and (not f.name == "figshare-upload")
-            and (not f.name.startswith("."))
+            if f not in DVCIGNORE
+            and f.name != "figshare-upload"
+            and not f.name.startswith(".")
         ]
 
         output_path = self.path / "figshare-upload"

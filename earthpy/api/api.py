@@ -6,21 +6,6 @@ A module to download data using various APIs.
 
 """
 
-import getpass
-import json
-import logging
-import os
-import pathlib
-import re
-import secrets
-import time
-from glob import glob
-
-import requests
-import sqlite3
-
-from ..project import Project
-
 
 class APIDownloader(object):
     """

@@ -1,8 +1,5 @@
-import json
-import os
-
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from ..api.auth import Authenticator
 
@@ -55,4 +52,3 @@ def test_env_priority(monkeypatch, earthdata_auth):
 
     assert username == "env_user"
     assert password == "env_pass"
-

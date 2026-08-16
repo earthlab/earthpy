@@ -2,9 +2,7 @@
 Tests for appears module
 """
 
-import os
 import logging
-import pathlib
 
 
 import geopandas as gpd

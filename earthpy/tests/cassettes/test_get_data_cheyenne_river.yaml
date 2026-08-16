@@ -191,4 +191,26 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.34.2
+    method: GET
+    uri: https://ndownloader.figshare.com/files/54659369
+  response:
+    body:
+      string: 'date,streamflow_cfs\n1934-10-01,0.0\n'
+    headers:
+      Content-Type:
+      - text/csv
+    status:
+      code: 200
+      message: OK
 version: 1

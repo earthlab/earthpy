@@ -1,4 +1,10 @@
-# config.py
+"""
+earthpy.config
+==============
+
+Configuration defaults for EarthPy data and project management.
+"""
+
 from pathlib import Path
 
 # Figshare API
